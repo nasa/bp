@@ -60,6 +60,8 @@ typedef struct
     osal_id_t      Sem;
 } BP_Throttle_t;
 
+extern BP_Throttle_t BP_Throttles[];
+
 /* Flow Table */
 
 typedef struct
@@ -83,12 +85,13 @@ typedef struct
     uint32           MaxActive; /* bundles */
     char             Store[BP_STORE_NAME_SIZE];
     BP_PktTblEntry_t PktTbl[BP_PKTTBL_MAX_ROWS];
+    CFE_SB_MsgId_t   RecvStreamId;
     uint16           PipeDepth;
-    char             IOParm[BP_IO_PARM_SIZE];
 } BP_FlowTblEntry_t;
 
 typedef struct
 {
+    uint32            LocalNodeIpn;
     BP_FlowTblEntry_t Flows[BP_MAX_FLOWS];
 } BP_FlowTbl_t;
 
@@ -123,28 +126,18 @@ typedef struct
     bool               Healthy;
     BP_StorageHandle_t StorageHandle;
     BP_FlowPriority_t  COS; /* class of service */
-    BP_IoHandle_t      IOD; /* input/output channel descriptor */
-    bp_desc_t         *BPC; /* bundle protocol library channel */
+    bp_socket_t       *BPS; /* bundle protocol library socket */
     CFE_SB_PipeId_t    DataPipe;
-
-    /* Accumulator buffer for input data (SB -> bundles) */
-    unsigned char CurrentDataAccumInBuf[BP_MAX_BUNDLE_SIZE];
-    size_t        CurrentDataAccumInSize;
 
     CFE_SB_Buffer_t *CurrentSbMsgInPtr;
     CFE_SB_Buffer_t *CurrentSbMsgOutPtr;
 
+    CFE_SB_MsgId_t       CurrentSbMsgInId;
     const unsigned char *CurrentChunkInPtr;
     size_t               CurrentChunkInSize;
 
-    const unsigned char *CurrentChunkOutPtr;
-    size_t               CurrentChunkOutSize;
-
-    void  *CurrentBundleOutPtr;
-    size_t CurrentBundleOutSize;
-
-    void  *CurrentBundleInPtr;
-    size_t CurrentBundleInSize;
+    unsigned char *CurrentChunkOutPtr;
+    size_t         CurrentChunkOutSize;
 
     int      DataInDropped;
     int      DataOutDropped;

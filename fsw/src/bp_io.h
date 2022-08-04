@@ -26,6 +26,7 @@
  ************************************************/
 
 #include "cfe.h"
+#include "iodriver_base.h"
 
 /************************************************
  * Defines
@@ -38,6 +39,14 @@
  * Typedefs
  ************************************************/
 
+typedef struct
+{
+    void *BaseMem;
+    size_t MaxSize;
+    size_t CurrentSize;
+} BP_BundleBuffer_t;
+
+
 typedef CFE_RESOURCEID_BASE_TYPE BP_IoHandle_t;
 
 typedef struct
@@ -49,23 +58,13 @@ typedef struct
     uint32 BytesReceivedPerSecond;
 } BP_IOStats_t;
 
-/*
- * IO Parameter Structure
- */
-typedef struct
-{
-    CFE_SB_MsgId_t BundleOutMID;
-    CFE_SB_MsgId_t BundleInMID;
-    int            BundleInPipeDepth;
-} BP_IOConfig_t;
-
 /* IO Control Structure */
 typedef struct
 {
     BP_IoHandle_t    Handle;
-    BP_IOConfig_t    Config;
-    CFE_SB_PipeId_t  BundleInPipe;
-    CFE_SB_Buffer_t *BundleInMsgBuf;
+
+    CFE_PSP_IODriver_Location_t Location;
+
     int              SendInError;    /* bool */
     int              ReceiveInError; /* bool */
     uint32           SendNotReady;
@@ -90,7 +89,7 @@ int32 BP_IOInit(void);
  *
  * Returns a decriptor to an IO control block
  *----------------------------------------------*/
-int32 BP_IOOpen(const char *IOParm, BP_IoHandle_t *ioh);
+int32 BP_IOOpen(const char *IOParm, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *ioh);
 
 /*-----------------------------------------------
  * BP_IOClose
@@ -129,13 +128,13 @@ int32 BP_IOFlush(BP_IoHandle_t ioh);
  *
  * Read bundles to be processed
  *----------------------------------------------*/
-bool BP_IOReadBundle(BP_IoHandle_t ioh, void **InBuf, size_t *InBufSize);
+bool BP_IOReadBundle(BP_IoHandle_t ioh, BP_BundleBuffer_t *InBuf);
 
 /*-----------------------------------------------
  * BP_IOWriteBundle
  *
  * Write bundles
  *----------------------------------------------*/
-bool BP_IOWriteBundle(BP_IoHandle_t ioh, const void *OutBuf, size_t OutBufSize);
+bool BP_IOWriteBundle(BP_IoHandle_t ioh, const BP_BundleBuffer_t *OutBuf);
 
 #endif /* BP_IO_H */

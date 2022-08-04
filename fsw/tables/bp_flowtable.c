@@ -38,12 +38,13 @@
 ** Table file header
 */
 CFE_TBL_FileDef_t CFE_TBL_FileDef = {"BP_FlowTable", "BP.FlowTable", "Configuration of bundle flows",
-                                     "bp_flowtable.tbl", (sizeof(BP_FlowTblEntry_t) * BP_MAX_FLOWS)};
+                                     "bp_flowtable.tbl", (sizeof(BP_FlowTbl_t))};
 
 /*
 ** Table contents
 */
 BP_FlowTbl_t BP_FlowTable = {
+    .LocalNodeIpn = 12,
     .Flows = {{/* Flow 0 */
                .Name      = "HKT",
                .Enabled   = true,
@@ -56,8 +57,8 @@ BP_FlowTbl_t BP_FlowTable = {
                .Priority  = BP_COS_NORMAL,
                .MaxActive = 250,
                .Store     = BP_FLASH_STORE,
-               .PktTbl    = {{CFE_SB_MSGID_WRAP_VALUE(CF_SPACE_TO_GND_PDU_MID0), 1, 1, BP_APP_READ_LIMIT}},
-               .IOParm    = "OutMID=0x08BC&InMID=0x18C0&InDepth=32"},
+               .PktTbl    = {{CF_SPACE_TO_GND_PDU_MID0, 1, 1, BP_APP_READ_LIMIT}},
+               .RecvStreamId = CFE_SB_MSGID_RESERVED
               {/* Flow 1 */
                .Name      = "EVT",
                .Enabled   = false,
@@ -71,7 +72,7 @@ BP_FlowTbl_t BP_FlowTable = {
                .MaxActive = 0,
                .Store     = BP_FLASH_STORE,
                .PktTbl    = {{CFE_SB_MSGID_WRAP_VALUE(CFE_EVS_EVENT_MSG_MID), 1, 1, BP_APP_READ_LIMIT}},
-               .IOParm    = "OutMID=0x08BD&InMID=0x18C1&InDepth=32"}}};
+               .RecvStreamId = CFE_SB_MSGID_RESERVED}}};
 
 /************************/
 /*  End of File Comment */

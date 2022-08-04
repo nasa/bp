@@ -38,19 +38,26 @@
 #include "bp_global.h"
 #include "cfe_resourceid_basevalue.h"
 
+#include "iodriver_base.h"
+#include "iodriver_packet_io.h"
+
 /************************************************
  * Defines
  ************************************************/
 
 #define BP_IO_CFGSTR_MAX_SIZE    256
-#define BP_IO_BUNDLE_PIPE_PREFIX "BP_BPIPE_"
-#define BP_IO_OUT_BUNDLE_MID_VAR "OutMID"
-#define BP_IO_IN_BUNDLE_MID_VAR  "InMID"
-#define BP_IO_IN_PIPE_DEPTH_VAR  "InDepth"
+#define BP_IO_PSP_MODULE_NAME    "ModName"
+#define BP_IO_PSP_BUFFER_SIZE    "BufSize"
 
 /************************************************
  * Typedefs
  ************************************************/
+
+typedef struct
+{
+    char ModuleName[32];
+    size_t BundleBufferSize;
+} BP_PspIOConfig_t;
 
 /************************************************
  * File Data
@@ -123,105 +130,68 @@ bool BP_CheckIoSlotUsed(CFE_ResourceId_t CheckId)
 }
 
 /*-----------------------------------------------
- * parse_value
- *-----------------------------------------------*/
-static bool parse_value(const char *str, unsigned long *val, int base)
-{
-    if (str == NULL)
-        return false;
-    char *endptr;
-    errno                = 0;
-    unsigned long result = strtoul(str, &endptr, base);
-    if ((endptr == str) || ((result == ULONG_MAX || result == 0) && errno == ERANGE))
-    {
-        return false;
-    }
-    *val = result;
-    return true;
-}
-
-/*-----------------------------------------------
  * parse_parameters
  *-----------------------------------------------*/
-static bool parse_parameters(const char *cfgstr, BP_IOConfig_t *config)
+static bool parse_parameters(const char *cfgstr, BP_PspIOConfig_t *config)
 {
+    size_t len;
+    const char *NextPos;
+    const char *CurrPos;
+    char *ValPos;
+    char TempBuf[64];
+
     assert(config);
 
-    char cfgbuf[BP_IO_CFGSTR_MAX_SIZE];
-
     /* Initialize Parameter Structure */
-    config->BundleOutMID      = BP_INVALID_MID;
-    config->BundleInMID       = BP_INVALID_MID;
-    config->BundleInPipeDepth = 0;
+    config->ModuleName[0] = 0;
+    config->BundleBufferSize  = 0;
 
     /* Get Length and Copy to Buffer */
-    int len = strlen(cfgstr) + 1;
-    len     = len < BP_IO_CFGSTR_MAX_SIZE ? len : BP_IO_CFGSTR_MAX_SIZE - 1;
-    memset(cfgbuf, 0, BP_IO_CFGSTR_MAX_SIZE);
-    strncpy(cfgbuf, cfgstr, len);
-
-    /* Traverse Configuration Buffer */
-    int idx = 0;
-    while (idx < len)
+    NextPos = cfgstr;
+    while(NextPos != NULL && *NextPos != 0)
     {
-        /* Find Next Token */
-        const char *token = &cfgbuf[idx];
-        while (idx < len && cfgbuf[idx] != '\0' && cfgbuf[idx] != '=')
-            idx++;
-        cfgbuf[idx++] = '\0';
-
-        /* Find Next Value */
-        const char *value = &cfgbuf[idx];
-        while (idx < len && cfgbuf[idx] != '\0' && cfgbuf[idx] != '&')
-            idx++;
-        cfgbuf[idx++] = '\0';
-
-        /* Process Parameter */
-        if (strcmp(token, BP_IO_OUT_BUNDLE_MID_VAR) == 0)
+        CurrPos = NextPos;
+        NextPos = strchr(CurrPos, '&');
+        if (NextPos == NULL)
         {
-            /* Set Output Bundle MID */
-            unsigned long tmp;
-            if (parse_value(value, &tmp, 16))
-            {
-                config->BundleOutMID = CFE_SB_ValueToMsgId(tmp);
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (strcmp(token, BP_IO_IN_BUNDLE_MID_VAR) == 0)
-        {
-            /* Set Input Bundle MID */
-            unsigned long tmp;
-            if (parse_value(value, &tmp, 16))
-            {
-                config->BundleInMID = CFE_SB_ValueToMsgId(tmp);
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (strcmp(token, BP_IO_IN_PIPE_DEPTH_VAR) == 0)
-        {
-            /* Set Input Pipe Depth */
-            unsigned long tmp;
-            if (parse_value(value, &tmp, 16))
-            {
-                config->BundleInPipeDepth = (int)tmp;
-            }
-            else
-            {
-                return false;
-            }
+            len = strlen(CurrPos);
         }
         else
         {
-            /* Unrecognized Parameter */
+            len = NextPos - CurrPos;
+            ++NextPos;
+        }
+        if (len >= sizeof(TempBuf))
+        {
+            len = sizeof(TempBuf) - 1;
+        }
+        strncpy(TempBuf, CurrPos, len);
+        TempBuf[len] = 0;
+        ValPos = strchr(TempBuf, '=');
+        if (ValPos == NULL)
+        {
+            return false;
+        }
+
+        *ValPos = 0;
+        ++ValPos;
+
+        /* Process Parameter */
+        if (strcmp(TempBuf, BP_IO_PSP_MODULE_NAME) == 0)
+        {
+            strncpy(config->ModuleName, ValPos, sizeof(config->ModuleName)-1);
+            config->ModuleName[sizeof(config->ModuleName)-1] = 0;
+        }
+        else if (strcmp(TempBuf, BP_IO_PSP_BUFFER_SIZE) == 0)
+        {
+            config->BundleBufferSize = strtoul(ValPos, NULL, 0);
+        }
+        else
+        {
             return false;
         }
     }
+
 
     /* Return Success */
     return true;
@@ -242,12 +212,13 @@ int32 BP_IOInit(void)
 /*-----------------------------------------------
  * BP_IOOpen
  *-----------------------------------------------*/
-int32 BP_IOOpen(const char *CfgStr, BP_IoHandle_t *Descriptor)
+int32 BP_IOOpen(const char *CfgStr, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *Descriptor)
 {
+    int32 status;
     BP_IOCtrl_t     *IoPtr;
-    CFE_Status_t     cfe_status;
-    char             pipe_name[BP_PIPE_NAME_SIZE];
     CFE_ResourceId_t PendingIoHandle;
+    BP_PspIOConfig_t IOConfig;
+    uint32 PspModuleId;
 
     assert(Descriptor);
 
@@ -265,33 +236,29 @@ int32 BP_IOOpen(const char *CfgStr, BP_IoHandle_t *Descriptor)
     memset(IoPtr, 0, sizeof(*IoPtr));
 
     /* Parse Configuration String */
-    if (!parse_parameters(CfgStr, &IoPtr->Config))
+    if (!parse_parameters(CfgStr, &IOConfig))
     {
         CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to parse IO configuration string: %s",
                           CfgStr);
         return -1;
     }
 
-    /* Create Bundle Input Pipe */
-    snprintf(pipe_name, BP_PIPE_NAME_SIZE, "%s%lx", BP_IO_BUNDLE_PIPE_PREFIX,
-             CFE_ResourceId_ToInteger(PendingIoHandle));
-    cfe_status = CFE_SB_CreatePipe(&IoPtr->BundleInPipe, IoPtr->Config.BundleInPipeDepth, pipe_name);
-    if (cfe_status != CFE_SUCCESS)
+    status = CFE_PSP_IODriver_FindByName(IOConfig.ModuleName, &PspModuleId);
+    if (status != CFE_PSP_SUCCESS)
     {
-        CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR, "Failed (%X) to create bundle pipe %s",
-                          (int)cfe_status, pipe_name);
+        CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR,
+                        "BP IO: CFE_PSP_IODriver_FindByName(%s) status %x", IOConfig.ModuleName, (unsigned int)status);
         return -1;
     }
 
-    /* Subscribe to Bundle Packets on Software Bus */
-    cfe_status = CFE_SB_SubscribeEx(IoPtr->Config.BundleInMID, IoPtr->BundleInPipe, CFE_SB_DEFAULT_QOS,
-                                    IoPtr->Config.BundleInPipeDepth);
-    if (cfe_status != CFE_SUCCESS)
+    Buffer->BaseMem = malloc(IOConfig.BundleBufferSize);
+    if (Buffer->BaseMem == NULL)
     {
-        CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR, "Failed (%X) to subscribe to %04X on bundle pipe",
-                          (int)cfe_status, (unsigned int)CFE_SB_MsgIdToValue(IoPtr->Config.BundleInMID));
+        CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR,
+                        "BP IO: Cannot allocate buffer of size %zu", IOConfig.BundleBufferSize);
         return -1;
     }
+    Buffer->MaxSize = IOConfig.BundleBufferSize;
 
     /* Mark entry in use */
     IoPtr->Handle              = BP_IOHANDLE_C(PendingIoHandle);
@@ -317,12 +284,6 @@ int32 BP_IOClose(BP_IoHandle_t ioh)
     if (!BP_IoEntryIsMatch(IoPtr, ioh))
     {
         return -1;
-    }
-
-    if (CFE_RESOURCEID_TEST_DEFINED(IoPtr->BundleInPipe))
-    {
-        CFE_SB_DeletePipe(IoPtr->BundleInPipe);
-        IoPtr->BundleInPipe = BP_INVALID_PIPE;
     }
 
     IoPtr->Handle = BP_IO_INVALID_DESCRIPTOR;
@@ -405,71 +366,28 @@ int32 BP_IOFlush(BP_IoHandle_t ioh)
 /*-----------------------------------------------
  * BP_IOReadBundle
  *-----------------------------------------------*/
-bool BP_IOReadBundle(BP_IoHandle_t ioh, void **buf, size_t *bufsize)
+bool BP_IOReadBundle(BP_IoHandle_t ioh, BP_BundleBuffer_t *InBuf)
 {
-    CFE_Status_t   SbStatus;
-    CFE_MSG_Type_t MsgType;
-    size_t         MsgSize;
-    unsigned char *DataPtr;
     BP_IOCtrl_t   *IoPtr;
+    int32 PspStatus;
+    CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
 
     IoPtr = BP_LocateIoEntryByHandle(ioh);
     if (!BP_IoEntryIsMatch(IoPtr, ioh))
     {
-        return -1;
+        return false;
     }
 
-    assert(buf);
-    assert(bufsize);
+    assert(InBuf != NULL);
+    assert(InBuf->MaxSize > 0);
 
-    /* Read bundle from link */
-    SbStatus = CFE_SB_ReceiveBuffer(&IoPtr->BundleInMsgBuf, IoPtr->BundleInPipe, CFE_SB_POLL);
-    if (SbStatus == CFE_SUCCESS)
-    {
-        SbStatus = CFE_MSG_GetType(&IoPtr->BundleInMsgBuf->Msg, &MsgType);
+    RdBuf.BufferSize = InBuf->MaxSize;
+    RdBuf.BufferMem = InBuf->BaseMem;
 
-        /* should confirm that the message actually has a CMD header */
-        if (SbStatus == CFE_SUCCESS && MsgType != CFE_MSG_Type_Cmd)
-        {
-            SbStatus = CFE_SB_WRONG_MSG_TYPE;
-        }
-    }
-    if (SbStatus == CFE_SUCCESS)
-    {
-        SbStatus = CFE_MSG_GetSize(&IoPtr->BundleInMsgBuf->Msg, &MsgSize);
-
-        /* should confirm that the message size is nonzero (after header) */
-        if (SbStatus == CFE_SUCCESS && MsgSize <= sizeof(CFE_MSG_CommandHeader_t))
-        {
-            SbStatus = CFE_STATUS_WRONG_MSG_LENGTH;
-        }
-    }
-
-    if (SbStatus == CFE_SUCCESS)
-    {
-        /* Adjust size/ptr for removal of command header */
-        DataPtr = (unsigned char *)IoPtr->BundleInMsgBuf;
-        DataPtr += sizeof(CFE_MSG_CommandHeader_t);
-        MsgSize -= sizeof(CFE_MSG_CommandHeader_t);
-
-        /* Export to caller */
-        *buf     = DataPtr;
-        *bufsize = MsgSize;
-
-        IoPtr->BytesReceived += MsgSize;
-    }
-    else if (SbStatus != CFE_SB_NO_MESSAGE)
-    {
-        if (!IoPtr->ReceiveInError)
-        {
-            CFE_EVS_SendEvent(BP_IO_RECEIVE_ERR_EID, CFE_EVS_EventType_ERROR, "Failed (%X) to receive bundle",
-                              (int)SbStatus);
-            IoPtr->ReceiveInError = true;
-        }
-    }
+    PspStatus = CFE_PSP_IODriver_Command(&IoPtr->Location, CFE_PSP_IODRIVER_PACKET_IO_READ, CFE_PSP_IODRIVER_VPARG(&RdBuf));
 
     /* Return Status */
-    return (SbStatus == CFE_SUCCESS);
+    return (PspStatus == CFE_PSP_SUCCESS);
 }
 
 /*-----------------------------------------------
@@ -479,65 +397,26 @@ bool BP_IOReadBundle(BP_IoHandle_t ioh, void **buf, size_t *bufsize)
  *       an idle encap packet is used to fill out
  *       the frame
  *-----------------------------------------------*/
-bool BP_IOWriteBundle(BP_IoHandle_t ioh, const void *buf, size_t bufsize)
+bool BP_IOWriteBundle(BP_IoHandle_t ioh, const BP_BundleBuffer_t *OutBuf)
 {
-    CFE_SB_Buffer_t *MsgBuf;
-    unsigned char   *DataPtr;
-    size_t           ActualSize;
-    CFE_Status_t     SbStatus;
+    int32   PspStatus;
     BP_IOCtrl_t     *IoPtr;
+    CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
 
     IoPtr = BP_LocateIoEntryByHandle(ioh);
     if (!BP_IoEntryIsMatch(IoPtr, ioh))
     {
-        return -1;
+        return false;
     }
 
-    SbStatus = CFE_SB_BUFFER_INVALID;
+    assert(OutBuf != NULL);
+    assert(OutBuf->CurrentSize > 0);
 
-    if (buf && bufsize > 0)
-    {
-        /* Get a buffer, accounting for the extra size of TLM header */
-        ActualSize = bufsize + sizeof(CFE_MSG_TelemetryHeader_t);
-        MsgBuf     = CFE_SB_AllocateMessageBuffer(ActualSize);
-        if (MsgBuf == NULL)
-        {
-            SbStatus = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-        }
-        else
-        {
-            /*
-             * Init the message, but note this does not use the full size as it would (unnecessarily)
-             * memset the whole thing to 0 - data is about to be memcpy'ed into it immediately after.
-             */
-            CFE_MSG_Init(&MsgBuf->Msg, IoPtr->Config.BundleOutMID, sizeof(CFE_MSG_TelemetryHeader_t));
-            CFE_SB_TimeStampMsg(&MsgBuf->Msg);
+    WrBuf.BufferMem = OutBuf->BaseMem;
+    WrBuf.OutputSize = OutBuf->CurrentSize;
 
-            /* Copy payload in and set correct size */
-            DataPtr = (unsigned char *)MsgBuf + sizeof(CFE_MSG_TelemetryHeader_t);
-            memcpy(DataPtr, buf, bufsize);
-            CFE_MSG_SetSize(&MsgBuf->Msg, ActualSize);
-
-            /* Send Bundle */
-            SbStatus = CFE_SB_TransmitBuffer(MsgBuf, true);
-            if (SbStatus == CFE_SUCCESS)
-            {
-                IoPtr->BytesSent += bufsize;
-            }
-            else
-            {
-                /* Be sure to release the buffer because SB did not take ownership */
-                CFE_SB_ReleaseMessageBuffer(MsgBuf);
-            }
-        }
-
-        if (SbStatus != CFE_SUCCESS && !IoPtr->SendInError)
-        {
-            CFE_EVS_SendEvent(BP_IO_SEND_ERR_EID, CFE_EVS_EventType_ERROR, "Failed (%X) to send bundle", (int)SbStatus);
-            IoPtr->SendInError = true;
-        }
-    }
+    PspStatus = CFE_PSP_IODriver_Command(&IoPtr->Location, CFE_PSP_IODRIVER_PACKET_IO_WRITE, CFE_PSP_IODRIVER_VPARG(&WrBuf));
 
     /* Return Status */
-    return (SbStatus == CFE_SUCCESS);
+    return (PspStatus == CFE_PSP_SUCCESS);
 }

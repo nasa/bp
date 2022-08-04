@@ -63,4 +63,9 @@
 
 #define BP_BPLIB_INFO_EID 40
 
+/* placeholder for CLA/Bundle flow events */
+#define BP_CLA_INIT_INF_EID 50
+#define BP_CLA_ERR_EID      51
+#define BP_CLA_INFO_EID     52
+
 #endif /* BP_EVENTS_H */

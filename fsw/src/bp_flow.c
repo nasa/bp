@@ -29,6 +29,7 @@
 #include "bp_io.h"
 #include "bp_cfg.h"
 #include "bp_global.h"
+#include "bplib_routing.h"
 
 #include "cfe_resourceid_basevalue.h"
 
@@ -347,63 +348,15 @@ static int32 BP_LoadFlowConfigTable(CFE_TBL_Handle_t handle, const char *filenam
 }
 
 /*-----------------------------------------------
- * process_incoming_bundles
- *-----------------------------------------------*/
-static int process_incoming_bundles(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int max_cycles)
-{
-    int cycles = 0;
-    int lib_status;
-
-    while (cycles < max_cycles)
-    {
-        /* Read next bundle */
-        if (flow->CurrentBundleInSize == 0)
-        {
-            if (!BP_IOReadBundle(flow->IOD, &flow->CurrentBundleInPtr, &flow->CurrentBundleInSize))
-            {
-                break;
-            }
-        }
-
-        /* Process next bundle */
-        if (flow->CurrentBundleInSize != 0)
-        {
-            /* Process bundle */
-            lib_status = bplib_process(flow->BPC, flow->CurrentBundleInPtr, flow->CurrentBundleInSize, BP_CHECK, flags);
-            if (lib_status == BP_SUCCESS)
-            {
-                flow->CurrentBundleInSize = 0;
-                cycles++;
-            }
-            else if (lib_status == BP_TIMEOUT)
-            {
-                break;
-            }
-            else
-            {
-                /* bundle channel statistics will show why it wasn't processed */
-                flow->CurrentBundleInSize = 0;
-                break;
-            }
-        }
-    }
-
-    /* Return */
-    return cycles;
-}
-
-/*-----------------------------------------------
  * store_incoming_data
  *-----------------------------------------------*/
 static int store_incoming_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int max_cycles)
 {
-    int            cycles     = 0;
-    bool           read_data  = true;
-    bool           store_data = false;
-    CFE_Status_t   Status;
-    CFE_SB_MsgId_t MsgId;
+    int          cycles = 0;
+    int          lib_status;
+    CFE_Status_t Status;
 
-    while (read_data && (cycles < max_cycles))
+    while (cycles < max_cycles)
     {
         /* Read Next Data */
         if (flow->CurrentChunkInSize == 0)
@@ -412,49 +365,15 @@ static int store_incoming_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int ma
             Status                  = CFE_SB_ReceiveBuffer(&flow->CurrentSbMsgInPtr, flow->DataPipe, CFE_SB_POLL);
             if (Status == CFE_SUCCESS)
             {
+                Status = CFE_MSG_GetMsgId(&flow->CurrentSbMsgInPtr->Msg, &flow->CurrentSbMsgInId);
+            }
+            if (Status == CFE_SUCCESS)
+            {
                 Status = CFE_MSG_GetSize(&flow->CurrentSbMsgInPtr->Msg, &flow->CurrentChunkInSize);
             }
-            if (Status == CFE_SUCCESS)
+
+            if (Status != CFE_SUCCESS)
             {
-                Status = CFE_MSG_GetMsgId(&flow->CurrentSbMsgInPtr->Msg, &MsgId);
-            }
-
-            if (Status == CFE_SUCCESS)
-            {
-                if (flow->CurrentChunkInSize > BP_MAX_PACKET_SIZE)
-                {
-                    /* Msg is too big to be accepted into BP */
-                    flow->DataInDropped++;
-                    CFE_EVS_SendEvent(BP_LIB_STORE_ERR_EID, CFE_EVS_EventType_ERROR,
-                                      "Flow %s - attempted to store packet that was too large: %lu", flow->Config.Name,
-                                      (unsigned long)flow->CurrentChunkInSize);
-
-                    Status                   = CFE_STATUS_WRONG_MSG_LENGTH;
-                    flow->CurrentChunkInSize = 0;
-                }
-                else
-                {
-                    /* Assign Buffer */
-                    flow->CurrentChunkInPtr = (const unsigned char *)flow->CurrentSbMsgInPtr;
-
-                    /* Strip Header */
-                    if (BP_STRIP_HDR_BYTES)
-                    {
-                        flow->CurrentChunkInSize -= sizeof(CFE_MSG_TelemetryHeader_t);
-                        flow->CurrentChunkInPtr += sizeof(CFE_MSG_TelemetryHeader_t);
-                        store_data = true; /* when stripping header, force one payload per bundle */
-                    }
-
-                    /* Throttle Incoming Data */
-                    accumulate_throttling(MsgId);
-                }
-            }
-            else
-            {
-                /* Stop Reading Data and Store Current Data In */
-                read_data  = false;
-                store_data = true;
-
                 /* Generate Event Message if Software Bus Failure */
                 if (Status != CFE_SB_NO_MESSAGE)
                 {
@@ -462,101 +381,48 @@ static int store_incoming_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int ma
                     CFE_EVS_SendEvent(BP_IO_RECEIVE_ERR_EID, CFE_EVS_EventType_ERROR,
                                       "Failed to read data. Status = %x", (unsigned int)Status);
                 }
-            }
-        }
-
-        /* Buffer Data */
-        if (flow->CurrentChunkInSize != 0)
-        {
-            if ((flow->CurrentChunkInSize + flow->CurrentDataAccumInSize) <= BP_MAX_BUNDLE_SIZE)
-            {
-                /* Copy Current Packet In into Current Data In */
-                memcpy(&flow->CurrentDataAccumInBuf[flow->CurrentDataAccumInSize], flow->CurrentChunkInPtr,
-                       flow->CurrentChunkInSize);
-                flow->CurrentDataAccumInSize += flow->CurrentChunkInSize;
                 flow->CurrentChunkInSize = 0;
-                cycles++; /* count cycle */
+                break;
             }
-            else
+
+            if (flow->CurrentChunkInSize > BP_MAX_PACKET_SIZE)
             {
-                /* Store Current Data In as Bundle (makes room for current packet) */
-                store_data = true;
+                /* Msg is too big to be accepted into BP */
+                flow->DataInDropped++;
+                CFE_EVS_SendEvent(BP_LIB_STORE_ERR_EID, CFE_EVS_EventType_ERROR,
+                                  "Flow %s - attempted to store packet that was too large: %lu", flow->Config.Name,
+                                  (unsigned long)flow->CurrentChunkInSize);
+
+                Status                   = CFE_STATUS_WRONG_MSG_LENGTH;
+                flow->CurrentChunkInSize = 0;
             }
+
+            /* Assign Buffer */
+            flow->CurrentChunkInSize = CFE_SB_GetUserDataLength(&flow->CurrentSbMsgInPtr->Msg);
+            flow->CurrentChunkInPtr  = CFE_SB_GetUserData(&flow->CurrentSbMsgInPtr->Msg);
+
+            /* Throttle Incoming Data */
+            accumulate_throttling(flow->CurrentSbMsgInId);
         }
 
         /* Store Data */
-        if (store_data && (flow->CurrentDataAccumInSize > 0))
+        if (flow->CurrentChunkInSize > 0)
         {
-            int lib_status =
-                bplib_store(flow->BPC, flow->CurrentDataAccumInBuf, flow->CurrentDataAccumInSize, BP_CHECK, flags);
-            if (lib_status == BP_SUCCESS)
+            lib_status = bplib_send(flow->BPS, flow->CurrentChunkInPtr, flow->CurrentChunkInSize, 0);
+            if (lib_status == BP_TIMEOUT)
             {
-                /* Successfully Stored Data */
-                flow->CurrentDataAccumInSize = 0;
-                store_data                   = false;
-            }
-            else
-            {
-                /* Stop Reading Data */
-                read_data = false;
-
-                /* Handle Failure to Store Data */
-                if (lib_status != BP_TIMEOUT)
-                {
-                    flow->CurrentDataAccumInSize = 0;
-                    flow->DataInDropped++;
-                    CFE_EVS_SendEvent(BP_LIB_STORE_ERR_EID, CFE_EVS_EventType_ERROR,
-                                      "Flow %s - Failed (%d) to store data [%08X]", flow->Config.Name, (int)lib_status,
-                                      (unsigned int)*flags);
-                }
-            }
-        }
-    }
-
-    /* Return */
-    return cycles;
-}
-
-/*-----------------------------------------------
- * load_outgoing_bundles
- *-----------------------------------------------*/
-static int load_outgoing_bundles(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int max_cycles)
-{
-    int cycles = 0;
-
-    while (cycles < max_cycles)
-    {
-        /* Load next bundle */
-        if (flow->CurrentBundleOutSize == 0)
-        {
-            int status =
-                bplib_load(flow->BPC, &flow->CurrentBundleOutPtr, &flow->CurrentBundleOutSize, BP_CHECK, flags);
-            if (status == BP_TIMEOUT)
-            {
+                /* temporary error; silently retry it next time */
                 break;
             }
-            else if (status != BP_SUCCESS)
+
+            flow->CurrentChunkInSize = 0;
+
+            if (lib_status != BP_SUCCESS)
             {
-                CFE_EVS_SendEvent(BP_LIB_LOAD_ERR_EID, CFE_EVS_EventType_ERROR,
-                                  "Flow %s - Failed (%d) to load bundle [%08X]", flow->Config.Name, status,
+                flow->DataInDropped++;
+                CFE_EVS_SendEvent(BP_LIB_STORE_ERR_EID, CFE_EVS_EventType_ERROR,
+                                  "Flow %s - Failed (%d) to store data [%08X]", flow->Config.Name, (int)lib_status,
                                   (unsigned int)*flags);
-                break;
-            }
-        }
-
-        /* Write Bundle */
-        if (flow->CurrentBundleOutSize > 0)
-        {
-            if (BP_IOWriteBundle(flow->IOD, flow->CurrentBundleOutPtr, flow->CurrentBundleOutSize))
-            {
-                /* Acknowledge bundle */
-                bplib_ackbundle(flow->BPC, flow->CurrentBundleOutPtr);
-                flow->CurrentBundleOutSize = 0;
-                cycles++; /*count cycle */
-            }
-            else
-            {
-                /* Unable to Send */
                 break;
             }
         }
@@ -571,65 +437,45 @@ static int load_outgoing_bundles(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int 
  *-----------------------------------------------*/
 static int accept_outgoing_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int max_cycles)
 {
-    int          cycles = 0;
-    size_t       OutMsgLen;
-    CFE_Status_t Status;
+    int                         cycles = 0;
+    int                         lib_status;
+    CFE_Status_t                Status;
+    static const CFE_MSG_Size_t MSG_MAX_SIZE = 1024;
 
     while (cycles < max_cycles)
     {
         /* Accept next data */
-        if (flow->CurrentChunkOutSize == 0)
+        if (flow->CurrentSbMsgOutPtr == NULL)
         {
-            int status = bplib_accept(flow->BPC, (void **)&flow->CurrentChunkOutPtr, &flow->CurrentChunkOutSize,
-                                      BP_CHECK, flags);
-            if (status == BP_TIMEOUT)
+            flow->CurrentSbMsgOutPtr = CFE_SB_AllocateMessageBuffer(MSG_MAX_SIZE);
+            if (flow->CurrentSbMsgOutPtr != NULL)
             {
-                break;
-            }
-            else if (status != BP_SUCCESS)
-            {
-                CFE_EVS_SendEvent(BP_LIB_ACCEPT_ERR_EID, CFE_EVS_EventType_ERROR,
-                                  "Flow %s - Failed (%d) to accept data [%08X]", flow->Config.Name, status,
-                                  (unsigned int)*flags);
-                break;
+                CFE_MSG_SetMsgId(&flow->CurrentSbMsgOutPtr->Msg, flow->Config.RecvStreamId);
+                CFE_MSG_SetSize(&flow->CurrentSbMsgOutPtr->Msg, MSG_MAX_SIZE);
             }
         }
 
-        /* Write next data */
-        if (flow->CurrentChunkOutSize != 0)
+        if (flow->CurrentSbMsgOutPtr != NULL)
         {
-            flow->CurrentSbMsgOutPtr = CFE_SB_AllocateMessageBuffer(flow->CurrentChunkOutSize);
-            if (flow->CurrentSbMsgOutPtr != NULL)
+            flow->CurrentChunkOutPtr  = CFE_SB_GetUserData(&flow->CurrentSbMsgOutPtr->Msg);
+            flow->CurrentChunkOutSize = CFE_SB_GetUserDataLength(&flow->CurrentSbMsgOutPtr->Msg);
+
+            lib_status = bplib_recv(flow->BPS, flow->CurrentChunkOutPtr, &flow->CurrentChunkOutSize, BP_CHECK);
+            if (lib_status == BP_TIMEOUT)
             {
-                memcpy(flow->CurrentSbMsgOutPtr, flow->CurrentChunkOutPtr, flow->CurrentChunkOutSize);
-                Status = CFE_SUCCESS;
+                break;
             }
-            else
+            else if (lib_status != BP_SUCCESS)
             {
-                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+                CFE_EVS_SendEvent(BP_LIB_ACCEPT_ERR_EID, CFE_EVS_EventType_ERROR,
+                                  "Flow %s - Failed (%d) to accept data", flow->Config.Name, lib_status);
+                break;
             }
 
-            if (Status == CFE_SUCCESS)
-            {
-                /*
-                 * Confirm that the conversion back to a SB message was valid.  Currently the only way to
-                 * test this is by checking that the embedded size within the message matches the chunk size.
-                 */
-                Status = CFE_MSG_GetSize(&flow->CurrentSbMsgOutPtr->Msg, &OutMsgLen);
-                if (Status == CFE_SUCCESS && OutMsgLen != flow->CurrentChunkOutSize)
-                {
-                    CFE_EVS_SendEvent(BP_IO_RECEIVE_ERR_EID, CFE_EVS_EventType_ERROR,
-                                      "Data size does not match header size: %lu != %lu", (unsigned long)OutMsgLen,
-                                      (unsigned long)flow->CurrentChunkOutSize);
+            /* Update the header to the actual size */
+            CFE_SB_SetUserDataLength(&flow->CurrentSbMsgOutPtr->Msg, flow->CurrentChunkOutSize);
 
-                    Status = CFE_STATUS_WRONG_MSG_LENGTH;
-                }
-            }
-
-            if (Status == CFE_SUCCESS)
-            {
-                Status = CFE_SB_TransmitBuffer(flow->CurrentSbMsgOutPtr, false);
-            }
+            Status = CFE_SB_TransmitBuffer(flow->CurrentSbMsgOutPtr, false);
 
             /*
              * Wrap-up: If anything did not work, increment drop counter.
@@ -653,15 +499,12 @@ static int accept_outgoing_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int m
                 }
             }
 
-            /* Always forget the pointer - it should have either been transmitted (and thereby no longer owned) or
-             * released */
-            flow->CurrentSbMsgOutPtr = NULL;
-
-            /* Always acknowledge payload */
-            bplib_ackpayload(flow->BPC, flow->CurrentChunkOutPtr);
+            flow->CurrentSbMsgOutPtr  = NULL;
+            flow->CurrentChunkOutPtr  = NULL;
             flow->CurrentChunkOutSize = 0;
-            cycles++;
         }
+
+        cycles++;
     }
 
     /* Return */
@@ -678,12 +521,6 @@ static int accept_outgoing_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int m
 int32 BP_FlowInit(const char *AppName)
 {
     int32 cfe_status;
-
-    /* Initialize BP Library */
-    if (bplib_init() != BP_SUCCESS)
-    {
-        return BP_LIB_INIT_ERR_EID;
-    }
 
     /* Initialize Throttling */
     initialize_throttling();
@@ -718,12 +555,42 @@ int32 BP_FlowLoad(const char *flow_table_filename)
     BP_FlowCtrlEntry_t *FlowPtr;
     CFE_ResourceId_t    PendingFlowHandle;
     CFE_TBL_Info_t      tbl_info;
+    bp_ipn_addr_t       storage_addr;
     int                 flow_idx, num_flows = 0;
 
     /* Load Flow Table */
     cfe_status = BP_LoadFlowConfigTable(BP_GlobalData.FlowTableHandle, flow_table_filename, &StagedConfig);
     if (cfe_status != CFE_SUCCESS)
         return cfe_status;
+
+    BP_GlobalData.LocalNodeNumber = StagedConfig->LocalNodeIpn;
+    BP_GlobalData.BaseIntfId      = bplib_create_node_intf(BP_GlobalData.RouteTbl, BP_GlobalData.LocalNodeNumber);
+    if (!bp_handle_is_valid(BP_GlobalData.BaseIntfId))
+    {
+        fprintf(stderr, "%s(): bplib_create_node_intf failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+    if (bplib_route_intf_set_flags(BP_GlobalData.RouteTbl, BP_GlobalData.BaseIntfId,
+                                   BPLIB_INTF_STATE_ADMIN_UP | BPLIB_INTF_STATE_OPER_UP) < 0)
+    {
+        fprintf(stderr, "%s(): bplib_route_intf_set_flags failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    /* this currently assumes service number 10 for storage, should be configurable */
+    storage_addr            = (bp_ipn_addr_t) {BP_GlobalData.LocalNodeNumber, 10};
+    BP_GlobalData.StorageId = bplib_create_file_storage(BP_GlobalData.RouteTbl, &storage_addr);
+    if (!bp_handle_is_valid(BP_GlobalData.StorageId))
+    {
+        fprintf(stderr, "%s(): bplib_create_file_storage failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+    if (bplib_route_intf_set_flags(BP_GlobalData.RouteTbl, BP_GlobalData.StorageId,
+                                   BPLIB_INTF_STATE_ADMIN_UP | BPLIB_INTF_STATE_OPER_UP) < 0)
+    {
+        fprintf(stderr, "%s(): bplib_route_intf_set_flags storage failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
 
     /* Remove Any Open Throttle Pipes */
     for (flow_idx = 0; flow_idx < BP_MAX_FLOWS; flow_idx++)
@@ -821,11 +688,7 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
     char                pipe_name[BP_PIPE_NAME_SIZE];
     int32               status = CFE_SUCCESS;
     BP_FlowCtrlEntry_t *FlowPtr;
-    bp_route_t          route;
-    bp_attr_t           attributes;
-    const bp_store_t   *store_p;
-
-    store_p = NULL;
+    bp_ipn_addr_t       ipn_addr;
 
     FlowPtr = BP_LocateFlowEntryByHandle(fh);
     if (!BP_FlowEntryIsMatch(FlowPtr, fh))
@@ -839,63 +702,38 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
     }
 
     /* Initialize Buffers */
-    FlowPtr->CurrentDataAccumInSize = 0;
-    FlowPtr->CurrentSbMsgInPtr      = NULL;
-    FlowPtr->CurrentSbMsgOutPtr     = NULL;
-    FlowPtr->CurrentChunkInPtr      = NULL;
-    FlowPtr->CurrentChunkInSize     = 0;
-    FlowPtr->CurrentChunkOutPtr     = NULL;
-    FlowPtr->CurrentChunkOutSize    = 0;
-    FlowPtr->CurrentBundleOutPtr    = NULL;
-    FlowPtr->CurrentBundleOutSize   = 0;
-    FlowPtr->CurrentBundleInPtr     = NULL;
-    FlowPtr->CurrentBundleInSize    = 0;
+    FlowPtr->CurrentSbMsgInId   = CFE_SB_INVALID_MSG_ID;
+    FlowPtr->CurrentSbMsgInPtr  = NULL;
+    FlowPtr->CurrentSbMsgOutPtr = NULL;
+    FlowPtr->CurrentChunkInPtr  = NULL;
+    FlowPtr->CurrentChunkInSize = 0;
+    FlowPtr->DataInDropped      = 0;
+    FlowPtr->DataOutDropped     = 0;
+    FlowPtr->LibFlags           = 0;
 
-    /* Locate storage service to use */
-    FlowPtr->StorageHandle = BP_StorageService_FindByName(FlowPtr->Config.Store);
-    store_p                = BP_StorageService_Get(FlowPtr->StorageHandle);
-
-    /* Open BPLIB channel if a valid storage service exists */
-    if (store_p)
-    {
-        /* Setup Route */
-        route = (bp_route_t) {BP_SRC_NODE + CFE_PSP_GetProcessorId() - 1,
-                              FlowPtr->Config.SrcServ,
-                              FlowPtr->Config.DstNode,
-                              FlowPtr->Config.DstServ,
-                              0,
-                              0};
-
-        /* Initialize Attributes */
-        bplib_attrinit(&attributes);
-        attributes.lifetime             = FlowPtr->Config.Lifetime;
-        attributes.timeout              = FlowPtr->Config.Timeout;
-        attributes.request_custody      = attributes.timeout == 0 ? false : true;
-        attributes.active_table_size    = FlowPtr->Config.MaxActive;
-        attributes.max_fills_per_dacs   = 1;
-        attributes.max_gaps_per_dacs    = 1;
-        attributes.max_length           = BP_MAX_BUNDLE_SIZE;
-        attributes.cid_reuse            = true;
-        attributes.retransmit_order     = BP_RETX_OLDEST_BUNDLE;
-        attributes.persistent_storage   = true;
-        attributes.storage_service_parm = NULL;
-
-        /* Open Channel */
-        FlowPtr->BPC = bplib_open(route, *store_p, attributes);
-    }
-
-    /* Check status of opening library channel */
-    if (store_p == NULL)
-    {
-        CFE_EVS_SendEvent(BP_LIB_INVALID_STORE_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Could not find storage store_index %s", FlowPtr->Config.Store);
-        status = BP_LIB_INVALID_STORE_ERR_EID;
-    }
-    else if (FlowPtr->BPC == NULL)
+    /* Create bplib application data socket */
+    FlowPtr->BPS = bplib_create_socket(BP_GlobalData.RouteTbl);
+    if (FlowPtr->BPS == NULL)
     {
         CFE_EVS_SendEvent(BP_LIB_OPEN_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to open library channel for flow %s",
                           FlowPtr->Config.Name);
-        status = BP_LIB_OPEN_ERR_EID;
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    ipn_addr = (bp_ipn_addr_t) {BP_GlobalData.LocalNodeNumber, FlowPtr->Config.SrcServ};
+    if (bplib_bind_socket(FlowPtr->BPS, &ipn_addr) < 0)
+    {
+        fprintf(stderr, "Failed bplib_bind_socket()... exiting\n");
+        bplib_close_socket(FlowPtr->BPS);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    ipn_addr = (bp_ipn_addr_t) {FlowPtr->Config.DstNode, FlowPtr->Config.DstServ};
+    if (bplib_connect_socket(FlowPtr->BPS, &ipn_addr) < 0)
+    {
+        fprintf(stderr, "Failed bplib_connect_socket()... exiting\n");
+        bplib_close_socket(FlowPtr->BPS);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
     /* Create data pipe */
@@ -944,26 +782,20 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
                 /* Mark Flow as Unhealthy */
                 FlowPtr->Healthy = false;
             }
+            else
+            {
+                CFE_ES_WriteToSysLog("BP_FLOW: Subscribed to %08lx\n",
+                                     (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
+            }
         }
     }
 
     /* Open an IO channel */
     if (status == CFE_SUCCESS)
     {
-        status = BP_IOOpen(FlowPtr->Config.IOParm, &FlowPtr->IOD);
-        if (status != CFE_SUCCESS)
-        {
-            FlowPtr->IOD = BP_IO_INVALID_DESCRIPTOR;
-            CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR,
-                              "Failed (%d) to open IO channel initialized from %s", (int)status,
-                              FlowPtr->Config.IOParm);
-        }
-        else
-        {
-            /* Success */
-            FlowPtr->Active  = false; /* Start Out Paused */
-            FlowPtr->Enabled = true;
-        }
+        /* Success */
+        FlowPtr->Active  = false; /* Start Out Paused */
+        FlowPtr->Enabled = true;
     }
 
     /* Clean Up Failed Enable */
@@ -971,13 +803,6 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
     {
         /* Mark Flow as Unhealthy */
         FlowPtr->Healthy = false;
-
-        /* Close IO channel */
-        if (CFE_RESOURCEID_TEST_DEFINED(FlowPtr->IOD))
-        {
-            BP_IOClose(FlowPtr->IOD);
-            FlowPtr->IOD = BP_IO_INVALID_DESCRIPTOR;
-        }
 
         /* Delete data pipe
          *  if the pipe is a throttle pipe, then this is a case where it will get deleted */
@@ -988,10 +813,10 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
         }
 
         /* Close BPLIB channel */
-        if (FlowPtr->BPC != NULL)
+        if (FlowPtr->BPS != NULL)
         {
-            bplib_close(FlowPtr->BPC);
-            FlowPtr->BPC = NULL;
+            bplib_close_socket(FlowPtr->BPS);
+            FlowPtr->BPS = NULL;
         }
     }
 
@@ -1020,13 +845,6 @@ int32 BP_FlowDisable(BP_FlowHandle_t fh)
         FlowPtr->Enabled = false;
         FlowPtr->Active  = false;
         FlowPtr->Healthy = true;
-
-        /* Close IO Channel */
-        if (CFE_RESOURCEID_TEST_DEFINED(FlowPtr->IOD))
-        {
-            BP_IOClose(FlowPtr->IOD);
-            FlowPtr->IOD = BP_IO_INVALID_DESCRIPTOR;
-        }
 
         /* Delete Pipe */
         throttle_pipe = false;
@@ -1070,18 +888,10 @@ int32 BP_FlowDisable(BP_FlowHandle_t fh)
         }
 
         /* Close BPLIB Channel */
-        if (FlowPtr->BPC != NULL)
+        if (FlowPtr->BPS != NULL)
         {
-            /* Flush Channel - this is necessary given that current storage services
-             *  are unable to recover bundles that are active at the time the channel
-             *  is closed; future enhancements to bplib may support the release of
-             *  resources associated with active bundles while still maintaining them
-             *  for future recovery */
-            bplib_flush(FlowPtr->BPC);
-
-            /* Close Channel */
-            bplib_close(FlowPtr->BPC);
-            FlowPtr->BPC = NULL;
+            bplib_close_socket(FlowPtr->BPS);
+            FlowPtr->BPS = NULL;
         }
     }
 
@@ -1093,7 +903,6 @@ int32 BP_FlowDisable(BP_FlowHandle_t fh)
  *----------------------------------------------*/
 int32 BP_FlowSetTimeout(BP_FlowHandle_t fh, int timeout)
 {
-    int                 optval = timeout;
     BP_FlowCtrlEntry_t *FlowPtr;
 
     FlowPtr = BP_LocateFlowEntryByHandle(fh);
@@ -1113,14 +922,6 @@ int32 BP_FlowSetTimeout(BP_FlowHandle_t fh, int timeout)
     {
         CFE_EVS_SendEvent(BP_PARM_ERR_EID, CFE_EVS_EventType_ERROR,
                           "Cannot set non-zero timeout on flow %s that does not request custody", BP_FlowGetName(fh));
-        return BP_PARM_ERR_EID;
-    }
-
-    /* Set Timeout Configuration */
-    if (bplib_config(FlowPtr->BPC, BP_OPT_MODE_WRITE, BP_OPT_TIMEOUT, &optval) != BP_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BP_PARM_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Failed to configure bplib timeout of %d on flow %s", timeout, BP_FlowGetName(fh));
         return BP_PARM_ERR_EID;
     }
 
@@ -1162,14 +963,6 @@ int32 BP_FlowSetPriority(BP_FlowHandle_t fh, int priority)
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR, "Cannot configure disabled flow: %s",
                           BP_FlowGetName(fh));
         return BP_FLOW_DISABLED_ERR_EID;
-    }
-
-    /* Set Priority Configuration */
-    if (bplib_config(FlowPtr->BPC, BP_OPT_MODE_WRITE, BP_OPT_CLASS_OF_SERVICE, &optval) != BP_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BP_PARM_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Failed to configure bplib priority of %d on flow %s", priority, BP_FlowGetName(fh));
-        return BP_PARM_ERR_EID;
     }
 
     FlowPtr->COS.Priority = optval;
@@ -1214,8 +1007,6 @@ bool BP_FlowIsEnabled(BP_FlowHandle_t fh)
  *-----------------------------------------------*/
 int32 BP_FlowGetStats(BP_FlowHandle_t fh, BP_FlowStats_t *stat)
 {
-    int                 optval;
-    bp_stats_t          tempstats;
     BP_FlowCtrlEntry_t *FlowPtr;
 
     FlowPtr = BP_LocateFlowEntryByHandle(fh);
@@ -1254,28 +1045,6 @@ int32 BP_FlowGetStats(BP_FlowHandle_t fh, BP_FlowStats_t *stat)
 
             /* Get IO Module Status */
             stat->Active = FlowPtr->Active;
-            BP_IOGetStats(FlowPtr->IOD, &stat->IOStats);
-
-            /* Get Library Status */
-            bplib_latchstats(FlowPtr->BPC, &tempstats);
-            stat->LibStats.lost                  = tempstats.lost;
-            stat->LibStats.expired               = tempstats.expired;
-            stat->LibStats.unrecognized          = tempstats.unrecognized;
-            stat->LibStats.transmitted_bundles   = tempstats.transmitted_bundles;
-            stat->LibStats.transmitted_dacs      = tempstats.transmitted_dacs;
-            stat->LibStats.retransmitted_bundles = tempstats.retransmitted_bundles;
-            stat->LibStats.delivered_payloads    = tempstats.delivered_payloads;
-            stat->LibStats.received_bundles      = tempstats.received_bundles;
-            stat->LibStats.forwarded_bundles     = tempstats.forwarded_bundles;
-            stat->LibStats.received_dacs         = tempstats.received_dacs;
-            stat->LibStats.stored_bundles        = tempstats.stored_bundles;
-            stat->LibStats.stored_payloads       = tempstats.stored_payloads;
-            stat->LibStats.stored_dacs           = tempstats.stored_dacs;
-            stat->LibStats.acknowledged_bundles  = tempstats.acknowledged_bundles;
-            stat->LibStats.active_bundles        = tempstats.active_bundles;
-
-            bplib_config(FlowPtr->BPC, BP_OPT_MODE_READ, BP_OPT_TIMEOUT, &optval);
-            stat->Timeout = optval; /* overrides the table value set above */
         }
     }
 
@@ -1308,9 +1077,6 @@ int32 BP_FlowClearStats(BP_FlowHandle_t fh)
 
     /* Clear library stats */
     FlowPtr->LibFlags = 0;
-
-    /* Clear IO stats */
-    BP_IOClearStats(FlowPtr->IOD);
 
     return CFE_SUCCESS;
 }
@@ -1387,26 +1153,6 @@ int32 BP_FlowFlush(BP_FlowHandle_t fh)
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
-    /* Reset incoming data */
-    if (FlowPtr->CurrentChunkOutSize > 0)
-    {
-        bplib_ackpayload(FlowPtr->BPC, FlowPtr->CurrentChunkOutPtr);
-        FlowPtr->CurrentChunkOutSize = 0;
-    }
-
-    /* Reset outgoing bundle */
-    if (FlowPtr->CurrentBundleOutSize > 0)
-    {
-        bplib_ackbundle(FlowPtr->BPC, FlowPtr->CurrentBundleOutPtr);
-        FlowPtr->CurrentBundleOutSize = 0;
-    }
-
-    /* Flush I/O */
-    BP_IOFlush(FlowPtr->IOD);
-
-    /* Flush bplib channel */
-    bplib_flush(FlowPtr->BPC);
-
     return CFE_SUCCESS;
 }
 
@@ -1469,8 +1215,6 @@ int32 BP_FlowResume(BP_FlowHandle_t fh)
  *-----------------------------------------------*/
 int32 BP_FlowProcess(void)
 {
-    int cycles = 0; /* indicates output activity to detemine if fill needed */
-
     BP_FlowCtrlEntry_t *FlowPtr;
     BP_FlowCtrlEntry_t *LevelPtr;
     BP_FlowCtrlEntry_t *PrevFlowPtr;
@@ -1491,14 +1235,12 @@ int32 BP_FlowProcess(void)
             /* Cycle Flow */
             if (FlowPtr->Enabled)
             {
-                /* Perform Ingress Bundle Processing */
-                process_incoming_bundles(FlowPtr, &FlowPtr->LibFlags, BP_IO_READ_LIMIT);
+                /* Perform Ingress Processing */
                 store_incoming_data(FlowPtr, &FlowPtr->LibFlags, BP_APP_READ_LIMIT);
 
-                /* Perform Egress Bundle Processing */
+                /* Perform Egress Processing */
                 if (FlowPtr->Active)
                 {
-                    cycles += load_outgoing_bundles(FlowPtr, &FlowPtr->LibFlags, BP_IO_WRITE_LIMIT);
                     accept_outgoing_data(FlowPtr, &FlowPtr->LibFlags, BP_APP_WRITE_LIMIT);
                 }
             }
@@ -1539,15 +1281,6 @@ int32 BP_FlowProcess(void)
         LevelPtr = BP_LocateFlowEntryByHandle(LevelPtr->COS.NextLevel);
     }
 
-    /* Flush I/O Layer
-     *      1. this is only performed if no output activity detected for this wakeup period
-     *      2. this allows I/O layer to generate fill if necessary to push out frames
-     *      3. the invalid descriptor is used to flush I/O */
-    if (cycles == 0)
-    {
-        BP_IOFlush(BP_IO_INVALID_DESCRIPTOR);
-    }
-
     /* Perform Throttling */
     disperse_throttling();
 
@@ -1580,7 +1313,7 @@ int32 BP_FlowDirectStore(BP_FlowHandle_t fh, uint8 *buffer, int len)
     }
 
     /* Store data */
-    lib_status = bplib_store(FlowPtr->BPC, buffer, len, BP_CHECK, &FlowPtr->LibFlags);
+    lib_status = bplib_send(FlowPtr->BPS, buffer, len, BP_CHECK);
     if (lib_status != BP_SUCCESS)
     {
         FlowPtr->DataInDropped++;
@@ -1623,7 +1356,7 @@ int32 BP_FlowDirectConfig(BP_FlowHandle_t fh, int mode, int opt, int *val)
     }
 
     /* Configure channel */
-    lib_status = bplib_config(FlowPtr->BPC, mode, opt, val);
+    lib_status = BP_ERROR;
     if (lib_status != BP_SUCCESS)
     {
         CFE_EVS_SendEvent(BP_LIB_CONFIG_ERR_EID, CFE_EVS_EventType_ERROR,
