@@ -41,11 +41,11 @@
  * This just simplifies when building out of the box from the source.
  */
 #ifndef CF_CHANNEL_0_SEM_NAME
-#define CF_CHANNEL_0_SEM_NAME ""
+#define CF_CHANNEL_0_SEM_NAME "BP0_tsem"
 #endif
 
 #ifndef CF_CHANNEL_1_SEM_NAME
-#define CF_CHANNEL_1_SEM_NAME ""
+#define CF_CHANNEL_1_SEM_NAME "BP1_tsem"
 #endif
 
 #ifndef CF_SPACE_TO_GND_PDU_MID0

@@ -57,11 +57,16 @@ typedef struct
     BP_FlowCtrlEntry_t FlowControl[BP_MAX_FLOWS];
     BP_FlowHandle_t    FlowPriorityHead;
 
+    bplib_routetbl_t *RouteTbl;
+    bp_ipn_t          LocalNodeNumber;
+    bp_handle_t       BaseIntfId;
+    bp_handle_t       StorageId;
+
     /* Storage Services */
     BP_StorageService_t StorageServices[BP_NUM_STORAGE_SERVICES];
 
     /* Throttling */
-    BP_Throttle_t Throttles[BP_NUM_SEM_THROTTLES];
+    BP_Throttle_t *Throttles;
 
     /* I/O Control */
     BP_IOCtrl_t IOControl[BP_MAX_IO_DESC];

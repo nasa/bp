@@ -57,41 +57,6 @@
 #endif
 
 /*
- * BP application command message id (ground)
- */
-#ifndef BP_CMD_MID
-#define BP_CMD_MID 0x1C20
-#endif
-
-/*
- * BP send housekeeping message id (internal)
- */
-#ifndef BP_SEND_HK_MID
-#define BP_SEND_HK_MID 0x1C21
-#endif
-
-/*
- * BP wakeup message id (internal)
- */
-#ifndef BP_WAKEUP_MID
-#define BP_WAKEUP_MID 0x1C22
-#endif
-
-/*
- * BP application telemetry message id (ground)
- */
-#ifndef BP_HK_TLM_MID
-#define BP_HK_TLM_MID 0x0B24
-#endif
-
-/*
- * BP per flow application telemetry message id (ground)
- */
-#ifndef BP_FLOW_HK_TLM_MID
-#define BP_FLOW_HK_TLM_MID 0x0B25
-#endif
-
-/*
  * Main loop software bus timeout
  */
 #ifndef BP_SB_TIMEOUT_MS
@@ -169,13 +134,6 @@
  */
 #ifndef BP_STRIP_HDR_BYTES
 #define BP_STRIP_HDR_BYTES true
-#endif
-
-/*
- * IPN source node address (services are defined in the flow table)
- */
-#ifndef BP_SRC_NODE
-#define BP_SRC_NODE 12
 #endif
 
 /*
