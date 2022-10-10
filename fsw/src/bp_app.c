@@ -225,7 +225,6 @@ CFE_Status_t BP_NoopCmd(const BP_NoopCmd_t *cmd)
                       "No operation command received for BP version %d.%d.%d.%d", BP_MAJOR_VERSION, BP_MINOR_VERSION,
                       BP_REVISION, BP_MISSION_REV);
 
-    /* Return Success */
     return CFE_SUCCESS;
 }
 
@@ -246,7 +245,6 @@ CFE_Status_t BP_ResetAppCmd(const BP_ResetAppCmd_t *cmd)
     /* Issue Event */
     CFE_EVS_SendEvent(BP_INFO_EID, CFE_EVS_EventType_INFORMATION, "BP Statistics: Cleared");
 
-    /* Return Success */
     return CFE_SUCCESS;
 }
 
@@ -273,7 +271,6 @@ CFE_Status_t BP_ReloadFlowTableCmd(const BP_ReloadFlowTableCmd_t *cmd)
     BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
     BP_GlobalData.HkPkt.EnableMask = EnableMask;
 
-    /* Return Status */
     return status;
 }
 
@@ -301,7 +298,6 @@ CFE_Status_t BP_EnableFlowCmd(const BP_EnableFlowCmd_t *cmd)
     BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
     BP_GlobalData.HkPkt.EnableMask = EnableMask;
 
-    /* Return Status */
     return status;
 }
 
@@ -329,7 +325,6 @@ CFE_Status_t BP_DisableFlowCmd(const BP_DisableFlowCmd_t *cmd)
     BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
     BP_GlobalData.HkPkt.EnableMask = EnableMask;
 
-    /* Return Status */
     return status;
 }
 
@@ -351,7 +346,6 @@ CFE_Status_t BP_FlushFlowCmd(const BP_FlushFlowCmd_t *cmd)
         CFE_EVS_SendEvent(BP_INFO_EID, CFE_EVS_EventType_INFORMATION, "BP Flow %s: Flushed", BP_FlowGetName(flow));
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -373,7 +367,6 @@ CFE_Status_t BP_PauseFlowCmd(const BP_PauseFlowCmd_t *cmd)
         CFE_EVS_SendEvent(BP_INFO_EID, CFE_EVS_EventType_INFORMATION, "BP Flow %s: Paused", BP_FlowGetName(flow));
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -395,7 +388,6 @@ CFE_Status_t BP_ResumeFlowCmd(const BP_ResumeFlowCmd_t *cmd)
         CFE_EVS_SendEvent(BP_INFO_EID, CFE_EVS_EventType_INFORMATION, "BP Flow %s: Resumed", BP_FlowGetName(flow));
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -418,7 +410,6 @@ CFE_Status_t BP_OverrideTimeoutCmd(const BP_OverrideTimeoutCmd_t *cmd)
                           BP_FlowGetName(flow), (int)cmd->Payload.Timeout);
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -441,7 +432,6 @@ CFE_Status_t BP_DisableOverrideTimeoutCmd(const BP_DisableOverrideTimeoutCmd_t *
                           BP_FlowGetName(flow));
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -464,7 +454,6 @@ CFE_Status_t BP_OverridePriorityCmd(const BP_OverridePriorityCmd_t *cmd)
                           BP_FlowGetName(flow), (int)cmd->Payload.Priority);
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -487,7 +476,6 @@ CFE_Status_t BP_DisableOverridePriorityCmd(const BP_DisableOverridePriorityCmd_t
                           BP_FlowGetName(flow));
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -659,7 +647,6 @@ static CFE_Status_t ProcessCmd(const CFE_SB_Buffer_t *MsgBufPtr)
     else
         BP_GlobalData.HkPkt.InvalidCmdCnt++;
 
-    /* Return Results */
     return cmd_result;
 }
 
@@ -694,7 +681,6 @@ static CFE_Status_t ProcessHk(const CFE_SB_Buffer_t *MessagePtr)
         status = CFE_STATUS_BAD_COMMAND_CODE;
     }
 
-    /* Return Status */
     return status;
 }
 

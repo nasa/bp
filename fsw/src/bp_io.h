@@ -79,36 +79,26 @@ typedef struct
  ************************************************/
 
 /*-----------------------------------------------
- * BP_IOInit
- *
  * Must be called before any other call
  *----------------------------------------------*/
 int32 BP_IOInit(void);
 
 /*-----------------------------------------------
- * BP_IOOpen
- *
  * Returns a decriptor to an IO control block
  *----------------------------------------------*/
 int32 BP_IOOpen(const char *IOParm, BP_IoHandle_t *ioh);
 
 /*-----------------------------------------------
- * BP_IOClose
- *
  * Close an IO control block
  *----------------------------------------------*/
 int32 BP_IOClose(BP_IoHandle_t ioh);
 
 /*-----------------------------------------------
- * BP_IOGetStats
- *
  * Gets counters and status flags.
  *----------------------------------------------*/
 int32 BP_IOGetStats(BP_IoHandle_t ioh, BP_IOStats_t *Stats);
 
 /*-----------------------------------------------
- * BP_IOClearStats
- *
  * Reset counters and status flags to a known reset state.
  *
  * Notes:
@@ -118,22 +108,16 @@ int32 BP_IOGetStats(BP_IoHandle_t ioh, BP_IOStats_t *Stats);
 int32 BP_IOClearStats(BP_IoHandle_t ioh);
 
 /*-----------------------------------------------
- * BP_IOFlush
- *
  * Clear out any pending packets
  *----------------------------------------------*/
 int32 BP_IOFlush(BP_IoHandle_t ioh);
 
 /*-----------------------------------------------
- * BP_IOReadBundle
- *
  * Read bundles to be processed
  *----------------------------------------------*/
 bool BP_IOReadBundle(BP_IoHandle_t ioh, void **InBuf, size_t *InBufSize);
 
 /*-----------------------------------------------
- * BP_IOWriteBundle
- *
  * Write bundles
  *----------------------------------------------*/
 bool BP_IOWriteBundle(BP_IoHandle_t ioh, const void *OutBuf, size_t OutBufSize);

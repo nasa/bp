@@ -94,8 +94,6 @@ static inline bool BP_FlowEntryIsMatch(const BP_FlowCtrlEntry_t *FlowPtr, BP_Flo
 
 /*----------------------------------------------------------------
  *
- * Function: CFE_ES_CheckAppIdSlotUsed
- *
  * Application-scope internal function
  * See description in header file for argument/return detail
  *
@@ -208,7 +206,6 @@ static bool check_throttling(CFE_SB_MsgId_t MsgId)
 }
 
 /*-----------------------------------------------
- * prioritize_flows
  *
  *  note: the higher the priority value, the higher
  *  the priority of the flow (i.e. it will get
@@ -217,7 +214,7 @@ static bool check_throttling(CFE_SB_MsgId_t MsgId)
 static void prioritize_flows(void)
 {
     int flow_idx;
-    // BP_FlowHandle_t level, prev_level;
+    /* BP_FlowHandle_t level, prev_level; */
     BP_FlowCtrlEntry_t *FlowPtr;
     BP_FlowCtrlEntry_t *LevelPtr;
     BP_FlowCtrlEntry_t *PrevLevelPtr;
@@ -388,7 +385,6 @@ static int process_incoming_bundles(BP_FlowCtrlEntry_t *flow, uint32_t *flags, i
         }
     }
 
-    /* Return */
     return cycles;
 }
 
@@ -513,7 +509,6 @@ static int store_incoming_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int ma
         }
     }
 
-    /* Return */
     return cycles;
 }
 
@@ -562,7 +557,6 @@ static int load_outgoing_bundles(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int 
         }
     }
 
-    /* Return */
     return cycles;
 }
 
@@ -664,7 +658,6 @@ static int accept_outgoing_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int m
         }
     }
 
-    /* Return */
     return cycles;
 }
 
@@ -808,7 +801,6 @@ int32 BP_FlowLoad(const char *flow_table_filename)
                           "Table information unknown, %d flows enabled", num_flows);
     }
 
-    /* Return Success */
     return CFE_SUCCESS;
 }
 
@@ -995,7 +987,6 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
         }
     }
 
-    /* Return Status */
     return status;
 }
 
@@ -1362,7 +1353,6 @@ const char *BP_FlowGetName(BP_FlowHandle_t fh)
         return "INVALID";
     }
 
-    /* Return Name */
     return FlowPtr->Config.Name;
 }
 
@@ -1551,7 +1541,6 @@ int32 BP_FlowProcess(void)
     /* Perform Throttling */
     disperse_throttling();
 
-    /* Return Success */
     return CFE_SUCCESS;
 }
 
@@ -1590,7 +1579,6 @@ int32 BP_FlowDirectStore(BP_FlowHandle_t fh, uint8 *buffer, int len)
         return BP_LIB_LOAD_ERR_EID;
     }
 
-    /* Return success */
     return CFE_SUCCESS;
 }
 
@@ -1631,7 +1619,6 @@ int32 BP_FlowDirectConfig(BP_FlowHandle_t fh, int mode, int opt, int *val)
         return BP_LIB_CONFIG_ERR_EID;
     }
 
-    /* Return success */
     return CFE_SUCCESS;
 }
 

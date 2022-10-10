@@ -52,7 +52,3 @@ void BP_ClearCustomTlm(BP_CustomTlm_t *custom_tlm)
     (void)custom_tlm;
     bplib_store_flash_stats(NULL, false, true);
 }
-
-/************************/
-/*  End of File Comment */
-/************************/

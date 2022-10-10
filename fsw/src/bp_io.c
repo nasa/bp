@@ -223,7 +223,6 @@ static bool parse_parameters(const char *cfgstr, BP_IOConfig_t *config)
         }
     }
 
-    /* Return Success */
     return true;
 }
 
@@ -302,7 +301,6 @@ int32 BP_IOOpen(const char *CfgStr, BP_IoHandle_t *Descriptor)
                       "Opened IO channel for using configuration: %s", CfgStr);
     *Descriptor = IoPtr->Handle;
 
-    /* Return Success */
     return CFE_SUCCESS;
 }
 
@@ -468,7 +466,6 @@ bool BP_IOReadBundle(BP_IoHandle_t ioh, void **buf, size_t *bufsize)
         }
     }
 
-    /* Return Status */
     return (SbStatus == CFE_SUCCESS);
 }
 
@@ -538,6 +535,5 @@ bool BP_IOWriteBundle(BP_IoHandle_t ioh, const void *buf, size_t bufsize)
         }
     }
 
-    /* Return Status */
     return (SbStatus == CFE_SUCCESS);
 }
