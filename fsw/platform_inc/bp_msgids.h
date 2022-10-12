@@ -18,28 +18,37 @@
  *
  */
 
-/************************************************
- * Includes
- ************************************************/
 
-#include "cfe.h"
-#include "bp_cfg.h"
-#include "bp_tlmcfg.h"
+#ifndef BP_MSGIDS_H
+#define BP_MSGIDS_H
 
-/************************************************
- * Exported Functions
- ************************************************/
+/* should define CFE_PLATFORM_CMD_MID_BASE/CFE_PLATFORM_TLM_MID_BASE */
+#include "cfe_msgids.h"
 
-/*-----------------------------------------------
- * BP_PopulateCustomTlm
- *-----------------------------------------------*/
-void BP_PopulateCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
+/*
+ * BP application command message id (ground)
+ */
+#define BP_CMD_MID  CFE_PLATFORM_CMD_MID_BASE + CFE_MISSION_BP_CMD_MSG
 
-/*-----------------------------------------------
- * BP_ClearCustomTlm
- *-----------------------------------------------*/
-void BP_ClearCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
+/*
+ * BP send housekeeping message id (internal)
+ */
+#define BP_SEND_HK_MID CFE_PLATFORM_CMD_MID_BASE + CFE_MISSION_BP_SEND_HK_MSG
+
+/*
+ * BP wakeup message id (internal)
+ */
+#define BP_WAKEUP_MID CFE_PLATFORM_CMD_MID_BASE + CFE_MISSION_BP_WAKEUP_MSG
+
+/*
+ * BP application telemetry message id (ground)
+ */
+#define BP_HK_TLM_MID   CFE_PLATFORM_TLM_MID_BASE + CFE_MISSION_BP_HK_TLM_MSG
+
+/*
+ * BP per flow application telemetry message id (ground)
+ */
+#define BP_FLOW_HK_TLM_MID CFE_PLATFORM_TLM_MID_BASE + CFE_MISSION_BP_FLOW_HK_TLM_MSG
+
+
+#endif /* !BP_MSGIDS_H */

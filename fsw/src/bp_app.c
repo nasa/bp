@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include "cfe.h"
+#include "bp_msgids.h"
 #include "bp_storecfg.h"
 #include "bp_global.h"
 #include "bp_app.h"
@@ -35,8 +36,9 @@
 #include "bp_events.h"
 #include "bp_version.h"
 #include "bp_flow.h"
-#include "bp_io.h"
+#include "bp_cla_bundle_io.h"
 #include "bplib_os.h"
+#include "bplib_routing.h"
 
 /************************************************
  * File Data
@@ -105,6 +107,27 @@ static void BP_RebuildBitmaskPerFlow(BP_FlowHandle_t fh, void *Arg)
     }
 }
 
+static CFE_Status_t BP_SetupLibrary(void)
+{
+    /* Initialize BP Library */
+    if (bplib_init() != BP_SUCCESS)
+    {
+        fprintf(stderr, "%s(): bplib_init failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    /* Test route table with 1MB of cache */
+    BP_GlobalData.RouteTbl = bplib_route_alloc_table(10, 16 << 20);
+    if (BP_GlobalData.RouteTbl == NULL)
+    {
+        fprintf(stderr, "%s(): bplib_route_alloc_table failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    return CFE_SUCCESS;
+}
+
+
 /*-----------------------------------------------
  * AppInit
  *-----------------------------------------------*/
@@ -122,6 +145,8 @@ static CFE_Status_t AppInit(void)
     CFE_ES_AppId_t app_id;
 
     assert(num_event_filters <= BP_MAX_EVENT_FILTERS);
+    memset(&BP_GlobalData, 0, sizeof(BP_GlobalData));
+    BP_GlobalData.Throttles = BP_Throttles;
 
     memcpy(BP_GlobalData.EventFilters, BP_EVENT_FILTER_INIT, sizeof(BP_EVENT_FILTER_INIT));
 
@@ -169,15 +194,24 @@ static CFE_Status_t AppInit(void)
     /* Initialize Storage Service Module */
     BP_StorageService_Init();
 
-    /* Initialize IO Module */
-    status = BP_IOInit();
+    /* Initialize BPLib */
+    status = BP_SetupLibrary();
     if (status != CFE_SUCCESS)
+    {
         return status;
+    }
 
     /* Initialize Flow Module */
     status = BP_FlowInit(BP_GlobalData.AppName);
     if (status != CFE_SUCCESS)
         return status;
+
+    /* Create the CLA task(s) */
+    status = BP_CLA_Init();
+    if (status != CFE_SUCCESS)
+    {
+        return status;
+    }
 
     /* Register known storage services */
     BP_StorageService_Configure();
@@ -531,6 +565,7 @@ CFE_Status_t BP_ProcessWakeupCmd(const CFE_MSG_CommandHeader_t *cmd)
 {
     /* no options, just process the flows */
     BP_FlowProcess();
+    bplib_route_periodic_maintenance(BP_GlobalData.RouteTbl);
 
     return CFE_SUCCESS;
 }
