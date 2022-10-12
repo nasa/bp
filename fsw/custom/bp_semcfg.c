@@ -68,7 +68,3 @@
 BP_Throttle_t BP_Throttles[BP_NUM_SEM_THROTTLES] = {
     {CF_CHANNEL_0_SEM_NAME, CF_SPACE_TO_GND_PDU_MID0, BP_CF_SEM_MAX_COUNT, 0},
     {CF_CHANNEL_1_SEM_NAME, CF_SPACE_TO_GND_PDU_MID1, BP_CF_SEM_MAX_COUNT, 0}};
-
-/************************/
-/*  End of File Comment */
-/************************/

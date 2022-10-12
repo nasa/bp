@@ -94,8 +94,6 @@ static inline bool BP_StorageEntryIsMatch(const BP_StorageService_t *StoragePtr,
 
 /*----------------------------------------------------------------
  *
- * Function: BP_CheckStorageSlotUsed
- *
  * Application-scope internal function
  * See description in header file for argument/return detail
  *
