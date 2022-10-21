@@ -770,15 +770,15 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
             {
                 /* Report Failures and Continue (do not mark status) */
                 CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                                  "Failed (%d) to subscribe to %04X on data pipe", (int)cfe_status,
-                                  CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
+                                  "Failed (%d) to subscribe to %04lX on data pipe", (int)cfe_status,
+                                  (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
 
                 /* Mark Flow as Unhealthy */
                 FlowPtr->Healthy = false;
             }
             else
             {
-                CFE_ES_WriteToSysLog("BP_FLOW: Subscribed to %08lx\n",
+                CFE_ES_WriteToSysLog("BP_FLOW: Subscribed to %04lx\n",
                                      (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
             }
         }
@@ -856,8 +856,9 @@ int32 BP_FlowDisable(BP_FlowHandle_t fh)
                 if (check_throttling(FlowPtr->Config.PktTbl[i].StreamId))
                 {
                     CFE_EVS_SendEvent(BP_PIPE_INFO_EID, CFE_EVS_EventType_INFORMATION,
-                                      "Throttled stream ID detected (%04X)... preserving data pipe for flow %s",
-                                      CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId), FlowPtr->Config.Name);
+                                      "Throttled stream ID detected (%04lX)... preserving data pipe for flow %s",
+                                      (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId),
+                                      FlowPtr->Config.Name);
                     throttle_pipe = true;
                     continue;
                 }
@@ -867,8 +868,8 @@ int32 BP_FlowDisable(BP_FlowHandle_t fh)
                 if (cfe_status != CFE_SUCCESS)
                 {
                     CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                                      "Failed (%d) to unsubscribe %04X from data pipe", (int)cfe_status,
-                                      CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
+                                      "Failed (%d) to unsubscribe %04lX from data pipe", (int)cfe_status,
+                                      (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
                 }
             }
 
