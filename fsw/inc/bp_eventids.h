@@ -26,17 +26,17 @@
  *************************************************************************/
 
 #define BP_INFO_EID                      1
-#define BP_INIT_APP_INFO_EID             2
-#define BP_INVALID_CC_ERR_EID            3
-#define BP_INVALID_MID_ERR_EID           4
-#define BP_INVALID_LEN_ERR_EID           5
+#define BP_INIT_INF_EID                  2
+#define BP_CC_ERR_EID                    3
+#define BP_MID_ERR_EID                   4
+#define BP_CMD_LEN_ERR_EID               5
 #define BP_SB_RECEIVE_ERR_EID            6
 #define BP_EXIT_ERR_EID                  7
 #define BP_TBL_LOAD_ERR_EID              8
 #define BP_TBL_LOAD_INFO_EID             9
 #define BP_INVALID_FLOW_ERR_EID          10
 #define BP_PARM_ERR_EID                  11
-#define BP_PIPE_ERR_EID                  12
+#define BP_CR_PIPE_ERR_EID               12
 #define BP_PIPE_INFO_EID                 13
 #define BP_SEM_ERR_EID                   14
 #define BP_SEM_INFO_EID                  15
