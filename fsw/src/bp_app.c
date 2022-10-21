@@ -37,7 +37,6 @@
 #include "bp_version.h"
 #include "bp_flow.h"
 #include "bp_cla_bundle_io.h"
-#include "bplib_os.h"
 #include "bplib_routing.h"
 
 /************************************************
@@ -126,7 +125,6 @@ static CFE_Status_t BP_SetupLibrary(void)
 
     return CFE_SUCCESS;
 }
-
 
 /*-----------------------------------------------
  * AppInit
@@ -518,9 +516,29 @@ CFE_Status_t BP_DisableOverridePriorityCmd(const BP_DisableOverridePriorityCmd_t
  *-----------------------------------------------*/
 CFE_Status_t BP_SendAppTlmCmd(const BP_SendAppTlmCmd_t *cmd)
 {
+    bp_sval_t mem_use;
+    int       status;
+
     /* Populate Memory Usage Statistics */
-    BP_GlobalData.HkPkt.MemInUse     = bplib_os_memused();
-    BP_GlobalData.HkPkt.MemHighWater = bplib_os_memhigh();
+    status = bplib_query_integer(BP_GlobalData.RouteTbl, BP_INVALID_HANDLE, bplib_variable_mem_current_use, &mem_use);
+    if (status == BP_SUCCESS)
+    {
+        BP_GlobalData.HkPkt.MemInUse = mem_use;
+    }
+    else
+    {
+        BP_GlobalData.HkPkt.MemInUse = 0;
+    }
+
+    status = bplib_query_integer(BP_GlobalData.RouteTbl, BP_INVALID_HANDLE, bplib_variable_mem_high_use, &mem_use);
+    if (status == BP_SUCCESS)
+    {
+        BP_GlobalData.HkPkt.MemHighWater = mem_use;
+    }
+    else
+    {
+        BP_GlobalData.HkPkt.MemHighWater = 0;
+    }
 
     /* Populate Custom Flash Statistics */
     BP_PopulateCustomTlm(&BP_GlobalData.HkPkt.CustomTlm);
