@@ -41,11 +41,17 @@ CFE_TBL_FileDef_t CFE_TBL_FileDef = {"BP_FlowTable", "BP.FlowTable", "Configurat
                                      "bp_flowtable.tbl", (sizeof(BP_FlowTbl_t))};
 
 /*
+** The following table just to provide user a template. Users have to replace CFE_SB_MSGID_RESERVED with real values to suit their needs.  
+*/
+
+/*
 ** Table contents
 */
-BP_FlowTbl_t BP_FlowTable = {
+BP_FlowTbl_t BP_FlowTable = 
+{
     .LocalNodeIpn = 12,
-    .Flows = {{/* Flow 0 */
+    .Flows ={
+              {/* Flow 0 */
                .Name      = "HKT",
                .Enabled   = true,
                .PipeDepth = BP_APP_READ_LIMIT,
@@ -57,9 +63,10 @@ BP_FlowTbl_t BP_FlowTable = {
                .Priority  = BP_COS_NORMAL,
                .MaxActive = 250,
                .Store     = BP_FLASH_STORE,
-               .PktTbl    = {{CF_SPACE_TO_GND_PDU_MID0, 1, 1, BP_APP_READ_LIMIT}},
+               .PktTbl    = {{CFE_SB_MSGID_RESERVED, 1, 1, BP_APP_READ_LIMIT}},
                .RecvStreamId = CFE_SB_MSGID_RESERVED
-              {/* Flow 1 */
+             },
+             {/* Flow 1 */
                .Name      = "EVT",
                .Enabled   = false,
                .PipeDepth = BP_APP_READ_LIMIT,
@@ -71,6 +78,9 @@ BP_FlowTbl_t BP_FlowTable = {
                .Priority  = BP_COS_BULK,
                .MaxActive = 0,
                .Store     = BP_FLASH_STORE,
-               .PktTbl    = {{CFE_SB_MSGID_WRAP_VALUE(CFE_EVS_EVENT_MSG_MID), 1, 1, BP_APP_READ_LIMIT}},
-               .RecvStreamId = CFE_SB_MSGID_RESERVED}}};
+               .PktTbl    = {{CFE_SB_MSGID_RESERVED, 1, 1, BP_APP_READ_LIMIT}},
+               .RecvStreamId = CFE_SB_MSGID_RESERVED
+             }
+            }
+};
 
