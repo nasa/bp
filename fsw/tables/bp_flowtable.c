@@ -40,13 +40,9 @@
 CFE_TBL_FileDef_t CFE_TBL_FileDef = {"BP_FlowTable", "BP.FlowTable", "Configuration of bundle flows",
                                      "bp_flowtable.tbl", (sizeof(BP_FlowTbl_t))};
 
-#ifndef CF_SPACE_TO_GND_PDU_MID0
-#define CF_SPACE_TO_GND_PDU_MID0 CFE_SB_MSGID_RESERVED
-#endif
-
-#ifndef CFE_EVS_EVENT_MSG_MID
-#define CFE_EVS_EVENT_MSG_MID CFE_SB_MSGID_RESERVED
-#endif
+/*
+** The following table just to provide user a template. Users have to replace CFE_SB_MSGID_RESERVED with real values to suit their needs.  
+*/
 
 /*
 ** Table contents
@@ -67,7 +63,7 @@ BP_FlowTbl_t BP_FlowTable =
                .Priority  = BP_COS_NORMAL,
                .MaxActive = 250,
                .Store     = BP_FLASH_STORE,
-               .PktTbl    = {{CF_SPACE_TO_GND_PDU_MID0, 1, 1, BP_APP_READ_LIMIT}},
+               .PktTbl    = {{CFE_SB_MSGID_RESERVED, 1, 1, BP_APP_READ_LIMIT}},
                .RecvStreamId = CFE_SB_MSGID_RESERVED
              },
              {/* Flow 1 */
@@ -82,7 +78,7 @@ BP_FlowTbl_t BP_FlowTable =
                .Priority  = BP_COS_BULK,
                .MaxActive = 0,
                .Store     = BP_FLASH_STORE,
-               .PktTbl    = {{CFE_EVS_EVENT_MSG_MID, 1, 1, BP_APP_READ_LIMIT}},
+               .PktTbl    = {{CFE_SB_MSGID_RESERVED, 1, 1, BP_APP_READ_LIMIT}},
                .RecvStreamId = CFE_SB_MSGID_RESERVED
              }
             }
