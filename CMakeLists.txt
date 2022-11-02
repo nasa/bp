@@ -32,3 +32,10 @@ add_cfe_tables(bp ${APP_TABLE_FILES})
 
 # Indicate that this app depends on BPLIB
 add_cfe_app_dependency(bp bplib iodriver)
+
+if (ENABLE_UNIT_TESTS)
+    add_cfe_coverage_test(bp ALL
+        ut-coverage/coveragetest_bp_setup.c
+        ${APP_SRC_FILES}
+    )
+endif (ENABLE_UNIT_TESTS)
