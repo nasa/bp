@@ -345,26 +345,35 @@ CFE_Status_t BP_CLA_ProcessBundleInput(BP_CLA_BundleFlowEntry_t *Entry)
         {
             BP_CLA_DebugPrint("Ingress", RdBuf.BufferMem, RdBuf.BufferSize);
             Entry->CurrentBufferSize = RdBuf.BufferSize;
+            Status = CFE_SUCCESS;
+        }
+        else
+        {
+            Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
     }
 
     if (Entry->CurrentBufferSize != 0)
     {
-        bplib_cla_ingress(BP_GlobalData.RouteTbl, BP_CLA_Global.ClaIntfId, Entry->BundleBuffer,
-                          Entry->CurrentBufferSize, 0);
+        Status = bplib_cla_ingress(BP_GlobalData.RouteTbl, BP_CLA_Global.ClaIntfId, Entry->BundleBuffer,
+                                   Entry->CurrentBufferSize, 0);
         if (Status != BP_TIMEOUT)
         {
             Entry->CurrentBufferSize = 0;
-            if (Status != BP_SUCCESS)
+            if (Status == BP_SUCCESS)
+            {
+                Status = CFE_SUCCESS;
+            }
+            else
             {
                 CFE_EVS_SendEvent(BP_LIB_PROC_ERR_EID, CFE_EVS_EventType_ERROR,
                                   "Flow %s - Failed (%d) to process bundle", "cla_ingress", (int)Status);
-                return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
         }
     }
 
-    return CFE_SUCCESS;
+    return Status;
 }
 
 CFE_Status_t BP_CLA_ProcessBundleOutput(BP_CLA_BundleFlowEntry_t *Entry)
