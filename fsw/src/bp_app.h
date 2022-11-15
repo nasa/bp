@@ -46,7 +46,7 @@ CFE_Status_t BP_SendDisabledFlowTlmCmd(const BP_SendDisabledFlowTlmCmd_t *cmd);
 
 CFE_Status_t BP_ProcessWakeupCmd(const CFE_MSG_CommandHeader_t *cmd);
 
-CFE_Status_t BP_ProcessPkt(const CFE_SB_Buffer_t *MsgBufPtr);
+CFE_Status_t BP_ProcessPkt(const CFE_SB_Buffer_t *MessagePtr);
 
 /************************************************
  * Exported Functions

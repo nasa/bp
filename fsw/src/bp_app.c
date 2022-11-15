@@ -94,15 +94,15 @@ static void BP_DoPerFlowDisable(BP_FlowHandle_t fh, void *Arg)
  *-----------------------------------------------*/
 static void BP_RebuildBitmaskPerFlow(BP_FlowHandle_t fh, void *Arg)
 {
-    uint32 Mask = *((uint32 *)Arg);
-    uint32 Idx;
+    uint32 *Mask = (uint32 *)Arg;
+    uint32  Idx;
 
     if (BP_FlowIsEnabled(fh))
     {
         /* This is called only for handles which are known good, and BP_FlowIsEnabled()
          * confirmed that the flow handle is good, so "ToIndex" will never fail */
         BP_FlowHandle_ToIndex(fh, &Idx);
-        Mask |= 1 << Idx;
+        *Mask |= 1 << Idx;
     }
 }
 

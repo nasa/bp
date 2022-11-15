@@ -45,9 +45,9 @@
  * Defines
  ************************************************/
 
-#define BP_IO_CFGSTR_MAX_SIZE    256
-#define BP_IO_PSP_MODULE_NAME    "ModName"
-#define BP_IO_PSP_BUFFER_SIZE    "BufSize"
+#define BP_IO_CFGSTR_MAX_SIZE 256
+#define BP_IO_PSP_MODULE_NAME "ModName"
+#define BP_IO_PSP_BUFFER_SIZE "BufSize"
 
 /************************************************
  * Typedefs
@@ -55,7 +55,7 @@
 
 typedef struct
 {
-    char ModuleName[32];
+    char   ModuleName[32];
     size_t BundleBufferSize;
 } BP_PspIOConfig_t;
 
@@ -134,21 +134,21 @@ bool BP_CheckIoSlotUsed(CFE_ResourceId_t CheckId)
  *-----------------------------------------------*/
 static bool parse_parameters(const char *cfgstr, BP_PspIOConfig_t *config)
 {
-    size_t len;
+    size_t      len;
     const char *NextPos;
     const char *CurrPos;
-    char *ValPos;
-    char TempBuf[64];
+    char       *ValPos;
+    char        TempBuf[64];
 
     assert(config);
 
     /* Initialize Parameter Structure */
-    config->ModuleName[0] = 0;
-    config->BundleBufferSize  = 0;
+    config->ModuleName[0]    = 0;
+    config->BundleBufferSize = 0;
 
     /* Get Length and Copy to Buffer */
     NextPos = cfgstr;
-    while(NextPos != NULL && *NextPos != 0)
+    while (NextPos != NULL && *NextPos != 0)
     {
         CurrPos = NextPos;
         NextPos = strchr(CurrPos, '&');
@@ -167,7 +167,7 @@ static bool parse_parameters(const char *cfgstr, BP_PspIOConfig_t *config)
         }
         strncpy(TempBuf, CurrPos, len);
         TempBuf[len] = 0;
-        ValPos = strchr(TempBuf, '=');
+        ValPos       = strchr(TempBuf, '=');
         if (ValPos == NULL)
         {
             return false;
@@ -179,8 +179,8 @@ static bool parse_parameters(const char *cfgstr, BP_PspIOConfig_t *config)
         /* Process Parameter */
         if (strcmp(TempBuf, BP_IO_PSP_MODULE_NAME) == 0)
         {
-            strncpy(config->ModuleName, ValPos, sizeof(config->ModuleName)-1);
-            config->ModuleName[sizeof(config->ModuleName)-1] = 0;
+            strncpy(config->ModuleName, ValPos, sizeof(config->ModuleName) - 1);
+            config->ModuleName[sizeof(config->ModuleName) - 1] = 0;
         }
         else if (strcmp(TempBuf, BP_IO_PSP_BUFFER_SIZE) == 0)
         {
@@ -210,15 +210,13 @@ int32 BP_IOInit(void)
 /*-----------------------------------------------
  * BP_IOOpen
  *-----------------------------------------------*/
-int32 BP_IOOpen(const char *CfgStr, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *Descriptor)
+int32 BP_IOOpen(const char *IOParm, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *ioh)
 {
-    int32 status;
+    int32            status;
     BP_IOCtrl_t     *IoPtr;
     CFE_ResourceId_t PendingIoHandle;
     BP_PspIOConfig_t IOConfig;
-    uint32 PspModuleId;
-
-    assert(Descriptor);
+    uint32           PspModuleId;
 
     /* Find Open Descriptor */
     PendingIoHandle = CFE_ResourceId_FindNext(BP_GlobalData.LastIoHandle, BP_MAX_IO_DESC, BP_CheckIoSlotUsed);
@@ -234,10 +232,10 @@ int32 BP_IOOpen(const char *CfgStr, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *De
     memset(IoPtr, 0, sizeof(*IoPtr));
 
     /* Parse Configuration String */
-    if (!parse_parameters(CfgStr, &IOConfig))
+    if (!parse_parameters(IOParm, &IOConfig))
     {
         CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to parse IO configuration string: %s",
-                          CfgStr);
+                          IOParm);
         return -1;
     }
 
@@ -245,15 +243,16 @@ int32 BP_IOOpen(const char *CfgStr, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *De
     if (status != CFE_PSP_SUCCESS)
     {
         CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "BP IO: CFE_PSP_IODriver_FindByName(%s) status %x", IOConfig.ModuleName, (unsigned int)status);
+                          "BP IO: CFE_PSP_IODriver_FindByName(%s) status %x", IOConfig.ModuleName,
+                          (unsigned int)status);
         return -1;
     }
 
     Buffer->BaseMem = malloc(IOConfig.BundleBufferSize);
     if (Buffer->BaseMem == NULL)
     {
-        CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "BP IO: Cannot allocate buffer of size %zu", IOConfig.BundleBufferSize);
+        CFE_EVS_SendEvent(BP_IO_OPEN_ERR_EID, CFE_EVS_EventType_ERROR, "BP IO: Cannot allocate buffer of size %zu",
+                          IOConfig.BundleBufferSize);
         return -1;
     }
     Buffer->MaxSize = IOConfig.BundleBufferSize;
@@ -264,8 +263,8 @@ int32 BP_IOOpen(const char *CfgStr, BP_BundleBuffer_t *Buffer, BP_IoHandle_t *De
 
     /* Set Descriptor */
     CFE_EVS_SendEvent(BP_IO_OPEN_INFO_EID, CFE_EVS_EventType_INFORMATION,
-                      "Opened IO channel for using configuration: %s", CfgStr);
-    *Descriptor = IoPtr->Handle;
+                      "Opened IO channel for using configuration: %s", IOParm);
+    *ioh = IoPtr->Handle;
 
     return CFE_SUCCESS;
 }
@@ -291,7 +290,7 @@ int32 BP_IOClose(BP_IoHandle_t ioh)
 /*-----------------------------------------------
  * BP_IOGetStats
  *-----------------------------------------------*/
-int32 BP_IOGetStats(BP_IoHandle_t ioh, BP_IOStats_t *stats)
+int32 BP_IOGetStats(BP_IoHandle_t ioh, BP_IOStats_t *Stats)
 {
     BP_IOCtrl_t *IoPtr;
 
@@ -301,12 +300,10 @@ int32 BP_IOGetStats(BP_IoHandle_t ioh, BP_IOStats_t *stats)
         return -1;
     }
 
-    assert(stats);
-
     /* Set Health Flags */
-    stats->SendHealthy    = IoPtr->SendInError == false;
-    stats->ReceiveHealthy = IoPtr->ReceiveInError == false;
-    stats->SendNotReady   = IoPtr->SendNotReady;
+    Stats->SendHealthy    = IoPtr->SendInError == false;
+    Stats->ReceiveHealthy = IoPtr->ReceiveInError == false;
+    Stats->SendNotReady   = IoPtr->SendNotReady;
 
     /* Calculate I/O Rates */
     CFE_TIME_SysTime_t sys_time        = CFE_TIME_GetMET();
@@ -314,8 +311,8 @@ int32 BP_IOGetStats(BP_IoHandle_t ioh, BP_IOStats_t *stats)
     double             elapsed_seconds = curr_seconds - IoPtr->LastStatsSeconds;
     if (elapsed_seconds > 0)
     {
-        stats->BytesSentPerSecond     = IoPtr->BytesSent / elapsed_seconds;
-        stats->BytesReceivedPerSecond = IoPtr->BytesReceived / elapsed_seconds;
+        Stats->BytesSentPerSecond     = IoPtr->BytesSent / elapsed_seconds;
+        Stats->BytesReceivedPerSecond = IoPtr->BytesReceived / elapsed_seconds;
         IoPtr->BytesSent              = 0;
         IoPtr->BytesReceived          = 0;
     }
@@ -365,8 +362,8 @@ int32 BP_IOFlush(BP_IoHandle_t ioh)
  *-----------------------------------------------*/
 bool BP_IOReadBundle(BP_IoHandle_t ioh, BP_BundleBuffer_t *InBuf)
 {
-    BP_IOCtrl_t   *IoPtr;
-    int32 PspStatus;
+    BP_IOCtrl_t                        *IoPtr;
+    int32                               PspStatus;
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
 
     IoPtr = BP_LocateIoEntryByHandle(ioh);
@@ -379,9 +376,10 @@ bool BP_IOReadBundle(BP_IoHandle_t ioh, BP_BundleBuffer_t *InBuf)
     assert(InBuf->MaxSize > 0);
 
     RdBuf.BufferSize = InBuf->MaxSize;
-    RdBuf.BufferMem = InBuf->BaseMem;
+    RdBuf.BufferMem  = InBuf->BaseMem;
 
-    PspStatus = CFE_PSP_IODriver_Command(&IoPtr->Location, CFE_PSP_IODRIVER_PACKET_IO_READ, CFE_PSP_IODRIVER_VPARG(&RdBuf));
+    PspStatus =
+        CFE_PSP_IODriver_Command(&IoPtr->Location, CFE_PSP_IODRIVER_PACKET_IO_READ, CFE_PSP_IODRIVER_VPARG(&RdBuf));
 
     return (PspStatus == CFE_PSP_SUCCESS);
 }
@@ -395,8 +393,8 @@ bool BP_IOReadBundle(BP_IoHandle_t ioh, BP_BundleBuffer_t *InBuf)
  *-----------------------------------------------*/
 bool BP_IOWriteBundle(BP_IoHandle_t ioh, const BP_BundleBuffer_t *OutBuf)
 {
-    int32   PspStatus;
-    BP_IOCtrl_t     *IoPtr;
+    int32                                PspStatus;
+    BP_IOCtrl_t                         *IoPtr;
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
 
     IoPtr = BP_LocateIoEntryByHandle(ioh);
@@ -408,10 +406,11 @@ bool BP_IOWriteBundle(BP_IoHandle_t ioh, const BP_BundleBuffer_t *OutBuf)
     assert(OutBuf != NULL);
     assert(OutBuf->CurrentSize > 0);
 
-    WrBuf.BufferMem = OutBuf->BaseMem;
+    WrBuf.BufferMem  = OutBuf->BaseMem;
     WrBuf.OutputSize = OutBuf->CurrentSize;
 
-    PspStatus = CFE_PSP_IODriver_Command(&IoPtr->Location, CFE_PSP_IODRIVER_PACKET_IO_WRITE, CFE_PSP_IODRIVER_VPARG(&WrBuf));
+    PspStatus =
+        CFE_PSP_IODriver_Command(&IoPtr->Location, CFE_PSP_IODRIVER_PACKET_IO_WRITE, CFE_PSP_IODRIVER_VPARG(&WrBuf));
 
     return (PspStatus == CFE_PSP_SUCCESS);
 }
