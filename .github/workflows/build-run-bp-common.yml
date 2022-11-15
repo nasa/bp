@@ -1,0 +1,212 @@
+name: Build and Test CFS with BP
+
+on:
+  workflow_call:
+    inputs:
+      upstream-cfs-repo:
+        description: 'Repository to fetch cFS bundle from'
+        type: string
+        default: nasa/cFS
+      upstream-cfs-ref:
+        description: 'Branch or Tag to use for cFS bundle'
+        type: string
+        default: main
+      upstream-bplib-repo:
+        description: 'Repository to fetch BPLib from'
+        type: string
+        default: nasa/bplib
+      upstream-bplib-ref:
+        description: 'Branch or Tag to use for BPLib'
+        type: string
+        default: main
+      upstream-cf-repo:
+        description: 'Repository to fetch CF from'
+        type: string
+        default: nasa/cf
+      upstream-cf-ref:
+        description: 'Branch or Tag to use for CF'
+        type: string
+        default: main
+      upstream-tinycbor-repo:
+        description: 'Repository to fetch TinyCBOR from'
+        type: string
+        default: intel/tinycbor
+      upstream-tinycbor-ref:
+        description: 'Branch or Tag to use for TinyCBOR'
+        type: string
+        default: v0.6.0
+
+
+# Force bash to apply pipefail option so pipeline failures aren't masked
+defaults:
+  run:
+    shell: bash
+
+env:
+  CFS_APP_PATH: ${{ github.workspace }}/src
+
+jobs:
+  build:
+    name: Build cFS with BP
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout BP Source
+        uses: actions/checkout@v3
+        with:
+          path: ${{ github.workspace }}/src/bp
+
+      - name: Checkout BPLib Source
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.upstream-bplib-repo }}
+          ref: ${{ inputs.upstream-bplib-ref }}
+          path: ${{ github.workspace }}/src/bplib
+
+      - name: Checkout CF Source
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.upstream-cf-repo }}
+          ref: ${{ inputs.upstream-cf-ref }}
+          path: ${{ github.workspace }}/src/cf
+
+      # Include the hash of the "setup-cfs" action source file, so if the process to create the cfs bundle
+      # ever changes, this will automatically invalidate the old cache by changing the key.  Also include
+      # the ISO year/week so the cfs bundle will be regenerated at least weekly, whether it changes or not.
+      - name: Compute cFS Bundle Cache Key
+        id: cfs-cache-key
+        run: echo "hash=$(md5sum ./src/bp/.github/actions/setup-cfs/action.yml | cut -d' ' -f1)@$(date +'%G-%V')" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Cache cFS Bundle
+        uses: actions/cache@v3
+        id: cache-cfs
+        with:
+          path: ${{ github.workspace }}/cfs-bundle
+          key: cfs-${{ steps.cfs-cache-key.outputs.hash }}
+
+      - name: Cache TinyCBOR Dependency
+        uses: actions/cache@v3
+        id: cache-tinycbor
+        with:
+          path: ${{ github.workspace }}/tinycbor-staging
+          key: bpapp-dep-${{ inputs.upstream-tinycbor-repo }}@${{ inputs.upstream-tinycbor-ref }}
+
+      - name: Set up cFS
+        if: steps.cache-cfs.outputs.cache-hit != 'True'
+        uses: ./src/bp/.github/actions/setup-cfs
+        with:
+          bundle-dir: ${{ github.workspace }}/cfs-bundle
+          upstream-repo: ${{ inputs.upstream-cfs-repo }}
+          upstream-ref: ${{ inputs.upstream-cfs-ref }}
+
+      - name: Set up TinyCBOR
+        if: steps.cache-tinycbor.outputs.cache-hit != 'True'
+        uses: ./src/bplib/.github/actions/setup-tinycbor
+        with:
+          staging-dir: ${{ github.workspace }}/tinycbor-staging
+          upstream-repo: ${{ inputs.upstream-tinycbor-repo }}
+          upstream-ref: ${{ inputs.upstream-tinycbor-ref }}
+
+      - name: Import TinyCBOR
+        run: sudo cp -rv -t / ${{ github.workspace }}/tinycbor-staging/*
+
+      # The cFS build configuration needs to use an app set and startup scripts in the "buildconfig" for this workflow
+      # This cherry-picks certain base files from the CFE sample config, then adds the local config on top.
+      - name: Prepare cFS configuration
+        run: |
+          mkdir ./bpxfer_defs
+          cp -v ./cfs-bundle/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h
+          cp -v ./cfs-bundle/cfe/cmake/sample_defs/cpu1_msgids.h ./bpxfer_defs/cfe_msgids.h
+          cp -v ./cfs-bundle/cfe/cmake/sample_defs/cpu1_platform_cfg.h ./bpxfer_defs/default_platform_cfg.h
+          cp -v -t ./bpxfer_defs ./cfs-bundle/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
+          cp -v -t ./bpxfer_defs ./src/bp/.github/buildconfig/*.{cmake,scr}
+          cp -rv -t ./bpxfer_defs ./src/bp/.github/buildconfig/{tx,rx,tables}
+          cat ./cfs-bundle/cfe/cmake/sample_defs/sample_mission_cfg.h ./src/bp/.github/buildconfig/bp_msgids_extra.h > ./bpxfer_defs/bpxfer_mission_cfg.h
+
+      - name: Run CMake
+        run: cmake -DCMAKE_BUILD_TYPE=Release -DSIMULATION=native -DCMAKE_INSTALL_PREFIX=/exe -DMISSIONCONFIG=bpxfer -DMISSION_DEFS=$PWD/bpxfer_defs -B build -S cfs-bundle/cfe
+
+      - name: Run Make
+        working-directory: build
+        run: make DESTDIR=${{ github.workspace}} -j2 mission-install
+
+      - name: Create Binary Tarball
+        working-directory: exe
+        run: tar -cvf ../cfs-bpapp.tar .
+
+      - name: Upload Executables
+        uses: actions/upload-artifact@v3
+        with:
+          name: bp-cfs-executables
+          path: cfs-bpapp.tar
+
+  execute:
+    name: Execute File Transfer over BP
+    needs: [build]
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download Executable artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: bp-cfs-executables
+
+      - name: Unpack Binary Tarball
+        run: tar -xvf cfs-bpapp.tar
+
+      - name: Generate Test File
+        working-directory: tx/cf
+        run: dd if=/dev/urandom of=testdata.bin bs=1k count=1
+
+      - name: Calculate File Checksum
+        working-directory: tx/cf
+        run: md5sum testdata.bin | tee -a ${{ github.workspace }}/testdata.md5sum $GITHUB_STEP_SUMMARY
+
+      - name: Create Storage Dirs
+        run: mkdir -p ./tx/storage ./rx/storage
+
+      - name: Run Tx
+        working-directory: tx
+        run: ./core-tx > console_output.log 2>&1 &
+
+      - name: Run Rx
+        working-directory: rx
+        run: ./core-rx > console_output.log 2>&1 &
+
+      - name: Wait for Startup
+        run: sleep 5 && grep -q 'CFE_ES_Main entering OPERATIONAL state' ./tx/console_output.log
+
+      - name: Enable Flows
+        working-directory: host
+        run: |
+          ./cmdUtil --port 1234 -ELE -I0x1812 -C7 -s8:CFDP
+          ./cmdUtil --port 1235 -ELE -I0x1812 -C7 -s8:CFDP
+
+      - name: Initiate Class 1 Transfer
+        working-directory: host
+        run:
+          ./cmdUtil --port 1234 -ELE -I0x18B3 -C2 -b0 -b1 -b0 -b0 -o2 -s64:/cf/testdata.bin -s64:/cf/testdata.bin
+
+      - name: Wait for Transfer
+        run: sleep 30
+
+      - name: Terminate cFS
+        working-directory: host
+        run: |
+          ./cmdUtil --port=1234 --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
+          ./cmdUtil --port=1235 --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
+
+      - name: Wait for Shutdown
+        run: sleep 5
+
+      - name: Dump Tx Log
+        working-directory: tx
+        run: cat console_output.log
+
+      - name: Dump Rx Log
+        working-directory: rx
+        run: cat console_output.log
+
+      - name: Verify File Checksum
+        working-directory: rx/cf
+        run: md5sum -c ${{ github.workspace }}/testdata.md5sum | tee -a $GITHUB_STEP_SUMMARY
