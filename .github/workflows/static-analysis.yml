@@ -1,0 +1,12 @@
+name: Static Analysis
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  static-analysis:
+    name: Static Analysis
+    uses: nasa/cFS/.github/workflows/static-analysis.yml@main
+    with:
+      strict-dir-list: -Ifsw/mission_inc -Ifsw/platform_inc fsw/src
