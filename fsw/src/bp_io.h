@@ -41,11 +41,10 @@
 
 typedef struct
 {
-    void *BaseMem;
+    void  *BaseMem;
     size_t MaxSize;
     size_t CurrentSize;
 } BP_BundleBuffer_t;
-
 
 typedef CFE_RESOURCEID_BASE_TYPE BP_IoHandle_t;
 
@@ -61,16 +60,16 @@ typedef struct
 /* IO Control Structure */
 typedef struct
 {
-    BP_IoHandle_t    Handle;
+    BP_IoHandle_t Handle;
 
     CFE_PSP_IODriver_Location_t Location;
 
-    int              SendInError;    /* bool */
-    int              ReceiveInError; /* bool */
-    uint32           SendNotReady;
-    uint32           BytesSent;
-    uint32           BytesReceived;
-    double           LastStatsSeconds;
+    int    SendInError;    /* bool */
+    int    ReceiveInError; /* bool */
+    uint32 SendNotReady;
+    uint32 BytesSent;
+    uint32 BytesReceived;
+    double LastStatsSeconds;
 } BP_IOCtrl_t;
 
 /************************************************

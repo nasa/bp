@@ -55,7 +55,11 @@ enum
 typedef union
 {
     CFE_SB_Buffer_t Buffer;
-    unsigned char   PacketSpace[BP_MAX_PACKET_SIZE]; /* preallocated buffer holding current packet */
+
+    /* This member exists to make sure that this object is sized appropriately
+     * to hold the largest possible packet.  It is not accessed directly. */
+    /* cppcheck-suppress unusedStructMember */
+    unsigned char PacketSpace[BP_MAX_PACKET_SIZE];
 } BP_SbIOBuffer_t;
 
 /************************************************
@@ -66,17 +70,17 @@ typedef union
  * Local Functions
  ************************************************/
 
-int32 BP_FlowHandle_ToIndex(BP_FlowHandle_t fh, uint32 *Idx)
+int32 BP_FlowHandle_ToIndex(BP_FlowHandle_t Flow, uint32 *Idx)
 {
-    return CFE_ResourceId_ToIndex(CFE_RESOURCEID_UNWRAP(fh), BP_FLOW_HANDLE_BASE, BP_MAX_FLOWS, Idx);
+    return CFE_ResourceId_ToIndex(CFE_RESOURCEID_UNWRAP(Flow), BP_FLOW_HANDLE_BASE, BP_MAX_FLOWS, Idx);
 }
 
-static BP_FlowCtrlEntry_t *BP_LocateFlowEntryByHandle(BP_FlowHandle_t fh)
+static BP_FlowCtrlEntry_t *BP_LocateFlowEntryByHandle(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
     uint32              Idx;
 
-    if (BP_FlowHandle_ToIndex(fh, &Idx) == CFE_SUCCESS)
+    if (BP_FlowHandle_ToIndex(Flow, &Idx) == CFE_SUCCESS)
     {
         FlowPtr = &BP_GlobalData.FlowControl[Idx];
     }
@@ -88,9 +92,9 @@ static BP_FlowCtrlEntry_t *BP_LocateFlowEntryByHandle(BP_FlowHandle_t fh)
     return FlowPtr;
 }
 
-static inline bool BP_FlowEntryIsMatch(const BP_FlowCtrlEntry_t *FlowPtr, BP_FlowHandle_t fh)
+static inline bool BP_FlowEntryIsMatch(const BP_FlowCtrlEntry_t *FlowPtr, BP_FlowHandle_t Flow)
 {
-    return (FlowPtr != NULL && CFE_RESOURCEID_TEST_EQUAL(FlowPtr->Handle, fh));
+    return (FlowPtr != NULL && CFE_RESOURCEID_TEST_EQUAL(FlowPtr->Handle, Flow));
 }
 
 /*----------------------------------------------------------------
@@ -390,7 +394,6 @@ static int store_incoming_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int ma
                                   "Flow %s - attempted to store packet that was too large: %lu", flow->Config.Name,
                                   (unsigned long)flow->CurrentChunkInSize);
 
-                Status                   = CFE_STATUS_WRONG_MSG_LENGTH;
                 flow->CurrentChunkInSize = 0;
             }
 
@@ -542,7 +545,7 @@ int32 BP_FlowInit(const char *AppName)
 /*-----------------------------------------------
  * BP_FlowLoad
  *-----------------------------------------------*/
-int32 BP_FlowLoad(const char *flow_table_filename)
+int32 BP_FlowLoad(const char *FlowTableFileName)
 {
     int32               cfe_status;
     BP_FlowTbl_t       *StagedConfig;
@@ -554,7 +557,7 @@ int32 BP_FlowLoad(const char *flow_table_filename)
     int                 flow_idx, num_flows = 0;
 
     /* Load Flow Table */
-    cfe_status = BP_LoadFlowConfigTable(BP_GlobalData.FlowTableHandle, flow_table_filename, &StagedConfig);
+    cfe_status = BP_LoadFlowConfigTable(BP_GlobalData.FlowTableHandle, FlowTableFileName, &StagedConfig);
     if (cfe_status != CFE_SUCCESS)
         return cfe_status;
 
@@ -676,7 +679,7 @@ int32 BP_FlowLoad(const char *flow_table_filename)
 /*-----------------------------------------------
  * BP_FlowEnable
  *----------------------------------------------*/
-int32 BP_FlowEnable(BP_FlowHandle_t fh)
+int32 BP_FlowEnable(BP_FlowHandle_t Flow)
 {
     int                 i;
     char                pipe_name[BP_PIPE_NAME_SIZE];
@@ -684,8 +687,8 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
     BP_FlowCtrlEntry_t *FlowPtr;
     bp_ipn_addr_t       ipn_addr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
@@ -782,18 +785,12 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
                                      (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
             }
         }
-    }
 
-    /* Open an IO channel */
-    if (status == CFE_SUCCESS)
-    {
         /* Success */
         FlowPtr->Active  = false; /* Start Out Paused */
         FlowPtr->Enabled = true;
     }
-
-    /* Clean Up Failed Enable */
-    if (status != CFE_SUCCESS)
+    else
     {
         /* Mark Flow as Unhealthy */
         FlowPtr->Healthy = false;
@@ -820,15 +817,15 @@ int32 BP_FlowEnable(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowDisable
  *----------------------------------------------*/
-int32 BP_FlowDisable(BP_FlowHandle_t fh)
+int32 BP_FlowDisable(BP_FlowHandle_t Flow)
 {
     int                 i;
     int32               cfe_status;
     bool                throttle_pipe;
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
@@ -895,12 +892,12 @@ int32 BP_FlowDisable(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowSetTimeout
  *----------------------------------------------*/
-int32 BP_FlowSetTimeout(BP_FlowHandle_t fh, int timeout)
+int32 BP_FlowSetTimeout(BP_FlowHandle_t Flow, int Timeout)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
@@ -908,14 +905,14 @@ int32 BP_FlowSetTimeout(BP_FlowHandle_t fh, int timeout)
     if (FlowPtr->Enabled == false)
     {
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR, "Cannot configure disabled flow: %s",
-                          BP_FlowGetName(fh));
+                          BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
-    if (FlowPtr->Config.Timeout == 0 && timeout != 0)
+    if (FlowPtr->Config.Timeout == 0 && Timeout != 0)
     {
         CFE_EVS_SendEvent(BP_PARM_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Cannot set non-zero timeout on flow %s that does not request custody", BP_FlowGetName(fh));
+                          "Cannot set non-zero timeout on flow %s that does not request custody", BP_FlowGetName(Flow));
         return BP_PARM_ERR_EID;
     }
 
@@ -925,29 +922,28 @@ int32 BP_FlowSetTimeout(BP_FlowHandle_t fh, int timeout)
 /*-----------------------------------------------
  * BP_FlowRevertTimeout
  *----------------------------------------------*/
-int32 BP_FlowRevertTimeout(BP_FlowHandle_t fh)
+int32 BP_FlowRevertTimeout(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
 
-    return BP_FlowSetTimeout(fh, FlowPtr->Config.Timeout);
+    return BP_FlowSetTimeout(Flow, FlowPtr->Config.Timeout);
 }
 
 /*-----------------------------------------------
  * BP_FlowSetPriority
  *----------------------------------------------*/
-int32 BP_FlowSetPriority(BP_FlowHandle_t fh, int priority)
+int32 BP_FlowSetPriority(BP_FlowHandle_t Flow, int Priority)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
-    int                 optval = priority;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
@@ -955,11 +951,11 @@ int32 BP_FlowSetPriority(BP_FlowHandle_t fh, int priority)
     if (FlowPtr->Enabled == false)
     {
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR, "Cannot configure disabled flow: %s",
-                          BP_FlowGetName(fh));
+                          BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
-    FlowPtr->COS.Priority = optval;
+    FlowPtr->COS.Priority = Priority;
     prioritize_flows(); /* Re-sort Flow Priorities */
     return CFE_SUCCESS;
 }
@@ -967,28 +963,28 @@ int32 BP_FlowSetPriority(BP_FlowHandle_t fh, int priority)
 /*-----------------------------------------------
  * BP_FlowRevertPriority
  *----------------------------------------------*/
-int32 BP_FlowRevertPriority(BP_FlowHandle_t fh)
+int32 BP_FlowRevertPriority(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
 
-    return BP_FlowSetPriority(fh, FlowPtr->Config.Priority);
+    return BP_FlowSetPriority(Flow, FlowPtr->Config.Priority);
 }
 
 /*-----------------------------------------------
  * BP_FlowIsEnabled
  *-----------------------------------------------*/
-bool BP_FlowIsEnabled(BP_FlowHandle_t fh)
+bool BP_FlowIsEnabled(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return false;
     }
@@ -999,46 +995,46 @@ bool BP_FlowIsEnabled(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowGetStats
  *-----------------------------------------------*/
-int32 BP_FlowGetStats(BP_FlowHandle_t fh, BP_FlowStats_t *stat)
+int32 BP_FlowGetStats(BP_FlowHandle_t Flow, BP_FlowStats_t *Stats)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
 
     /* Get stats */
-    if (stat)
+    if (Stats)
     {
-        memset(stat, 0, sizeof(BP_FlowStats_t));
+        memset(Stats, 0, sizeof(BP_FlowStats_t));
 
         /* Initialize to Invalid Status */
-        stat->Active                 = BP_INVALID_STATUS;
-        stat->Healthy                = BP_INVALID_STATUS;
-        stat->IOStats.SendHealthy    = BP_INVALID_STATUS;
-        stat->IOStats.ReceiveHealthy = BP_INVALID_STATUS;
+        Stats->Active                 = BP_INVALID_STATUS;
+        Stats->Healthy                = BP_INVALID_STATUS;
+        Stats->IOStats.SendHealthy    = BP_INVALID_STATUS;
+        Stats->IOStats.ReceiveHealthy = BP_INVALID_STATUS;
 
         /* Get Flow Information */
-        strncpy(stat->Name, FlowPtr->Config.Name, BP_FLOW_NAME_SIZE);
-        stat->Enabled  = FlowPtr->Enabled;
-        stat->Timeout  = FlowPtr->Config.Timeout;
-        stat->Priority = FlowPtr->COS.Priority;
+        strncpy(Stats->Name, FlowPtr->Config.Name, BP_FLOW_NAME_SIZE);
+        Stats->Enabled  = FlowPtr->Enabled;
+        Stats->Timeout  = FlowPtr->Config.Timeout;
+        Stats->Priority = FlowPtr->COS.Priority;
 
         /* Get Enabled-Only Status */
-        if (stat->Enabled)
+        if (Stats->Enabled)
         {
             /* Get Flow Status */
-            stat->Healthy        = FlowPtr->Healthy;
-            stat->DataInDropped  = FlowPtr->DataInDropped;
-            stat->DataOutDropped = FlowPtr->DataOutDropped;
-            stat->LibFlags       = FlowPtr->LibFlags;
+            Stats->Healthy        = FlowPtr->Healthy;
+            Stats->DataInDropped  = FlowPtr->DataInDropped;
+            Stats->DataOutDropped = FlowPtr->DataOutDropped;
+            Stats->LibFlags       = FlowPtr->LibFlags;
 
             /* Get IO Module Status */
-            stat->Active = FlowPtr->Active;
+            Stats->Active = FlowPtr->Active;
         }
     }
 
@@ -1048,14 +1044,14 @@ int32 BP_FlowGetStats(BP_FlowHandle_t fh, BP_FlowStats_t *stat)
 /*-----------------------------------------------
  * BP_FlowClearStats
  *-----------------------------------------------*/
-int32 BP_FlowClearStats(BP_FlowHandle_t fh)
+int32 BP_FlowClearStats(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
@@ -1078,7 +1074,7 @@ int32 BP_FlowClearStats(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowGetHandle
  *-----------------------------------------------*/
-BP_FlowHandle_t BP_FlowGetHandle(const char *name)
+BP_FlowHandle_t BP_FlowGetHandle(const char *Name)
 {
     int                 f;
     BP_FlowCtrlEntry_t *CheckPtr;
@@ -1090,7 +1086,7 @@ BP_FlowHandle_t BP_FlowGetHandle(const char *name)
         CheckPtr = &BP_GlobalData.FlowControl[f];
 
         if (CFE_RESOURCEID_TEST_DEFINED(CheckPtr->Handle) &&
-            strncmp(CheckPtr->Config.Name, name, BP_FLOW_NAME_SIZE) == 0)
+            strncmp(CheckPtr->Config.Name, Name, BP_FLOW_NAME_SIZE) == 0)
         {
             FlowPtr = CheckPtr;
             break;
@@ -1099,7 +1095,7 @@ BP_FlowHandle_t BP_FlowGetHandle(const char *name)
 
     if (FlowPtr == NULL)
     {
-        CFE_EVS_SendEvent(BP_INVALID_FLOW_ERR_EID, CFE_EVS_EventType_ERROR, "Invalid flow: %s", name);
+        CFE_EVS_SendEvent(BP_INVALID_FLOW_ERR_EID, CFE_EVS_EventType_ERROR, "Invalid flow: %s", Name);
         return BP_INVALID_FLOW;
     }
 
@@ -1109,14 +1105,14 @@ BP_FlowHandle_t BP_FlowGetHandle(const char *name)
 /*-----------------------------------------------
  * BP_FlowGetName
  *-----------------------------------------------*/
-const char *BP_FlowGetName(BP_FlowHandle_t fh)
+const char *BP_FlowGetName(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         /* do not return NULL, as this might be used in printf()-style call */
         return "INVALID";
@@ -1128,21 +1124,21 @@ const char *BP_FlowGetName(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowFlush
  *-----------------------------------------------*/
-int32 BP_FlowFlush(BP_FlowHandle_t fh)
+int32 BP_FlowFlush(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
     else if (FlowPtr->Enabled == false)
     {
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR, "Cannot flush disabled flow: %s",
-                          BP_FlowGetName(fh));
+                          BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
@@ -1152,21 +1148,21 @@ int32 BP_FlowFlush(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowPause
  *-----------------------------------------------*/
-int32 BP_FlowPause(BP_FlowHandle_t fh)
+int32 BP_FlowPause(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
     else if (FlowPtr->Enabled == false)
     {
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR, "Cannot pause disabled flow: %s",
-                          BP_FlowGetName(fh));
+                          BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
@@ -1179,21 +1175,21 @@ int32 BP_FlowPause(BP_FlowHandle_t fh)
 /*-----------------------------------------------
  * BP_FlowResume
  *-----------------------------------------------*/
-int32 BP_FlowResume(BP_FlowHandle_t fh)
+int32 BP_FlowResume(BP_FlowHandle_t Flow)
 {
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
     else if (FlowPtr->Enabled == false)
     {
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR, "Cannot resume disabled flow: %s",
-                          BP_FlowGetName(fh));
+                          BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
@@ -1244,7 +1240,7 @@ int32 BP_FlowProcess(void)
         }
 
         /* Rotate Flows in Level */
-        if (PrevFlowPtr != LevelPtr)
+        if (PrevFlowPtr != LevelPtr && PrevFlowPtr != NULL)
         {
             /* Update Flow Representing the Level
              *  note - [level].NextFlow cannot be invalid due to check that
@@ -1283,15 +1279,15 @@ int32 BP_FlowProcess(void)
 /*-----------------------------------------------
  * BP_FlowDirectStore
  *-----------------------------------------------*/
-int32 BP_FlowDirectStore(BP_FlowHandle_t fh, uint8 *buffer, int len)
+int32 BP_FlowDirectStore(BP_FlowHandle_t Flow, uint8 *Buffer, int Len)
 {
     int                 lib_status;
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
     }
@@ -1300,17 +1296,17 @@ int32 BP_FlowDirectStore(BP_FlowHandle_t fh, uint8 *buffer, int len)
     {
         FlowPtr->DataInDropped++;
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Cannot directly store data to disabled flow: %s", BP_FlowGetName(fh));
+                          "Cannot directly store data to disabled flow: %s", BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
     /* Store data */
-    lib_status = bplib_send(FlowPtr->BPS, buffer, len, BP_CHECK);
+    lib_status = bplib_send(FlowPtr->BPS, Buffer, Len, BP_CHECK);
     if (lib_status != BP_SUCCESS)
     {
         FlowPtr->DataInDropped++;
         CFE_EVS_SendEvent(BP_LIB_STORE_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Flow %s - Failed (%d) to directly store data [%08X]", BP_FlowGetName(fh), (int)lib_status,
+                          "Flow %s - Failed (%d) to directly store data [%08X]", BP_FlowGetName(Flow), (int)lib_status,
                           (unsigned int)FlowPtr->LibFlags);
         return BP_LIB_LOAD_ERR_EID;
     }
@@ -1321,41 +1317,27 @@ int32 BP_FlowDirectStore(BP_FlowHandle_t fh, uint8 *buffer, int len)
 /*-----------------------------------------------
  * BP_FlowDirectConfig
  *-----------------------------------------------*/
-int32 BP_FlowDirectConfig(BP_FlowHandle_t fh, int mode, int opt, int *val)
+int32 BP_FlowDirectConfig(BP_FlowHandle_t Flow, int Mode, int Option, int *Value)
 {
-    int                 lib_status;
     BP_FlowCtrlEntry_t *FlowPtr;
 
-    FlowPtr = BP_LocateFlowEntryByHandle(fh);
+    FlowPtr = BP_LocateFlowEntryByHandle(Flow);
 
     /* Check flow */
-    if (!BP_FlowEntryIsMatch(FlowPtr, fh))
+    if (!BP_FlowEntryIsMatch(FlowPtr, Flow))
     {
         return BP_INVALID_FLOW_ERR_EID;
-    }
-
-    if (val == NULL)
-    {
-        return BP_PARM_ERR_EID;
     }
 
     if (FlowPtr->Enabled == false)
     {
         CFE_EVS_SendEvent(BP_FLOW_DISABLED_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Cannot directly configure a disabled flow: %s", BP_FlowGetName(fh));
+                          "Cannot directly configure a disabled flow: %s", BP_FlowGetName(Flow));
         return BP_FLOW_DISABLED_ERR_EID;
     }
 
-    /* Configure channel */
-    lib_status = BP_ERROR;
-    if (lib_status != BP_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BP_LIB_CONFIG_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "Flow %s - Failed (%d) to directly configure channel", BP_FlowGetName(fh), (int)lib_status);
-        return BP_LIB_CONFIG_ERR_EID;
-    }
-
-    return CFE_SUCCESS;
+    /* This call is not yet implemented */
+    return BP_LIB_CONFIG_ERR_EID;
 }
 
 /*-----------------------------------------------
@@ -1367,16 +1349,16 @@ void BP_ForEachFlow(void (*Func)(BP_FlowHandle_t, void *Arg), void *Arg)
      * This recomputes the bitmask for TLM purposes, by setting
      * a bit inside a uint32 for each flow that is enabled
      */
-    BP_FlowHandle_t fh;
+    BP_FlowHandle_t Flow;
     uint32          pos;
 
     for (pos = 0; pos < BP_MAX_FLOWS; ++pos)
     {
-        fh = BP_GlobalData.FlowControl[pos].Handle;
+        Flow = BP_GlobalData.FlowControl[pos].Handle;
 
-        if (CFE_RESOURCEID_TEST_DEFINED(fh))
+        if (CFE_RESOURCEID_TEST_DEFINED(Flow))
         {
-            Func(fh, Arg);
+            Func(Flow, Arg);
         }
     }
 }

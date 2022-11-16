@@ -216,7 +216,7 @@ bool BP_FlowIsEnabled(BP_FlowHandle_t Flow);
  *
  * Gets counters and status flags from flow  on provided flow
  *----------------------------------------------*/
-int32 BP_FlowGetStats(BP_FlowHandle_t Flow, BP_FlowStats_t *Stat);
+int32 BP_FlowGetStats(BP_FlowHandle_t Flow, BP_FlowStats_t *Stats);
 
 /*-----------------------------------------------
  * BP_FlowClearStats
@@ -284,7 +284,7 @@ int32 BP_FlowDirectStore(BP_FlowHandle_t Flow, uint8 *Buffer, int Len);
  *----------------------------------------------*/
 int32 BP_FlowDirectConfig(BP_FlowHandle_t Flow, int Mode, int Option, int *Value);
 
-int32 BP_FlowHandle_ToIndex(BP_FlowHandle_t fh, uint32 *Idx);
+int32 BP_FlowHandle_ToIndex(BP_FlowHandle_t Flow, uint32 *Idx);
 
 /*-----------------------------------------------
  * BP_ForEachFlow
