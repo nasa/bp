@@ -1,0 +1,51 @@
+name: Build and Test Manual Dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      upstream-cfs-repo:
+        description: 'Repository to fetch cFS bundle from'
+        type: string
+        default: nasa/cFS
+      upstream-cfs-ref:
+        description: 'Branch or Tag to use for cFS bundle'
+        type: string
+        default: main
+      upstream-bplib-repo:
+        description: 'Repository to fetch BPLib from'
+        type: string
+        default: nasa/bplib
+      upstream-bplib-ref:
+        description: 'Branch or Tag to use for BPLib'
+        type: string
+        default: main
+      upstream-cf-repo:
+        description: 'Repository to fetch CF from'
+        type: string
+        default: nasa/cf
+      upstream-cf-ref:
+        description: 'Branch or Tag to use for CF'
+        type: string
+        default: main
+      upstream-tinycbor-repo:
+        description: 'Repository to fetch TinyCBOR from'
+        type: string
+        default: intel/tinycbor
+      upstream-tinycbor-ref:
+        description: 'Branch or Tag to use for TinyCBOR'
+        type: string
+        default: v0.6.0
+
+jobs:
+  build:
+    name: Build cFS with BP on dispatch
+    uses: ./.github/workflows/build-run-bp-common.yml
+    with:
+      upstream-cfs-repo: ${{ inputs.upstream-cfs-repo }}
+      upstream-cfs-ref: ${{ inputs.upstream-cfs-ref }}
+      upstream-bplib-repo: ${{ inputs.upstream-bplib-repo }}
+      upstream-bplib-ref: ${{ inputs.upstream-bplib-ref }}
+      upstream-cf-repo: ${{ inputs.upstream-cf-repo }}
+      upstream-cf-ref: ${{ inputs.upstream-cf-ref }}
+      upstream-tinycbor-repo: ${{ inputs.upstream-tinycbor-repo }}
+      upstream-tinycbor-ref: ${{ inputs.upstream-tinycbor-ref }}
