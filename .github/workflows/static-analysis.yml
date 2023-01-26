@@ -3,6 +3,11 @@ name: Static Analysis
 on:
   workflow_dispatch:
   pull_request:
+  schedule:
+    # 9:37 PM UTC every Sunday
+    # Running on a schedule helps catch any new issues that
+    # may appear as the upstream cFS is updated
+    - cron:  '37 21 * * 0'
 
 jobs:
   static-analysis:

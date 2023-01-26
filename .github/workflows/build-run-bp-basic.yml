@@ -1,0 +1,14 @@
+name: Build and Test Basic Operation
+
+on:
+  pull_request:
+  schedule:
+    # 9:53 PM UTC every Sunday
+    # Running on a schedule helps catch any new issues that
+    # may appear as the upstream cFS is updated
+    - cron:  '53 21 * * 0'
+
+jobs:
+  build:
+    name: Build cFS with BP (default config)
+    uses: ./.github/workflows/build-run-bp-common.yml

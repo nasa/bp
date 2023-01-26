@@ -23,9 +23,13 @@ runs:
         ref: ${{ inputs.upstream-ref }}
         path: ${{ inputs.bundle-dir }}
 
-    - name: Merge PSP IODriver Patch
+    # To test file transfer the PSP needs to include the "iodriver" patch
+    - name: Fetch PSP IODriver Patch
       shell: bash
       working-directory: ${{ inputs.bundle-dir }}/psp
-      run: |
-        git fetch https://github.com/jphickey/PSP.git techdev-iodriver:techdev-iodriver
-        git merge --no-edit techdev-iodriver
+      run: git fetch --no-tags --depth=1 https://github.com/jphickey/PSP.git techdev-iodriver:techdev-iodriver
+
+    - name: Checkout PSP IODriver Patch
+      shell: bash
+      working-directory: ${{ inputs.bundle-dir }}/psp
+      run: git checkout techdev-iodriver
