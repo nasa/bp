@@ -129,25 +129,25 @@ CFE_Status_t BP_CLA_InitOutput(BP_CLA_BundleFlowEntry_t *Entry)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    Entry->PspLocation.BoardInstance = 2 - (CFE_PSP_GetProcessorId() & 1);
-    Entry->PspLocation.ChannelNumber = BP_CLA_PSP_OUTPUT_SUBCHANNEL;
+    Entry->PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
+    Entry->PspLocation.SubchannelId = BP_CLA_PSP_OUTPUT_SUBCHANNEL;
 
-    PspStatus = CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODRIVER_SET_DIRECTION,
-                                         CFE_PSP_IODRIVER_U32ARG(CFE_PSP_IODRIVER_DIRECTION_OUTPUT_ONLY));
+    PspStatus = CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODriver_SET_DIRECTION,
+                                         CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         CFE_EVS_SendEvent(BP_CLA_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODRIVER_SET_DIRECTION (output) status %x",
+                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (output) status %x",
                           (unsigned int)PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
     PspStatus =
-        CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODRIVER_SET_RUNNING, CFE_PSP_IODRIVER_U32ARG(true));
+        CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         CFE_EVS_SendEvent(BP_CLA_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODRIVER_SET_RUNNING (output) status %x",
+                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (output) status %x",
                           (unsigned int)PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
@@ -181,25 +181,25 @@ CFE_Status_t BP_CLA_InitInput(BP_CLA_BundleFlowEntry_t *Entry)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    Entry->PspLocation.BoardInstance = 1 + (CFE_PSP_GetProcessorId() & 1);
-    Entry->PspLocation.ChannelNumber = BP_CLA_PSP_INPUT_SUBCHANNEL;
+    Entry->PspLocation.SubsystemId  = 1 + (CFE_PSP_GetProcessorId() & 1);
+    Entry->PspLocation.SubchannelId = BP_CLA_PSP_INPUT_SUBCHANNEL;
 
-    PspStatus = CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODRIVER_SET_DIRECTION,
-                                         CFE_PSP_IODRIVER_U32ARG(CFE_PSP_IODRIVER_DIRECTION_INPUT_ONLY));
+    PspStatus = CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODriver_SET_DIRECTION,
+                                         CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_INPUT_ONLY));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         CFE_EVS_SendEvent(BP_CLA_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODRIVER_SET_DIRECTION (input) status %x",
+                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (input) status %x",
                           (unsigned int)PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
     PspStatus =
-        CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODRIVER_SET_RUNNING, CFE_PSP_IODRIVER_U32ARG(true));
+        CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         CFE_EVS_SendEvent(BP_CLA_ERR_EID, CFE_EVS_EventType_ERROR,
-                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODRIVER_SET_RUNNING (input) status %x",
+                          "SGW Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (input) status %x",
                           (unsigned int)PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
@@ -338,14 +338,14 @@ CFE_Status_t BP_CLA_ProcessBundleInput(BP_CLA_BundleFlowEntry_t *Entry)
         RdBuf.BufferSize = sizeof(Entry->BundleBuffer);
         RdBuf.BufferMem  = Entry->BundleBuffer;
 
-        Status = CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODRIVER_PACKET_IO_READ,
-                                          CFE_PSP_IODRIVER_VPARG(&RdBuf));
+        Status = CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODriver_PACKET_IO_READ,
+                                          CFE_PSP_IODriver_VPARG(&RdBuf));
 
         if (Status == CFE_PSP_SUCCESS)
         {
             BP_CLA_DebugPrint("Ingress", RdBuf.BufferMem, RdBuf.BufferSize);
             Entry->CurrentBufferSize = RdBuf.BufferSize;
-            Status = CFE_SUCCESS;
+            Status                   = CFE_SUCCESS;
         }
         else
         {
@@ -407,7 +407,7 @@ CFE_Status_t BP_CLA_ProcessBundleOutput(BP_CLA_BundleFlowEntry_t *Entry)
 
         /* this does not check return code here, it is "best effort" at this stage.
          * bplib should retry based on custody signals if this does not work. */
-        CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODRIVER_PACKET_IO_WRITE, CFE_PSP_IODRIVER_VPARG(&WrBuf));
+        CFE_PSP_IODriver_Command(&Entry->PspLocation, CFE_PSP_IODriver_PACKET_IO_WRITE, CFE_PSP_IODriver_VPARG(&WrBuf));
 
         BP_CLA_DebugPrint("Egress", WrBuf.BufferMem, WrBuf.OutputSize);
         Entry->CurrentBufferSize = 0;
