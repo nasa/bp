@@ -6,7 +6,6 @@
  *
  *************************************************************************/
 
-
 /************************************************************************
 ** Includes
 *************************************************************************/
@@ -14,8 +13,8 @@
 #include <stdint.h>
 
 #include "cfe.h"
-#include "bp_cfg.h"
-#include "bp_flow.h"
+#include "bp_tbl.h"
+#include "bp_platform_cfg.h"
 #include "bplib.h"
 #include "cfe_tbl_filedef.h"
 
@@ -32,13 +31,13 @@ CFE_TBL_FileDef_t CFE_TBL_FileDef =
     "BP.FlowTable",
     "Configuration of bundle flows",
     "bp_flowtable.tbl",
-    sizeof(BP_FlowTbl_t)
+    sizeof(BP_FlowTable_t)
 };
 
 /*
 ** Table contents
 */
-BP_FlowTbl_t BP_FlowTable =
+BP_FlowTable_t BP_FlowTable =
 {
     .LocalNodeIpn = 12,
     .Flows =

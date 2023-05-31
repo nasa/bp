@@ -26,7 +26,8 @@
  ************************************************/
 
 #include "cfe.h"
-#include "bp_cfg.h"
+#include "bp_platform_cfg.h"
+#include "bp_tbl.h"
 #include "bplib.h"
 #include "bp_io.h"
 #include "bp_storage.h"
@@ -39,8 +40,6 @@
 #define BP_INVALID_FLOW     BP_FLOWHANDLE_C(CFE_RESOURCEID_UNDEFINED)
 #define BP_INVALID_PRIORITY (-1)
 #define BP_INVALID_STATUS   (-1)
-#define BP_FLOW_NAME_SIZE   8
-#define BP_SEM_NAME_SIZE    OS_MAX_API_NAME
 #define BP_FLOW_TBL_NAME    "FlowTable"
 
 /************************************************
@@ -61,54 +60,6 @@ typedef struct
 } BP_Throttle_t;
 
 extern BP_Throttle_t BP_Throttles[];
-
-/* Flow Table */
-
-typedef struct
-{
-    CFE_SB_MsgId_t StreamId;
-    uint8          Priority;
-    uint8          Reliability;
-    uint16         BuffLim;
-} BP_PktTblEntry_t;
-
-typedef struct
-{
-    char             Name[BP_FLOW_NAME_SIZE];
-    uint8            Enabled; /* bool */
-    uint16           SrcServ;
-    uint32           DstNode;
-    uint16           DstServ;
-    uint32           Timeout;   /* seconds */
-    uint32           Lifetime;  /* seconds */
-    uint16           Priority;  /* higher values mean higher priority */
-    uint32           MaxActive; /* bundles */
-    char             Store[BP_STORE_NAME_SIZE];
-    BP_PktTblEntry_t PktTbl[BP_PKTTBL_MAX_ROWS];
-    CFE_SB_MsgId_t   RecvStreamId;
-    uint16           PipeDepth;
-} BP_FlowTblEntry_t;
-
-typedef struct
-{
-    uint32            LocalNodeIpn;
-    BP_FlowTblEntry_t Flows[BP_MAX_FLOWS];
-} BP_FlowTbl_t;
-
-typedef struct
-{
-    char         Name[BP_FLOW_NAME_SIZE];
-    int8         Enabled;
-    int8         Active;
-    int8         Healthy;
-    uint16       DataInDropped;
-    uint16       DataOutDropped;
-    uint32       LibFlags;
-    uint32       Timeout;
-    int32        Priority;
-    BP_IOStats_t IOStats;
-    bp_stats_t   LibStats;
-} BP_FlowStats_t;
 
 typedef struct
 {

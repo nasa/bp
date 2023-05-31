@@ -25,9 +25,9 @@
 #include "bplib.h"
 
 #include "bp_flow.h"
-#include "bp_events.h"
+#include "bp_eventids.h"
 #include "bp_io.h"
-#include "bp_cfg.h"
+#include "bp_platform_cfg.h"
 #include "bp_global.h"
 #include "bplib_routing.h"
 
@@ -309,7 +309,7 @@ static void prioritize_flows(void)
 /*-----------------------------------------------
  * load_table
  *-----------------------------------------------*/
-static int32 BP_LoadFlowConfigTable(CFE_TBL_Handle_t handle, const char *filename, BP_FlowTbl_t **buffer)
+static int32 BP_LoadFlowConfigTable(CFE_TBL_Handle_t handle, const char *filename, BP_FlowTable_t **buffer)
 {
     int32 cfe_status;
     void *table_ptr;
@@ -527,7 +527,7 @@ int32 BP_FlowInit(const char *AppName)
 
     /* Register flow table with cFE */
     BP_GlobalData.FlowTableHandle = BP_INVALID_TABLE;
-    cfe_status = CFE_TBL_Register(&BP_GlobalData.FlowTableHandle, BP_FLOW_TBL_NAME, sizeof(BP_FlowTbl_t),
+    cfe_status = CFE_TBL_Register(&BP_GlobalData.FlowTableHandle, BP_FLOW_TBL_NAME, sizeof(BP_FlowTable_t),
                                   CFE_TBL_OPT_DEFAULT, NULL);
     if (cfe_status != CFE_SUCCESS)
     {
@@ -548,7 +548,7 @@ int32 BP_FlowInit(const char *AppName)
 int32 BP_FlowLoad(const char *FlowTableFileName)
 {
     int32               cfe_status;
-    BP_FlowTbl_t       *StagedConfig;
+    BP_FlowTable_t       *StagedConfig;
     BP_FlowTblEntry_t  *StagingEntryPtr;
     BP_FlowCtrlEntry_t *FlowPtr;
     CFE_ResourceId_t    PendingFlowHandle;

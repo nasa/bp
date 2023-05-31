@@ -18,19 +18,8 @@
  *
  */
 
-#ifndef BP_PLATFORM_CFG_H
-#define BP_PLATFORM_CFG_H
-
-#include "bp_perfids.h"
-
-/* By default override the semaphore array size to match the number of
- * CFDP channels. The out-of-the-box behavior of the BP app is to integrate
- * with the CF task and throttle CFDP. */
-#define BP_NUM_SEM_THROTTLES 2
-
-/* Depending on the epoch being used by time services, this value needs to
- * be changed to reflect the number of seconds from the epoch to J2000. */
-#define BP_CFE_SECS_AT_2000 630720013
+#ifndef BP_INTERFACE_CFG_H
+#define BP_INTERFACE_CFG_H
 
 /* Name of the flash storage service used in the flow table and in the
  * custome storage configuration module */
@@ -44,4 +33,60 @@
  * custome storage configuration module */
 #define BP_FILE_STORE "FILE"
 
-#endif /* BP_PLATFORM_CFG_H */
+/*
+ * Maximum size of a flow name in table and message structs
+ */
+
+#define BP_FLOW_NAME_SIZE 8
+
+/*
+ * Maximum size of a storage service name in table and message structs
+ */
+#define BP_STORE_NAME_SIZE 8
+
+/*
+ * Maximum number of statically allocated flow control structures
+ */
+#define BP_MAX_FLOWS 8
+
+/*
+ * Maximum number of statically allocated I/O control structures
+ */
+#define BP_MAX_IO_DESC BP_MAX_FLOWS
+
+/*
+ * Maximum size of the bundle supported by the application
+ */
+#define BP_MAX_BUNDLE_SIZE 4096
+
+/*
+ * Maximum size of CCSDS packet supported by the application
+ */
+#define BP_MAX_PACKET_SIZE 4096
+
+/*
+ * Maximum string length of per flow software bus pipe name
+ */
+#define BP_PIPE_NAME_SIZE CFE_MISSION_MAX_API_LEN
+
+/*
+ * Maximum string length of throttle semaphore name
+ */
+#define BP_SEM_NAME_SIZE CFE_MISSION_MAX_API_LEN
+
+/*
+ * Maximum number of packets per flow that can be subscribed to
+ */
+#define BP_PKTTBL_MAX_ROWS 4
+
+/*
+ * CFDP class 1 entity id used for direct file transfer
+ */
+#define BP_FILE_CFDP_ENTITY_ID 0x0101
+
+/*
+ * CCSDS message id used to encapsulate CFDP class 1 PDUs
+ */
+#define BP_FILE_CFDP_TLM_MID 0x0B26
+
+#endif /* BP_INTERFACE_CFG_H */

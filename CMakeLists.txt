@@ -6,8 +6,6 @@
 
 project(CFS_BP C)
 
-include_directories(fsw/mission_inc)
-include_directories(fsw/platform_inc)
 include_directories(fsw/custom)
 include_directories(fsw/src)
 
@@ -29,6 +27,8 @@ set(APP_TABLE_FILES
 # Create the app module
 add_cfe_app(bp ${APP_SRC_FILES})
 add_cfe_tables(bp ${APP_TABLE_FILES})
+
+target_include_directories(bp PUBLIC fsw/inc)
 
 # Indicate that this app depends on BPLIB
 add_cfe_app_dependency(bp bplib iodriver)

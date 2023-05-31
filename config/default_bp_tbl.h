@@ -18,28 +18,18 @@
  *
  */
 
-/************************************************
- * Includes
- ************************************************/
+/**
+ * @file
+ *   Specification for the CFS Bundle Protocol (BP) table structures
+ *
+ * @note
+ *   Constants and enumerated types related to these table structures
+ *   are defined in bp_tbldefs.h.
+ */
+#ifndef BP_TBL_H
+#define BP_TBL_H
 
-#include "cfe.h"
-#include "bp_internal_cfg.h"
-#include "bp_tlmcfg.h"
+#include "bp_interface_cfg.h"
+#include "bp_tblstruct.h"
 
-/************************************************
- * Exported Functions
- ************************************************/
-
-/*-----------------------------------------------
- * BP_PopulateCustomTlm
- *-----------------------------------------------*/
-void BP_PopulateCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
-
-/*-----------------------------------------------
- * BP_ClearCustomTlm
- *-----------------------------------------------*/
-void BP_ClearCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
+#endif

@@ -27,6 +27,7 @@
 
 #include "cfe.h"
 #include "iodriver_base.h"
+#include "bp_msg.h"
 
 /************************************************
  * Defines
@@ -47,15 +48,6 @@ typedef struct
 } BP_BundleBuffer_t;
 
 typedef CFE_RESOURCEID_BASE_TYPE BP_IoHandle_t;
-
-typedef struct
-{
-    int8   SendHealthy;
-    int8   ReceiveHealthy;
-    uint16 SendNotReady;
-    uint32 BytesSentPerSecond;
-    uint32 BytesReceivedPerSecond;
-} BP_IOStats_t;
 
 /* IO Control Structure */
 typedef struct
