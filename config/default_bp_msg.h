@@ -18,28 +18,23 @@
  *
  */
 
-/************************************************
- * Includes
- ************************************************/
+/**
+ * @file
+ *   Specification for the CFS Health and Safety (HS) command and telemetry
+ *   message data types.
+ *
+ * This is a compatibility header for the "hs_msg.h" file that has
+ * traditionally provided the message definitions for cFS apps.
+ *
+ * @note This file may be overridden/superceded by mission-provided defintions
+ * either by overriding this header or by generating definitions from a command/data
+ * dictionary tool.
+ */
+#ifndef BP_MSG_H
+#define BP_MSG_H
 
-#include "cfe.h"
-#include "bp_internal_cfg.h"
-#include "bp_tlmcfg.h"
+#include "bp_interface_cfg.h"
+#include "bp_fcncodes.h"
+#include "bp_msgstruct.h"
 
-/************************************************
- * Exported Functions
- ************************************************/
-
-/*-----------------------------------------------
- * BP_PopulateCustomTlm
- *-----------------------------------------------*/
-void BP_PopulateCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
-
-/*-----------------------------------------------
- * BP_ClearCustomTlm
- *-----------------------------------------------*/
-void BP_ClearCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
+#endif

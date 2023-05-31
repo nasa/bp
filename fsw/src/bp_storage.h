@@ -22,7 +22,7 @@
 #define BP_STORAGE_H
 
 #include "cfe_mission_cfg.h"
-#include "bp_platform_cfg.h"
+#include "bp_interface_cfg.h"
 
 #include "cfe_resourceid_api_typedefs.h"
 
@@ -30,8 +30,6 @@
 #include "bplib.h"
 
 /* Storage Services */
-
-#define BP_STORE_NAME_SIZE 8
 
 #define BP_STORAGEHANDLE_C(x)     ((BP_StorageHandle_t)CFE_RESOURCEID_WRAP(x))
 #define BP_INVALID_STORAGE_HANDLE BP_STORAGEHANDLE_C(CFE_RESOURCEID_UNDEFINED)

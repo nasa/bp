@@ -22,12 +22,12 @@
 ** Includes
 *************************************************************************/
 
-#include <stdint.h>
+#include <common_types.h>
+
+#include "bp_tbl.h"
+#include "bp_platform_cfg.h"
 
 #include "cfe.h"
-#include "bp_cfg.h"
-#include "bp_flow.h"
-#include "bplib.h"
 #include "cfe_tbl_filedef.h"
 
 /************************************************************************
@@ -38,16 +38,16 @@
 ** Table file header
 */
 CFE_TBL_FileDef_t CFE_TBL_FileDef = {"BP_FlowTable", "BP.FlowTable", "Configuration of bundle flows",
-                                     "bp_flowtable.tbl", (sizeof(BP_FlowTbl_t))};
+                                     "bp_flowtable.tbl", (sizeof(BP_FlowTable_t))};
 
 /*
-** The following table just to provide user a template. Users have to replace CFE_SB_MSGID_RESERVED with real values to suit their needs.  
+** The following table just to provide user a template. Users have to replace CFE_SB_MSGID_RESERVED with real values to suit their needs.
 */
 
 /*
 ** Table contents
 */
-BP_FlowTbl_t BP_FlowTable = 
+BP_FlowTable_t BP_FlowTable =
 {
     .LocalNodeIpn = 12,
     .Flows ={
@@ -83,4 +83,3 @@ BP_FlowTbl_t BP_FlowTable =
              }
             }
 };
-

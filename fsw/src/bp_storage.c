@@ -32,8 +32,8 @@
 #include <limits.h>
 
 #include "cfe.h"
-#include "bp_events.h"
-#include "bp_cfg.h"
+#include "bp_eventids.h"
+#include "bp_platform_cfg.h"
 #include "bp_storage.h"
 #include "bp_global.h"
 #include "cfe_resourceid_basevalue.h"

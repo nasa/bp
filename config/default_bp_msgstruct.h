@@ -18,18 +18,18 @@
  *
  */
 
-#ifndef BP_MSG_H
-#define BP_MSG_H
+#ifndef BP_MSGSTRUCT_H
+#define BP_MSGSTRUCT_H
 
 /*************************************************************************
  * Includes
  **************************************************************************/
 
-#include "cfe.h"
-#include "bp_cfg.h"
+#include "bp_interface_cfg.h"
 #include "bp_tlmcfg.h"
-#include "bp_flow.h"
-#include "bp_msgdefs.h"
+
+#include "cfe_msg_api_typedefs.h"
+#include "cfe_msg_hdr.h"
 
 /*************************************************************************
  * Typedefs
@@ -48,6 +48,29 @@ typedef struct
     uint32                    MemHighWater;
     BP_CustomTlm_t            CustomTlm;
 } BP_HkPkt_t;
+
+typedef struct
+{
+    int8   SendHealthy;
+    int8   ReceiveHealthy;
+    uint16 SendNotReady;
+    uint32 BytesSentPerSecond;
+    uint32 BytesReceivedPerSecond;
+} BP_IOStats_t;
+
+typedef struct
+{
+    char         Name[BP_FLOW_NAME_SIZE];
+    int8         Enabled;
+    int8         Active;
+    int8         Healthy;
+    uint16       DataInDropped;
+    uint16       DataOutDropped;
+    uint32       LibFlags;
+    uint32       Timeout;
+    int32        Priority;
+    BP_IOStats_t IOStats;
+} BP_FlowStats_t;
 
 /*
  * Flow Housekeeping Packet Structure

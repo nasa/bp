@@ -18,18 +18,21 @@
  *
  */
 
-#ifndef BP_MSGDEFS_H
-#define BP_MSGDEFS_H
+/**
+ * @file
+ *   Specification for the Bundle Protocol (BP) command function codes
+ *
+ * @note
+ *   This file should be strictly limited to the command/function code (CC)
+ *   macro definitions.  Other definitions such as enums, typedefs, or other
+ *   macros should be placed in the msgdefs.h or msg.h files.
+ */
+#ifndef BP_FCNCODES_H
+#define BP_FCNCODES_H
 
-/*************************************************************************
- * Includes
- **************************************************************************/
-
-#include "cfe.h"
-
-/*************************************************************************
- * Macros
- **************************************************************************/
+/************************************************************************
+ * Macro Definitions
+ ************************************************************************/
 
 /* BP_CMD_MID */
 #define BP_NOOP_CC                      0
@@ -54,4 +57,4 @@
 #define BP_WAKEUP_CC         0
 #define BP_WAKEUP_PROCESS_CC 1
 
-#endif /* BP_MSGDEFS_H */
+#endif

@@ -18,28 +18,26 @@
  *
  */
 
-/************************************************
- * Includes
- ************************************************/
+/**
+ * @file
+ *
+ * CFS Bundle Protocol (BP) Application Platform Configuration Header File
+ *
+ * This is a compatibility header for the "platform_cfg.h" file that has
+ * traditionally provided both public and private config definitions
+ * for each CFS app.
+ *
+ * These definitions are now provided in two separate files, one for
+ * the public/mission scope and one for internal scope.
+ *
+ * @note This file may be overridden/superceded by mission-provided defintions
+ * either by overriding this header or by generating definitions from a command/data
+ * dictionary tool.
+ */
+#ifndef BP_PLATFORM_CFG_H
+#define BP_PLATFORM_CFG_H
 
-#include "cfe.h"
+#include "hs_interface_cfg.h"
 #include "bp_internal_cfg.h"
-#include "bp_tlmcfg.h"
 
-/************************************************
- * Exported Functions
- ************************************************/
-
-/*-----------------------------------------------
- * BP_PopulateCustomTlm
- *-----------------------------------------------*/
-void BP_PopulateCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
-
-/*-----------------------------------------------
- * BP_ClearCustomTlm
- *-----------------------------------------------*/
-void BP_ClearCustomTlm(BP_CustomTlm_t *custom_tlm)
-{
-}
+#endif
