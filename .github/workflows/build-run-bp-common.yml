@@ -116,12 +116,9 @@ jobs:
         run: |
           mkdir ./bpxfer_defs
           cp -v ./cfs-bundle/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h
-          cp -v ./cfs-bundle/cfe/cmake/sample_defs/cpu1_msgids.h ./bpxfer_defs/cfe_msgids.h
-          cp -v ./cfs-bundle/cfe/cmake/sample_defs/cpu1_platform_cfg.h ./bpxfer_defs/default_platform_cfg.h
           cp -v -t ./bpxfer_defs ./cfs-bundle/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
           cp -v -t ./bpxfer_defs ./src/bp/.github/buildconfig/*.{cmake,scr}
           cp -rv -t ./bpxfer_defs ./src/bp/.github/buildconfig/{tx,rx,tables}
-          cat ./cfs-bundle/cfe/cmake/sample_defs/sample_mission_cfg.h ./src/bp/.github/buildconfig/bp_msgids_extra.h > ./bpxfer_defs/bpxfer_mission_cfg.h
 
       - name: Run CMake
         run: cmake -DCMAKE_BUILD_TYPE=Release -DSIMULATION=native -DCMAKE_INSTALL_PREFIX=/exe -DMISSIONCONFIG=bpxfer -DMISSION_DEFS=$PWD/bpxfer_defs -B build -S cfs-bundle/cfe
