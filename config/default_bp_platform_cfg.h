@@ -37,7 +37,7 @@
 #ifndef BP_PLATFORM_CFG_H
 #define BP_PLATFORM_CFG_H
 
-#include "hs_interface_cfg.h"
+#include "bp_interface_cfg.h"
 #include "bp_internal_cfg.h"
 
 #endif
