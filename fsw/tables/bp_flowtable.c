@@ -24,6 +24,7 @@
 
 #include <common_types.h>
 
+#include "bplib.h"
 #include "bp_tbl.h"
 #include "bp_platform_cfg.h"
 
