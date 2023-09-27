@@ -1,10 +1,10 @@
 
 # The SCH LAB and BP Flow tables need to access the right headers
-target_include_directories(${TGTNAME}_sch_lab_table_sch_lab_table PRIVATE
+target_include_directories(sch_lab.table INTERFACE
     $<TARGET_PROPERTY:cf,INCLUDE_DIRECTORIES>
     $<TARGET_PROPERTY:bp,INCLUDE_DIRECTORIES>
 )
-target_include_directories(${TGTNAME}_bp_bp_flowtable PRIVATE
+target_include_directories(bp.table INTERFACE
     $<TARGET_PROPERTY:cf,INCLUDE_DIRECTORIES>
 )
 

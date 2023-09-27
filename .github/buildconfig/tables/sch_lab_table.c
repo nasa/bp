@@ -31,7 +31,7 @@
 #include "to_lab_msgids.h"
 #include "cf_msgids.h"
 #include "bp_msgids.h"
-#include "bp_msgdefs.h"
+#include "bp_msg.h"
 
 /*
 ** SCH Lab schedule table
