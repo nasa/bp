@@ -40,13 +40,18 @@
  */
 typedef struct
 {
+    uint16         ValidCmdCnt;
+    uint16         InvalidCmdCnt;
+    uint32         EnableMask;
+    uint32         MemInUse;
+    uint32         MemHighWater;
+    BP_CustomTlm_t CustomTlm;
+} BP_HkPkt_Payload_t;
+
+typedef struct
+{
     CFE_MSG_TelemetryHeader_t TelemetryHeader;
-    uint16                    ValidCmdCnt;
-    uint16                    InvalidCmdCnt;
-    uint32                    EnableMask;
-    uint32                    MemInUse;
-    uint32                    MemHighWater;
-    BP_CustomTlm_t            CustomTlm;
+    BP_HkPkt_Payload_t        Payload;
 } BP_HkPkt_t;
 
 typedef struct

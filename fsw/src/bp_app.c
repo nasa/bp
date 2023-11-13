@@ -219,7 +219,7 @@ static CFE_Status_t AppInit(void)
         return status;
 
     /* Initialize the "EnableMask" in TLM from initial config */
-    BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &BP_GlobalData.HkPkt.EnableMask);
+    BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &BP_GlobalData.HkPkt.Payload.EnableMask);
 
     /* Application startup event message */
     CFE_EVS_SendEvent(BP_INIT_APP_INFO_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized",
@@ -265,11 +265,11 @@ CFE_Status_t BP_NoopCmd(const BP_NoopCmd_t *cmd)
 CFE_Status_t BP_ResetAppCmd(const BP_ResetAppCmd_t *cmd)
 {
     /* Clear Command Counters */
-    BP_GlobalData.HkPkt.ValidCmdCnt   = 0;
-    BP_GlobalData.HkPkt.InvalidCmdCnt = 0;
+    BP_GlobalData.HkPkt.Payload.ValidCmdCnt   = 0;
+    BP_GlobalData.HkPkt.Payload.InvalidCmdCnt = 0;
 
     /* Clear Custom Telemetry */
-    BP_ClearCustomTlm(&BP_GlobalData.HkPkt.CustomTlm);
+    BP_ClearCustomTlm(&BP_GlobalData.HkPkt.Payload.CustomTlm);
 
     BP_ForEachFlow(BP_DoPerFlowStatReset, NULL);
 
@@ -300,7 +300,7 @@ CFE_Status_t BP_ReloadFlowTableCmd(const BP_ReloadFlowTableCmd_t *cmd)
     /* Initialize the "EnableMask" in TLM from reloaded config */
     EnableMask = 0;
     BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
-    BP_GlobalData.HkPkt.EnableMask = EnableMask;
+    BP_GlobalData.HkPkt.Payload.EnableMask = EnableMask;
 
     return status;
 }
@@ -327,7 +327,7 @@ CFE_Status_t BP_EnableFlowCmd(const BP_EnableFlowCmd_t *cmd)
     /* Rebuild the "EnableMask" in HkPkt */
     EnableMask = 0;
     BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
-    BP_GlobalData.HkPkt.EnableMask = EnableMask;
+    BP_GlobalData.HkPkt.Payload.EnableMask = EnableMask;
 
     return status;
 }
@@ -354,7 +354,7 @@ CFE_Status_t BP_DisableFlowCmd(const BP_DisableFlowCmd_t *cmd)
     /* Rebuild the "EnableMask" in HkPkt */
     EnableMask = 0;
     BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
-    BP_GlobalData.HkPkt.EnableMask = EnableMask;
+    BP_GlobalData.HkPkt.Payload.EnableMask = EnableMask;
 
     return status;
 }
@@ -522,25 +522,25 @@ CFE_Status_t BP_SendAppTlmCmd(const BP_SendAppTlmCmd_t *cmd)
     status = bplib_query_integer(BP_GlobalData.RouteTbl, BP_INVALID_HANDLE, bplib_variable_mem_current_use, &mem_use);
     if (status == BP_SUCCESS)
     {
-        BP_GlobalData.HkPkt.MemInUse = mem_use;
+        BP_GlobalData.HkPkt.Payload.MemInUse = mem_use;
     }
     else
     {
-        BP_GlobalData.HkPkt.MemInUse = 0;
+        BP_GlobalData.HkPkt.Payload.MemInUse = 0;
     }
 
     status = bplib_query_integer(BP_GlobalData.RouteTbl, BP_INVALID_HANDLE, bplib_variable_mem_high_use, &mem_use);
     if (status == BP_SUCCESS)
     {
-        BP_GlobalData.HkPkt.MemHighWater = mem_use;
+        BP_GlobalData.HkPkt.Payload.MemHighWater = mem_use;
     }
     else
     {
-        BP_GlobalData.HkPkt.MemHighWater = 0;
+        BP_GlobalData.HkPkt.Payload.MemHighWater = 0;
     }
 
     /* Populate Custom Flash Statistics */
-    BP_PopulateCustomTlm(&BP_GlobalData.HkPkt.CustomTlm);
+    BP_PopulateCustomTlm(&BP_GlobalData.HkPkt.Payload.CustomTlm);
 
     /* Send Application Housekeeping Packet */
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BP_GlobalData.HkPkt.TelemetryHeader));
@@ -695,9 +695,9 @@ static CFE_Status_t ProcessCmd(const CFE_SB_Buffer_t *MsgBufPtr)
 
     /* Update Housekeeping Statistics */
     if (cmd_result == CFE_SUCCESS)
-        BP_GlobalData.HkPkt.ValidCmdCnt++;
+        BP_GlobalData.HkPkt.Payload.ValidCmdCnt++;
     else
-        BP_GlobalData.HkPkt.InvalidCmdCnt++;
+        BP_GlobalData.HkPkt.Payload.InvalidCmdCnt++;
 
     return cmd_result;
 }
