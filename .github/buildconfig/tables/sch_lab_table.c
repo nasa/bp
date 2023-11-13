@@ -21,7 +21,7 @@
 */
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "sch_lab_table.h"
+#include "sch_lab_tbl.h"
 #include "cfe_sb.h" /* Required to use the CFE_SB_MSGID_WRAP_VALUE macro */
 
 /*
@@ -63,4 +63,4 @@ SCH_LAB_ScheduleTable_t SCH_TBL_Structure = {.TickRate = 10,
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(SCH_TBL_Structure, SCH_LAB_APP.SCH_LAB_SchTbl, Schedule Lab MsgID Table, sch_lab_table.tbl)
+CFE_TBL_FILEDEF(SCH_TBL_Structure, SCH_LAB_APP.ScheduleTable, Schedule Lab MsgID Table, sch_lab_table.tbl)
