@@ -21,18 +21,6 @@
 #ifndef BP_INTERFACE_CFG_H
 #define BP_INTERFACE_CFG_H
 
-/* Name of the flash storage service used in the flow table and in the
- * custome storage configuration module */
-#define BP_FLASH_STORE "FLASH"
-
-/* Name of the ram storage service used in the flow table and in the
- * custome storage configuration module */
-#define BP_RAM_STORE "RAM"
-
-/* Name of the file storage service used in the flow table and in the
- * custome storage configuration module */
-#define BP_FILE_STORE "FILE"
-
 /*
  * Maximum size of a flow name in table and message structs
  */

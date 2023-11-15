@@ -45,7 +45,6 @@ typedef struct
     uint32           Lifetime;  /* seconds */
     uint16           Priority;  /* higher values mean higher priority */
     uint32           MaxActive; /* bundles */
-    char             Store[BP_STORE_NAME_SIZE];
     BP_PktTblEntry_t PktTbl[BP_PKTTBL_MAX_ROWS];
     CFE_SB_MsgId_t   RecvStreamId;
     uint16           PipeDepth;
