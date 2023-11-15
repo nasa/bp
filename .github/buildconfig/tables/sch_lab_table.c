@@ -21,12 +21,14 @@
 */
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
+#include "cfe_sb_api_typedefs.h" /* Required to use the CFE_SB_MSGID_WRAP_VALUE macro */
+
 #include "sch_lab_tbl.h"
-#include "cfe_sb.h" /* Required to use the CFE_SB_MSGID_WRAP_VALUE macro */
 
 /*
 ** Include headers for message IDs here
 */
+#include "cfe_msgids.h"
 #include "ci_lab_msgids.h"
 #include "to_lab_msgids.h"
 #include "cf_msgids.h"
