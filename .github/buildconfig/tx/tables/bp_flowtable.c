@@ -53,7 +53,6 @@ BP_FlowTable_t BP_FlowTable =
             .Lifetime = 86400,
             .Priority = BP_COS_NORMAL,
             .MaxActive = 0,
-            .Store = BP_FLASH_STORE,
             .PktTbl = {{ CFE_SB_MSGID_WRAP_VALUE(0x082a), 1, 1, BP_APP_READ_LIMIT }},
             .RecvStreamId = CFE_SB_MSGID_WRAP_VALUE(0x182a)
         }
