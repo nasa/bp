@@ -21,33 +21,33 @@
 #ifndef BP_MSGIDS_H
 #define BP_MSGIDS_H
 
-/* should define CFE_PLATFORM_CMD_MID_BASE/CFE_PLATFORM_TLM_MID_BASE */
-#include "cfe_msgids.h"
+/* should define CFE_PLATFORM_CMD_TOPICID_TO_MIDV/CFE_PLATFORM_TLM_TOPICID_TO_MIDV */
+#include "cfe_core_api_base_msgids.h"
 #include "bp_topicids.h"
 
 /*
  * BP application command message id (ground)
  */
-#define BP_CMD_MID CFE_PLATFORM_CMD_MID_BASE + CFE_MISSION_BP_CMD_MSG
+#define BP_CMD_MID CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_BP_CMD_TOPICID)
 
 /*
  * BP send housekeeping message id (internal)
  */
-#define BP_SEND_HK_MID CFE_PLATFORM_CMD_MID_BASE + CFE_MISSION_BP_SEND_HK_MSG
+#define BP_SEND_HK_MID CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_BP_SEND_HK_TOPICID)
 
 /*
  * BP wakeup message id (internal)
  */
-#define BP_WAKEUP_MID CFE_PLATFORM_CMD_MID_BASE + CFE_MISSION_BP_WAKEUP_MSG
+#define BP_WAKEUP_MID CFE_PLATFORM_CMD_TOPICID_TO_MIDV(CFE_MISSION_BP_WAKEUP_TOPICID)
 
 /*
  * BP application telemetry message id (ground)
  */
-#define BP_HK_TLM_MID CFE_PLATFORM_TLM_MID_BASE + CFE_MISSION_BP_HK_TLM_MSG
+#define BP_HK_TLM_MID CFE_PLATFORM_TLM_TOPICID_TO_MIDV(CFE_MISSION_BP_HK_TLM_TOPICID)
 
 /*
  * BP per flow application telemetry message id (ground)
  */
-#define BP_FLOW_HK_TLM_MID CFE_PLATFORM_TLM_MID_BASE + CFE_MISSION_BP_FLOW_HK_TLM_MSG
+#define BP_FLOW_HK_TLM_MID CFE_PLATFORM_TLM_TOPICID_TO_MIDV(CFE_MISSION_BP_FLOW_HK_TLM_TOPICID)
 
 #endif /* !BP_MSGIDS_H */
