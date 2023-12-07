@@ -36,7 +36,7 @@
 
 /* BP_CMD_MID */
 #define BP_NOOP_CC                      0
-#define BP_RESET_CC                     1
+#define BP_RESET_APP_CC                 1
 #define BP_RELOAD_FLOW_TABLE_CC         2
 #define BP_ENABLE_FLOW_CC               3
 #define BP_DISABLE_FLOW_CC              4
@@ -49,9 +49,9 @@
 #define BP_DISABLE_OVERRIDE_PRIORITY_CC 11
 
 /* BP_SEND_HK_MID */
-#define BP_SEND_APP_CC      0
-#define BP_SEND_ENABLED_CC  1
-#define BP_SEND_DISABLED_CC 2
+#define BP_SEND_APP_TLM_CC           0
+#define BP_SEND_ENABLED_FLOW_TLM_CC  1
+#define BP_SEND_DISABLED_FLOW_TLM_CC 2
 
 /* BP_WAKEUP_MID */
 #define BP_WAKEUP_CC         0

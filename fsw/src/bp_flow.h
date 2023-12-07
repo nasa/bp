@@ -77,7 +77,7 @@ typedef struct
     bool               Healthy;
     BP_StorageHandle_t StorageHandle;
     BP_FlowPriority_t  COS; /* class of service */
-    bp_socket_t       *BPS; /* bundle protocol library socket */
+    bp_socket_t *      BPS; /* bundle protocol library socket */
     CFE_SB_PipeId_t    DataPipe;
 
     CFE_SB_Buffer_t *CurrentSbMsgInPtr;
@@ -243,5 +243,13 @@ int32 BP_FlowHandle_ToIndex(BP_FlowHandle_t Flow, uint32 *Idx);
  * Call a sub-function for each flow that is enabled
  *----------------------------------------------*/
 void BP_ForEachFlow(void (*Func)(BP_FlowHandle_t, void *Arg), void *Arg);
+
+/*-----------------------------------------------
+ * BP_DoRebuildFlowBitmask
+ *
+ * Recomputes the value for the "EnableMask" field in the HK TLM.
+ * Should be invoked every time a flow state changes to keep TLM in sync.
+ *----------------------------------------------*/
+void BP_DoRebuildFlowBitmask(void);
 
 #endif /* BP_FLOW_H */
