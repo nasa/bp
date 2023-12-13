@@ -30,20 +30,21 @@
 
 #include "cfe.h"
 #include "cfe_tbl_filedef.h"
+#include "cfe_msgids.h"
+
+#include "cf_msgids.h"
 
 /************************************************************************
 ** Data
 *************************************************************************/
 
 /*
-** Table file header
-*/
-CFE_TBL_FileDef_t CFE_TBL_FileDef = {"BP_FlowTable", "BP.FlowTable", "Configuration of bundle flows",
-                                     "bp_flowtable.tbl", (sizeof(BP_FlowTable_t))};
-
-/*
-** The following table just to provide user a template. Users have to replace CFE_SB_MSGID_RESERVED with real values to suit their needs.
-*/
+ * The following table just to provide user a template. Users have to replace MsgId Values 
+ * with real values to suit their needs.
+ * 
+ * Flow 0 provides an example of getting data PDUs from the CF app (CFDP)
+ * Flow 1 provides an example of forwarding the CFE EVS event telemetry (EVT)
+ */
 
 /*
 ** Table contents
@@ -53,7 +54,7 @@ BP_FlowTable_t BP_FlowTable =
     .LocalNodeIpn = 12,
     .Flows ={
               {/* Flow 0 */
-               .Name      = "HKT",
+               .Name      = "CFDP",
                .Enabled   = true,
                .PipeDepth = BP_APP_READ_LIMIT,
                .SrcServ   = 1,
@@ -63,8 +64,8 @@ BP_FlowTable_t BP_FlowTable =
                .Lifetime  = 86400,
                .Priority  = BP_COS_NORMAL,
                .MaxActive = 250,
-               .PktTbl    = {{CFE_SB_MSGID_RESERVED, 1, 1, BP_APP_READ_LIMIT}},
-               .RecvStreamId = CFE_SB_MSGID_RESERVED
+               .PktTbl    = {{CF_CH0_TX_MID, 1, 1, BP_APP_READ_LIMIT}},
+               .RecvStreamId = CF_CH0_RX_MID
              },
              {/* Flow 1 */
                .Name      = "EVT",
@@ -77,8 +78,13 @@ BP_FlowTable_t BP_FlowTable =
                .Lifetime  = 86400,
                .Priority  = BP_COS_BULK,
                .MaxActive = 0,
-               .PktTbl    = {{CFE_SB_MSGID_RESERVED, 1, 1, BP_APP_READ_LIMIT}},
-               .RecvStreamId = CFE_SB_MSGID_RESERVED
+               .PktTbl    = {{CFE_EVS_LONG_EVENT_MSG_MID, 1, 1, BP_APP_READ_LIMIT}},
+               .RecvStreamId = 0
              }
             }
 };
+
+/*
+** Table file header
+*/
+CFE_TBL_FILEDEF(BP_FlowTable, BP.FlowTable, Configuration of bundle flows, bp_flowtable.tbl)

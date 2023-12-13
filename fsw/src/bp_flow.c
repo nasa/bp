@@ -449,7 +449,7 @@ static int accept_outgoing_data(BP_FlowCtrlEntry_t *flow, uint32_t *flags, int m
             flow->CurrentSbMsgOutPtr = CFE_SB_AllocateMessageBuffer(MSG_MAX_SIZE);
             if (flow->CurrentSbMsgOutPtr != NULL)
             {
-                CFE_MSG_SetMsgId(&flow->CurrentSbMsgOutPtr->Msg, flow->Config.RecvStreamId);
+                CFE_MSG_SetMsgId(&flow->CurrentSbMsgOutPtr->Msg, CFE_SB_ValueToMsgId(flow->Config.RecvStreamId));
                 CFE_MSG_SetSize(&flow->CurrentSbMsgOutPtr->Msg, MSG_MAX_SIZE);
             }
         }
@@ -548,8 +548,8 @@ int32 BP_FlowInit(const char *AppName)
 int32 BP_FlowLoad(const char *FlowTableFileName)
 {
     int32               cfe_status;
-    BP_FlowTable_t       *StagedConfig;
-    BP_FlowTblEntry_t  *StagingEntryPtr;
+    BP_FlowTable_t *    StagedConfig;
+    BP_FlowTblEntry_t * StagingEntryPtr;
     BP_FlowCtrlEntry_t *FlowPtr;
     CFE_ResourceId_t    PendingFlowHandle;
     CFE_TBL_Info_t      tbl_info;
@@ -767,14 +767,14 @@ int32 BP_FlowEnable(BP_FlowHandle_t Flow)
 
             /* Subscribe valid entry */
             CFE_SB_Qos_t Quality    = {FlowPtr->Config.PktTbl[i].Priority, FlowPtr->Config.PktTbl[i].Reliability};
-            int32        cfe_status = CFE_SB_SubscribeEx(FlowPtr->Config.PktTbl[i].StreamId, FlowPtr->DataPipe, Quality,
-                                                         FlowPtr->Config.PktTbl[i].BuffLim);
+            int32        cfe_status = CFE_SB_SubscribeEx(CFE_SB_ValueToMsgId(FlowPtr->Config.PktTbl[i].StreamId),
+                                                  FlowPtr->DataPipe, Quality, FlowPtr->Config.PktTbl[i].BuffLim);
             if (cfe_status != CFE_SUCCESS)
             {
                 /* Report Failures and Continue (do not mark status) */
                 CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                                   "Failed (%d) to subscribe to %04lX on data pipe", (int)cfe_status,
-                                  (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
+                                  (unsigned long)FlowPtr->Config.PktTbl[i].StreamId);
 
                 /* Mark Flow as Unhealthy */
                 FlowPtr->Healthy = false;
@@ -782,7 +782,7 @@ int32 BP_FlowEnable(BP_FlowHandle_t Flow)
             else
             {
                 CFE_ES_WriteToSysLog("BP_FLOW: Subscribed to %04lx\n",
-                                     (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
+                                     (unsigned long)FlowPtr->Config.PktTbl[i].StreamId);
             }
         }
 
@@ -850,23 +850,23 @@ int32 BP_FlowDisable(BP_FlowHandle_t Flow)
                 }
 
                 /* Check for throttle entry */
-                if (check_throttling(FlowPtr->Config.PktTbl[i].StreamId))
+                if (check_throttling(CFE_SB_ValueToMsgId(FlowPtr->Config.PktTbl[i].StreamId)))
                 {
                     CFE_EVS_SendEvent(BP_PIPE_INFO_EID, CFE_EVS_EventType_INFORMATION,
                                       "Throttled stream ID detected (%04lX)... preserving data pipe for flow %s",
-                                      (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId),
-                                      FlowPtr->Config.Name);
+                                      (unsigned long)FlowPtr->Config.PktTbl[i].StreamId, FlowPtr->Config.Name);
                     throttle_pipe = true;
                     continue;
                 }
 
                 /* Unsubscribe valid entry */
-                cfe_status = CFE_SB_Unsubscribe(FlowPtr->Config.PktTbl[i].StreamId, FlowPtr->DataPipe);
+                cfe_status =
+                    CFE_SB_Unsubscribe(CFE_SB_ValueToMsgId(FlowPtr->Config.PktTbl[i].StreamId), FlowPtr->DataPipe);
                 if (cfe_status != CFE_SUCCESS)
                 {
                     CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                                       "Failed (%d) to unsubscribe %04lX from data pipe", (int)cfe_status,
-                                      (unsigned long)CFE_SB_MsgIdToValue(FlowPtr->Config.PktTbl[i].StreamId));
+                                      (unsigned long)FlowPtr->Config.PktTbl[i].StreamId);
                 }
             }
 
