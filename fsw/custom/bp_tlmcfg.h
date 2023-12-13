@@ -31,6 +31,12 @@
  * Typedefs
  ************************************************/
 
+#ifdef CFE_EDS_ENABLED_BUILD
+
+#include "bp_eds_typedefs.h"
+
+#else
+
 /*
  * Supplemental Housekeeping Packet Structure
  */
@@ -41,6 +47,8 @@ typedef struct
     uint32 NumFailFlashBlocks;
     uint32 FlashErrorCount;
 } BP_CustomTlm_t;
+
+#endif
 
 /************************************************
  * Exported Functions
