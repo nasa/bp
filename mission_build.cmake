@@ -17,6 +17,7 @@ set(BP_MISSION_CONFIG_FILE_LIST
   bp_topicids.h
   bp_tbl.h
   bp_tblstruct.h
+  bp_topicids.h
 )
 
 if (CFE_EDS_ENABLED_BUILD)
@@ -26,7 +27,6 @@ if (CFE_EDS_ENABLED_BUILD)
   set(BP_CFGFILE_SRC_bp_fcncodes      "bp_eds_cc.h")
   set(BP_CFGFILE_SRC_bp_msgstruct     "bp_eds_typedefs.h")
   set(BP_CFGFILE_SRC_bp_tblstruct     "bp_eds_typedefs.h")
-  set(BP_CFGFILE_SRC_bp_topicids      "bp_eds_designparameters.h")
 
 endif(CFE_EDS_ENABLED_BUILD)
 

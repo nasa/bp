@@ -15,25 +15,18 @@ set(BP_PLATFORM_CONFIG_FILE_LIST
   bp_msgids.h
 )
 
-if (CFE_EDS_ENABLED_BUILD)
-
-  # In an EDS-based build, msgids come generated from the EDS tool
-  set(BP_CFGFILE_SRC_bp_msgids "${CMAKE_CURRENT_LIST_DIR}/config/bp_eds_msg_topicids.h")
-
-endif(CFE_EDS_ENABLED_BUILD)
-
 # Create wrappers around the all the config header files
 # This makes them individually overridable by the missions, without modifying
 # the distribution default copies
 foreach(BP_CFGFILE ${BP_PLATFORM_CONFIG_FILE_LIST})
   get_filename_component(CFGKEY "${BP_CFGFILE}" NAME_WE)
   if (DEFINED BP_CFGFILE_SRC_${CFGKEY})
-    set(DEFAULT_SOURCE "${BP_CFGFILE_SRC_${CFGKEY}}")
+    set(DEFAULT_SOURCE GENERATED_FILE "${BP_CFGFILE_SRC_${CFGKEY}}")
   else()
-    set(DEFAULT_SOURCE "${CMAKE_CURRENT_LIST_DIR}/config/default_${BP_CFGFILE}")
+    set(DEFAULT_SOURCE FALLBACK_FILE "${CMAKE_CURRENT_LIST_DIR}/config/default_${BP_CFGFILE}")
   endif()
   generate_config_includefile(
     FILE_NAME           "${BP_CFGFILE}"
-    FALLBACK_FILE       ${DEFAULT_SOURCE}
+    ${DEFAULT_SOURCE}
   )
 endforeach()
