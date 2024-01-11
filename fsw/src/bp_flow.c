@@ -97,6 +97,25 @@ static inline bool BP_FlowEntryIsMatch(const BP_FlowCtrlEntry_t *FlowPtr, BP_Flo
     return (FlowPtr != NULL && CFE_RESOURCEID_TEST_EQUAL(FlowPtr->Handle, Flow));
 }
 
+/*-----------------------------------------------
+ * A helper/wrapper that handles the flow enable/disable command
+ * This is used in conjunction with BP_ForEachFlow() which invokes it for each flow handle
+ * The objective is to recompute the 32-bit mask value for TLM.
+ *-----------------------------------------------*/
+static void BP_RebuildBitmaskPerFlow(BP_FlowHandle_t fh, void *Arg)
+{
+    uint32 *Mask = (uint32 *)Arg;
+    uint32  Idx;
+
+    if (BP_FlowIsEnabled(fh))
+    {
+        /* This is called only for handles which are known good, and BP_FlowIsEnabled()
+         * confirmed that the flow handle is good, so "ToIndex" will never fail */
+        BP_FlowHandle_ToIndex(fh, &Idx);
+        *Mask |= 1 << Idx;
+    }
+}
+
 /*----------------------------------------------------------------
  *
  * Application-scope internal function
@@ -548,8 +567,8 @@ int32 BP_FlowInit(const char *AppName)
 int32 BP_FlowLoad(const char *FlowTableFileName)
 {
     int32               cfe_status;
-    BP_FlowTable_t       *StagedConfig;
-    BP_FlowTblEntry_t  *StagingEntryPtr;
+    BP_FlowTable_t *    StagedConfig;
+    BP_FlowTblEntry_t * StagingEntryPtr;
     BP_FlowCtrlEntry_t *FlowPtr;
     CFE_ResourceId_t    PendingFlowHandle;
     CFE_TBL_Info_t      tbl_info;
@@ -1361,4 +1380,20 @@ void BP_ForEachFlow(void (*Func)(BP_FlowHandle_t, void *Arg), void *Arg)
             Func(Flow, Arg);
         }
     }
+}
+
+/*----------------------------------------------------------------
+ *
+ * Application-scope internal function
+ * See description in header file for argument/return detail
+ *
+ *-----------------------------------------------------------------*/
+void BP_DoRebuildFlowBitmask(void)
+{
+    uint32 EnableMask;
+
+    /* Initialize the "EnableMask" in TLM from reloaded config */
+    EnableMask = 0;
+    BP_ForEachFlow(BP_RebuildBitmaskPerFlow, &EnableMask);
+    BP_GlobalData.HkPkt.Payload.EnableMask = EnableMask;
 }

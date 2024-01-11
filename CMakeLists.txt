@@ -11,6 +11,8 @@ include_directories(fsw/src)
 
 set(APP_SRC_FILES
     fsw/src/bp_app.c
+    fsw/src/bp_cmd.c
+    fsw/src/bp_dispatch.c
     fsw/src/bp_flow.c
     fsw/src/bp_cla_bundle_io.c
     fsw/src/bp_storage.c

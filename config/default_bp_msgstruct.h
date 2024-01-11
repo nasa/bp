@@ -223,4 +223,9 @@ typedef struct
     CFE_MSG_CommandHeader_t CommandHeader;
 } BP_SendDisabledFlowTlmCmd_t;
 
+typedef struct
+{
+    CFE_MSG_CommandHeader_t CommandHeader;
+} BP_ProcessWakeupCmd_t;
+
 #endif /* BP_MSG_H */
