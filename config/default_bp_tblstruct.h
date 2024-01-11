@@ -28,26 +28,26 @@
 
 typedef struct
 {
-    CFE_SB_MsgId_t StreamId;
-    uint8          Priority;
-    uint8          Reliability;
-    uint16         BuffLim;
+    CFE_SB_MsgId_Atom_t StreamId;
+    uint8               Priority;
+    uint8               Reliability;
+    uint16              BuffLim;
 } BP_PktTblEntry_t;
 
 typedef struct
 {
-    char             Name[BP_FLOW_NAME_SIZE];
-    uint8            Enabled; /* bool */
-    uint16           SrcServ;
-    uint32           DstNode;
-    uint16           DstServ;
-    uint32           Timeout;   /* seconds */
-    uint32           Lifetime;  /* seconds */
-    uint16           Priority;  /* higher values mean higher priority */
-    uint32           MaxActive; /* bundles */
-    BP_PktTblEntry_t PktTbl[BP_PKTTBL_MAX_ROWS];
-    CFE_SB_MsgId_t   RecvStreamId;
-    uint16           PipeDepth;
+    char                Name[BP_FLOW_NAME_SIZE];
+    uint8               Enabled; /* bool */
+    uint16              SrcServ;
+    uint32              DstNode;
+    uint16              DstServ;
+    uint32              Timeout;   /* seconds */
+    uint32              Lifetime;  /* seconds */
+    uint16              Priority;  /* higher values mean higher priority */
+    uint32              MaxActive; /* bundles */
+    BP_PktTblEntry_t    PktTbl[BP_PKTTBL_MAX_ROWS];
+    CFE_SB_MsgId_Atom_t RecvStreamId;
+    uint16              PipeDepth;
 } BP_FlowTblEntry_t;
 
 typedef struct
