@@ -43,7 +43,7 @@ static CFE_Status_t BP_PktLenCheck(const CFE_SB_Buffer_t *MsgBuf, size_t ExpLen)
 
     if (CFE_MSG_GetSize(&MsgBuf->Msg, &act_len) != CFE_SUCCESS || act_len != ExpLen)
     {
-        CFE_EVS_SendEvent(BP_INVALID_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(BP_CMD_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
                           "Invalid length in packet, exp = %lu, act = %lu", (unsigned long)ExpLen,
                           (unsigned long)act_len);
         return CFE_STATUS_WRONG_MSG_LENGTH;
@@ -251,7 +251,7 @@ void BP_AppPipe(const CFE_SB_Buffer_t *BufPtr)
                 break;
             default:
                 ++BP_GlobalData.HkPkt.Payload.InvalidCmdCnt;
-                CFE_EVS_SendEvent(BP_INVALID_MID_ERR_EID, CFE_EVS_EventType_ERROR,
+                CFE_EVS_SendEvent(BP_MID_ERR_EID, CFE_EVS_EventType_ERROR,
                               "BP: Invalid Msg ID Rcvd 0x%x",
                               (unsigned int)CFE_SB_MsgIdToValue(MsgId));
                 break;

@@ -761,9 +761,9 @@ int32 BP_FlowEnable(BP_FlowHandle_t Flow)
             int32 cfe_status = CFE_SB_CreatePipe(&FlowPtr->DataPipe, FlowPtr->Config.PipeDepth, pipe_name);
             if (cfe_status != CFE_SUCCESS)
             {
-                CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR, "Failed (%d) to create data pipe %s",
+                CFE_EVS_SendEvent(BP_CR_PIPE_ERR_EID, CFE_EVS_EventType_ERROR, "Failed (%d) to create data pipe %s",
                                   (int)cfe_status, pipe_name);
-                status = BP_PIPE_ERR_EID;
+                status = BP_CR_PIPE_ERR_EID;
             }
         }
         else
@@ -791,7 +791,7 @@ int32 BP_FlowEnable(BP_FlowHandle_t Flow)
             if (cfe_status != CFE_SUCCESS)
             {
                 /* Report Failures and Continue (do not mark status) */
-                CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+                CFE_EVS_SendEvent(BP_CR_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                                   "Failed (%d) to subscribe to %04lX on data pipe", (int)cfe_status,
                                   (unsigned long)FlowPtr->Config.PktTbl[i].StreamId);
 
@@ -883,7 +883,7 @@ int32 BP_FlowDisable(BP_FlowHandle_t Flow)
                     CFE_SB_Unsubscribe(CFE_SB_ValueToMsgId(FlowPtr->Config.PktTbl[i].StreamId), FlowPtr->DataPipe);
                 if (cfe_status != CFE_SUCCESS)
                 {
-                    CFE_EVS_SendEvent(BP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+                    CFE_EVS_SendEvent(BP_CR_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                                       "Failed (%d) to unsubscribe %04lX from data pipe", (int)cfe_status,
                                       (unsigned long)FlowPtr->Config.PktTbl[i].StreamId);
                 }
