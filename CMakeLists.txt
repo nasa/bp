@@ -12,7 +12,6 @@ include_directories(fsw/src)
 set(APP_SRC_FILES
     fsw/src/bp_app.c
     fsw/src/bp_cmd.c
-    fsw/src/bp_dispatch.c
     fsw/src/bp_flow.c
     fsw/src/bp_cla_bundle_io.c
     fsw/src/bp_storage.c
@@ -21,6 +20,12 @@ set(APP_SRC_FILES
     fsw/custom/bp_storecfg.c
     fsw/custom/bp_tlmcfg.c
 )
+
+if (CFE_EDS_ENABLED_BUILD)
+    list(APPEND APP_SRC_FILES fsw/src/bp_eds_dispatch.c)
+else(CFE_EDS_ENABLED_BUILD)
+    list(APPEND APP_SRC_FILES fsw/src/bp_dispatch.c)
+endif(CFE_EDS_ENABLED_BUILD)
 
 set(APP_TABLE_FILES
     fsw/tables/bp_flowtable.c
