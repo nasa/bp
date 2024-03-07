@@ -55,8 +55,7 @@ void BP_AppPipe(const CFE_SB_Buffer_t *BufPtr)
     CFE_MSG_Size_t    MsgSize;
     CFE_MSG_FcnCode_t MsgFc;
 
-    status = EdsDispatch_BP_Application_Telecommand(CFE_SB_Telecommand_indication_Command_ID_Telecommand, BufPtr,
-                                                    &BP_TC_DISPATCH_TABLE);
+    status = EdsDispatch_BP_Application_Telecommand(BufPtr, &BP_TC_DISPATCH_TABLE);
 
     if (status != CFE_SUCCESS)
     {
