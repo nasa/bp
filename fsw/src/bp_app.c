@@ -67,6 +67,7 @@ static CFE_Status_t BP_SetupLibrary(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
+    /* TODO: Is this the right spot? */
     BPL_EVM_ProxyCallbacks_t EventProxyCallbacks = {
         .Initialize_Impl = BPNODE_EVT_Initialize_Impl,
         .SendEvent_Impl = BPNODE_EVT_SendEvent_Impl,
@@ -105,6 +106,7 @@ static CFE_Status_t AppInit(void)
 
     memcpy(BP_GlobalData.EventFilters, BP_EVENT_FILTER_INIT, sizeof(BP_EVENT_FILTER_INIT));
 
+    /* TODO: would need to remove this call. */
     /* Register Application with Event Services */
     status = CFE_EVS_Register(BP_GlobalData.EventFilters, num_event_filters, CFE_EVS_EventFilter_BINARY);
     if (status != CFE_SUCCESS)
@@ -230,6 +232,7 @@ void BP_AppMain(void)
     }
 
     /* Exit Application */
+    BPL_EVM_Deinitialize();
     CFE_EVS_SendEvent(BP_EXIT_ERR_EID, CFE_EVS_EventType_ERROR, "BP application terminating: result = 0x%08X",
                       (unsigned int)run_status);
     CFE_ES_WriteToSysLog("BP application terminating: result = 0x%08X\n",

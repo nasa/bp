@@ -21,6 +21,7 @@ BPL_Status_t BPNODE_EVT_Initialize_Impl(void)
 {
     BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
     OS_printf("BPNODE_EVT_Initialize_Impl called!\n");
+    /* TODO: call EVS Register. */
     return ReturnStatus;
 }
 
