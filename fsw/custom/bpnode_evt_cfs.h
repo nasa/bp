@@ -16,6 +16,21 @@
  * Typedefs
  ************************************************/
 
+/*
+** Defines the character used when truncating event strings that are too long
+** Match what cFE uses (CFE_EVS_MSG_TRUNCATED)
+*/
+#define BPNODE_EVT_MSG_TRUNCATED ('$')
+
+/*
+** Defines the max length of the expanded event string
+**
+** Limits:
+** - must be greater than or equal to 2
+** - must be less than or equal to host limit (CFE_MISSION_EVS_MAX_MESSAGE_LENGTH)
+*/
+#define BPNODE_EVT_MAX_MESSAGE_LENGTH (CFE_MISSION_EVS_MAX_MESSAGE_LENGTH)
+
 /************************************************
  * Exported Functions
  ************************************************/

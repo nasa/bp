@@ -6,6 +6,7 @@
  * Includes
  ************************************************/
 
+#include <assert.h>
 #include "cfe.h"
 #include "bpl_evm_api.h"
 #include "bpnode_evt_cfs.h"
@@ -65,8 +66,29 @@ BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
     BPL_Status_t ReturnStatus;
     CFE_Status_t ProxyStatus;
     uint16_t HostEventType = BPNODE_EVT_TranslateTypeToHost(EventType);
+    char ExpandedEventText[BPNODE_EVT_MAX_MESSAGE_LENGTH];
+    int ExpandedLength;
 
-    ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType, EventText, EventTextArgPtr);
+    /*
+    ** Due to how we truncate the message if its too long (as seen in code, below),
+    ** we need to ensure that this buffer is at least 2 characters long.
+    */
+    assert(BPNODE_EVT_MAX_MESSAGE_LENGTH >= 2);
+    assert(BPNODE_EVT_MAX_MESSAGE_LENGTH <= CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
+
+    memset(&ExpandedEventText, 0, sizeof(ExpandedEventText));
+    ExpandedLength = vsnprintf((char *)ExpandedEventText, sizeof(ExpandedEventText), EventText, EventTextArgPtr);
+    if (ExpandedLength >= (int)sizeof(ExpandedEventText))
+    {
+        /* Mark character before zero terminator to indicate truncation */
+        ExpandedEventText[sizeof(ExpandedEventText) - 2u] = BPNODE_EVT_MSG_TRUNCATED;
+        /*
+        ** TODO: should we return an error here?
+        ** Note: In the cFE implementation, they don't treat message truncation as an error.
+        */
+    }
+
+    ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType, "%s", ExpandedEventText);
 
     if (ProxyStatus != CFE_SUCCESS)
     {
