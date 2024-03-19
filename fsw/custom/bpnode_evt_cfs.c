@@ -27,7 +27,7 @@ BPL_Status_t BPNODE_EVT_Initialize_Impl(void)
 /*-----------------------------------------------
  * BPNODE_EVT_SendEvent_Impl
  *-----------------------------------------------*/
-BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint32_t EventID)
+BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID)
 {
     BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
     OS_printf("BPNODE_EVT_SendEvent_Impl called with arg 0x%08X!\n", EventID);
