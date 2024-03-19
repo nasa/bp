@@ -39,6 +39,7 @@
 #include "bp_dispatch.h"
 #include "bp_cla_bundle_io.h"
 #include "bplib_routing.h"
+#include "bpl_evm_api.h"
 
 /************************************************
  * File Data
@@ -64,6 +65,8 @@ static CFE_Status_t BP_SetupLibrary(void)
         fprintf(stderr, "%s(): bplib_route_alloc_table failed\n", __func__);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
+
+    (void) BPL_EVM_Initialize();
 
     return CFE_SUCCESS;
 }
@@ -165,8 +168,15 @@ static CFE_Status_t AppInit(void)
     BP_DoRebuildFlowBitmask();
 
     /* Application startup event message */
-    CFE_EVS_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized",
+    CFE_EVS_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized (KRM)",
                       BP_MAJOR_VERSION, BP_MINOR_VERSION, BP_REVISION, BP_MISSION_REV);
+
+    BPL_EVM_EventInfo_t const EventInfo = {
+        .Type = BPL_EVM_EventType_INFO,
+        .ID = 0
+    };
+
+    (void) BPL_EVM_SendEvent(&EventInfo, "Hello, work!\n");
 
     return CFE_SUCCESS;
 }

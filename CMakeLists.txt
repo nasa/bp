@@ -19,6 +19,7 @@ set(APP_SRC_FILES
     fsw/custom/bp_semcfg.c
     fsw/custom/bp_storecfg.c
     fsw/custom/bp_tlmcfg.c
+    fsw/custom/bpnode_evt_cfs.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)
