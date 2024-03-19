@@ -180,15 +180,10 @@ static CFE_Status_t AppInit(void)
     BP_DoRebuildFlowBitmask();
 
     /* Application startup event message */
-    CFE_EVS_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized (KRM)",
+    CFE_EVS_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized",
                       BP_MAJOR_VERSION, BP_MINOR_VERSION, BP_REVISION, BP_MISSION_REV);
 
-    BPL_EVM_EventInfo_t const EventInfo = {
-        .Type = BPL_EVM_EventType_INFO,
-        .ID = 0
-    };
-
-    (void) BPL_EVM_SendEvent(&EventInfo, "Hello, work!\n");
+    (void) BPL_EVM_SendEvent(BP_INIT_INF_EID, BPL_EVM_EventType_INFO, "Hello, work!\n");
 
     return CFE_SUCCESS;
 }
