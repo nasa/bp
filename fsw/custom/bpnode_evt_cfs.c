@@ -21,7 +21,7 @@
 BPL_Status_t BPNODE_EVT_Initialize_Impl(void)
 {
     BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
-    OS_printf("BPNODE_EVT_Initialize_Impl called!\n");
+    OS_printf("BPNODE_EVT_Initialize_Impl called! TODO: Call CFE_EVS_Register here!\n");
     /* TODO: call EVS Register. */
     return ReturnStatus;
 }
@@ -77,7 +77,8 @@ BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
     assert(BPNODE_EVT_MAX_MESSAGE_LENGTH <= CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 
     memset(&ExpandedEventText, 0, sizeof(ExpandedEventText));
-    ExpandedLength = vsnprintf((char *)ExpandedEventText, sizeof(ExpandedEventText), EventText, EventTextArgPtr);
+    ExpandedLength = vsnprintf((char *)ExpandedEventText, sizeof(ExpandedEventText),
+        EventText, EventTextArgPtr);
     if (ExpandedLength >= (int)sizeof(ExpandedEventText))
     {
         /* Mark character before zero terminator to indicate truncation */
@@ -98,8 +99,6 @@ BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
     }
     else
     {
-        OS_printf("BPNODE_EVT_SendEvent_Impl called with ID 0x%08X and Type %u!\n",
-            EventID, (unsigned int) EventType);
         ReturnStatus.ReturnValue = BPL_STATUS_SUCCESS;
     }
 
