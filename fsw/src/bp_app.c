@@ -40,6 +40,7 @@
 #include "bp_cla_bundle_io.h"
 #include "bplib_routing.h"
 #include "bpl_evm_api.h"
+#include "bpnode_evt_cfs.h"
 
 /************************************************
  * File Data
@@ -66,7 +67,12 @@ static CFE_Status_t BP_SetupLibrary(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    (void) BPL_EVM_Initialize();
+    BPL_EVM_ProxyCallbacks_t EventProxyCallbacks = {
+        .Initialize_Impl = BPNODE_EVT_Initialize_Impl,
+        .SendEvent_Impl = BPNODE_EVT_SendEvent_Impl,
+    };
+
+    (void) BPL_EVM_Initialize(EventProxyCallbacks);
 
     return CFE_SUCCESS;
 }

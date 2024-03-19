@@ -10,21 +10,17 @@
  ************************************************/
 
 #include "cfe.h"
+#include "bpl_evm_api.h"
 
 /************************************************
  * Typedefs
  ************************************************/
 
-typedef struct
-{
-    uint32_t ReturnValue;
-} BPNODE_Status_t;
-
 /************************************************
  * Exported Functions
  ************************************************/
 
-BPNODE_Status_t BPNODE_EVT_Initialize_Impl(void);
-BPNODE_Status_t BPNODE_EVT_SendEvent_Impl(uint32_t EventID);
+BPL_Status_t BPNODE_EVT_Initialize_Impl(void);
+BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint32_t EventID);
 
 #endif /* BPNODE_EVT_H */
