@@ -72,7 +72,13 @@ static CFE_Status_t BP_SetupLibrary(void)
         .SendEvent_Impl = BPNODE_EVT_SendEvent_Impl,
     };
 
-    (void) BPL_EVM_Initialize(EventProxyCallbacks);
+    BPL_Status_t BPL_EVM_Status;
+    BPL_EVM_Status = BPL_EVM_Initialize(EventProxyCallbacks);
+    if (BPL_EVM_Status.ReturnValue != BPL_STATUS_SUCCESS)
+    {
+        fprintf(stderr, "%s(): BPL_EVM_Initialize failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
 
     return CFE_SUCCESS;
 }
