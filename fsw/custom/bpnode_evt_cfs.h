@@ -21,6 +21,7 @@
  ************************************************/
 
 BPL_Status_t BPNODE_EVT_Initialize_Impl(void);
-BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType);
+BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
+    char const * EventText, va_list EventTextArgPtr);
 
 #endif /* BPNODE_EVT_H */

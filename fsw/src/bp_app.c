@@ -185,7 +185,9 @@ static CFE_Status_t AppInit(void)
     CFE_EVS_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized",
                       BP_MAJOR_VERSION, BP_MINOR_VERSION, BP_REVISION, BP_MISSION_REV);
 
-    (void) BPL_EVM_SendEvent(BP_INIT_INF_EID, BPL_EVM_EventType_INFO, "Hello, work!\n");
+    (void) BPL_EVM_SendEvent(BP_INIT_INF_EID, BPL_EVM_EventType_INFO,
+        "Hello, work! Version %u.%u.%u.%u starting.",
+        4, 3, 2, 1);
 
     return CFE_SUCCESS;
 }

@@ -59,14 +59,14 @@ uint16_t BPNODE_EVT_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
 /*-----------------------------------------------
  * BPNODE_EVT_SendEvent_Impl
  *-----------------------------------------------*/
-BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType)
+BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
+    char const * EventText, va_list EventTextArgPtr)
 {
     BPL_Status_t ReturnStatus;
     CFE_Status_t ProxyStatus;
     uint16_t HostEventType = BPNODE_EVT_TranslateTypeToHost(EventType);
 
-    ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType,
-                    "TODO: Replace this static string!");
+    ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType, EventText, EventTextArgPtr);
 
     if (ProxyStatus != CFE_SUCCESS)
     {
