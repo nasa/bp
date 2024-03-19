@@ -31,5 +31,9 @@ BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint32_t EventID)
 {
     BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
     OS_printf("BPNODE_EVT_SendEvent_Impl called with arg 0x%08X!\n", EventID);
+
+    CFE_EVS_SendEvent(EventID, CFE_EVS_EventType_INFORMATION,
+                    "TODO: Replace this static string!");
+
     return ReturnStatus;
 }
