@@ -60,7 +60,7 @@ uint16_t BPNODE_EVT_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
  *-----------------------------------------------*/
 BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType)
 {
-    BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
+    BPL_Status_t ReturnStatus;
     CFE_Status_t ProxyStatus;
     uint16_t HostEventType = BPNODE_EVT_TranslateTypeToHost(EventType);
 
