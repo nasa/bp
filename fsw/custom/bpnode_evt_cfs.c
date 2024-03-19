@@ -24,6 +24,9 @@ BPL_Status_t BPNODE_EVT_Initialize_Impl(void)
     return ReturnStatus;
 }
 
+/*-----------------------------------------------
+ * BPNODE_EVT_TranslateTypeToHost
+ *-----------------------------------------------*/
 uint16_t BPNODE_EVT_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
 {
     uint16_t HostEventType;
