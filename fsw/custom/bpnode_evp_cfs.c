@@ -57,8 +57,6 @@ BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
     }
     else
     {
-        OS_printf("BPNODE_EVP_Initialize_Impl registered %u event filters with EVS!\n",
-            (unsigned int) BPNODE_EVP_CFS_NUM_EVENT_FILTERS);
         ReturnStatus.ReturnValue = BPL_STATUS_SUCCESS;
     }
 
@@ -127,6 +125,10 @@ BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
         ** Note: In the cFE implementation, they don't treat message truncation as an error.
         */
     }
+
+    /* TODO: We'll probably want to remove this, or wrap it behind an "if debug" compiler flag. */
+    OS_printf("BPNODE_EVP_SendEvent_Impl(%u, %s, %s)\n",
+        EventID, BPL_EVM_EventTypeToString(EventType), ExpandedEventText);
 
     ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType, "%s", ExpandedEventText);
 
