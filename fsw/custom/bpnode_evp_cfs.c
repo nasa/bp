@@ -42,7 +42,7 @@ const size_t BPNODE_EVP_CFS_NUM_EVENT_FILTERS = sizeof(BPNODE_EVP_CFS_EVENT_FILT
  *-----------------------------------------------*/
 BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
 {
-    BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
+    BPL_Status_t ReturnStatus;
     CFE_Status_t CfeEvsRegisterStatus;
 
     CfeEvsRegisterStatus = CFE_EVS_Register(BPNODE_EVP_CFS_EVENT_FILTER,
