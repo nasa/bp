@@ -9,27 +9,27 @@
 #include <assert.h>
 #include "cfe.h"
 #include "bpl_evm_api.h"
-#include "bpnode_evt_cfs.h"
+#include "bpnode_evp_cfs.h"
 
 /************************************************
  * Exported Functions
  ************************************************/
 
 /*-----------------------------------------------
- * BPNODE_EVT_Initialize_Impl
+ * BPNODE_EVP_Initialize_Impl
  *-----------------------------------------------*/
-BPL_Status_t BPNODE_EVT_Initialize_Impl(void)
+BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
 {
     BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
-    OS_printf("BPNODE_EVT_Initialize_Impl called! TODO: Call CFE_EVS_Register here!\n");
+    OS_printf("BPNODE_EVP_Initialize_Impl called! TODO: Call CFE_EVS_Register here!\n");
     /* TODO: call EVS Register. */
     return ReturnStatus;
 }
 
 /*-----------------------------------------------
- * BPNODE_EVT_TranslateTypeToHost
+ * BPNODE_EVP_TranslateTypeToHost
  *-----------------------------------------------*/
-uint16_t BPNODE_EVT_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
+uint16_t BPNODE_EVP_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
 {
     uint16_t HostEventType;
     switch (EventType)
@@ -58,23 +58,23 @@ uint16_t BPNODE_EVT_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
 }
 
 /*-----------------------------------------------
- * BPNODE_EVT_SendEvent_Impl
+ * BPNODE_EVP_SendEvent_Impl
  *-----------------------------------------------*/
-BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
+BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
     char const * EventText, va_list EventTextArgPtr)
 {
     BPL_Status_t ReturnStatus;
     CFE_Status_t ProxyStatus;
-    uint16_t HostEventType = BPNODE_EVT_TranslateTypeToHost(EventType);
-    char ExpandedEventText[BPNODE_EVT_MAX_MESSAGE_LENGTH];
+    uint16_t HostEventType = BPNODE_EVP_TranslateTypeToHost(EventType);
+    char ExpandedEventText[BPNODE_EVP_MAX_MESSAGE_LENGTH];
     int ExpandedLength;
 
     /*
     ** Due to how we truncate the message if its too long (as seen in code, below),
     ** we need to ensure that this buffer is at least 2 characters long.
     */
-    assert(BPNODE_EVT_MAX_MESSAGE_LENGTH >= 2);
-    assert(BPNODE_EVT_MAX_MESSAGE_LENGTH <= CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
+    assert(BPNODE_EVP_MAX_MESSAGE_LENGTH >= 2);
+    assert(BPNODE_EVP_MAX_MESSAGE_LENGTH <= CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 
     memset(&ExpandedEventText, 0, sizeof(ExpandedEventText));
     ExpandedLength = vsnprintf((char *)ExpandedEventText, sizeof(ExpandedEventText),
@@ -82,7 +82,7 @@ BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
     if (ExpandedLength >= (int)sizeof(ExpandedEventText))
     {
         /* Mark character before zero terminator to indicate truncation */
-        ExpandedEventText[sizeof(ExpandedEventText) - 2u] = BPNODE_EVT_MSG_TRUNCATED;
+        ExpandedEventText[sizeof(ExpandedEventText) - 2u] = BPNODE_EVP_MSG_TRUNCATED;
         /*
         ** TODO: should we return an error here?
         ** Note: In the cFE implementation, they don't treat message truncation as an error.
@@ -93,7 +93,7 @@ BPL_Status_t BPNODE_EVT_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
 
     if (ProxyStatus != CFE_SUCCESS)
     {
-        OS_printf("BPNODE_EVT_SendEvent_Impl CFE_EVS_SendEvent returned error status: 0x%08X!\n",
+        OS_printf("BPNODE_EVP_SendEvent_Impl CFE_EVS_SendEvent returned error status: 0x%08X!\n",
             ProxyStatus);
         ReturnStatus.ReturnValue = BPL_STATUS_ERROR_GENERAL;
     }

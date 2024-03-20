@@ -40,7 +40,7 @@
 #include "bp_cla_bundle_io.h"
 #include "bplib_routing.h"
 #include "bpl_evm_api.h"
-#include "bpnode_evt_cfs.h"
+#include "bpnode_evp_cfs.h"
 
 /************************************************
  * File Data
@@ -69,8 +69,8 @@ static CFE_Status_t BP_SetupLibrary(void)
 
     /* TODO: Is this the right spot? */
     BPL_EVM_ProxyCallbacks_t EventProxyCallbacks = {
-        .Initialize_Impl = BPNODE_EVT_Initialize_Impl,
-        .SendEvent_Impl = BPNODE_EVT_SendEvent_Impl,
+        .Initialize_Impl = BPNODE_EVP_Initialize_Impl,
+        .SendEvent_Impl = BPNODE_EVP_SendEvent_Impl,
     };
 
     BPL_Status_t BPL_EVM_Status;
