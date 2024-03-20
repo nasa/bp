@@ -8,8 +8,32 @@
 
 #include <assert.h>
 #include "cfe.h"
+#include "bp_eventids.h"
 #include "bpl_evm_api.h"
 #include "bpnode_evp_cfs.h"
+
+/************************************************
+ * Local Data
+ ************************************************/
+
+/*
+** Limits:
+** - Must contain less than or equal to CFE_PLATFORM_EVS_MAX_EVENT_FILTERS entries
+*/
+static const CFE_EVS_BinFilter_t BPNODE_EVP_CFS_EVENT_FILTER[] = {
+    {BP_IO_SEND_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_IO_RECEIVE_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_LIB_PROC_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_LIB_LOAD_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_LIB_STORE_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_LIB_ACCEPT_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_FILE_ERR_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_STORE_INFO_EID, CFE_EVS_FIRST_8_STOP},
+    {BP_BPLIB_INFO_EID, CFE_EVS_FIRST_8_STOP}
+};
+
+const size_t BPNODE_EVP_CFS_NUM_EVENT_FILTERS = sizeof(BPNODE_EVP_CFS_EVENT_FILTER) /
+                                                sizeof(BPNODE_EVP_CFS_EVENT_FILTER[0]);
 
 /************************************************
  * Exported Functions
@@ -21,8 +45,25 @@
 BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
 {
     BPL_Status_t ReturnStatus = { .ReturnValue = BPL_STATUS_SUCCESS };
-    OS_printf("BPNODE_EVP_Initialize_Impl called! TODO: Call CFE_EVS_Register here!\n");
-    /* TODO: call EVS Register. */
+    CFE_Status_t CfeEvsRegisterStatus;
+
+    CfeEvsRegisterStatus = CFE_EVS_Register(BPNODE_EVP_CFS_EVENT_FILTER,
+                                            BPNODE_EVP_CFS_NUM_EVENT_FILTERS,
+                                            CFE_EVS_EventFilter_BINARY);
+
+    if (CfeEvsRegisterStatus != CFE_SUCCESS)
+    {
+        OS_printf("BPNODE_EVP_Initialize_Impl call to CFE_EVS_Register returned error: %u!\n",
+            CfeEvsRegisterStatus);
+        ReturnStatus.ReturnValue = BPL_STATUS_ERROR_PROXY_INIT;
+    }
+    else
+    {
+        OS_printf("BPNODE_EVP_Initialize_Impl registered %u event filters with EVS!\n",
+            (unsigned int) BPNODE_EVP_CFS_NUM_EVENT_FILTERS);
+        ReturnStatus.ReturnValue = BPL_STATUS_SUCCESS;
+    }
+
     return ReturnStatus;
 }
 

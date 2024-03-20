@@ -44,7 +44,6 @@ typedef struct
     CFE_SB_PipeId_t     AppPipe;
     BP_HkPkt_t          HkPkt;
     BP_FlowHkPkt_t      FlowHkPkt;
-    CFE_EVS_BinFilter_t EventFilters[BP_MAX_EVENT_FILTERS];
     char                AppName[CFE_MISSION_MAX_API_LEN];
     char                ConfigTableName[CFE_TBL_MAX_FULL_NAME_LEN];
 

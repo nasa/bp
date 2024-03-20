@@ -89,28 +89,11 @@ static CFE_Status_t BP_SetupLibrary(void)
  *-----------------------------------------------*/
 static CFE_Status_t AppInit(void)
 {
-    static const CFE_EVS_BinFilter_t BP_EVENT_FILTER_INIT[] = {
-        {BP_IO_SEND_ERR_EID, CFE_EVS_FIRST_8_STOP},   {BP_IO_RECEIVE_ERR_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_LIB_PROC_ERR_EID, CFE_EVS_FIRST_8_STOP},  {BP_LIB_LOAD_ERR_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_LIB_STORE_ERR_EID, CFE_EVS_FIRST_8_STOP}, {BP_LIB_ACCEPT_ERR_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_FILE_ERR_EID, CFE_EVS_FIRST_8_STOP},      {BP_STORE_INFO_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_BPLIB_INFO_EID, CFE_EVS_FIRST_8_STOP}};
-
-    const size_t   num_event_filters = sizeof(BP_EVENT_FILTER_INIT) / sizeof(BP_EVENT_FILTER_INIT[0]);
     CFE_Status_t   status            = CFE_SUCCESS;
     CFE_ES_AppId_t app_id;
 
-    assert(num_event_filters <= BP_MAX_EVENT_FILTERS);
     memset(&BP_GlobalData, 0, sizeof(BP_GlobalData));
     BP_GlobalData.Throttles = BP_Throttles;
-
-    memcpy(BP_GlobalData.EventFilters, BP_EVENT_FILTER_INIT, sizeof(BP_EVENT_FILTER_INIT));
-
-    /* TODO: would need to remove this call. */
-    /* Register Application with Event Services */
-    status = CFE_EVS_Register(BP_GlobalData.EventFilters, num_event_filters, CFE_EVS_EventFilter_BINARY);
-    if (status != CFE_SUCCESS)
-        return status;
 
     /* Get Application ID */
     status = CFE_ES_GetAppID(&app_id);
