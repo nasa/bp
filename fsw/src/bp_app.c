@@ -67,7 +67,6 @@ static CFE_Status_t BP_SetupLibrary(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    /* TODO: Is this the right spot? */
     BPL_EVM_ProxyCallbacks_t EventProxyCallbacks = {
         .SendEvent_Impl = BPNODE_EVP_SendEvent_Impl,
     };
