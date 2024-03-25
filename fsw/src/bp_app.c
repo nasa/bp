@@ -69,7 +69,6 @@ static CFE_Status_t BP_SetupLibrary(void)
 
     /* TODO: Is this the right spot? */
     BPL_EVM_ProxyCallbacks_t EventProxyCallbacks = {
-        .Initialize_Impl = BPNODE_EVP_Initialize_Impl,
         .SendEvent_Impl = BPNODE_EVP_SendEvent_Impl,
     };
 
@@ -91,6 +90,10 @@ static CFE_Status_t AppInit(void)
 {
     CFE_Status_t   status            = CFE_SUCCESS;
     CFE_ES_AppId_t app_id;
+
+    status = BPNODE_EVP_Initialize();
+    if (status != CFE_SUCCESS)
+        return status;
 
     memset(&BP_GlobalData, 0, sizeof(BP_GlobalData));
     BP_GlobalData.Throttles = BP_Throttles;

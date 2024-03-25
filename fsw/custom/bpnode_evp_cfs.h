@@ -35,7 +35,7 @@
  * Exported Functions
  ************************************************/
 
-BPL_Status_t BPNODE_EVP_Initialize_Impl(void);
+CFE_Status_t BPNODE_EVP_Initialize(void);
 BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
     char const * EventText, va_list EventTextArgPtr);
 

@@ -38,11 +38,10 @@ const size_t BPNODE_EVP_CFS_NUM_EVENT_FILTERS = sizeof(BPNODE_EVP_CFS_EVENT_FILT
  ************************************************/
 
 /*-----------------------------------------------
- * BPNODE_EVP_Initialize_Impl
+ * BPNODE_EVP_Initialize
  *-----------------------------------------------*/
-BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
+CFE_Status_t BPNODE_EVP_Initialize(void)
 {
-    BPL_Status_t ReturnStatus;
     CFE_Status_t CfeEvsRegisterStatus;
 
     CfeEvsRegisterStatus = CFE_EVS_Register(BPNODE_EVP_CFS_EVENT_FILTER,
@@ -51,16 +50,11 @@ BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
 
     if (CfeEvsRegisterStatus != CFE_SUCCESS)
     {
-        OS_printf("BPNODE_EVP_Initialize_Impl call to CFE_EVS_Register returned error: %u!\n",
+        OS_printf("BPNODE_EVP_Initialize call to CFE_EVS_Register returned error: %u!\n",
             CfeEvsRegisterStatus);
-        ReturnStatus.ReturnValue = BPL_STATUS_ERROR_PROXY_INIT;
-    }
-    else
-    {
-        ReturnStatus.ReturnValue = BPL_STATUS_SUCCESS;
     }
 
-    return ReturnStatus;
+    return CfeEvsRegisterStatus;
 }
 
 /*-----------------------------------------------
