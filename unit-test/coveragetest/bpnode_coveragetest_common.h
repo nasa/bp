@@ -1,8 +1,7 @@
 /************************************************************************
- * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
- * System (cFS) Health & Safety (HS) Application version 2.4.1”
+ * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
  *
- * Copyright (c) 2021 United States Government as represented by the
+ * Copyright (c) 2020 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -17,11 +16,39 @@
  * limitations under the License.
  ************************************************************************/
 
-#include "sample_app.h"
+/**
+ * @file
+ *
+ * Common definitions for all BPNode coverage tests
+ */
 
-/* UT includes */
-#include "uttest.h"
+#ifndef BPNODE_COVERAGETEST_COMMON_H
+#define BPNODE_COVERAGETEST_COMMON_H
+
+/*
+ * Includes
+ */
+
 #include "utassert.h"
+#include "uttest.h"
 #include "utstubs.h"
 
-SAMPLE_APP_Data_t SAMPLE_APP_Data;
+#include "setup.h"
+#include "eventcheck.h"
+
+#include "cfe.h"
+#include "bpnode_eventids.h"
+#include "bpnode_app.h"
+#include "bpnode_dispatch.h"
+#include "bpnode_cmds.h"
+#include "bpnode_utils.h"
+#include "bpnode_msgids.h"
+#include "bpnode_msg.h"
+#include "bpnode_tbl.h"
+
+/*
+ * Macro to add a test case to the list of tests to execute
+ */
+#define ADD_TEST(test) UtTest_Add((Test_##test), BPNode_UT_Setup, BPNode_UT_TearDown, #test)
+
+#endif /* BPNODE_COVERAGETEST_COMMON_H */

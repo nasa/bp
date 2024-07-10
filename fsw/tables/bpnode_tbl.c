@@ -32,4 +32,4 @@ BPNODE_ExampleTable_t ExampleTable = {1, 2};
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ExampleTable, BPNODE.ExampleTable, Table Utility Test Table, bpnode_tbl.tbl)
+CFE_TBL_FILEDEF(ExampleTable, BPNode.ExampleTable, Table Utility Test Table, bpnode_tbl.tbl)

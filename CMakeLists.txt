@@ -16,6 +16,10 @@ else()
   )
 endif()
 
+set(APP_TABLE_FILES
+  fsw/tables/bpnode_tbl.c
+)
+
 # Create the app module
 add_cfe_app(bpnode ${APP_SRC_FILES})
 
@@ -25,7 +29,7 @@ target_include_directories(bpnode PUBLIC fsw/inc)
 add_cfe_app_dependency(bpnode bplib)
 
 # Add table
-add_cfe_tables(bpnode fsw/tables/bpnode_tbl.c)
+add_cfe_tables(bpnode ${APP_TABLE_FILES})
 
 # If UT is enabled, then add the tests from the subdirectory
 # Note that this is an app, and therefore does not provide

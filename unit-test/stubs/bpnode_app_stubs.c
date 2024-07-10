@@ -19,33 +19,33 @@
 /**
  * @file
  *
- * Auto-Generated stub implementations for functions defined in sample_app header
+ * Auto-Generated stub implementations for functions defined in bpnode_app header
  */
 
-#include "sample_app.h"
+#include "bpnode_app.h"
 #include "utgenstub.h"
 
 /*
  * ----------------------------------------------------
- * Generated stub function for SAMPLE_APP_Init()
+ * Generated stub function for BPNode_AppInit()
  * ----------------------------------------------------
  */
-CFE_Status_t SAMPLE_APP_Init(void)
+CFE_Status_t BPNode_AppInit(void)
 {
-    UT_GenStub_SetupReturnBuffer(SAMPLE_APP_Init, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPNode_AppInit, CFE_Status_t);
 
-    UT_GenStub_Execute(SAMPLE_APP_Init, Basic, NULL);
+    UT_GenStub_Execute(BPNode_AppInit, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(SAMPLE_APP_Init, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPNode_AppInit, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for SAMPLE_APP_Main()
+ * Generated stub function for BPNode_AppMain()
  * ----------------------------------------------------
  */
-void SAMPLE_APP_Main(void)
+void BPNode_AppMain(void)
 {
 
-    UT_GenStub_Execute(SAMPLE_APP_Main, Basic, NULL);
+    UT_GenStub_Execute(BPNode_AppMain, Basic, NULL);
 }

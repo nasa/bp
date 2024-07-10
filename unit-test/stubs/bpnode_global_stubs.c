@@ -1,7 +1,8 @@
 /************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+ * NASA Docket No. GSC-18,920-1, and identified as “Core Flight
+ * System (cFS) Health & Safety (HS) Application version 2.4.1”
  *
- * Copyright (c) 2020 United States Government as represented by the
+ * Copyright (c) 2021 United States Government as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All Rights Reserved.
  *
@@ -16,15 +17,11 @@
  * limitations under the License.
  ************************************************************************/
 
-/**
- * @file
- *   BPNode Application Topic IDs
- */
-#ifndef BPNODE_TOPICIDS_H
-#define BPNODE_TOPICIDS_H
+#include "bpnode_app.h"
 
-// #define CFE_MISSION_BPNODE_CMD_TOPICID       0x82
-// #define CFE_MISSION_BPNODE_SEND_HK_TOPICID   0x83
-// #define CFE_MISSION_BPNODE_HK_TLM_TOPICID    0x83
+/* UT includes */
+#include "uttest.h"
+#include "utassert.h"
+#include "utstubs.h"
 
-#endif
+BPNode_AppData_t BPNode_AppData;

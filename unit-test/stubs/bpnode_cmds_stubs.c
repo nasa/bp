@@ -19,49 +19,56 @@
 /**
  * @file
  *
- * Auto-Generated stub implementations for functions defined in sample_app_dispatch header
+ * Auto-Generated stub implementations for functions defined in bpnode_cmds header
  */
 
-#include "sample_app_dispatch.h"
+#include "bpnode_cmds.h"
 #include "utgenstub.h"
 
 /*
  * ----------------------------------------------------
- * Generated stub function for SAMPLE_APP_ProcessGroundCommand()
+ * Generated stub function for BPNode_NoopCmd()
  * ----------------------------------------------------
  */
-void SAMPLE_APP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
+CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 {
-    UT_GenStub_AddParam(SAMPLE_APP_ProcessGroundCommand, const CFE_SB_Buffer_t *, SBBufPtr);
+    UT_GenStub_SetupReturnBuffer(BPNode_NoopCmd, CFE_Status_t);
 
-    UT_GenStub_Execute(SAMPLE_APP_ProcessGroundCommand, Basic, NULL);
+    UT_GenStub_AddParam(BPNode_NoopCmd, const BPNode_NoopCmd_t *, Msg);
+
+    UT_GenStub_Execute(BPNode_NoopCmd, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_NoopCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for SAMPLE_APP_TaskPipe()
+ * Generated stub function for BPNode_ResetCountersCmd()
  * ----------------------------------------------------
  */
-void SAMPLE_APP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
+CFE_Status_t BPNode_ResetCountersCmd(const BPNode_ResetCountersCmd_t *Msg)
 {
-    UT_GenStub_AddParam(SAMPLE_APP_TaskPipe, const CFE_SB_Buffer_t *, SBBufPtr);
+    UT_GenStub_SetupReturnBuffer(BPNode_ResetCountersCmd, CFE_Status_t);
 
-    UT_GenStub_Execute(SAMPLE_APP_TaskPipe, Basic, NULL);
+    UT_GenStub_AddParam(BPNode_ResetCountersCmd, const BPNode_ResetCountersCmd_t *, Msg);
+
+    UT_GenStub_Execute(BPNode_ResetCountersCmd, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_ResetCountersCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for SAMPLE_APP_VerifyCmdLength()
+ * Generated stub function for BPNode_SendHkCmd()
  * ----------------------------------------------------
  */
-bool SAMPLE_APP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength)
+CFE_Status_t BPNode_SendHkCmd(const BPNode_SendHkCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(SAMPLE_APP_VerifyCmdLength, bool);
+    UT_GenStub_SetupReturnBuffer(BPNode_SendHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(SAMPLE_APP_VerifyCmdLength, const CFE_MSG_Message_t *, MsgPtr);
-    UT_GenStub_AddParam(SAMPLE_APP_VerifyCmdLength, size_t, ExpectedLength);
+    UT_GenStub_AddParam(BPNode_SendHkCmd, const BPNode_SendHkCmd_t *, Msg);
 
-    UT_GenStub_Execute(SAMPLE_APP_VerifyCmdLength, Basic, NULL);
+    UT_GenStub_Execute(BPNode_SendHkCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(SAMPLE_APP_VerifyCmdLength, bool);
+    return UT_GenStub_GetReturnValue(BPNode_SendHkCmd, CFE_Status_t);
 }

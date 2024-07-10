@@ -19,36 +19,24 @@
 /**
  * @file
  *
- * Common definitions for all sample_app coverage tests
+ * Auto-Generated stub implementations for functions defined in bpnode_utils header
  */
 
-#ifndef SAMPLE_APP_COVERAGETEST_COMMON_H
-#define SAMPLE_APP_COVERAGETEST_COMMON_H
+#include "bpnode_utils.h"
+#include "utgenstub.h"
 
 /*
- * Includes
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_TblValidationFunc()
+ * ----------------------------------------------------
  */
+CFE_Status_t BPNode_TblValidationFunc(void *TblData)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_TblValidationFunc, CFE_Status_t);
 
-#include "utassert.h"
-#include "uttest.h"
-#include "utstubs.h"
+    UT_GenStub_AddParam(BPNode_TblValidationFunc, void *, TblData);
 
-#include "setup.h"
-#include "eventcheck.h"
+    UT_GenStub_Execute(BPNode_TblValidationFunc, Basic, NULL);
 
-#include "cfe.h"
-#include "sample_app_eventids.h"
-#include "sample_app.h"
-#include "sample_app_dispatch.h"
-#include "sample_app_cmds.h"
-#include "sample_app_utils.h"
-#include "sample_app_msgids.h"
-#include "sample_app_msg.h"
-#include "sample_app_tbl.h"
-
-/*
- * Macro to add a test case to the list of tests to execute
- */
-#define ADD_TEST(test) UtTest_Add((Test_##test), Sample_UT_Setup, Sample_UT_TearDown, #test)
-
-#endif /* SAMPLE_APP_COVERAGETEST_COMMON_H */
+    return UT_GenStub_GetReturnValue(BPNode_TblValidationFunc, CFE_Status_t);
+}

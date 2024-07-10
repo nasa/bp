@@ -17,12 +17,14 @@
  ************************************************************************/
 
 /*
+** File: coveragetest_bpnode_eds_dispatch.c
+**
 ** Purpose:
-** Coverage Unit Test cases for the SAMPLE Application
+** Coverage Unit Test cases for the BPNode Application
 **
 ** Notes:
 ** This implements various test cases to exercise all code
-** paths through all functions defined in the SAMPLE application.
+** paths through all functions defined in the BPNode application.
 **
 ** It is primarily focused at providing examples of the various
 ** stub configurations, hook functions, and wrapper calls that
@@ -34,10 +36,10 @@
  * Includes
  */
 
-#include "sample_app_coveragetest_common.h"
-#include "sample_app.h"
-#include "sample_app_dispatch.h"
-#include "sample_app_cmds.h"
+#include "bpnode_coveragetest_common.h"
+#include "bpnode_app.h"
+#include "bpnode_dispatch.h"
+#include "bpnode_cmds.h"
 
 /*
 **********************************************************************************
@@ -45,11 +47,11 @@
 **********************************************************************************
 */
 
-void Test_SAMPLE_APP_TaskPipe(void)
+void Test_BPNode_TaskPipe(void)
 {
     /*
      * Test Case For:
-     * void SAMPLE_APP_TaskPipe
+     * void BPNode_TaskPipe
      */
 }
 
@@ -58,5 +60,5 @@ void Test_SAMPLE_APP_TaskPipe(void)
  */
 void UtTest_Setup(void)
 {
-    ADD_TEST(SAMPLE_APP_TaskPipe);
+    ADD_TEST(BPNode_TaskPipe);
 }

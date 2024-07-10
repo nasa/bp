@@ -39,8 +39,10 @@
  */
 static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_DISPATCH_TABLE = {
     .CMD     = {.NoopCmd_indication          = BPNode_NoopCmd,
-            .ResetCountersCmd_indication = BPNode_ResetCountersCmd,
-    .SEND_HK = {.indication = BPNode_SendHkCmd}};
+                .ResetCountersCmd_indication = BPNode_ResetCountersCmd
+               },
+    .SEND_HK = {.indication = BPNode_SendHkCmd}
+};
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
