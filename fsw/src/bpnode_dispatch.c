@@ -96,20 +96,6 @@ void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             }
             break;
 
-        case BPNODE_PROCESS_CC:
-            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ProcessCmd_t)))
-            {
-                BPNode_ProcessCmd((const BPNode_ProcessCmd_t *)SBBufPtr);
-            }
-            break;
-
-        case BPNODE_DISPLAY_PARAM_CC:
-            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_DisplayParamCmd_t)))
-            {
-                BPNode_DisplayParamCmd((const BPNode_DisplayParamCmd_t *)SBBufPtr);
-            }
-            break;
-
         /* default case already found during FC vs length test */
         default:
             CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR, "Invalid ground command code: CC = %d",

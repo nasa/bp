@@ -55,17 +55,6 @@ typedef struct
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
 } BPNode_ResetCountersCmd_t;
 
-typedef struct
-{
-    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-} BPNode_ProcessCmd_t;
-
-typedef struct
-{
-    CFE_MSG_CommandHeader_t           CommandHeader; /**< \brief Command header */
-    BPNode_DisplayParam_Payload_t Payload;
-} BPNode_DisplayParamCmd_t;
-
 /*************************************************************************/
 /*
 ** Type definition (BPNode housekeeping)
