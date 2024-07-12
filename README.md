@@ -28,52 +28,63 @@ The bash statements in Section 2. include the `apt install` statement to install
 
 3. Create a subdirectory for building a cFS bundle that includes  bp and run CMake to set up the build tree.
 
-Note: These bash statements mimic the YAML statements in the .github Actions and Workflows scripts. Also, the .github Actions and Workflows specify Ubuntu 22.04 (22.04.4 LTS).
+Notes:
+- These bash statements mimic the YAML statements in the .github Actions and Workflows scripts. Also, the .github Actions and Workflows specify Ubuntu 22.04 (22.04.4 LTS).
+- Example bash scripts are in [docs/example_scripts](docs/example_scripts)
+- Use of the `$HOME` environment variable is at your discretion. The example scripts use `$HOME` to distinguish the top level folder versus `$HOME/build`, the build folder.
 
+The `install-toolchain` script installs cmake, pkg-config and build-essential (gcc toolchain). Run the script once, if required. There's no harm done by running the script again. It reports that the packages are already installed.
+
+`install-toolchain`
 ```sh
    cd $HOME
    sudo apt update
    sudo apt upgrade
    sudo apt install cmake pkg-config build-essential
+```
+
+The `prep-bp-build` script prepares the build folder from a cFS repository cloned to the `cfs-bundle` folder. The script includes initializing the local cFS repository with all required submodules and running the __cmake__ command to create the `build` folder containing a `Makefile`.
+
+`prep-bp-build`
+```sh
+   cd $HOME
    git clone git@github.com:nasa/cFS.git cfs-bundle 
    pushd cfs-bundle
    git submodule init
    git submodule update
-   git fetch --no-tags --depth=1 https://github.com/jphickey/PSP.git techdev-iodriver:techdev-iodriver
    pushd psp
-   # Does the branch techdev-iodriver exist?
+   git fetch --no-tags --depth=1 https://github.com/jphickey/PSP.git \
+       techdev-iodriver:techdev-iodriver
    git checkout techdev-iodriver
-   popd; popd
-   git clone https://github.com/nasa/CF.git cfs-bundle/apps/cf
-   git clone git@github.com:gskenned/bp.git src/bp
-   git clone git@github.com:gskenned/bplib.git src/bplib
+   popd
+   git clone https://github.com/nasa/CF.git apps/cf
+   git clone https://github.com/gskenned/bp.git apps/bp
+   pushd apps/bp; git checkout fix-dtnn-132-bp-bplib-readmes; popd
+   git clone https://github.com/gskenned/bplib.git libs/bplib
+   popd
    mkdir -p ./bpxfer_defs
    cp  ./cfs-bundle/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h
    cp -v -t ./bpxfer_defs ./cfs-bundle/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
-   cp -v -t ./bpxfer_defs ./src/bp/.github/buildconfig/*.{cmake,scr}
-   cp -rv -t ./bpxfer_defs ./src/bp/.github/buildconfig/{tx,rx,tables}
+   cp -v -t ./bpxfer_defs ./cfs-bundle/apps/bp/.github/buildconfig/*.{cmake,scr}
+   cp -rv -t ./bpxfer_defs ./cfs-bundle/apps/bp/.github/buildconfig/{tx,rx,tables}
    cmake -DCMAKE_BUILD_TYPE=Release -DSIMULATION=native \
       -DCMAKE_INSTALL_PREFIX=/exe \
       -DMISSIONCONFIG=bpxfer -DMISSION_DEFS=$PWD/bpxfer_defs \
       -B build -S cfs-bundle/cfe
-   pushd ./build
-   make DESTDIR=.. -j2 mission-install
-   pushd exe
-   tar -cvf ../cfs-bpapp.tar .
-
-exit # WIP
-   mkdir build-bp
-   cd build-bp
-   cmake ../bp
 ```
 
 #### Building
 
-Build bplib by running __make__ in the build subdirectory:
+The `build-bp` script builds bp by running __make__ in the build subdirectory:
 
+`build-bp`
 ```sh
-   cd $HOME/build-bplib
-   make
+   cd $HOME/build
+   make DESTDIR=.. -j2 mission-install
+   cd ../exe
+   tar -cvf ../cfs-bpapp.tar .
+   cd ..
+   ls -l cfs-bpapp.tar
 ```
 
 #### Example Application
@@ -97,32 +108,4 @@ The appl
 ----------------------------------------------------------------------
 
 The Telemetry Interface
-
-
-## WIP Notes:
-
-**Current Build Log**
-
-```
-gskenned@ip-10-1-21-63:~/repos/forks/cfs-bundle
-$ git fetch --no-tags --depth=1 https://github.com/jphickey/PSP.git techdev-iodriver:techdev-iodriver
-warning: no common commits
-remote: Enumerating objects: 308, done.
-remote: Counting objects: 100% (308/308), done.
-remote: Compressing objects: 100% (222/222), done.
-remote: Total 308 (delta 133), reused 159 (delta 71), pack-reused 0
-Receiving objects: 100% (308/308), 834.53 KiB | 6.42 MiB/s, done.
-Resolving deltas: 100% (133/133), done.
-From https://github.com/jphickey/PSP
- * [new branch]      techdev-iodriver -> techdev-iodriver
-gskenned@ip-10-1-21-63:~/repos/forks/cfs-bundle
-$ cd psp
-gskenned@ip-10-1-21-63:~/repos/forks/cfs-bundle/psp
-$ git checkout techdev-iodriver
-error: pathspec 'techdev-iodriver' did not match any file(s) known to git
-gskenned@ip-10-1-21-63:~/repos/forks/cfs-bundle/psp
-$ git remote -v
-origin  https://github.com/nasa/PSP.git (fetch)
-origin  https://github.com/nasa/PSP.git (push)
-```
 

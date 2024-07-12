@@ -1,0 +1,6 @@
+   cd $HOME/build
+   make DESTDIR=.. -j2 mission-install
+   cd ../exe
+   tar -cvf ../cfs-bpapp.tar .
+   cd ..
+   ls -l cfs-bpapp.tar
