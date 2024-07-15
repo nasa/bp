@@ -87,11 +87,18 @@ The `build-bp` script builds bp by running __make__ in the build subdirectory:
    ls -l cfs-bpapp.tar
 ```
 
-#### Example Application
+#### BP Test
 
+`bp-test`
+```sh
+   tar -xvf cfs-bpapp.tar
+   dd if=/dev/urandom of=testdata.bin bs=1k count=1
+   md5sum testdata.bin | tee -a testdata.md5sum
+   mkdir -p ./tx/storage ./rx/storage
+```
 
 ----------------------------------------------------------------------
-## 3. Application Design
+## 3. BP Application Design
 ----------------------------------------------------------------------
 
 ![Figure 1](doc/bp_api_architecture.png "BP Library API (Architecture)")

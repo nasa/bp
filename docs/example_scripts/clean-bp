@@ -1,0 +1,3 @@
+#!/bin/bash -x
+rm -rf bpxfer_defs/ build/ cfs-bundle/ cfs-bpapp.tar exe \
+tinycbor-source/ tinycbor-staging/
