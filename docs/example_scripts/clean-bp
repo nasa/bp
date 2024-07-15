@@ -1,3 +1,11 @@
-#!/bin/bash -x
-rm -rf bpxfer_defs/ build/ cfs-bundle/ cfs-bpapp.tar exe \
-tinycbor-source/ tinycbor-staging/
+#!/bin/bash
+clean-bp-err() {
+   echo "clean-bp exited on error."
+   exit 1
+}
+trap clean-bp-err ERR
+set -x
+
+   rm -rf bpxfer_defs/ build/ host cfs-bundle/ cfs-bpapp.tar cfs-build-folder exe \
+   rx tx tinycbor-source/ tinycbor-staging/
+

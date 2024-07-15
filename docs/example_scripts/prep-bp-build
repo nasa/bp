@@ -1,4 +1,10 @@
 #!/bin/bash
+prep-bp-build-err() {
+   echo "prep-bp-build exited on error."
+   exit 1
+}
+trap prep-bp-build-err ERR
+
    cd $HOME
    git clone https://github.com/nasa/cFS.git cfs-bundle
    pushd cfs-bundle

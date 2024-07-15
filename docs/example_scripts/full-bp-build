@@ -1,5 +1,0 @@
-#!/bin/bash
-./clean-bp |& tee full-bp-build.log
-./install-toolchain |& tee -a full-bp-build.log
-./prep-bp-build |& tee -a full-bp-build.log
-./build-bp |& tee -a full-bp-build.log

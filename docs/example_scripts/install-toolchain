@@ -1,4 +1,10 @@
 #!/bin/bash
+install-toolchain-err() {
+   echo "install-toolchain exited on error."
+   exit 1
+}
+trap install-toolchain-err ERR
+
    cd $HOME
    sudo apt update
    sudo apt upgrade

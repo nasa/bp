@@ -1,6 +1,13 @@
+#!/bin/bash
+build-bp-err() {
+   echo "build-bp exited on error."
+   exit 1
+}
+trap build-bp-err ERR
+
    cd $HOME/build
-   make DESTDIR=.. -j2 mission-install
-   cd ../exe
-   tar -cvf ../cfs-bpapp.tar .
-   cd ..
+   make DESTDIR=$HOME/cfs-build-folder -j2 mission-install
+   cd $HOME/cfs-build-folder/exe
+   tar -cvf $HOME/cfs-bpapp.tar .
+   cd $HOME
    ls -l cfs-bpapp.tar

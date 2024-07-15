@@ -1,0 +1,41 @@
+#!/bin/bash
+bp-test-err() {
+    echo "bp-test exited on error."
+}
+trap bp-test-err ERR
+set -o pipefail
+
+set -x
+   cd $HOME
+   tar -xvf cfs-bpapp.tar
+   pushd tx/cf
+   dd if=/dev/urandom of=testdata.bin bs=1k count=1
+   md5sum testdata.bin | tee -a $HOME/testdata.md5sum
+   popd
+   mkdir -p ./tx/storage ./rx/storage
+   pushd tx
+   ./core-tx > console_output.log 2>&1 &
+   popd
+   pushd rx
+   ./core-rx > console_output.log 2>&1 &
+   popd
+   sleep 5 && grep -q 'CFE_ES_Main entering OPERATIONAL state' ./tx/console_output.log
+   pushd $HOME/host
+   # Enable Flows
+   ./cmdUtil --port 1234 -ELE -I0x1812 -C7 -s8:CFDP
+   ./cmdUtil --port 1235 -ELE -I0x1812 -C7 -s8:CFDP
+   # Initiate Class 1 Transfer
+   ./cmdUtil --port 1234 -ELE -I0x18B3 -C2 -b0 -b1 -b0 -b0 -o2 -s64:/cf/testdata.bin -s64:/cf/testdata.bin
+   # Wait for Transfer
+   sleep 30
+   # Terminate cFS
+   ./cmdUtil --port=1234 --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
+   ./cmdUtil --port=1235 --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
+   # Waith for Shutdown
+   sleep 5
+   # Dump Tx Log
+   popd
+   cat tx/console_output.log
+   cat rx/console_output.log
+   md5sum tx/cf/testdata.bin
+   md5sum rx/cf/testdata.bin

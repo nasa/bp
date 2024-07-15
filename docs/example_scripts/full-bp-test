@@ -1,0 +1,13 @@
+#!/bin/bash
+full-bp-test-err() {
+   echo "full-bp-test exited on error."
+   exit 1
+}
+trap full-bp-test-err ERR
+set -o pipefail
+
+   ./clean-bp |& tee full-bp-test.log
+   ./install-toolchain |& tee -a full-bp-test.log
+   ./prep-bp-build |& tee -a full-bp-test.log
+   ./build-bp |& tee -a full-bp-test.log
+   ./bp-test |& tee -a full-bp-test.log
