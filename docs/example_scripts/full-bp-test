@@ -5,9 +5,17 @@ full-bp-test-err() {
 }
 trap full-bp-test-err ERR
 set -o pipefail
+# Log filename with DOY-HHMM
+LOG_FILENAME=full-bp-test-$(date +%y%j-%H%M).log
 
-   ./clean-bp |& tee full-bp-test.log
-   ./install-toolchain |& tee -a full-bp-test.log
-   ./prep-bp-build |& tee -a full-bp-test.log
-   ./build-bp |& tee -a full-bp-test.log
-   ./bp-test |& tee -a full-bp-test.log
+# Log filename with YYYYmmdd-HHMM
+# LOG_FILENAME=full-bp-test-$(date +%Y%m%d-%H%M).log
+
+echo "Logging to ${CFS_HOME}/${LOG_FILENAME}"
+
+   cd $CFS_HOME
+   ./clean-bp |& tee $LOG_FILENAME
+   ./install-toolchain |& tee -a $LOG_FILENAME
+   ./prep-bp-build |& tee -a $LOG_FILENAME
+   ./build-bp |& tee -a $LOG_FILENAME
+   ./bp-test |& tee -a $LOG_FILENAME

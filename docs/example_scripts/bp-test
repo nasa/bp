@@ -6,11 +6,11 @@ trap bp-test-err ERR
 set -o pipefail
 
 set -x
-   cd $HOME
+   cd $CFS_HOME
    tar -xvf cfs-bpapp.tar
    pushd tx/cf
    dd if=/dev/urandom of=testdata.bin bs=1k count=1
-   md5sum testdata.bin | tee -a $HOME/testdata.md5sum
+   md5sum testdata.bin | tee -a $CFS_HOME/testdata.md5sum
    popd
    mkdir -p ./tx/storage ./rx/storage
    pushd tx
@@ -20,7 +20,7 @@ set -x
    ./core-rx > console_output.log 2>&1 &
    popd
    sleep 5 && grep -q 'CFE_ES_Main entering OPERATIONAL state' ./tx/console_output.log
-   pushd $HOME/host
+   pushd $CFS_HOME/host
    # Enable Flows
    ./cmdUtil --port 1234 -ELE -I0x1812 -C7 -s8:CFDP
    ./cmdUtil --port 1235 -ELE -I0x1812 -C7 -s8:CFDP

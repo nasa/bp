@@ -5,9 +5,9 @@ build-bp-err() {
 }
 trap build-bp-err ERR
 
-   cd $HOME/build
-   make DESTDIR=$HOME/cfs-build-folder -j2 mission-install
-   cd $HOME/cfs-build-folder/exe
-   tar -cvf $HOME/cfs-bpapp.tar .
-   cd $HOME
+   cd $CFS_HOME/build
+   make DESTDIR=$CFS_HOME/cfs-build-folder -j2 mission-install
+   cd $CFS_HOME/cfs-build-folder/exe
+   tar -cvf $CFS_HOME/cfs-bpapp.tar .
+   cd $CFS_HOME
    ls -l cfs-bpapp.tar

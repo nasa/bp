@@ -5,7 +5,7 @@ install-toolchain-err() {
 }
 trap install-toolchain-err ERR
 
-   cd $HOME
+   cd $CFS_HOME
    sudo apt update
    sudo apt upgrade
    sudo apt install cmake pkg-config build-essential

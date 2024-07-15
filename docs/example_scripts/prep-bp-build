@@ -5,7 +5,7 @@ prep-bp-build-err() {
 }
 trap prep-bp-build-err ERR
 
-   cd $HOME
+   cd $CFS_HOME
    git clone https://github.com/nasa/cFS.git cfs-bundle
    pushd cfs-bundle
    git submodule init
