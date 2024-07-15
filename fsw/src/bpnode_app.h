@@ -67,14 +67,12 @@ typedef struct
     ** Operational data (not reported in housekeeping)...
     */
     CFE_SB_PipeId_t CommandPipe;
-
-    /*
-    ** Initialization data (not reported in housekeeping)...
-    */
-    char   PipeName[CFE_MISSION_MAX_API_LEN];
-    uint16 PipeDepth;
+    CFE_SB_PipeId_t WakeupPipe;
 
     CFE_TBL_Handle_t TblHandles[BPNODE_NUMBER_OF_TABLES];
+
+    BPNode_ExampleTable_t *ExampleTblPtr;
+
 } BPNode_AppData_t;
 
 /*
@@ -91,5 +89,6 @@ extern BPNode_AppData_t BPNode_AppData;
 */
 void         BPNode_AppMain(void);
 CFE_Status_t BPNode_AppInit(void);
+CFE_Status_t BPNode_ProcessMain(void);
 
 #endif /* BPNODE_APP_H */

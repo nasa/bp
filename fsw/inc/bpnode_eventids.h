@@ -25,18 +25,22 @@
 #ifndef BPNODE_EVENTS_H
 #define BPNODE_EVENTS_H
 
-#define BPNODE_RESERVED_EID      0
-#define BPNODE_INIT_INF_EID      1
-#define BPNODE_CC_ERR_EID        2
-#define BPNODE_NOOP_INF_EID      3
-#define BPNODE_RESET_INF_EID     4
-#define BPNODE_MID_ERR_EID       5
-#define BPNODE_CMD_LEN_ERR_EID   6
-#define BPNODE_PIPE_ERR_EID      7
-#define BPNODE_VALUE_INF_EID     8
-#define BPNODE_CR_PIPE_ERR_EID   9
-#define BPNODE_SUB_HK_ERR_EID    10
-#define BPNODE_SUB_CMD_ERR_EID   11
-#define BPNODE_TABLE_REG_ERR_EID 12
+#define BPNODE_RESERVED_EID         0
+#define BPNODE_INIT_INF_EID         1
+#define BPNODE_CC_ERR_EID           2
+#define BPNODE_NOOP_INF_EID         3
+#define BPNODE_RESET_INF_EID        4
+#define BPNODE_MID_ERR_EID          5
+#define BPNODE_CMD_LEN_ERR_EID      6
+#define BPNODE_PIPE_ERR_EID         7
+#define BPNODE_VALUE_INF_EID        8
+#define BPNODE_CR_CMD_PIPE_ERR_EID  9
+#define BPNODE_CR_WKP_PIPE_ERR_EID 10
+#define BPNODE_SUB_HK_ERR_EID      11
+#define BPNODE_SUB_CMD_ERR_EID     12
+#define BPNODE_SUB_WKP_ERR_EID     13
+#define BPNODE_TBL_REG_ERR_EID     14
+#define BPNODE_TBL_LD_ERR_EID      15
+#define BPNODE_TBL_ADDR_ERR_EID    16
 
 #endif /* BPNODE_EVENTS_H */

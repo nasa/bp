@@ -32,8 +32,13 @@
 #ifndef BPNODE_INTERNAL_CFG_H
 #define BPNODE_INTERNAL_CFG_H
 
-/***********************************************************************/
-#define BPNODE_PIPE_DEPTH 32 /* Depth of the Command Pipe for Application */
+#define BPNODE_CMD_PIPE_DEPTH 32 /* Depth of command pipe */
+
+#define BPNODE_CMD_PIPE_TIMEOUT 1000
+
+#define BPNODE_WAKEUP_PIPE_DEPTH 1 /* Depth of wakeup pipe */
+
+#define BPNODE_WAKEUP_PIPE_TIMEOUT 1000
 
 #define BPNODE_NUMBER_OF_TABLES 1 /* Number of Example Table(s) */
 
