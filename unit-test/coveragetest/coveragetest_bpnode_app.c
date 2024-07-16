@@ -227,5 +227,5 @@ void UtTest_Setup(void)
 {
     ADD_TEST(BPNode_AppMain);
     ADD_TEST(BPNode_ProcessMain);
-//    ADD_TEST(BPNode_AppInit);
+    ADD_TEST(BPNode_AppInit);
 }
