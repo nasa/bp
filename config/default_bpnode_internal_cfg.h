@@ -34,11 +34,9 @@
 
 #define BPNODE_CMD_PIPE_DEPTH 32 /* Depth of command pipe */
 
-#define BPNODE_CMD_PIPE_TIMEOUT 1000
-
 #define BPNODE_WAKEUP_PIPE_DEPTH 1 /* Depth of wakeup pipe */
 
-#define BPNODE_WAKEUP_PIPE_TIMEOUT 1000
+#define BPNODE_WAKEUP_PIPE_TIMEOUT 1200 /* Timeout of wakeup pipe */
 
 #define BPNODE_NUMBER_OF_TABLES 1 /* Number of Example Table(s) */
 

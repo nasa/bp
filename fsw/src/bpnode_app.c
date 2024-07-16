@@ -33,7 +33,7 @@
 #include "bpnode_version.h"
 
 /*
-** global data
+** Global data
 */
 BPNode_AppData_t BPNode_AppData;
 
@@ -82,13 +82,14 @@ void BPNode_AppMain(void)
         */
         CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
 
-        if (Status == CFE_SUCCESS || Status == CFE_SB_NO_MESSAGE || Status == CFE_SB_TIME_OUT)
+        if (Status == CFE_SUCCESS || Status == CFE_SB_NO_MESSAGE || 
+            Status == CFE_SB_TIME_OUT)
         {
             /* Process wakeup tasks */
             Status = BPNode_ProcessMain();
         }
         
-        if (Status != CFE_SUCCESS)
+        if (Status != CFE_SUCCESS && Status != CFE_SB_NO_MESSAGE)
         {
             CFE_EVS_SendEvent(BPNODE_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                               "SB Pipe Read Error, App Will Exit");
@@ -145,14 +146,15 @@ CFE_Status_t BPNode_AppInit(void)
     Status = CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
     if (Status != CFE_SUCCESS)
     {
-        CFE_ES_WriteToSysLog("BPNode: Error Registering Events, RC = 0x%08lX\n", (unsigned long)Status);
+        CFE_ES_WriteToSysLog("BPNode: Error Registering Events, RC = 0x%08lX\n", 
+                                                                (unsigned long)Status);
         return Status;
     }
     /*
     ** Initialize housekeeping packet (clear user data area).
     */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.HkTlm.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_HK_TLM_MID),
-                    sizeof(BPNode_AppData.HkTlm));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.HkTlm.TelemetryHeader), 
+                CFE_SB_ValueToMsgId(BPNODE_HK_TLM_MID), sizeof(BPNode_AppData.HkTlm));
 
     /*
     ** Create command pipe.
@@ -162,7 +164,7 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_CR_CMD_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error creating SB Command Pipe, RC = 0x%08lX", (unsigned long)Status);
+                "Error creating SB Command Pipe, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
     }
@@ -175,7 +177,7 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_CR_WKP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error creating SB Wakeup Pipe, RC = 0x%08lX", (unsigned long)Status);
+                    "Error creating SB Wakeup Pipe, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
     }
@@ -183,45 +185,48 @@ CFE_Status_t BPNode_AppInit(void)
     /*
     ** Subscribe to Housekeeping request commands
     */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_SEND_HK_MID), BPNode_AppData.CommandPipe);
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_SEND_HK_MID), 
+                                                        BPNode_AppData.CommandPipe);
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_SUB_HK_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error Subscribing to HK request, RC = 0x%08lX", (unsigned long)Status);
+                "Error Subscribing to HK request, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
     /*
     ** Subscribe to ground command packets
     */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CMD_MID), BPNode_AppData.CommandPipe);
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CMD_MID), 
+                                                        BPNode_AppData.CommandPipe);
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_SUB_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error Subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
+                    "Error Subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
     /*
     ** Subscribe to wakeup messages on the wakeup pipe
     */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID), BPNode_AppData.WakeupPipe);
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID), 
+                                                        BPNode_AppData.WakeupPipe);
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_SUB_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error Subscribing to wakeup messages, RC = 0x%08lX", (unsigned long)Status);
+            "Error Subscribing to wakeup messages, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
     /*
     ** Register and load table
     */
-    Status = CFE_TBL_Register(&BPNode_AppData.TblHandles[0], "ExampleTable", sizeof(BPNode_ExampleTable_t),
-                                CFE_TBL_OPT_DEFAULT, BPNode_TblValidationFunc);
+    Status = CFE_TBL_Register(&BPNode_AppData.TblHandles[0], "ExampleTable", 
+            sizeof(BPNode_ExampleTable_t), CFE_TBL_OPT_DEFAULT, BPNode_TblValidationFunc);
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_REG_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error Registering Example Table, RC = 0x%08lX", (unsigned long)Status);
+                "Error Registering Example Table, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
@@ -230,25 +235,25 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_LD_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error Loading Example Table, RC = 0x%08lX", (unsigned long)Status);
+                    "Error Loading Example Table, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
     Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr,
                                         BPNode_AppData.TblHandles[0]);
 
-    if (Status != CFE_SUCCESS)
+    if (Status != CFE_TBL_INFO_UPDATED)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error Loading Example Table, RC = 0x%08lX", (unsigned long)Status);
+                    "Error Getting Example Table Address, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
-    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode", BPNODE_VERSION,
-                                BPNODE_BUILD_CODENAME, BPNODE_LAST_OFFICIAL);
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode", 
+                            BPNODE_VERSION,BPNODE_BUILD_CODENAME, BPNODE_LAST_OFFICIAL);
 
-    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNode App Initialized.%s",
-                        VersionString);
+    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
+                                            "BPNode App Initialized.%s", VersionString);
 
-    return Status;
+    return CFE_SUCCESS;
 }
