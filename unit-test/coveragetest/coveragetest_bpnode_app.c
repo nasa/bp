@@ -108,6 +108,8 @@ void Test_BPNode_AppMain(void)
 
     /* Set up buffer for command processing */
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
 
     /*
      * Invoke again
@@ -117,7 +119,7 @@ void Test_BPNode_AppMain(void)
     /*
      * Confirm that CFE_SB_ReceiveBuffer() (inside the loop) was called
      */
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
 
     /*
      * Now also make the CFE_SB_ReceiveBuffer call fail,
@@ -172,7 +174,12 @@ void Test_BPNode_AppInit(void)
 
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Register), 1, CFE_TBL_ERR_INVALID_OPTIONS);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_INVALID_OPTIONS);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 6); /* 1 from table registration error, 1 from successful init event */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 5); /* 1 from table registration error */
+}
+
+void Test_BPNode_ProcessMain(void)
+{
+
 }
 
 /*
@@ -182,4 +189,5 @@ void UtTest_Setup(void)
 {
     ADD_TEST(BPNode_AppMain);
     ADD_TEST(BPNode_AppInit);
+    ADD_TEST(BPNode_ProcessMain);
 }

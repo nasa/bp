@@ -49,3 +49,17 @@ void BPNode_AppMain(void)
 
     UT_GenStub_Execute(BPNode_AppMain, Basic, NULL);
 }
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_ProcessMain()
+ * ----------------------------------------------------
+ */
+CFE_Status_t BPNode_ProcessMain(void)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_ProcessMain, CFE_Status_t);
+
+    UT_GenStub_Execute(BPNode_ProcessMain, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_ProcessMain, CFE_Status_t);
+}
