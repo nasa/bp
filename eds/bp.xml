@@ -277,7 +277,7 @@
               <GenericTypeMap name="TelecommandDataType" type="CommandBase" />
             </GenericTypeMapSet>
           </Interface>
-          <Interface name="SEND_APP_TLM" shortDescription="Send App Telemetry interface" type="CFE_SB/Telecommand">
+          <Interface name="SEND_HK" shortDescription="Send App Telemetry interface" type="CFE_SB/Telecommand">
             <GenericTypeMapSet>
               <GenericTypeMap name="TelecommandDataType" type="SendAppTlmBase" />
             </GenericTypeMapSet>
@@ -301,7 +301,7 @@
         <Implementation>
           <VariableSet>
             <Variable type="BASE_TYPES/uint16" readOnly="true" name="CmdTopicId" initialValue="${CFE_MISSION/BP_CMD_TOPICID}" />
-            <Variable type="BASE_TYPES/uint16" readOnly="true" name="SendAppTlmTopicId" initialValue="${CFE_MISSION/BP_SEND_APP_TLM_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="SendHkTopicId" initialValue="${CFE_MISSION/BP_SEND_HK_TOPICID}" />
             <Variable type="BASE_TYPES/uint16" readOnly="true" name="WakeupTopicId" initialValue="${CFE_MISSION/BP_WAKEUP_TOPICID}" />
             <Variable type="BASE_TYPES/uint16" readOnly="true" name="HkTlmTopicId" initialValue="${CFE_MISSION/BP_HK_TLM_TOPICID}" />
             <Variable type="BASE_TYPES/uint16" readOnly="true" name="FlowHkTlmTopicId" initialValue="${CFE_MISSION/BP_FLOW_HK_TLM_TOPICID}" />
@@ -309,7 +309,7 @@
           <!-- Assign fixed numbers to the "TopicId" parameter of each interface -->
           <ParameterMapSet>
             <ParameterMap interface="CMD" parameter="TopicId" variableRef="CmdTopicId" />
-            <ParameterMap interface="SEND_APP_TLM" parameter="TopicId" variableRef="SendAppTlmTopicId" />
+            <ParameterMap interface="SEND_HK" parameter="TopicId" variableRef="SendHkTopicId" />
             <ParameterMap interface="WAKEUP" parameter="TopicId" variableRef="WakeupTopicId" />
             <ParameterMap interface="HK_TLM" parameter="TopicId" variableRef="HkTlmTopicId" />
             <ParameterMap interface="FLOW_HK_TLM" parameter="TopicId" variableRef="FlowHkTlmTopicId" />
