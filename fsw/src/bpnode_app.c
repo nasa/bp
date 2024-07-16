@@ -82,8 +82,7 @@ void BPNode_AppMain(void)
         */
         CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
 
-        if (Status == CFE_SUCCESS || Status == CFE_SB_NO_MESSAGE || 
-            Status == CFE_SB_TIME_OUT)
+        if (Status == CFE_SUCCESS)
         {
             /* Process wakeup tasks */
             Status = BPNode_ProcessMain();
