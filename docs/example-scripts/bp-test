@@ -5,7 +5,6 @@ bp-test-err() {
 trap bp-test-err ERR
 set -o pipefail
 
-set -x
    cd $CFS_HOME
    tar -xvf cfs-bpapp.tar
    pushd tx/cf

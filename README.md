@@ -2,9 +2,7 @@
 
 [1. Overview](#1-overview)  
 [2. Build with CMake](#2-build-with-cmake)  
-[3. Application Design](#3-application-design)  
-[4. Command Interface](#4-command-interface)  
-[5. Telemetry Interface](#5-telemetry-interface)
+[3. Command Interface](#3-command-interface)  
 
 ----------------------------------------------------------------------
 ## 1. Overview
@@ -37,7 +35,7 @@ The `install-toolchain` script installs cmake, pkg-config and build-essential (g
 
 `install-toolchain`
 ```sh
-   cd $HOME
+   cd $CFS_HOME
    sudo apt update
    sudo apt upgrade
    sudo apt install cmake pkg-config build-essential
@@ -54,7 +52,7 @@ The `prep-bp-build` script prepares the build folder from a cFS repository clone
 
 `prep-bp-build`
 ```sh
-   cd $HOME
+   cd $CFS_HOME
    git clone https://github.com/nasa/cFS.git cfs-bundle
    pushd cfs-bundle
    git submodule init
@@ -86,11 +84,11 @@ The `build-bp` script builds bp by running __make__ in the build subdirectory:
 
 `build-bp`
 ```sh
-   cd $HOME/build
-   make DESTDIR=$HOME/cfs-build-folder -j2 mission-install
-   cd $HOME/cfs-build-folder/exe
-   tar -cvf $HOME/cfs-bpapp.tar .
-   cd $HOME
+   cd $CFS_HOME/build
+   make DESTDIR=$CFS_HOME/cfs-build-folder -j2 mission-install
+   cd $CFS_HOME/cfs-build-folder/exe
+   tar -cvf $CFS_HOME/cfs-bpapp.tar .
+   cd $CFS_HOME
    ls -l cfs-bpapp.tar
 ```
 
@@ -98,11 +96,11 @@ The `build-bp` script builds bp by running __make__ in the build subdirectory:
 
 `bp-test`
 ```sh
-   cd $HOME
+   cd $CFS_HOME
    tar -xvf cfs-bpapp.tar
    pushd tx/cf
    dd if=/dev/urandom of=testdata.bin bs=1k count=1
-   md5sum testdata.bin | tee -a $HOME/testdata.md5sum
+   md5sum testdata.bin | tee -a $CFS_HOME/testdata.md5sum
    popd
    mkdir -p ./tx/storage ./rx/storage
    pushd tx
@@ -112,7 +110,7 @@ The `build-bp` script builds bp by running __make__ in the build subdirectory:
    ./core-rx > console_output.log 2>&1 &
    popd
    sleep 5 && grep -q 'CFE_ES_Main entering OPERATIONAL state' ./tx/console_output.log
-   pushd $HOME/host
+   pushd $CFS_HOME/host
    # Enable Flows
    ./cmdUtil --port 1234 -ELE -I0x1812 -C7 -s8:CFDP
    ./cmdUtil --port 1235 -ELE -I0x1812 -C7 -s8:CFDP
@@ -134,13 +132,7 @@ The `build-bp` script builds bp by running __make__ in the build subdirectory:
 ```
 
 ----------------------------------------------------------------------
-## 3. BP Application Design
-----------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------
-## 4. Command Interface
+## 3. Command Interface
 ----------------------------------------------------------------------
 
 ```
@@ -204,9 +196,4 @@ Examples:
   ./cmdUtil --pktver=1 --pkttype=0 --pktsec=0 --pktseqflg=2 --pktlen=0xABC --pktcksum=0
   ./cmdUtil -Qcfsv2 --pktedsver=0xA --pktendian=1 --pktpb=1 --pktsubsys=0x123 --pktsys=0x4321 --pktfc=0xB
 ```
-
-----------------------------------------------------------------------
-## 5. Telemetry Interface
-----------------------------------------------------------------------
-
 
