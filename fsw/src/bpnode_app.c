@@ -88,7 +88,7 @@ void BPNode_AppMain(void)
             Status = BPNode_ProcessMain();
         }
         
-        if (Status != CFE_SUCCESS && Status != CFE_SB_NO_MESSAGE)
+        if (Status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(BPNODE_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                               "SB Pipe Read Error, App Will Exit");
@@ -119,6 +119,12 @@ CFE_Status_t BPNode_ProcessMain(void)
             BPNode_TaskPipe(BufPtr);
         }
     } while (Status == CFE_SUCCESS);
+
+    /* Not an error case */
+    if (Status == CFE_SB_NO_MESSAGE)
+    {
+        Status = CFE_SUCCESS;
+    }
 
 
     return Status;

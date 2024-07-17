@@ -155,6 +155,7 @@ void Test_BPNode_AppInit(void)
     UT_CheckEvent_t EventTest;
 
     /* Nominal case should return CFE_SUCCESS */
+    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
