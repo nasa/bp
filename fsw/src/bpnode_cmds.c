@@ -79,8 +79,9 @@ CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 {
     BPNode_AppData.CmdCounter++;
 
-    CFE_EVS_SendEvent(BPNODE_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, "Noop command %s",
-                      BPNODE_VERSION);
+    CFE_EVS_SendEvent(BPNODE_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, 
+                        "No-op command. Version %d.%d.%d.",
+                        BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
 
     return CFE_SUCCESS;
 }

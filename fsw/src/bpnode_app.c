@@ -138,7 +138,6 @@ CFE_Status_t BPNode_ProcessMain(void)
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
-    char         VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
     /* Zero out the global data structure */
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
@@ -254,11 +253,9 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode", 
-                            BPNODE_VERSION,BPNODE_BUILD_CODENAME, BPNODE_LAST_OFFICIAL);
-
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
-                                            "BPNode App Initialized.%s", VersionString);
+                            "BPNode App Initialized. Version %d.%d.%d.", 
+                            BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
 
     return CFE_SUCCESS;
 }
