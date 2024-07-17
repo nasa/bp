@@ -17,7 +17,6 @@ trap prep-bp-build-err ERR
    popd
    git clone https://github.com/nasa/CF.git apps/cf
    git clone https://github.com/gskenned/bp.git apps/bp
-   pushd apps/bp; git checkout fix-dtnn-132-bp-bplib-readmes; popd
    git clone https://github.com/gskenned/bplib.git libs/bplib
    popd
    mkdir -p ./bpxfer_defs
