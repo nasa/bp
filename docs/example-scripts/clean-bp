@@ -4,9 +4,22 @@ clean-bp-err() {
    exit 1
 }
 trap clean-bp-err ERR
-set -x
 
    cd $CFS_HOME
-   rm -rf bpxfer_defs/ build/ host cfs-bundle/ cfs-bpapp.tar cfs-build-folder exe \
-   rx tx tinycbor-source/ tinycbor-staging/
+
+   BP_DELETE_LIST=( \
+      bpxfer_defs/ build/ host $CFS_REPO/ cfs-bpapp.tar cfs-build-folder exe \
+      rx tx tinycbor-source/ tinycbor-staging/
+   )
+
+   echo "In $(pwd)"
+   echo "Ready to delete:"
+   echo ${BP_DELETE_LIST[@]}
+   read -p "Delete [y|N]?" choice
+   case "${choice}" in
+      y|Y ) \
+         (set -x; rm -rf ${BP_DELETE_LIST[@]});;
+      * ) \
+         echo "clean-bp canceled."
+    esac
 

@@ -1,0 +1,1520 @@
+In /home/gskenned/cfs-home
+Ready to delete:
+bpxfer_defs/ build/ host /home/gskenned/cfs-home/cfs-bundle/ cfs-bpapp.tar cfs-build-folder exe rx tx tinycbor-source/ tinycbor-staging/
+Delete [y|N]?+ rm -rf bpxfer_defs/ build/ host /home/gskenned/cfs-home/cfs-bundle/ cfs-bpapp.tar cfs-build-folder exe rx tx tinycbor-source/ tinycbor-staging/
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Hit:2 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal InRelease
+Hit:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:6 https://packages.microsoft.com/repos/vscode stable InRelease
+Hit:7 https://download.docker.com/linux/ubuntu focal InRelease
+Ign:8 https://apt.vector.dev stable InRelease
+Hit:9 https://apt.vector.dev stable Release
+Hit:10 https://www.starnet.com/files/private/starnet-repo-debian stable InRelease
+Hit:1 https://packages.microsoft.com/repos/code stable InRelease
+Hit:11 http://ppa.launchpad.net/wireshark-dev/stable/ubuntu focal InRelease
+Hit:12 https://esm.ubuntu.com/apps/ubuntu focal-apps-security InRelease
+Hit:13 https://esm.ubuntu.com/apps/ubuntu focal-apps-updates InRelease
+Hit:14 https://esm.ubuntu.com/infra/ubuntu focal-infra-security InRelease
+Hit:15 https://esm.ubuntu.com/infra/ubuntu focal-infra-updates InRelease
+Hit:16 https://esm.ubuntu.com/fips/ubuntu focal InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+The following packages have been kept back:
+  vector
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+pkg-config is already the newest version (0.29.1-0ubuntu4).
+build-essential is already the newest version (12.8ubuntu1.1).
+cmake is already the newest version (3.16.3-1ubuntu1.20.04.1).
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
+Cloning into 'tinycbor-source'...
+~/cfs-home/tinycbor-source ~/cfs-home
+.config file not yet created
+make -f ./Makefile.configure OUT='.config' configure
+make[1]: Entering directory '/home/gskenned/cfs-home/tinycbor-source'
+make[1]: Leaving directory '/home/gskenned/cfs-home/tinycbor-source'
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborerrorstrings.o src/cborerrorstrings.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborencoder.o src/cborencoder.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborencoder_close_container_checked.o src/cborencoder_close_container_checked.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborencoder_float.o src/cborencoder_float.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborparser.o src/cborparser.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborparser_float.o src/cborparser_float.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborpretty.o src/cborpretty.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborparser_dup_string.o src/cborparser_dup_string.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborpretty_stdio.o src/cborpretty_stdio.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cbortojson.o src/cbortojson.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o src/cborvalidation.o src/cborvalidation.c
+ar cqs lib/libtinycbor.a src/cborerrorstrings.o src/cborencoder.o src/cborencoder_close_container_checked.o src/cborencoder_float.o src/cborparser.o src/cborparser_float.o src/cborpretty.o src/cborparser_dup_string.o src/cborpretty_stdio.o src/cbortojson.o src/cborvalidation.o
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborerrorstrings.pic.o src/cborerrorstrings.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborencoder.pic.o src/cborencoder.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborencoder_close_container_checked.pic.o src/cborencoder_close_container_checked.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborencoder_float.pic.o src/cborencoder_float.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborparser.pic.o src/cborparser.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborparser_float.pic.o src/cborparser_float.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborpretty.pic.o src/cborpretty.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborparser_dup_string.pic.o src/cborparser_dup_string.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborpretty_stdio.pic.o src/cborpretty_stdio.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cbortojson.pic.o src/cbortojson.c
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion -fPIC  -c -o src/cborvalidation.pic.o src/cborvalidation.c
+cc -shared -Wl,-soname,libtinycbor.so.0.6 -o lib/libtinycbor.so.0.6.0 -Wl,--gc-sections src/cborerrorstrings.pic.o src/cborencoder.pic.o src/cborencoder_close_container_checked.pic.o src/cborencoder_float.pic.o src/cborparser.pic.o src/cborparser_float.pic.o src/cborpretty.pic.o src/cborparser_dup_string.pic.o src/cborpretty_stdio.pic.o src/cbortojson.pic.o src/cborvalidation.pic.o -lm
+cd lib ; ln -sf libtinycbor.so.0.6.0 libtinycbor.so ; ln -sf libtinycbor.so.0.6.0 libtinycbor.so.0.6
+cc  -I./src -std=gnu99 -Wall -Wextra -Werror=discarded-qualifiers -Werror=incompatible-pointer-types -Werror=implicit-function-declaration -Werror=int-conversion  -c -o tools/cbordump/cbordump.o tools/cbordump/cbordump.c
+cc -o bin/cbordump -Wl,--gc-sections tools/cbordump/cbordump.o lib/libtinycbor.a -lm
+sed > tinycbor.pc < tinycbor.pc.in \
+	-e 's,@prefix@,/usr/local,' \
+	-e 's,@exec_prefix@,/usr/local,' \
+	-e 's,@libdir@,/usr/local/lib,' \
+	-e 's,@includedir@,/usr/local/include,' \
+	-e 's,@version@,0.6.0,'
+install -d ../tinycbor-staging/usr/local/bin
+install -m 755 bin/cbordump ../tinycbor-staging/usr/local/bin/cbordump
+install -d ../tinycbor-staging/usr/local/lib
+install -m 644 lib/libtinycbor.so.0.6.0 ../tinycbor-staging/usr/local/lib/libtinycbor.so.0.6.0
+install -d ../tinycbor-staging/usr/local/lib
+install -m 644 lib/libtinycbor.a ../tinycbor-staging/usr/local/lib/libtinycbor.a
+install -d ../tinycbor-staging/usr/local/lib/pkgconfig
+install -m 644 tinycbor.pc ../tinycbor-staging/usr/local/lib/pkgconfig/tinycbor.pc
+install -d ../tinycbor-staging/usr/local/include/tinycbor
+install -m 644 src/cbor.h ../tinycbor-staging/usr/local/include/tinycbor/cbor.h
+install -d ../tinycbor-staging/usr/local/include/tinycbor
+install -m 644 src/cborjson.h ../tinycbor-staging/usr/local/include/tinycbor/cborjson.h
+install -d ../tinycbor-staging/usr/local/include/tinycbor
+install -m 644 src/tinycbor-version.h ../tinycbor-staging/usr/local/include/tinycbor/tinycbor-version.h
+ln -sf libtinycbor.so.0.6.0 ../tinycbor-staging/usr/local/lib/libtinycbor.so
+ln -sf libtinycbor.so.0.6.0 ../tinycbor-staging/usr/local/lib/libtinycbor.so.0.6
+~/cfs-home
+'tinycbor-staging/usr/local/bin/cbordump' -> '/usr/local/bin/cbordump'
+'tinycbor-staging/usr/local/lib/libtinycbor.so.0.6.0' -> '/usr/local/lib/libtinycbor.so.0.6.0'
+'tinycbor-staging/usr/local/lib/libtinycbor.a' -> '/usr/local/lib/libtinycbor.a'
+'tinycbor-staging/usr/local/lib/pkgconfig/tinycbor.pc' -> '/usr/local/lib/pkgconfig/tinycbor.pc'
+removed '/usr/local/lib/libtinycbor.so'
+'tinycbor-staging/usr/local/lib/libtinycbor.so' -> '/usr/local/lib/libtinycbor.so'
+removed '/usr/local/lib/libtinycbor.so.0.6'
+'tinycbor-staging/usr/local/lib/libtinycbor.so.0.6' -> '/usr/local/lib/libtinycbor.so.0.6'
+'tinycbor-staging/usr/local/include/tinycbor/cbor.h' -> '/usr/local/include/tinycbor/cbor.h'
+'tinycbor-staging/usr/local/include/tinycbor/cborjson.h' -> '/usr/local/include/tinycbor/cborjson.h'
+'tinycbor-staging/usr/local/include/tinycbor/tinycbor-version.h' -> '/usr/local/include/tinycbor/tinycbor-version.h'
+Cloning into '/home/gskenned/cfs-home/cfs-bundle'...
+~/cfs-home/cfs-bundle ~/cfs-home
+Submodule 'apps/ci_lab' (https://github.com/nasa/ci_lab.git) registered for path 'apps/ci_lab'
+Submodule 'apps/sample_app' (https://github.com/nasa/sample_app.git) registered for path 'apps/sample_app'
+Submodule 'apps/sch_lab' (https://github.com/nasa/sch_lab.git) registered for path 'apps/sch_lab'
+Submodule 'apps/to_lab' (https://github.com/nasa/to_lab.git) registered for path 'apps/to_lab'
+Submodule 'cfe' (https://github.com/nasa/cFE.git) registered for path 'cfe'
+Submodule 'apps/sample_lib' (https://github.com/nasa/sample_lib.git) registered for path 'libs/sample_lib'
+Submodule 'osal' (https://github.com/nasa/osal.git) registered for path 'osal'
+Submodule 'psp' (https://github.com/nasa/PSP.git) registered for path 'psp'
+Submodule 'tools/cFS-GroundSystem' (https://github.com/nasa/cFS-GroundSystem.git) registered for path 'tools/cFS-GroundSystem'
+Submodule 'tools/elf2cfetbl' (https://github.com/nasa/elf2cfetbl.git) registered for path 'tools/elf2cfetbl'
+Submodule 'tools/tblCRCTool' (https://github.com/nasa/tblCRCTool.git) registered for path 'tools/tblCRCTool'
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/apps/ci_lab'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/apps/sample_app'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/apps/sch_lab'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/apps/to_lab'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/cfe'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/libs/sample_lib'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/osal'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/psp'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/tools/cFS-GroundSystem'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/tools/elf2cfetbl'...
+Cloning into '/home/gskenned/cfs-home/cfs-bundle/tools/tblCRCTool'...
+Submodule path 'apps/ci_lab': checked out '8c43b9eb45f2fe9ee5a8069cf07b2b45e3669971'
+Submodule path 'apps/sample_app': checked out 'ceaf7ab5fadc7ac80f9bee6f5a2757593417e461'
+Submodule path 'apps/sch_lab': checked out 'dc58baf4f02e8adde0b411c6544c0f43a13de8d0'
+Submodule path 'apps/to_lab': checked out 'd972baf9e44e865ed507b31741e78ee83a6b217d'
+Submodule path 'cfe': checked out 'd0e9564b09ead61c60a8af235431a69b9aef85c0'
+Submodule path 'libs/sample_lib': checked out '83d26957beaf256bbcdff3188a67dc4025726704'
+Submodule path 'osal': checked out 'd6412dfc8da07f7a61ee21db0d5eac6f4d6b30a1'
+Submodule path 'psp': checked out 'f592144b2c2f7bd2be2d6738fdee9d3351274c3f'
+Submodule path 'tools/cFS-GroundSystem': checked out '821a163729ebd5bb77ce89711929d55ee837204d'
+Submodule path 'tools/elf2cfetbl': checked out 'fccae58fb587822a5e5c7a4de968de3d1dbb3ee9'
+Submodule path 'tools/tblCRCTool': checked out '42de9c416750e5c92575c74755fc4462a49a5b35'
+~/cfs-home/cfs-bundle/psp ~/cfs-home/cfs-bundle ~/cfs-home
+From https://github.com/jphickey/PSP
+ * [new branch]      techdev-iodriver -> techdev-iodriver
+Previous HEAD position was f592144 Merge pull request #431 from nasa/integration-candidate
+Switched to branch 'techdev-iodriver'
+~/cfs-home/cfs-bundle ~/cfs-home
+Cloning into 'apps/cf'...
+Cloning into 'apps/bp'...
+Cloning into 'libs/bplib'...
+~/cfs-home
+'/home/gskenned/cfs-home/cfs-bundle/cfe/cmake/sample_defs/default_osconfig.cmake' -> './bpxfer_defs/default_osconfig.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/cfe/cmake/sample_defs/native_osconfig.cmake' -> './bpxfer_defs/native_osconfig.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/cfe/cmake/sample_defs/arch_build_custom.cmake' -> './bpxfer_defs/arch_build_custom.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/cfe/cmake/sample_defs/mission_build_custom.cmake' -> './bpxfer_defs/mission_build_custom.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/cfe/cmake/sample_defs/global_build_options.cmake' -> './bpxfer_defs/global_build_options.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/extra_install.cmake' -> './bpxfer_defs/extra_install.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/targets.cmake' -> './bpxfer_defs/targets.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/cfe_es_startup.scr' -> './bpxfer_defs/cfe_es_startup.scr'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tx' -> './bpxfer_defs/tx'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tx/cfe_core_api_base_msgids.h' -> './bpxfer_defs/tx/cfe_core_api_base_msgids.h'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tx/install_custom.cmake' -> './bpxfer_defs/tx/install_custom.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tx/tables' -> './bpxfer_defs/tx/tables'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tx/tables/bp_flowtable.c' -> './bpxfer_defs/tx/tables/bp_flowtable.c'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tx/tables/cf_def_config.c' -> './bpxfer_defs/tx/tables/cf_def_config.c'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/rx' -> './bpxfer_defs/rx'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/rx/cfe_core_api_base_msgids.h' -> './bpxfer_defs/rx/cfe_core_api_base_msgids.h'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/rx/install_custom.cmake' -> './bpxfer_defs/rx/install_custom.cmake'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/rx/tables' -> './bpxfer_defs/rx/tables'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/rx/tables/bp_flowtable.c' -> './bpxfer_defs/rx/tables/bp_flowtable.c'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/rx/tables/cf_def_config.c' -> './bpxfer_defs/rx/tables/cf_def_config.c'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tables' -> './bpxfer_defs/tables'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tables/sch_lab_table.c' -> './bpxfer_defs/tables/sch_lab_table.c'
+'/home/gskenned/cfs-home/cfs-bundle/apps/bp/.github/buildconfig/tables/to_lab_sub.c' -> './bpxfer_defs/tables/to_lab_sub.c'
+-- The C compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- OMIT_DEPRECATED=false: Deprecated elements included in build
+-- Search path for modules: apps;libs;psp/fsw/modules;cfe/modules
+-- Module 'core_api' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_api
+-- Module 'core_private' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_private
+-- Module 'cfe_assert' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/cfe_assert
+-- Module 'cf' found at /home/gskenned/cfs-home/cfs-bundle/apps/cf
+-- Module 'bp' found at /home/gskenned/cfs-home/cfs-bundle/apps/bp
+-- Module 'bplib' found at /home/gskenned/cfs-home/cfs-bundle/libs/bplib
+-- Module 'ci_lab' found at /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab
+-- Module 'to_lab' found at /home/gskenned/cfs-home/cfs-bundle/apps/to_lab
+-- Module 'sch_lab' found at /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab
+-- Module 'es' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es
+-- Module 'evs' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs
+-- Module 'fs' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/fs
+-- Module 'sb' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb
+-- Module 'tbl' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl
+-- Module 'time' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time
+-- Module 'osal' found at /home/gskenned/cfs-home/cfs-bundle/osal
+-- Module 'psp' found at /home/gskenned/cfs-home/cfs-bundle/psp
+-- Module 'msg' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/msg
+-- Module 'sbr' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sbr
+-- Module 'resourceid' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/resourceid
+-- Module 'config' found at /home/gskenned/cfs-home/cfs-bundle/cfe/modules/config
+-- Module 'unsock_intf' found at /home/gskenned/cfs-home/cfs-bundle/psp/fsw/modules/unsock_intf
+-- OSAL_SYSTEM_BSPTYPE not defined, no OSAL implementation will be compiled
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_api/config/default_cfe_core_api_interface_cfg.h for core_api_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_api/config/default_cfe_mission_cfg.h for mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/cfe_perfids.h for perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_extern_typedefs.h for cf_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_fcncodes.h for cf_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_interface_cfg.h for cf_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_mission_cfg.h for cf_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_msgdefs.h for cf_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_msg.h for cf_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_msgstruct.h for cf_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_tbldefs.h for cf_tbldefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_tbl.h for cf_tbl.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_tblstruct.h for cf_tblstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_topicids.h for cf_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_fcncodes.h for bp_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_interface_cfg.h for bp_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_msg.h for bp_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_msgstruct.h for bp_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_topicids.h for bp_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_tbl.h for bp_tbl.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_tblstruct.h for bp_tblstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_topicids.h for bp_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_fcncodes.h for ci_lab_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_interface_cfg.h for ci_lab_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_mission_cfg.h for ci_lab_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_perfids.h for ci_lab_perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_msgdefs.h for ci_lab_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_msg.h for ci_lab_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_msgstruct.h for ci_lab_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_topicids.h for ci_lab_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_fcncodes.h for to_lab_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_interface_cfg.h for to_lab_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_mission_cfg.h for to_lab_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_perfids.h for to_lab_perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_msg.h for to_lab_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_msgdefs.h for to_lab_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_msgstruct.h for to_lab_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_tbl.h for to_lab_tbl.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_tbldefs.h for to_lab_tbldefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_tblstruct.h for to_lab_tblstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_topicids.h for to_lab_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_interface_cfg.h for sch_lab_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_mission_cfg.h for sch_lab_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_perfids.h for sch_lab_perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_tbldefs.h for sch_lab_tbldefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_tbl.h for sch_lab_tbl.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_tblstruct.h for sch_lab_tblstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_mission_cfg.h for cfe_es_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_interface_cfg.h for cfe_es_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_extern_typedefs.h for cfe_es_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_fcncodes.h for cfe_es_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_msgdefs.h for cfe_es_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_msg.h for cfe_es_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_msgstruct.h for cfe_es_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_topicids.h for cfe_es_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_mission_cfg.h for cfe_evs_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_interface_cfg.h for cfe_evs_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_extern_typedefs.h for cfe_evs_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_fcncodes.h for cfe_evs_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_msgdefs.h for cfe_evs_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_msg.h for cfe_evs_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_msgstruct.h for cfe_evs_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_topicids.h for cfe_evs_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/fs/config/default_cfe_fs_mission_cfg.h for cfe_fs_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/fs/config/default_cfe_fs_interface_cfg.h for cfe_fs_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/fs/config/default_cfe_fs_filedef.h for cfe_fs_filedef.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/fs/config/default_cfe_fs_extern_typedefs.h for cfe_fs_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_mission_cfg.h for cfe_sb_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_interface_cfg.h for cfe_sb_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_extern_typedefs.h for cfe_sb_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_fcncodes.h for cfe_sb_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_msgdefs.h for cfe_sb_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_msg.h for cfe_sb_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_msgstruct.h for cfe_sb_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_topicids.h for cfe_sb_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_mission_cfg.h for cfe_tbl_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_interface_cfg.h for cfe_tbl_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_extern_typedefs.h for cfe_tbl_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_fcncodes.h for cfe_tbl_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_msgdefs.h for cfe_tbl_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_msg.h for cfe_tbl_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_msgstruct.h for cfe_tbl_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_topicids.h for cfe_tbl_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_mission_cfg.h for cfe_time_mission_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_interface_cfg.h for cfe_time_interface_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_extern_typedefs.h for cfe_time_extern_typedefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_fcncodes.h for cfe_time_fcncodes.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_msgdefs.h for cfe_time_msgdefs.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_msg.h for cfe_time_msg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_msgstruct.h for cfe_time_msgstruct.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_topicids.h for cfe_time_topicids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/msg/option_inc/default_cfe_msg_hdr_pri.h for cfe_msg_hdr.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/msg/option_inc/default_cfe_msg_sechdr.h for cfe_msg_sechdr.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/resourceid/option_inc/cfe_resourceid_simple.h for cfe_resourceid_typedef.h
+-- Configuring for system arch: native/default
+-- The C compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- OMIT_DEPRECATED=false: Deprecated elements included in build
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_api/config/default_cfe_core_api_base_msgids.h for cfe_core_api_base_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_api/config/default_cfe_msgids.h for cfe_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_private/config/default_cfe_platform_cfg.h for platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/core_private/config/default_cfe_core_private_internal_cfg.h for cfe_core_private_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_internal_cfg.h for cf_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_msgids.h for cf_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/cf/config/default_cf_platform_cfg.h for cf_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_internal_cfg.h for bp_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_platform_cfg.h for bp_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/bp/config/default_bp_msgids.h for bp_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_internal_cfg.h for ci_lab_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_platform_cfg.h for ci_lab_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_perfids.h for ci_lab_perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/ci_lab/config/default_ci_lab_msgids.h for ci_lab_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_internal_cfg.h for to_lab_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_platform_cfg.h for to_lab_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_perfids.h for to_lab_perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/to_lab/config/default_to_lab_msgids.h for to_lab_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/apps/sch_lab/config/default_sch_lab_perfids.h for sch_lab_perfids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_internal_cfg.h for cfe_es_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_msgids.h for cfe_es_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/es/config/default_cfe_es_platform_cfg.h for cfe_es_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_internal_cfg.h for cfe_evs_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_msgids.h for cfe_evs_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/evs/config/default_cfe_evs_platform_cfg.h for cfe_evs_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_internal_cfg.h for cfe_sb_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_msgids.h for cfe_sb_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/sb/config/default_cfe_sb_platform_cfg.h for cfe_sb_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_internal_cfg.h for cfe_tbl_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_msgids.h for cfe_tbl_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/tbl/config/default_cfe_tbl_platform_cfg.h for cfe_tbl_platform_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_internal_cfg.h for cfe_time_internal_cfg.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_msgids.h for cfe_time_msgids.h
+-- Using file: /home/gskenned/cfs-home/cfs-bundle/cfe/modules/time/config/default_cfe_time_platform_cfg.h for cfe_time_platform_cfg.h
+-- BSP Selection: generic-linux at /home/gskenned/cfs-home/cfs-bundle/osal/src/bsp/generic-linux
+-- OSAL Selection: posix at /home/gskenned/cfs-home/cfs-bundle/osal/src/os/posix
+-- OSAL Compile Definitions: _XOPEN_SOURCE=600;_POSIX_OS_
+-- PSP Selection: pc-linux
+-- Building Core Module: core_api
+-- Building Core Module: core_private
+-- Building Core Module: es
+-- Building Core Module: evs
+-- Building Core Module: fs
+-- Building Core Module: sb
+-- Building Core Module: tbl
+-- Building Core Module: time
+-- Building Core Module: psp
+-- Building Core Module: msg
+-- CCSDS primary header included in message header (not including CCSDS extended header)
+-- Message Id version 1 in use (MsgId V1)
+-- Building Core Module: sbr
+-- Using direct map software bus routing implementation
+-- Building Core Module: resourceid
+-- Building Core Module: config
+-- Building PSP Module: unsock_intf
+-- Building Dynamic App: cfe_assert targets=tx;rx
+-- Building Dynamic App: cf targets=tx;rx
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/tx/tables/cf_def_config.c for cf_def_config.c
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/rx/tables/cf_def_config.c for cf_def_config.c
+-- Building Dynamic App: bp targets=tx;rx
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/tx/tables/bp_flowtable.c for bp_flowtable.c
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/rx/tables/bp_flowtable.c for bp_flowtable.c
+-- Building Dynamic App: bplib targets=tx;rx
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1") 
+-- Checking for one of the modules 'tinycbor'
+-- Found tinycbor version 0.6.0
+-- Building Dynamic App: ci_lab targets=tx;rx
+-- Building Dynamic App: to_lab targets=tx;rx
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/tables/to_lab_sub.c for to_lab_sub.c
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/tables/to_lab_sub.c for to_lab_sub.c
+-- Building Dynamic App: sch_lab targets=tx;rx
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/tables/sch_lab_table.c for sch_lab_table.c
+-- Using file: /home/gskenned/cfs-home/bpxfer_defs/tables/sch_lab_table.c for sch_lab_table.c
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/gskenned/cfs-home/build/native/default
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/gskenned/cfs-home/build
+Scanning dependencies of target elf2cfetbl
+Scanning dependencies of target cfe-build-env
+[ 50%] Building C object tools/elf2cfetbl/CMakeFiles/elf2cfetbl.dir/elf2cfetbl.c.o
+[ 50%] Built target cfe-build-env
+Scanning dependencies of target cfe-module-version
+[ 50%] Built target cfe-module-version
+Scanning dependencies of target mission-version
+[ 50%] Built target mission-version
+[100%] Linking C executable elf2cfetbl
+[100%] Built target elf2cfetbl
+Scanning dependencies of target mission-prebuild
+[100%] Built target mission-prebuild
+Scanning dependencies of target native_default-cfetables
+Scanning dependencies of target native_default-install
+Scanning dependencies of target tblobj_tx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f
+[  0%] Building C object apps/sch_lab/CMakeFiles/tblobj_tx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f.dir/home/gskenned/cfs-home/bpxfer_defs/tables/sch_lab_table.c.o
+Scanning dependencies of target osal_generic-linux_impl
+[  0%] Linking C static library libtblobj_tx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f.a
+[  0%] Building C object osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_start.c.o
+[  0%] Building C object osal/generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_console.c.o
+[  0%] Built target tblobj_tx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f
+Scanning dependencies of target tblobj_tx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d
+[  0%] Built target osal_generic-linux_impl
+[  1%] Building C object apps/cf/CMakeFiles/tblobj_tx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d.dir/home/gskenned/cfs-home/bpxfer_defs/tx/tables/cf_def_config.c.o
+Scanning dependencies of target osal_posix_impl
+[  2%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-binsem.c.o
+[  2%] Linking C static library libtblobj_tx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d.a
+[  2%] Built target tblobj_tx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d
+[  2%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-common.c.o
+Scanning dependencies of target tblobj_rx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d
+[  2%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-console.c.o
+[  4%] Building C object apps/cf/CMakeFiles/tblobj_rx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d.dir/home/gskenned/cfs-home/bpxfer_defs/rx/tables/cf_def_config.c.o
+[  4%] Linking C static library libtblobj_rx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d.a
+[  4%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-condvar.c.o
+[  4%] Built target tblobj_rx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d
+[  5%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-countsem.c.o
+Scanning dependencies of target tblobj_rx_bp.tbl8eea99fda127e9da8b99614167288b71da637619
+[  5%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-dirs.c.o
+[  5%] Building C object apps/bp/CMakeFiles/tblobj_rx_bp.tbl8eea99fda127e9da8b99614167288b71da637619.dir/home/gskenned/cfs-home/bpxfer_defs/rx/tables/bp_flowtable.c.o
+[  5%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-errors.c.o
+[  5%] Linking C static library libtblobj_rx_bp.tbl8eea99fda127e9da8b99614167288b71da637619.a
+[  5%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-files.c.o
+[  5%] Built target tblobj_rx_bp.tbl8eea99fda127e9da8b99614167288b71da637619
+[  6%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-filesys.c.o
+Scanning dependencies of target tblobj_tx_bp.tbl8eea99fda127e9da8b99614167288b71da637619
+[  6%] Building C object apps/bp/CMakeFiles/tblobj_tx_bp.tbl8eea99fda127e9da8b99614167288b71da637619.dir/home/gskenned/cfs-home/bpxfer_defs/tx/tables/bp_flowtable.c.o
+[  6%] Linking C static library libtblobj_tx_bp.tbl8eea99fda127e9da8b99614167288b71da637619.a
+[  6%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-heap.c.o
+[  6%] Built target tblobj_tx_bp.tbl8eea99fda127e9da8b99614167288b71da637619
+[  6%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-idmap.c.o
+Scanning dependencies of target tblobj_rx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b
+[  6%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-mutex.c.o
+[  8%] Building C object apps/to_lab/CMakeFiles/tblobj_rx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b.dir/home/gskenned/cfs-home/bpxfer_defs/tables/to_lab_sub.c.o
+[  8%] Linking C static library libtblobj_rx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b.a
+[  8%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-queues.c.o
+[  8%] Built target tblobj_rx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b
+Scanning dependencies of target tblobj_tx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b
+[  9%] Building C object apps/to_lab/CMakeFiles/tblobj_tx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b.dir/home/gskenned/cfs-home/bpxfer_defs/tables/to_lab_sub.c.o
+[  9%] Linking C static library libtblobj_tx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b.a
+[ 11%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-tasks.c.o
+[ 11%] Built target tblobj_tx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b
+Scanning dependencies of target tblobj_rx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f
+[ 11%] Building C object apps/sch_lab/CMakeFiles/tblobj_rx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f.dir/home/gskenned/cfs-home/bpxfer_defs/tables/sch_lab_table.c.o
+[ 11%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-timebase.c.o
+[ 11%] Linking C static library libtblobj_rx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f.a
+[ 11%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-gettime.c.o
+[ 11%] Built target tblobj_rx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f
+Scanning dependencies of target generate_table_tx_sch_lab_sch_lab_table
+[ 11%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-console-bsp.c.o
+[ 12%] Generating /home/gskenned/cfs-home/build/tables/tx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f.sch_lab_table.d
+[ 12%] Built target generate_table_tx_sch_lab_sch_lab_table
+[ 13%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-bsd-select.c.o
+Scanning dependencies of target generate_table_tx_cf_cf_def_config
+[ 13%] Generating /home/gskenned/cfs-home/build/tables/tx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d.cf_def_config.d
+[ 13%] Built target generate_table_tx_cf_cf_def_config
+Scanning dependencies of target generate_table_rx_cf_cf_def_config
+[ 13%] Generating /home/gskenned/cfs-home/build/tables/rx_cf.tbl597efe23648e8c21cf310affc0e20ecbdbd7835d.cf_def_config.d
+[ 13%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-io.c.o
+[ 13%] Built target generate_table_rx_cf_cf_def_config
+Scanning dependencies of target generate_table_rx_bp_bp_flowtable
+[ 13%] Generating /home/gskenned/cfs-home/build/tables/rx_bp.tbl8eea99fda127e9da8b99614167288b71da637619.bp_flowtable.d
+[ 13%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-files.c.o
+[ 13%] Built target generate_table_rx_bp_bp_flowtable
+Scanning dependencies of target generate_table_tx_bp_bp_flowtable
+[ 13%] Generating /home/gskenned/cfs-home/build/tables/tx_bp.tbl8eea99fda127e9da8b99614167288b71da637619.bp_flowtable.d
+[ 13%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-dirs.c.o
+[ 15%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-no-shell.c.o
+[ 15%] Built target generate_table_tx_bp_bp_flowtable
+Scanning dependencies of target generate_table_rx_to_lab_to_lab_sub
+[ 15%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/src/os-impl-loader.c.o
+[ 15%] Generating /home/gskenned/cfs-home/build/tables/rx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b.to_lab_sub.d
+[ 15%] Built target generate_table_rx_to_lab_to_lab_sub
+[ 15%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-dl-loader.c.o
+Scanning dependencies of target generate_table_tx_to_lab_to_lab_sub
+[ 15%] Generating /home/gskenned/cfs-home/build/tables/tx_to_lab.tblbdf1c1d27e324873045b359f084844aaa6078b1b.to_lab_sub.d
+[ 15%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-dl-symtab.c.o
+[ 15%] Built target generate_table_tx_to_lab_to_lab_sub
+[ 16%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-bsd-sockets.c.o
+Scanning dependencies of target generate_table_rx_sch_lab_sch_lab_table
+[ 18%] Generating /home/gskenned/cfs-home/build/tables/rx_sch_lab.tbl8f3f9fb15cf5dced95f6f9923a26fa209ce5e19f.sch_lab_table.d
+[ 18%] Building C object osal/posix_impl/CMakeFiles/osal_posix_impl.dir/__/portable/os-impl-posix-network.c.o
+[ 18%] Built target generate_table_rx_sch_lab_sch_lab_table
+Scanning dependencies of target cfetables
+[ 18%] Built target osal_posix_impl
+[ 18%] Built target cfetables
+Scanning dependencies of target es
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_api.c.o
+[100%] Built target native_default-cfetables
+Scanning dependencies of target mission-cfetables
+[100%] Built target mission-cfetables
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_apps.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_backgroundtask.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_cds.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_cds_mempool.c.o
+Scanning dependencies of target evs
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_crc.c.o
+Building C object evs/CMakeFiles/evs.dir/fsw/src/cfe_evs.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_dispatch.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_erlog.c.o
+Building C object evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_log.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_generic_pool.c.o
+Building C object evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_task.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_mempool.c.o
+Building C object evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_utils.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_objtab.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_perf.c.o
+Building C object evs/CMakeFiles/evs.dir/fsw/src/cfe_evs_dispatch.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_resource.c.o
+Linking C static library libevs.a
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_start.c.o
+Built target evs
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_syslog.c.o
+Scanning dependencies of target fs
+Building C object fs/CMakeFiles/fs.dir/fsw/src/cfe_fs_api.c.o
+Building C object es/CMakeFiles/es.dir/fsw/src/cfe_es_task.c.o
+Building C object fs/CMakeFiles/fs.dir/fsw/src/cfe_fs_priv.c.o
+Linking C static library libfs.a
+Linking C static library libes.a
+Built target fs
+Scanning dependencies of target sb
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_api.c.o
+Built target es
+Scanning dependencies of target tbl
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_buf.c.o
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_api.c.o
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_init.c.o
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_msg_id_util.c.o
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_priv.c.o
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_internal.c.o
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_dispatch.c.o
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_task.c.o
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_resource.c.o
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_transaction.c.o
+Building C object sb/CMakeFiles/sb.dir/fsw/src/cfe_sb_util.c.o
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task.c.o
+Linking C static library libsb.a
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_task_cmds.c.o
+Built target sb
+Building C object tbl/CMakeFiles/tbl.dir/fsw/src/cfe_tbl_dispatch.c.o
+Scanning dependencies of target time
+Building C object time/CMakeFiles/time.dir/fsw/src/cfe_time_api.c.o
+Linking C static library libtbl.a
+Building C object time/CMakeFiles/time.dir/fsw/src/cfe_time_task.c.o
+Built target tbl
+Scanning dependencies of target linux_sysmon
+Building C object psp/linux_sysmon-pc-linux-impl/CMakeFiles/linux_sysmon.dir/linux_sysmon.c.o
+Building C object time/CMakeFiles/time.dir/fsw/src/cfe_time_tone.c.o
+Building C object time/CMakeFiles/time.dir/fsw/src/cfe_time_utils.c.o
+Linking C static library liblinux_sysmon.a
+Built target linux_sysmon
+Building C object time/CMakeFiles/time.dir/fsw/src/cfe_time_dispatch.c.o
+Scanning dependencies of target psp-pc-linux-impl
+Building C object psp/pc-linux-impl/CMakeFiles/psp-pc-linux-impl.dir/src/cfe_psp_exception.c.o
+Linking C static library libtime.a
+Building C object psp/pc-linux-impl/CMakeFiles/psp-pc-linux-impl.dir/src/cfe_psp_memory.c.o
+Building C object psp/pc-linux-impl/CMakeFiles/psp-pc-linux-impl.dir/src/cfe_psp_ssr.c.o
+Built target time
+Scanning dependencies of target psp-pc-linux-shared
+Building C object psp/pc-linux-shared/CMakeFiles/psp-pc-linux-shared.dir/src/cfe_psp_error.c.o
+Building C object psp/pc-linux-impl/CMakeFiles/psp-pc-linux-impl.dir/src/cfe_psp_start.c.o
+Building C object psp/pc-linux-shared/CMakeFiles/psp-pc-linux-shared.dir/src/cfe_psp_exceptionstorage.c.o
+Building C object psp/pc-linux-impl/CMakeFiles/psp-pc-linux-impl.dir/src/cfe_psp_support.c.o
+Building C object psp/pc-linux-shared/CMakeFiles/psp-pc-linux-shared.dir/src/cfe_psp_memrange.c.o
+Building C object psp/pc-linux-impl/CMakeFiles/psp-pc-linux-impl.dir/src/cfe_psp_watchdog.c.o
+Building C object psp/pc-linux-shared/CMakeFiles/psp-pc-linux-shared.dir/src/cfe_psp_memutils.c.o
+Built target psp-pc-linux-impl
+Building C object psp/pc-linux-shared/CMakeFiles/psp-pc-linux-shared.dir/src/cfe_psp_module.c.o
+Scanning dependencies of target soft_timebase
+Building C object psp/soft_timebase-pc-linux-impl/CMakeFiles/soft_timebase.dir/cfe_psp_soft_timebase.c.o
+Building C object psp/pc-linux-shared/CMakeFiles/psp-pc-linux-shared.dir/src/cfe_psp_version.c.o
+Linking C static library libsoft_timebase.a
+Built target psp-pc-linux-shared
+Scanning dependencies of target tabletool-execute
+mkdir: created directory 'elf'
+mkdir: created directory 'elf/rx/'
+mkdir: created directory 'elf/tx/'
+Built target soft_timebase
+Scanning dependencies of target timebase_posix_clock
+mkdir: created directory 'staging'
+mkdir: created directory 'staging/rx'
+mkdir: created directory 'staging/rx/cf/'
+mkdir: created directory 'staging/tx'
+mkdir: created directory 'staging/tx/cf/'
+Table build completed
+[100%] Built target tabletool-execute
+Building C object psp/timebase_posix_clock-pc-linux-impl/CMakeFiles/timebase_posix_clock.dir/cfe_psp_timebase_posix_clock.c.o
+Scanning dependencies of target eeprom_mmap_file
+Building C object psp/eeprom_mmap_file-pc-linux-impl/CMakeFiles/eeprom_mmap_file.dir/cfe_psp_eeprom_mmap_file.c.o
+Linking C static library libtimebase_posix_clock.a
+Linking C static library libeeprom_mmap_file.a
+Built target timebase_posix_clock
+Built target eeprom_mmap_file
+Scanning dependencies of target ram_notimpl
+Scanning dependencies of target port_notimpl
+Building C object psp/port_notimpl-pc-linux-impl/CMakeFiles/port_notimpl.dir/cfe_psp_port_notimpl.c.o
+Building C object psp/ram_notimpl-pc-linux-impl/CMakeFiles/ram_notimpl.dir/cfe_psp_ram_notimpl.c.o
+Linking C static library libram_notimpl.a
+Linking C static library libport_notimpl.a
+Built target ram_notimpl
+Built target port_notimpl
+Scanning dependencies of target iodriver
+Building C object psp/iodriver-pc-linux-impl/CMakeFiles/iodriver.dir/src/iodriver.c.o
+Scanning dependencies of target msg
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_ccsdspri.c.o
+Linking C static library libiodriver.a
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_init.c.o
+Built target iodriver
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_integrity.c.o
+Scanning dependencies of target sbr
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_msgid_shared.c.o
+Building C object sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_map_direct.c.o
+Building C object sbr/CMakeFiles/sbr.dir/fsw/src/cfe_sbr_route_unsorted.c.o
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_sechdr_checksum.c.o
+Linking C static library libsbr.a
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_sechdr_fc.c.o
+Built target sbr
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_sechdr_time.c.o
+Scanning dependencies of target resourceid
+Building C object resourceid/CMakeFiles/resourceid.dir/fsw/src/cfe_resourceid_api.c.o
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_initdefaulthdr_pri.c.o
+Linking C static library libresourceid.a
+Building C object msg/CMakeFiles/msg.dir/fsw/src/cfe_msg_msgid_v1.c.o
+Built target resourceid
+Linking C static library libmsg.a
+Scanning dependencies of target config
+Building C object config/CMakeFiles/config.dir/fsw/src/cfe_config_init.c.o
+Built target msg
+Scanning dependencies of target unsock_intf
+Building C object psp/unsock_intf/CMakeFiles/unsock_intf.dir/unsock_intf.c.o
+Building C object config/CMakeFiles/config.dir/fsw/src/cfe_config_lookup.c.o
+Building C object config/CMakeFiles/config.dir/fsw/src/cfe_config_get.c.o
+Linking C static library libunsock_intf.a
+Built target unsock_intf
+Building C object config/CMakeFiles/config.dir/fsw/src/cfe_config_set.c.o
+Scanning dependencies of target ut_assert_pic
+Building C object config/CMakeFiles/config.dir/home/gskenned/cfs-home/build/src/cfe_config_map.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert_pic.dir/src/utassert.c.o
+Linking C static library libconfig.a
+Built target config
+Building C object osal/ut_assert/CMakeFiles/ut_assert_pic.dir/src/utlist.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert_pic.dir/src/utstubs.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert_pic.dir/src/uttest.c.o
+Scanning dependencies of target cf
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_app.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert_pic.dir/src/uttools.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_cfdp.c.o
+Built target ut_assert_pic
+Scanning dependencies of target bp
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_app.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_cmd.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_cfdp_r.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_flow.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_cfdp_s.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_cla_bundle_io.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_cfdp_sbintf.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_storage.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_global.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_cfdp_dispatch.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/custom/bp_semcfg.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_chunk.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/custom/bp_storecfg.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_clist.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/custom/bp_tlmcfg.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_codec.c.o
+Building C object apps/bp/CMakeFiles/bp.dir/fsw/src/bp_dispatch.c.o
+Linking C shared module bp.so
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_cmd.c.o
+Built target bp
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_crc.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_timer.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_utils.c.o
+Building C object apps/cf/CMakeFiles/cf.dir/fsw/src/cf_dispatch.c.o
+Scanning dependencies of target bplib_v7
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_codec_common.c.o
+Linking C shared module cf.so
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_encode_api.c.o
+Built target cf
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_decode_api.c.o
+Scanning dependencies of target bplib_os
+Building C object apps/bplib/os/CMakeFiles/bplib_os.dir/src/heap.c.o
+Building C object apps/bplib/os/CMakeFiles/bplib_os.dir/src/cfe.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_basetypes.c.o
+Building C object apps/bplib/os/CMakeFiles/bplib_os.dir/src/osal.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_container.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_bitmap.c.o
+Built target bplib_os
+Scanning dependencies of target bplib_common
+Building C object apps/bplib/common/CMakeFiles/bplib_common.dir/src/crc.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_crc.c.o
+Building C object apps/bplib/common/CMakeFiles/bplib_common.dir/src/v7_rbtree.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_endpointid.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_primary_block.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_admin_record.c.o
+Built target bplib_common
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_canonical_block.c.o
+Scanning dependencies of target bplib_base
+Building C object apps/bplib/lib/CMakeFiles/bplib_base.dir/src/v7_bplib.c.o
+Building C object apps/bplib/lib/CMakeFiles/bplib_base.dir/src/v7_cla_api.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_bundle_age_block.c.o
+Building C object apps/bplib/lib/CMakeFiles/bplib_base.dir/src/v7_dataservice_api.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_hop_count_block.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_bp_previous_node_block.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_custody_tracking_block.c.o
+Building C object apps/bplib/lib/CMakeFiles/bplib_base.dir/src/v7_routing.c.o
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7_custody_acknowledgement_record.c.o
+Built target bplib_base
+Building C object apps/bplib/v7/CMakeFiles/bplib_v7.dir/src/v7.c.o
+Scanning dependencies of target bplib_mpool
+Building C object apps/bplib/mpool/CMakeFiles/bplib_mpool.dir/src/v7_mpool.c.o
+Built target bplib_v7
+Scanning dependencies of target bplib_cache
+Building C object apps/bplib/cache/CMakeFiles/bplib_cache.dir/src/v7_cache.c.o
+Building C object apps/bplib/mpool/CMakeFiles/bplib_mpool.dir/src/v7_mpool_ref.c.o
+Building C object apps/bplib/mpool/CMakeFiles/bplib_mpool.dir/src/v7_mpool_job.c.o
+Building C object apps/bplib/cache/CMakeFiles/bplib_cache.dir/src/v7_cache_custody.c.o
+Building C object apps/bplib/mpool/CMakeFiles/bplib_mpool.dir/src/v7_mpool_bblocks.c.o
+Building C object apps/bplib/cache/CMakeFiles/bplib_cache.dir/src/v7_cache_fsm.c.o
+Building C object apps/bplib/mpool/CMakeFiles/bplib_mpool.dir/src/v7_mpool_flows.c.o
+Built target bplib_cache
+Scanning dependencies of target ci_lab
+Building C object apps/bplib/mpool/CMakeFiles/bplib_mpool.dir/src/v7_mpstream.c.o
+Building C object apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o
+Building C object apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_cmds.c.o
+Built target bplib_mpool
+Scanning dependencies of target to_lab
+Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o
+Building C object apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_dispatch.c.o
+Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_cmds.c.o
+Building C object apps/ci_lab/CMakeFiles/ci_lab.dir/fsw/src/ci_lab_passthru_decode.c.o
+Linking C shared module ci_lab.so
+Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_dispatch.c.o
+Built target ci_lab
+Building C object apps/to_lab/CMakeFiles/to_lab.dir/fsw/src/to_lab_passthru_encode.c.o
+Scanning dependencies of target sch_lab
+Linking C shared module to_lab.so
+Building C object apps/sch_lab/CMakeFiles/sch_lab.dir/fsw/src/sch_lab_app.c.o
+Built target to_lab
+Linking C shared module sch_lab.so
+Scanning dependencies of target osal_bsp
+Building C object osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/osapi-bsp.c.o
+Building C object osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_run.c.o
+Built target sch_lab
+Scanning dependencies of target psp-pc-linux
+Building C object psp/CMakeFiles/psp-pc-linux.dir/pc-linux_module_list.c.o
+Building C object osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_startup.c.o
+Linking C static library libpsp-pc-linux.a
+Building C object osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_symtab.c.o
+Building C object osal/CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_resourcecfg.c.o
+Linking C static library libosal_bsp.a
+Built target psp-pc-linux
+Built target osal_bsp
+Scanning dependencies of target cfe_assert
+Scanning dependencies of target bplib
+Building C object apps/cfe_assert/CMakeFiles/cfe_assert.dir/src/cfe_assert_io.c.o
+Building C object apps/bplib/CMakeFiles/bplib.dir/store/file_offload.c.o
+Building C object apps/cfe_assert/CMakeFiles/cfe_assert.dir/src/cfe_assert_init.c.o
+Building C object apps/cfe_assert/CMakeFiles/cfe_assert.dir/src/cfe_assert_runner.c.o
+Linking C shared module bplib.so
+Linking C shared module cfe_assert.so
+Built target cfe_assert
+Built target bplib
+Scanning dependencies of target ut_assert
+Scanning dependencies of target osal
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-binsem.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert.dir/src/utassert.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert.dir/src/utlist.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-clock.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-common.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert.dir/src/utstubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-condvar.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-countsem.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-dir.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert.dir/src/uttest.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert.dir/src/uttools.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-errors.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-file.c.o
+Building C object osal/ut_assert/CMakeFiles/ut_assert.dir/src/utbsp.c.o
+Linking C static library libut_assert.a
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-filesys.c.o
+Built target ut_assert
+Scanning dependencies of target ut_osapi_stubs
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/utstub-helpers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-binsem-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-heap.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-idmap.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-binsem-handlers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-clock-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-clock-handlers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-common-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-common-handlers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-condvar-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-countsem-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-module.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-countsem-handlers.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-mutex.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-network.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-dir-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-printf.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-dir-handlers.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-queue.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-error-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-select.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-error-handlers.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-shell.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-file-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-sockets.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-file-handlers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-filesys-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-task.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-filesys-handlers.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-timebase.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-heap-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-time.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-heap-handlers.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-version.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-idmap-stubs.c.o
+Building C object osal/CMakeFiles/osal.dir/src/os/shared/src/osapi-debug.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-idmap-handlers.c.o
+Linking C static library libosal.a
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-module-stubs.c.o
+Built target osal
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-module-handlers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-mutex-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-mutex-handlers.c.o
+Generating cfe_build_env_table.c
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-network-stubs.c.o
+Generating cfe_module_version_table.c
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-network-handlers.c.o
+Scanning dependencies of target core-tx
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-printf-stubs.c.o
+Building C object tx/CMakeFiles/core-tx.dir/home/gskenned/cfs-home/build/src/cfe_mission_strings.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-printf-handlers.c.o
+Building C object tx/CMakeFiles/core-tx.dir/cfe_module_version_table.c.o
+Building C object tx/CMakeFiles/core-tx.dir/cfe_build_env_table.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-queue-stubs.c.o
+Building C object tx/CMakeFiles/core-tx.dir/cfe_psp_module_list.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-queue-handlers.c.o
+Building C object tx/CMakeFiles/core-tx.dir/cfe_static_symbol_list.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-select-stubs.c.o
+Building C object tx/CMakeFiles/core-tx.dir/cfe_static_module_list.c.o
+Building C object tx/CMakeFiles/core-tx.dir/src/target_config.c.o
+Linking C executable core-tx
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-shell-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-sockets-stubs.c.o
+Built target core-tx
+Generating cfe_build_env_table.c
+Generating cfe_module_version_table.c
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-sockets-handlers.c.o
+Scanning dependencies of target core-rx
+Building C object rx/CMakeFiles/core-rx.dir/home/gskenned/cfs-home/build/src/cfe_mission_strings.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-task-stubs.c.o
+Building C object rx/CMakeFiles/core-rx.dir/cfe_module_version_table.c.o
+Building C object rx/CMakeFiles/core-rx.dir/cfe_build_env_table.c.o
+Building C object rx/CMakeFiles/core-rx.dir/cfe_psp_module_list.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-task-handlers.c.o
+Building C object rx/CMakeFiles/core-rx.dir/cfe_static_symbol_list.c.o
+Building C object rx/CMakeFiles/core-rx.dir/cfe_static_module_list.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-timer-stubs.c.o
+Building C object rx/CMakeFiles/core-rx.dir/src/target_config.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-timer-handlers.c.o
+Linking C executable core-rx
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-timebase-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-timebase-handlers.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-version-stubs.c.o
+Building C object osal/ut-stubs/CMakeFiles/ut_osapi_stubs.dir/osapi-version-handlers.c.o
+Built target core-rx
+Linking C static library libut_osapi_stubs.a
+Built target ut_osapi_stubs
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/tinycbor.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/cfe_es_startup.scr
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/tinycbor.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/cfe_es_startup.scr
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/cfe_assert.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/cfe_assert.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/cf.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/cf.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/bp.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/bp.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/bplib.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/bplib.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/ci_lab.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/ci_lab.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/to_lab.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/to_lab.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/cf/sch_lab.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/cf/sch_lab.so
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/tx/core-tx
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/rx/core-rx
+[100%] Built target native_default-install
+Scanning dependencies of target mission-install
+Scanning dependencies of target cmdUtil
+[ 14%] Building C object tools/cFS-GroundSystem/Subsystems/cmdUtil/CMakeFiles/cmdUtil.dir/cmdUtil.c.o
+[ 42%] Built target elf2cfetbl
+Scanning dependencies of target cfe_ts_crc
+[ 57%] Building C object tools/tblCRCTool/CMakeFiles/cfe_ts_crc.dir/cfe_ts_crc.c.o
+[ 71%] Linking C executable cfe_ts_crc
+[ 85%] Building C object tools/cFS-GroundSystem/Subsystems/cmdUtil/CMakeFiles/cmdUtil.dir/SendUdp.c.o
+[ 85%] Built target cfe_ts_crc
+[100%] Linking C executable cmdUtil
+[100%] Built target cmdUtil
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/host/cmdUtil
+-- Up-to-date: /home/gskenned/cfs-home/cfs-build-folder/exe/.
+-- Up-to-date: /home/gskenned/cfs-home/cfs-build-folder/exe/./rx
+-- Up-to-date: /home/gskenned/cfs-home/cfs-build-folder/exe/./rx/cf
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./rx/cf/cf_def_config.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./rx/cf/sch_lab_table.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./rx/cf/to_lab_sub.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./rx/cf/bp_flowtable.tbl
+-- Up-to-date: /home/gskenned/cfs-home/cfs-build-folder/exe/./tx
+-- Up-to-date: /home/gskenned/cfs-home/cfs-build-folder/exe/./tx/cf
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./tx/cf/cf_def_config.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./tx/cf/sch_lab_table.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./tx/cf/to_lab_sub.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/./tx/cf/bp_flowtable.tbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/host/elf2cfetbl
+-- Installing: /home/gskenned/cfs-home/cfs-build-folder/exe/host/cfe_ts_crc
+Built target mission-install
+./
+./rx/
+./rx/core-rx
+./rx/cf/
+./rx/cf/cf_def_config.tbl
+./rx/cf/cfe_es_startup.scr
+./rx/cf/sch_lab.so
+./rx/cf/cfe_assert.so
+./rx/cf/sch_lab_table.tbl
+./rx/cf/ci_lab.so
+./rx/cf/to_lab_sub.tbl
+./rx/cf/tinycbor.so
+./rx/cf/bp_flowtable.tbl
+./rx/cf/bplib.so
+./rx/cf/to_lab.so
+./rx/cf/bp.so
+./rx/cf/cf.so
+./host/
+./host/cfe_ts_crc
+./host/elf2cfetbl
+./host/cmdUtil
+./tx/
+./tx/core-tx
+./tx/cf/
+./tx/cf/cf_def_config.tbl
+./tx/cf/cfe_es_startup.scr
+./tx/cf/sch_lab.so
+./tx/cf/cfe_assert.so
+./tx/cf/sch_lab_table.tbl
+./tx/cf/ci_lab.so
+./tx/cf/to_lab_sub.tbl
+./tx/cf/tinycbor.so
+./tx/cf/bp_flowtable.tbl
+./tx/cf/bplib.so
+./tx/cf/to_lab.so
+./tx/cf/bp.so
+./tx/cf/cf.so
+-rw-r--r-- 1 gskenned dtndev 2304000 Jul 18 14:22 cfs-bpapp.tar
+./
+./rx/
+./rx/core-rx
+./rx/cf/
+./rx/cf/cf_def_config.tbl
+./rx/cf/cfe_es_startup.scr
+./rx/cf/sch_lab.so
+./rx/cf/cfe_assert.so
+./rx/cf/sch_lab_table.tbl
+./rx/cf/ci_lab.so
+./rx/cf/to_lab_sub.tbl
+./rx/cf/tinycbor.so
+./rx/cf/bp_flowtable.tbl
+./rx/cf/bplib.so
+./rx/cf/to_lab.so
+./rx/cf/bp.so
+./rx/cf/cf.so
+./host/
+./host/cfe_ts_crc
+./host/elf2cfetbl
+./host/cmdUtil
+./tx/
+./tx/core-tx
+./tx/cf/
+./tx/cf/cf_def_config.tbl
+./tx/cf/cfe_es_startup.scr
+./tx/cf/sch_lab.so
+./tx/cf/cfe_assert.so
+./tx/cf/sch_lab_table.tbl
+./tx/cf/ci_lab.so
+./tx/cf/to_lab_sub.tbl
+./tx/cf/tinycbor.so
+./tx/cf/bp_flowtable.tbl
+./tx/cf/bplib.so
+./tx/cf/to_lab.so
+./tx/cf/bp.so
+./tx/cf/cf.so
+~/cfs-home/tx/cf ~/cfs-home
+1+0 records in
+1+0 records out
+1024 bytes (1.0 kB, 1.0 KiB) copied, 9.5792e-05 s, 10.7 MB/s
+a7fd035fd4130ca9e2e14657417187d3  testdata.bin
+~/cfs-home
+~/cfs-home/tx ~/cfs-home
+~/cfs-home
+~/cfs-home/rx ~/cfs-home
+~/cfs-home
+~/cfs-home/host ~/cfs-home
+sending data to '127.0.0.1' (IP : 127.0.0.1); port 1234
+Data to send:
+0x18 0x12 0xC0 0x00 0x00 0x09 0x07 0x2A 
+0x43 0x46 0x44 0x50 0x00 0x00 0x00 0x00 
+
+sending data to '127.0.0.1' (IP : 127.0.0.1); port 1235
+Data to send:
+0x18 0x12 0xC0 0x00 0x00 0x09 0x07 0x2A 
+0x43 0x46 0x44 0x50 0x00 0x00 0x00 0x00 
+
+sending data to '127.0.0.1' (IP : 127.0.0.1); port 1234
+Data to send:
+0x18 0xB3 0xC0 0x00 0x00 0x89 0x02 0x1C 
+0x00 0x01 0x00 0x00 0x02 0x00 0x00 0x00 
+0x2F 0x63 0x66 0x2F 0x74 0x65 0x73 0x74 
+0x64 0x61 0x74 0x61 0x2E 0x62 0x69 0x6E 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x2F 0x63 0x66 0x2F 0x74 0x65 0x73 0x74 
+0x64 0x61 0x74 0x61 0x2E 0x62 0x69 0x6E 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 
+
+sending data to '127.0.0.1' (IP : 127.0.0.1); port 1234
+Data to send:
+0x18 0x06 0xC0 0x00 0x00 0x03 0x02 0x22 
+0x02 0x00 
+sending data to '127.0.0.1' (IP : 127.0.0.1); port 1235
+Data to send:
+0x18 0x06 0xC0 0x00 0x00 0x03 0x02 0x22 
+0x02 0x00 
+~/cfs-home
+OS_Posix_GetSchedulerParams():202:Policy 1: available, min-max: 1-99
+OS_Posix_GetSchedulerParams():202:Policy 2: available, min-max: 1-99
+OS_Posix_TaskAPI_Impl_Init():388:Selected policy 2 for RT tasks, root task = 99
+OS_Posix_TaskAPI_Impl_Init():405:Could not setschedparam in main thread: Operation not permitted (1)
+CFE_PSP: EEPROM Range (2) created: Start Address = 7F3F2FBC2000, Size = 00080000 Status = 0
+CFE_PSP: Initializing unsock_intf interface
+CFE_PSP: Starting the cFE with a POWER ON reset.
+CFE_PSP: Clearing out CFE CDS Shared memory segment.
+CFE_PSP: Clearing out CFE Reset Shared memory segment.
+CFE_PSP: Clearing out CFE User Reserved Shared memory segment.
+1980-001-03:51:06.30623 CFE_ES_SetupResetVariables: POWER ON RESET due to Power Cycle (Power Cycle).
+1980-001-03:51:06.30624 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
+CFE_PSP: CFE_PSP_AttachExceptions called
+1980-001-03:51:06.30644 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
+1980-001-03:51:06.30644 CFE_ES_CreateObjects: Starting Object Creation calls.
+1980-001-03:51:06.30645 CFE_ES_CreateObjects: Calling CFE_Config_Init
+1980-001-03:51:06.30646 CFE_ES_CreateObjects: Calling CFE_ES_CDSEarlyInit
+1980-001-03:51:06.30651 CFE_ES_CreateObjects: Calling CFE_EVS_EarlyInit
+1980-001-03:51:06.30652 CFE_EVS_EarlyInit: Event Log cleared following power-on reset
+1980-001-03:51:06.30652 CFE_ES_CreateObjects: Calling CFE_SB_EarlyInit
+1980-001-03:51:06.30667 CFE_ES_CreateObjects: Calling CFE_TIME_EarlyInit
+1980-012-14:03:20.00000 CFE_ES_CreateObjects: Calling CFE_TBL_EarlyInit
+1980-012-14:03:20.00016 CFE_ES_CreateObjects: Calling CFE_FS_EarlyInit
+EVS Port1 1980-012-14:03:20.05030 185/1/CFE_EVS 1: cFE EVS Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+1980-012-14:03:20.15047 CFE_SB_AppInit: Registered 4 events for filtering
+EVS Port1 1980-012-14:03:20.15051 185/1/CFE_SB 1: cFE SB Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+EVS Port1 1980-012-14:03:20.15052 185/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_SB
+EVS Port1 1980-012-14:03:20.25146 185/1/CFE_ES 1: cFE ES Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+EVS Port1 1980-012-14:03:20.25149 185/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
+EVS Port1 1980-012-14:03:20.25151 185/1/CFE_ES 2: cFS Versions: cfe equuleus-rc1+dev167, osal equuleus-rc1+dev81, psp equuleus-rc1+dev38. cFE chksm 24175
+EVS Port1 1980-012-14:03:20.25151 185/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
+EVS Port1 1980-012-14:03:20.25151 185/1/CFE_ES 91: Version Info: Mission BpTestWorkflow, version git:equuleus-rc1-62-g0befc97-dirty
+EVS Port1 1980-012-14:03:20.25151 185/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
+EVS Port1 1980-012-14:03:20.25152 185/1/CFE_ES 91: Version Info: Module CORE_API, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25152 185/1/CFE_ES 91: Version Info: Module ES, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25152 185/1/CFE_ES 91: Version Info: Module EVS, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25152 185/1/CFE_ES 91: Version Info: Module FS, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25154 185/1/CFE_ES 91: Version Info: Module SB, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25154 185/1/CFE_ES 91: Version Info: Module TBL, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25155 185/1/CFE_ES 91: Version Info: Module TIME, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25155 185/1/CFE_ES 91: Version Info: Module OSAL, version git:draco-rc5-83-gd6412dfc
+EVS Port1 1980-012-14:03:20.25157 185/1/CFE_ES 91: Version Info: Module PSP, version git:7c29c50
+EVS Port1 1980-012-14:03:20.25157 185/1/CFE_ES 91: Version Info: Module MSG, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25158 185/1/CFE_ES 91: Version Info: Module SBR, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25158 185/1/CFE_ES 91: Version Info: Module RESOURCEID, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25158 185/1/CFE_ES 91: Version Info: Module CONFIG, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25158 185/1/CFE_ES 92: Build 202407181421 by gskenned@ip-10-1-21-63, config bpxfer
+EVS Port1 1980-012-14:03:20.35108 185/1/CFE_TIME 1: cFE TIME Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0
+EVS Port1 1980-012-14:03:20.45127 185/1/CFE_TBL 1: cFE TBL Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+1980-012-14:03:20.50127 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
+1980-012-14:03:20.50129 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
+1980-012-14:03:20.50132 CFE_ES_StartApplications: Opened ES App Startup file: /cf/cfe_es_startup.scr
+1980-012-14:03:20.50152 CFE_ES_ParseFileEntry: Loading shared library: /cf/tinycbor.so
+1980-012-14:03:20.50187 CFE_ES_ParseFileEntry: Loading shared library: /cf/bplib.so
+1980-012-14:03:20.50215 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB_APP
+1980-012-14:03:20.50240 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB_APP
+1980-012-14:03:20.50263 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB_APP
+1980-012-14:03:20.50285 CFE_ES_ParseFileEntry: Loading file: /cf/cf.so, APP: CF
+1980-012-14:03:20.50313 CFE_ES_ParseFileEntry: Loading file: /cf/bp.so, APP: BP
+EVS Port1 1980-012-14:03:20.55262 185/1/TO_LAB_APP 1: TO Lab Initialized.TO Lab Development Build equuleus-rc1+dev56 (Codename Equuleus), Last Official Release: TO Lab v2
+SCH Lab Initialized.SCH Lab Development Build equuleus-rc1+dev29 (Codename Equuleus), Last Official Release: SCH Lab v2.3.0)
+1980-012-14:03:20.55332 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:03:20.55336 CI_LAB listening on UDP port: 1234
+EVS Port1 1980-012-14:03:20.55335 185/1/CI_LAB_APP 3: CI Lab Initialized.CI Lab App Development Build equuleus-rc1+dev61 (Codename Equuleus), Last Official Release: CI La
+bplib_mpool_create(): created pool of size 16777216, with 32767 chunks, bblock threshold = 9830, internal threshold = 3276
+EVS Port1 1980-012-14:03:20.55725 185/1/BP 15: Created semaphore: BP0_tsem
+EVS Port1 1980-012-14:03:20.55726 185/1/BP 15: Created semaphore: BP1_tsem
+unsock_intf_OpenPort(): Opening output side: /tmp/CFE:1.sock
+CFE_PSP: Successfully opened socket: /tmp/CFE:1.sock
+EVS Port1 1980-012-14:03:20.55735 185/1/BP 52: BP_CLA: Started Output task ID 1000e -> socket
+unsock_intf_OpenPort(): Opening input side: /tmp/CFE:2.sock
+CFE_PSP: Successfully opened socket: /tmp/CFE:2.sock
+EVS Port1 1980-012-14:03:20.55783 185/1/BP 52: BP_CLA: Started Input task ID 1000f <- socket
+EVS Port1 1980-012-14:03:20.55784 185/1/BP 50: BP_CLA Initialized
+1980-012-14:03:20.55795 BP_FLOW: Subscribed to 082a
+EVS Port1 1980-012-14:03:20.55795 185/1/BP 9: Loaded flow table /cf/bp_flowtable.tbl (size: 612, crc: 00F7), 1 flows enabled
+EVS Port1 1980-012-14:03:20.55796 185/1/BP 2: BP App Version 6.5.0.0: Initialized
+EVS Port1 1980-012-14:03:20.65327 185/1/CF 20: CF Initialized. Version 3.0.99.0
+1980-012-14:03:20.65345 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
+1980-012-14:03:20.65346 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
+EVS Port1 1980-012-14:03:21.00001 185/1/CFE_TIME 21: Stop FLYWHEEL
+EVS Port1 1980-012-14:03:23.19776 185/1/BP 1: BP Flow CFDP: Resumed
+EVS Port1 1980-012-14:03:23.19779 185/1/CF 90: CF: start class 1 tx of file 1:/cf/testdata.bin -> 2:/cf/testdata.bin
+EVS Port1 1980-012-14:03:23.19781 185/1/CF 118: CF: file transfer successfully initiated
+Packet Egress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 00 1a        ..........[i....
+0020: 00 36 ee 80 42 bf 67 86 18 49 18 49 00 01 45 82        .6..B.g..I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 58 2f 24 00        ....Bc0.....X/$.
+0040: 28 00 01 01 02 07 00 00 00 04 00 10 2f 63 66 2f        (.........../cf/
+0050: 74 65 73 74 64 61 74 61 2e 62 69 6e 10 2f 63 66        testdata.bin./cf
+0060: 2f 74 65 73 74 64 61 74 61 2e 62 69 6e 42 d7 19        /testdata.binB..
+0070: ff                                                                    .
+
+Packet Egress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 01 1a        ..........[i....
+0020: 00 36 ee 80 42 f2 9a 86 18 49 18 49 00 01 45 82        .6..B....I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 59 01 eb 34        ....Bc0.....Y..4
+0040: 01 e4 00 01 01 02 00 00 00 00 56 f2 c6 26 1d 07        ..........V..&..
+0050: 38 de c5 53 4e 80 a0 4e c2 59 26 a3 a1 8a b2 51        8..SN..N.Y&....Q
+0060: 79 87 7c 05 6e 49 4e 53 b1 ee 78 78 42 9f 9d 7a        y.|.nINS..xxB..z
+0070: 22 67 7a 88 f3 6f 6d b6 b6 4f d7 48 b0 b0 c0 2d        "gz..om..O.H...-
+0080: b9 c8 48 0b 6f d0 fd f5 94 28 ca b9 84 1d 3f 2a        ..H.o....(....?*
+0090: fe 63 f5 56 07 ee 11 78 cf 94 3a 02 47 2e 27 f0        .c.V...x..:.G.'.
+00a0: f2 3e 5b 5a f9 b3 7a e3 9f 4c 9c 32 f9 44 2a 49        .>[Z..z..L.2.D*I
+00b0: 5b fa 52 cf 99 0c e6 67 44 7f a0 58 06 dc 02 85        [.R....gD..X....
+00c0: b8 8b 96 26 fc 30 de 4a 69 48 75 3c 74 eb 22 77        ...&.0.JiHu<t."w
+00d0: 49 5f 44 18 7d 42 17 5c 19 44 83 a5 be 44 13 e2        I_D.}B.\.D...D..
+00e0: 7f 39 70 ed 47 40 42 89 77 04 e8 13 0c 72 59 ca        .9p.G@B.w....rY.
+00f0: 02 34 df fd c5 0e e5 80 92 f1 16 ad 8d c3 ca 86        .4..............
+0100: 16 16 79 e7 bc 85 0a 41 ee 5f e1 78 8d cb f0 e3        ..y....A._.x....
+0110: 8e 1d 99 c7 a9 bc e6 2f 40 15 39 f5 1a a9 6e 38        ......./@.9...n8
+0120: 07 64 e9 a5 71 1c 95 92 da e5 8c 96 a8 f7 67 33        .d..q.........g3
+0130: e8 4a e6 75 5b 7c 8d 76 ac 11 65 b1 d2 ec 3b ff        .J.u[|.v..e...;.
+0140: b8 e4 a6 f8 cd 33 c5 7c 0d 9b b5 56 f9 bd 4f a5        .....3.|...V..O.
+0150: 16 19 9c 85 e9 e2 72 97 ec 80 2c 5c fa 73 48 7f        ......r...,\.sH.
+0160: 9d 2f db 8b 49 4b 85 38 7f ff 86 54 d9 10 c7 ab        ./..IK.8...T....
+0170: f7 5a e5 d1 45 b3 a1 2d 78 6a 41 b7 fa 2f fb 62        .Z..E..-xjA../.b
+0180: e4 7e 48 e1 0b aa 3e 2c 6d aa 02 86 33 f0 2c 12        .~H...>,m...3.,.
+0190: b8 26 85 30 f3 77 f0 6d 14 2b f6 de ad 2e 3b 16        .&.0.w.m.+....;.
+01a0: bd 41 b6 cb 33 cc ce d5 68 5f 79 9d 60 ce 47 a0        .A..3...h_y.`.G.
+01b0: 39 7c 8c 1c ab fe 5c 36 54 c7 53 c3 49 e7 c6 fb        9|....\6T.S.I...
+01c0: 3d 20 e2 b8 74 69 29 89 ed 58 de fa 6a fe 88 05        = ..ti)..X..j...
+01d0: cf b2 c5 b6 1e 4d 4b 40 3d 33 af 14 52 6d 44 92        .....MK@=3..RmD.
+01e0: aa 29 a4 4f d5 f6 1b a8 ff 46 87 e0 e3 03 78 5b        .).O.....F....x[
+01f0: 26 f0 17 1c 29 a9 02 58 f9 a1 94 b9 f2 b7 5a 76        &...)..X......Zv
+0200: 0e 9d f1 46 13 f8 dd e8 a7 8c 39 6b 81 9e 17 b0        ...F......9k....
+0210: db 59 1b 6f 47 20 49 33 71 57 25 1a e9 64 b9 65        .Y.oG I3qW%..d.e
+0220: ba 5b 37 45 84 38 ea 2e 05 81 42 d6 d9 ff                .[7E.8....B...
+
+Packet Egress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 02 1a        ..........[i....
+0020: 00 36 ee 80 42 24 9d 86 18 49 18 49 00 01 45 82        .6..B$...I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 59 01 eb 34        ....Bc0.....Y..4
+0040: 01 e4 00 01 01 02 00 00 01 e0 72 4a f1 9d 9d a2        ..........rJ....
+0050: 28 3b e2 0b 66 df 10 43 38 74 f0 09 7e 14 b7 89        (;..f..C8t..~...
+0060: 10 31 f6 79 3f 5d 09 c2 db b6 b0 69 d6 c5 db c9        .1.y?].....i....
+0070: bd 2b 8a 2f b9 b3 92 b8 0d a2 65 9b 00 5b 15 9d        .+./......e..[..
+0080: 4d 64 b4 b6 dc 1b b2 43 ae df 9d aa 77 b6 fe 4c        Md.....C....w..L
+0090: 41 53 36 d8 92 92 74 5f 2d 0c d2 b2 03 65 08 40        AS6...t_-....e.@
+00a0: 14 ac e0 f6 3b 9c d8 f2 2d 07 b0 7f 30 e7 32 c0        ....;...-...0.2.
+00b0: bb d3 d1 65 54 18 10 6e 95 15 d6 a8 40 f9 e5 01        ...eT..n....@...
+00c0: 32 e3 b7 42 a3 d6 94 74 48 8d 1f 5d bb cd af b8        2..B...tH..]....
+00d0: 18 90 a1 11 d1 25 eb e3 a9 56 17 71 60 f6 20 b0        .....%...V.q`. .
+00e0: 14 e9 8f 50 a5 05 f0 aa 14 43 e8 a9 a0 30 b4 c6        ...P.....C...0..
+00f0: fa c6 cb c9 15 ed 8f 71 77 4c bf 63 4d 1c 54 03        .......qwL.cM.T.
+0100: b9 87 ab 60 8e 8b de c6 f7 5b 68 a1 05 c0 b2 ba        ...`.....[h.....
+0110: 0b 6e 6e cc c6 ef 27 63 6c d8 69 fd cc c4 68 99        .nn...'cl.i...h.
+0120: 0d c1 df 0d 49 65 a8 d8 12 0e 4b 9d 6d 46 5d ad        ....Ie....K.mF].
+0130: c2 26 d0 d4 d2 69 3b d8 71 01 3d bd 4e 3c 70 ce        .&...i;.q.=.N<p.
+0140: 1f ef 02 69 5b 71 1d 08 98 94 9d 3e 21 d9 30 18        ...i[q.....>!.0.
+0150: d6 1b 0a e3 cb 3f 65 1d 5d 04 2a 50 66 ff 09 c5        .....?e.].*Pf...
+0160: 0b c2 35 60 f9 ba 7a d7 69 08 60 83 05 32 10 b8        ..5`..z.i.`..2..
+0170: 6a b0 ba 35 4e b5 87 b6 dc 4f d2 61 64 0e 27 b7        j..5N....O.ad.'.
+0180: 40 57 21 21 d4 ef 07 7a 02 f4 21 7f 86 d9 92 02        @W!!...z..!.....
+0190: 48 0d b0 83 b7 41 e1 46 4d 9b 4b 46 dd 0b 61 6a        H....A.FM.KF..aj
+01a0: 29 e5 ef 7e b5 13 dc 47 3e 39 6c 7d f6 4a 0c 15        )..~...G>9l}.J..
+01b0: 4c 12 9e fc be fd 6c 7b 79 ae 16 ef 99 df 61 7b        L.....l{y.....a{
+01c0: 15 3b 9a 6d 02 ba 84 e9 17 75 eb f9 2a 5f d6 0e        .;.m.....u..*_..
+01d0: 66 62 b4 b0 72 8c 02 33 26 0e 0d c6 ea f8 a6 e5        fb..r..3&.......
+01e0: 88 0a 9e 73 08 b6 5f 18 ce 5f a4 da e2 a2 b2 b8        ...s.._.._......
+01f0: af 0f 94 51 c6 0e 95 64 22 4d 63 19 90 71 07 a0        ...Q...d"Mc..q..
+0200: fe 10 b8 02 31 0b 1e dc 5a 4e fa 52 e5 4e 04 cd        ....1...ZN.R.N..
+0210: bb f6 86 a8 39 b7 f1 ac 72 92 6a 1e b8 b4 b6 bf        ....9...r.j.....
+0220: e0 95 fd df 30 ff 3f 33 b9 54 42 04 e0 ff                ....0.?3.TB...
+
+Packet Egress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 03 1a        ..........[i....
+0020: 00 36 ee 80 42 69 60 86 18 49 18 49 00 01 45 82        .6..Bi`..I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 58 4b 34 00        ....Bc0.....XK4.
+0040: 44 00 01 01 02 00 00 03 c0 1b d9 77 2c b7 1f b0        D..........w,...
+0050: 3b f8 6b c2 b7 67 9f 84 10 5f 6c 25 33 41 a5 39        ;.k..g..._l%3A.9
+0060: f5 18 94 a6 6b 36 56 ad bb 77 c1 ab b2 4a 7f 24        ....k6V..w...J.$
+0070: 38 4c 79 81 26 51 1e 0e af 0c e0 f3 15 2c 68 25        8Ly.&Q.......,h%
+0080: 74 9c 1f 7a e9 22 71 f6 8d 42 76 f6 ff                    t..z."q..Bv..
+
+Packet Egress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 04 1a        ..........[i....
+0020: 00 36 ee 80 42 80 82 86 18 49 18 49 00 01 45 82        .6..B....I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 51 24 00 0a        ....Bc0.....Q$..
+0040: 00 01 01 02 04 00 e2 f1 52 03 00 00 04 00 42 f4        ........R.....B.
+0050: 16 ff                                                                ..
+
+Packet Ingress:
+0000: 9f 89 07 06 01 82 02 82 0c 0a 82 02 82 0d 0a 82        ................
+0010: 02 82 0d 0a 82 1b 00 00 00 b4 5b 69 1b ed 00 1a        ..........[i....
+0020: 05 26 5c 00 42 c1 1e 86 01 01 00 01 4e 82 04 82        .&\.B.......N...
+0030: 82 02 82 0c 01 85 00 01 02 03 04 42 54 f3 ff            ...........BT..
+
+discarding bundle ID 12.1 @0
+discarding bundle ID 12.1 @1
+discarding bundle ID 12.1 @2
+discarding bundle ID 12.1 @3
+discarding bundle ID 12.1 @4
+1980-012-14:03:53.59825 CFE_ES_ResetCFE: POWERON RESET called from CFE_ES_ResetCFE (Commanded).
+CFE_PSP: Exiting cFE with POWERON Reset status.
+CFE_PSP: Critical Data Store Shared memory segment removed
+Reset Area Shared memory segment removed
+User Reserved Area Shared memory segment removed
+
+CFE_PSP: Shutdown initiated - Exiting cFE
+CI delete callback -- Closing CI Network socket.
+TO delete callback -- Closing TO Network socket.
+OS_BSP_Initialize():Maximum user msg queue depth = 10
+CFE_PSP: Default Reset SubType = 1
+CFE_PSP: Default CPU ID = 1
+CFE_PSP: Default Spacecraft ID = 185
+CFE_PSP: Default CPU Name: tx
+CFE_PSP: initializing module 'soft_timebase' with ID 0110ff00
+CFE_PSP: Instantiated software timebase 'cFS-Master' running at 10000 usec
+CFE_PSP: initializing module 'timebase_posix_clock' with ID 0110ff01
+CFE_PSP: Using POSIX monotonic clock as CFE timebase
+CFE_PSP: initializing module 'eeprom_mmap_file' with ID 0110ff02
+CFE_PSP: Using MMAP simulated EEPROM implementation
+CFE_PSP: initializing module 'ram_notimpl' with ID 0110ff03
+CFE_PSP: Physical RAM access not implemented
+CFE_PSP: initializing module 'port_notimpl' with ID 0110ff04
+CFE_PSP: I/O Port access not implemented
+CFE_PSP: initializing module 'iodriver' with ID 0110ff05
+CFE_PSP: initializing module 'linux_sysmon' with ID 0110ff06
+CFE_PSP: initializing module 'unsock_intf' with ID 01100000
+bplib_cache_custody_process_remote_dacs_bundle(): Got custody ACK for seq 0
+bplib_cache_custody_process_remote_dacs_bundle(): Got custody ACK for seq 1
+bplib_cache_custody_process_remote_dacs_bundle(): Got custody ACK for seq 2
+bplib_cache_custody_process_remote_dacs_bundle(): Got custody ACK for seq 3
+bplib_cache_custody_process_remote_dacs_bundle(): Got custody ACK for seq 4
+OS_Posix_GetSchedulerParams():202:Policy 1: available, min-max: 1-99
+OS_Posix_GetSchedulerParams():202:Policy 2: available, min-max: 1-99
+OS_Posix_TaskAPI_Impl_Init():388:Selected policy 2 for RT tasks, root task = 99
+OS_Posix_TaskAPI_Impl_Init():405:Could not setschedparam in main thread: Operation not permitted (1)
+CFE_PSP: EEPROM Range (2) created: Start Address = 7F14882A0000, Size = 00080000 Status = 0
+CFE_PSP: Initializing unsock_intf interface
+CFE_PSP: Starting the cFE with a POWER ON reset.
+CFE_PSP: Clearing out CFE CDS Shared memory segment.
+CFE_PSP: Clearing out CFE Reset Shared memory segment.
+CFE_PSP: Clearing out CFE User Reserved Shared memory segment.
+1980-001-03:51:06.31230 CFE_ES_SetupResetVariables: POWER ON RESET due to Power Cycle (Power Cycle).
+1980-001-03:51:06.31231 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
+CFE_PSP: CFE_PSP_AttachExceptions called
+1980-001-03:51:06.31245 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
+1980-001-03:51:06.31245 CFE_ES_CreateObjects: Starting Object Creation calls.
+1980-001-03:51:06.31245 CFE_ES_CreateObjects: Calling CFE_Config_Init
+1980-001-03:51:06.31246 CFE_ES_CreateObjects: Calling CFE_ES_CDSEarlyInit
+1980-001-03:51:06.31252 CFE_ES_CreateObjects: Calling CFE_EVS_EarlyInit
+1980-001-03:51:06.31253 CFE_EVS_EarlyInit: Event Log cleared following power-on reset
+1980-001-03:51:06.31254 CFE_ES_CreateObjects: Calling CFE_SB_EarlyInit
+1980-001-03:51:06.31268 CFE_ES_CreateObjects: Calling CFE_TIME_EarlyInit
+1980-012-14:03:20.00000 CFE_ES_CreateObjects: Calling CFE_TBL_EarlyInit
+1980-012-14:03:20.00015 CFE_ES_CreateObjects: Calling CFE_FS_EarlyInit
+EVS Port1 1980-012-14:03:20.05029 185/2/CFE_EVS 1: cFE EVS Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+1980-012-14:03:20.15045 CFE_SB_AppInit: Registered 4 events for filtering
+EVS Port1 1980-012-14:03:20.15048 185/2/CFE_SB 1: cFE SB Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+EVS Port1 1980-012-14:03:20.15051 185/2/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_SB
+EVS Port1 1980-012-14:03:20.25129 185/2/CFE_ES 1: cFE ES Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+EVS Port1 1980-012-14:03:20.25131 185/2/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
+EVS Port1 1980-012-14:03:20.25132 185/2/CFE_ES 2: cFS Versions: cfe equuleus-rc1+dev167, osal equuleus-rc1+dev81, psp equuleus-rc1+dev38. cFE chksm 24175
+EVS Port1 1980-012-14:03:20.25132 185/2/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
+EVS Port1 1980-012-14:03:20.25132 185/2/CFE_ES 91: Version Info: Mission BpTestWorkflow, version git:equuleus-rc1-62-g0befc97-dirty
+EVS Port1 1980-012-14:03:20.25134 185/2/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_ES
+EVS Port1 1980-012-14:03:20.25134 185/2/CFE_ES 91: Version Info: Module CORE_API, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25135 185/2/CFE_ES 91: Version Info: Module ES, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25135 185/2/CFE_ES 91: Version Info: Module EVS, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25135 185/2/CFE_ES 91: Version Info: Module FS, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25137 185/2/CFE_ES 91: Version Info: Module SB, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25137 185/2/CFE_ES 91: Version Info: Module TBL, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25138 185/2/CFE_ES 91: Version Info: Module TIME, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25138 185/2/CFE_ES 91: Version Info: Module OSAL, version git:draco-rc5-83-gd6412dfc
+EVS Port1 1980-012-14:03:20.25138 185/2/CFE_ES 91: Version Info: Module PSP, version git:7c29c50
+EVS Port1 1980-012-14:03:20.25140 185/2/CFE_ES 91: Version Info: Module MSG, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25140 185/2/CFE_ES 91: Version Info: Module SBR, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25141 185/2/CFE_ES 91: Version Info: Module RESOURCEID, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25141 185/2/CFE_ES 91: Version Info: Module CONFIG, version git:draco-rc5-169-gd0e9564b
+EVS Port1 1980-012-14:03:20.25141 185/2/CFE_ES 92: Build 202407181421 by gskenned@ip-10-1-21-63, config bpxfer
+EVS Port1 1980-012-14:03:20.35087 185/2/CFE_TIME 1: cFE TIME Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0
+EVS Port1 1980-012-14:03:20.45103 185/2/CFE_TBL 1: cFE TBL Initialized: cFE Development Build equuleus-rc1+dev167 (Codename Equuleus), Last Official Release: cFE v6.7.0)
+1980-012-14:03:20.50104 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
+1980-012-14:03:20.50105 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
+1980-012-14:03:20.50107 CFE_ES_StartApplications: Opened ES App Startup file: /cf/cfe_es_startup.scr
+1980-012-14:03:20.50126 CFE_ES_ParseFileEntry: Loading shared library: /cf/tinycbor.so
+1980-012-14:03:20.50157 CFE_ES_ParseFileEntry: Loading shared library: /cf/bplib.so
+1980-012-14:03:20.50189 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB_APP
+1980-012-14:03:20.50211 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB_APP
+1980-012-14:03:20.50233 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB_APP
+1980-012-14:03:20.50256 CFE_ES_ParseFileEntry: Loading file: /cf/cf.so, APP: CF
+1980-012-14:03:20.50283 CFE_ES_ParseFileEntry: Loading file: /cf/bp.so, APP: BP
+EVS Port1 1980-012-14:03:20.55232 185/2/TO_LAB_APP 1: TO Lab Initialized.TO Lab Development Build equuleus-rc1+dev56 (Codename Equuleus), Last Official Release: TO Lab v2
+SCH Lab Initialized.SCH Lab Development Build equuleus-rc1+dev29 (Codename Equuleus), Last Official Release: SCH Lab v2.3.0)
+1980-012-14:03:20.55304 CFE_EVS_Register: Filter limit truncated to 8
+1980-012-14:03:20.55313 CI_LAB listening on UDP port: 1235
+EVS Port1 1980-012-14:03:20.55313 185/2/CI_LAB_APP 3: CI Lab Initialized.CI Lab App Development Build equuleus-rc1+dev61 (Codename Equuleus), Last Official Release: CI La
+bplib_mpool_create(): created pool of size 16777216, with 32767 chunks, bblock threshold = 9830, internal threshold = 3276
+EVS Port1 1980-012-14:03:20.55664 185/2/BP 15: Created semaphore: BP0_tsem
+EVS Port1 1980-012-14:03:20.55665 185/2/BP 15: Created semaphore: BP1_tsem
+unsock_intf_OpenPort(): Opening output side: /tmp/CFE:2.sock
+CFE_PSP: Successfully opened socket: /tmp/CFE:2.sock
+EVS Port1 1980-012-14:03:20.55671 185/2/BP 52: BP_CLA: Started Output task ID 1000e -> socket
+unsock_intf_OpenPort(): Opening input side: /tmp/CFE:1.sock
+CFE_PSP: Successfully opened socket: /tmp/CFE:1.sock
+EVS Port1 1980-012-14:03:20.55709 185/2/BP 52: BP_CLA: Started Input task ID 1000f <- socket
+EVS Port1 1980-012-14:03:20.55711 185/2/BP 50: BP_CLA Initialized
+1980-012-14:03:20.55719 BP_FLOW: Subscribed to 082a
+EVS Port1 1980-012-14:03:20.55718 185/2/BP 9: Loaded flow table /cf/bp_flowtable.tbl (size: 612, crc: C442), 1 flows enabled
+EVS Port1 1980-012-14:03:20.55720 185/2/BP 2: BP App Version 6.5.0.0: Initialized
+EVS Port1 1980-012-14:03:20.65296 185/2/CF 20: CF Initialized. Version 3.0.99.0
+1980-012-14:03:20.65315 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
+1980-012-14:03:20.65315 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
+EVS Port1 1980-012-14:03:21.00001 185/2/CFE_TIME 21: Stop FLYWHEEL
+EVS Port1 1980-012-14:03:23.19735 185/2/BP 1: BP Flow CFDP: Resumed
+Packet Ingress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 00 1a        ..........[i....
+0020: 00 36 ee 80 42 bf 67 86 18 49 18 49 00 01 45 82        .6..B.g..I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 58 2f 24 00        ....Bc0.....X/$.
+0040: 28 00 01 01 02 07 00 00 00 04 00 10 2f 63 66 2f        (.........../cf/
+0050: 74 65 73 74 64 61 74 61 2e 62 69 6e 10 2f 63 66        testdata.bin./cf
+0060: 2f 74 65 73 74 64 61 74 61 2e 62 69 6e 42 d7 19        /testdata.binB..
+0070: ff                                                                    .
+
+Packet Ingress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 01 1a        ..........[i....
+0020: 00 36 ee 80 42 f2 9a 86 18 49 18 49 00 01 45 82        .6..B....I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 59 01 eb 34        ....Bc0.....Y..4
+0040: 01 e4 00 01 01 02 00 00 00 00 56 f2 c6 26 1d 07        ..........V..&..
+0050: 38 de c5 53 4e 80 a0 4e c2 59 26 a3 a1 8a b2 51        8..SN..N.Y&....Q
+0060: 79 87 7c 05 6e 49 4e 53 b1 ee 78 78 42 9f 9d 7a        y.|.nINS..xxB..z
+0070: 22 67 7a 88 f3 6f 6d b6 b6 4f d7 48 b0 b0 c0 2d        "gz..om..O.H...-
+0080: b9 c8 48 0b 6f d0 fd f5 94 28 ca b9 84 1d 3f 2a        ..H.o....(....?*
+0090: fe 63 f5 56 07 ee 11 78 cf 94 3a 02 47 2e 27 f0        .c.V...x..:.G.'.
+00a0: f2 3e 5b 5a f9 b3 7a e3 9f 4c 9c 32 f9 44 2a 49        .>[Z..z..L.2.D*I
+00b0: 5b fa 52 cf 99 0c e6 67 44 7f a0 58 06 dc 02 85        [.R....gD..X....
+00c0: b8 8b 96 26 fc 30 de 4a 69 48 75 3c 74 eb 22 77        ...&.0.JiHu<t."w
+00d0: 49 5f 44 18 7d 42 17 5c 19 44 83 a5 be 44 13 e2        I_D.}B.\.D...D..
+00e0: 7f 39 70 ed 47 40 42 89 77 04 e8 13 0c 72 59 ca        .9p.G@B.w....rY.
+00f0: 02 34 df fd c5 0e e5 80 92 f1 16 ad 8d c3 ca 86        .4..............
+0100: 16 16 79 e7 bc 85 0a 41 ee 5f e1 78 8d cb f0 e3        ..y....A._.x....
+0110: 8e 1d 99 c7 a9 bc e6 2f 40 15 39 f5 1a a9 6e 38        ......./@.9...n8
+0120: 07 64 e9 a5 71 1c 95 92 da e5 8c 96 a8 f7 67 33        .d..q.........g3
+0130: e8 4a e6 75 5b 7c 8d 76 ac 11 65 b1 d2 ec 3b ff        .J.u[|.v..e...;.
+0140: b8 e4 a6 f8 cd 33 c5 7c 0d 9b b5 56 f9 bd 4f a5        .....3.|...V..O.
+0150: 16 19 9c 85 e9 e2 72 97 ec 80 2c 5c fa 73 48 7f        ......r...,\.sH.
+0160: 9d 2f db 8b 49 4b 85 38 7f ff 86 54 d9 10 c7 ab        ./..IK.8...T....
+0170: f7 5a e5 d1 45 b3 a1 2d 78 6a 41 b7 fa 2f fb 62        .Z..E..-xjA../.b
+0180: e4 7e 48 e1 0b aa 3e 2c 6d aa 02 86 33 f0 2c 12        .~H...>,m...3.,.
+0190: b8 26 85 30 f3 77 f0 6d 14 2b f6 de ad 2e 3b 16        .&.0.w.m.+....;.
+01a0: bd 41 b6 cb 33 cc ce d5 68 5f 79 9d 60 ce 47 a0        .A..3...h_y.`.G.
+01b0: 39 7c 8c 1c ab fe 5c 36 54 c7 53 c3 49 e7 c6 fb        9|....\6T.S.I...
+01c0: 3d 20 e2 b8 74 69 29 89 ed 58 de fa 6a fe 88 05        = ..ti)..X..j...
+01d0: cf b2 c5 b6 1e 4d 4b 40 3d 33 af 14 52 6d 44 92        .....MK@=3..RmD.
+01e0: aa 29 a4 4f d5 f6 1b a8 ff 46 87 e0 e3 03 78 5b        .).O.....F....x[
+01f0: 26 f0 17 1c 29 a9 02 58 f9 a1 94 b9 f2 b7 5a 76        &...)..X......Zv
+0200: 0e 9d f1 46 13 f8 dd e8 a7 8c 39 6b 81 9e 17 b0        ...F......9k....
+0210: db 59 1b 6f 47 20 49 33 71 57 25 1a e9 64 b9 65        .Y.oG I3qW%..d.e
+0220: ba 5b 37 45 84 38 ea 2e 05 81 42 d6 d9 ff                .[7E.8....B...
+
+Packet Ingress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 02 1a        ..........[i....
+0020: 00 36 ee 80 42 24 9d 86 18 49 18 49 00 01 45 82        .6..B$...I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 59 01 eb 34        ....Bc0.....Y..4
+0040: 01 e4 00 01 01 02 00 00 01 e0 72 4a f1 9d 9d a2        ..........rJ....
+0050: 28 3b e2 0b 66 df 10 43 38 74 f0 09 7e 14 b7 89        (;..f..C8t..~...
+0060: 10 31 f6 79 3f 5d 09 c2 db b6 b0 69 d6 c5 db c9        .1.y?].....i....
+0070: bd 2b 8a 2f b9 b3 92 b8 0d a2 65 9b 00 5b 15 9d        .+./......e..[..
+0080: 4d 64 b4 b6 dc 1b b2 43 ae df 9d aa 77 b6 fe 4c        Md.....C....w..L
+0090: 41 53 36 d8 92 92 74 5f 2d 0c d2 b2 03 65 08 40        AS6...t_-....e.@
+00a0: 14 ac e0 f6 3b 9c d8 f2 2d 07 b0 7f 30 e7 32 c0        ....;...-...0.2.
+00b0: bb d3 d1 65 54 18 10 6e 95 15 d6 a8 40 f9 e5 01        ...eT..n....@...
+00c0: 32 e3 b7 42 a3 d6 94 74 48 8d 1f 5d bb cd af b8        2..B...tH..]....
+00d0: 18 90 a1 11 d1 25 eb e3 a9 56 17 71 60 f6 20 b0        .....%...V.q`. .
+00e0: 14 e9 8f 50 a5 05 f0 aa 14 43 e8 a9 a0 30 b4 c6        ...P.....C...0..
+00f0: fa c6 cb c9 15 ed 8f 71 77 4c bf 63 4d 1c 54 03        .......qwL.cM.T.
+0100: b9 87 ab 60 8e 8b de c6 f7 5b 68 a1 05 c0 b2 ba        ...`.....[h.....
+0110: 0b 6e 6e cc c6 ef 27 63 6c d8 69 fd cc c4 68 99        .nn...'cl.i...h.
+0120: 0d c1 df 0d 49 65 a8 d8 12 0e 4b 9d 6d 46 5d ad        ....Ie....K.mF].
+0130: c2 26 d0 d4 d2 69 3b d8 71 01 3d bd 4e 3c 70 ce        .&...i;.q.=.N<p.
+0140: 1f ef 02 69 5b 71 1d 08 98 94 9d 3e 21 d9 30 18        ...i[q.....>!.0.
+0150: d6 1b 0a e3 cb 3f 65 1d 5d 04 2a 50 66 ff 09 c5        .....?e.].*Pf...
+0160: 0b c2 35 60 f9 ba 7a d7 69 08 60 83 05 32 10 b8        ..5`..z.i.`..2..
+0170: 6a b0 ba 35 4e b5 87 b6 dc 4f d2 61 64 0e 27 b7        j..5N....O.ad.'.
+0180: 40 57 21 21 d4 ef 07 7a 02 f4 21 7f 86 d9 92 02        @W!!...z..!.....
+0190: 48 0d b0 83 b7 41 e1 46 4d 9b 4b 46 dd 0b 61 6a        H....A.FM.KF..aj
+01a0: 29 e5 ef 7e b5 13 dc 47 3e 39 6c 7d f6 4a 0c 15        )..~...G>9l}.J..
+01b0: 4c 12 9e fc be fd 6c 7b 79 ae 16 ef 99 df 61 7b        L.....l{y.....a{
+01c0: 15 3b 9a 6d 02 ba 84 e9 17 75 eb f9 2a 5f d6 0e        .;.m.....u..*_..
+01d0: 66 62 b4 b0 72 8c 02 33 26 0e 0d c6 ea f8 a6 e5        fb..r..3&.......
+01e0: 88 0a 9e 73 08 b6 5f 18 ce 5f a4 da e2 a2 b2 b8        ...s.._.._......
+01f0: af 0f 94 51 c6 0e 95 64 22 4d 63 19 90 71 07 a0        ...Q...d"Mc..q..
+0200: fe 10 b8 02 31 0b 1e dc 5a 4e fa 52 e5 4e 04 cd        ....1...ZN.R.N..
+0210: bb f6 86 a8 39 b7 f1 ac 72 92 6a 1e b8 b4 b6 bf        ....9...r.j.....
+0220: e0 95 fd df 30 ff 3f 33 b9 54 42 04 e0 ff                ....0.?3.TB...
+
+Packet Ingress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 03 1a        ..........[i....
+0020: 00 36 ee 80 42 69 60 86 18 49 18 49 00 01 45 82        .6..Bi`..I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 58 4b 34 00        ....Bc0.....XK4.
+0040: 44 00 01 01 02 00 00 03 c0 1b d9 77 2c b7 1f b0        D..........w,...
+0050: 3b f8 6b c2 b7 67 9f 84 10 5f 6c 25 33 41 a5 39        ;.k..g..._l%3A.9
+0060: f5 18 94 a6 6b 36 56 ad bb 77 c1 ab b2 4a 7f 24        ....k6V..w...J.$
+0070: 38 4c 79 81 26 51 1e 0e af 0c e0 f3 15 2c 68 25        8Ly.&Q.......,h%
+0080: 74 9c 1f 7a e9 22 71 f6 8d 42 76 f6 ff                    t..z."q..Bv..
+
+Packet Ingress:
+0000: 9f 89 07 04 01 82 02 82 0d 01 82 02 82 0c 01 82        ................
+0010: 02 82 0c 01 82 1b 00 00 00 b4 5b 69 1b 81 04 1a        ..........[i....
+0020: 00 36 ee 80 42 80 82 86 18 49 18 49 00 01 45 82        .6..B....I.I..E.
+0030: 02 82 0c 0a 42 63 30 86 01 01 00 01 51 24 00 0a        ....Bc0.....Q$..
+0040: 00 01 01 02 04 00 e2 f1 52 03 00 00 04 00 42 f4        ........R.....B.
+0050: 16 ff                                                                ..
+
+EVS Port1 1980-012-14:03:23.49998 185/2/CF 40: CF: md received for source: /cf/testdata.bin, dest: /cf/testdata.bin
+discarding bundle ID 12.1 @0
+discarding bundle ID 12.1 @4
+discarding bundle ID 12.1 @3
+discarding bundle ID 12.1 @2
+discarding bundle ID 12.1 @1
+Packet Egress:
+0000: 9f 89 07 06 01 82 02 82 0c 0a 82 02 82 0d 0a 82        ................
+0010: 02 82 0d 0a 82 1b 00 00 00 b4 5b 69 1b ed 00 1a        ..........[i....
+0020: 05 26 5c 00 42 c1 1e 86 01 01 00 01 4e 82 04 82        .&\.B.......N...
+0030: 82 02 82 0c 01 85 00 01 02 03 04 42 54 f3 ff            ...........BT..
+
+discarding bundle ID 13.10 @0
+1980-012-14:03:53.59810 CFE_ES_ResetCFE: POWERON RESET called from CFE_ES_ResetCFE (Commanded).
+CFE_PSP: Exiting cFE with POWERON Reset status.
+CFE_PSP: Critical Data Store Shared memory segment removed
+Reset Area Shared memory segment removed
+User Reserved Area Shared memory segment removed
+
+CFE_PSP: Shutdown initiated - Exiting cFE
+CI delete callback -- Closing CI Network socket.
+TO delete callback -- Closing TO Network socket.
+OS_BSP_Initialize():Maximum user msg queue depth = 10
+CFE_PSP: Default Reset SubType = 1
+CFE_PSP: Default CPU ID = 2
+CFE_PSP: Default Spacecraft ID = 185
+CFE_PSP: Default CPU Name: rx
+CFE_PSP: initializing module 'soft_timebase' with ID 0110ff00
+CFE_PSP: Instantiated software timebase 'cFS-Master' running at 10000 usec
+CFE_PSP: initializing module 'timebase_posix_clock' with ID 0110ff01
+CFE_PSP: Using POSIX monotonic clock as CFE timebase
+CFE_PSP: initializing module 'eeprom_mmap_file' with ID 0110ff02
+CFE_PSP: Using MMAP simulated EEPROM implementation
+CFE_PSP: initializing module 'ram_notimpl' with ID 0110ff03
+CFE_PSP: Physical RAM access not implemented
+CFE_PSP: initializing module 'port_notimpl' with ID 0110ff04
+CFE_PSP: I/O Port access not implemented
+CFE_PSP: initializing module 'iodriver' with ID 0110ff05
+CFE_PSP: initializing module 'linux_sysmon' with ID 0110ff06
+CFE_PSP: initializing module 'unsock_intf' with ID 01100000
+a7fd035fd4130ca9e2e14657417187d3  tx/cf/testdata.bin
+a7fd035fd4130ca9e2e14657417187d3  rx/cf/testdata.bin

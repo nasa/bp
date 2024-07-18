@@ -6,8 +6,9 @@ prep-bp-build-err() {
 trap prep-bp-build-err ERR
 
    cd $CFS_HOME
-   git clone https://github.com/nasa/cFS.git cfs-bundle
-   pushd cfs-bundle
+   source cfs-env-vars
+   git clone https://github.com/nasa/cFS.git "${CFS_REPO}"
+   pushd "${CFS_REPO}"
    git submodule init
    git submodule update
    pushd psp
@@ -20,11 +21,11 @@ trap prep-bp-build-err ERR
    git clone https://github.com/gskenned/bplib.git libs/bplib
    popd
    mkdir -p ./bpxfer_defs
-   cp  ./cfs-bundle/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h
-   cp -v -t ./bpxfer_defs ./cfs-bundle/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
-   cp -v -t ./bpxfer_defs ./cfs-bundle/apps/bp/.github/buildconfig/*.{cmake,scr}
-   cp -rv -t ./bpxfer_defs ./cfs-bundle/apps/bp/.github/buildconfig/{tx,rx,tables}
+   cp  "${CFS_REPO}"/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h
+   cp -v -t ./bpxfer_defs "${CFS_REPO}"/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
+   cp -v -t ./bpxfer_defs "${CFS_REPO}"/apps/bp/.github/buildconfig/*.{cmake,scr}
+   cp -rv -t ./bpxfer_defs "${CFS_REPO}"/apps/bp/.github/buildconfig/{tx,rx,tables}
    cmake -DCMAKE_BUILD_TYPE=Release -DSIMULATION=native \
       -DCMAKE_INSTALL_PREFIX=/exe \
       -DMISSIONCONFIG=bpxfer -DMISSION_DEFS=$PWD/bpxfer_defs \
-      -B build -S cfs-bundle/cfe
+      -B build -S "${CFS_REPO}"/cfe
