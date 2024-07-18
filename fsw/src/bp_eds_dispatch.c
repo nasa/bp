@@ -29,7 +29,7 @@ static const EdsDispatchTable_BP_Application_CFE_SB_Telecommand_t BP_TC_DISPATCH
         .ResumeFlowCmd_indication              = BP_ResumeFlowCmd
     },
 
-    .SEND_APP_TLM =
+    .SEND_HK =
     {
         .SendAppTlmCmd_indication          = BP_SendAppTlmCmd,
         .SendDisabledFlowTlmCmd_indication = BP_SendDisabledFlowTlmCmd,
