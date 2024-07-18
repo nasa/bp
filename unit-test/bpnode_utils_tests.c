@@ -17,6 +17,8 @@
  ************************************************************************/
 
 /*
+** File: bpnode_utils_tests.c
+**
 ** Purpose:
 ** Coverage Unit Test cases for the BPNode Application
 **
@@ -30,35 +32,41 @@
 ** complex functions.
 */
 
-#ifndef EVENTCHECK_H
-#define EVENTCHECK_H
-
-#include "common_types.h"
-#include "cfe_evs.h"
-
-#include "utassert.h"
-#include "uttest.h"
-#include "utstubs.h"
+/*
+ * Includes
+ */
+#include "bplib.h"
+#include "bpnode_test_utils.h"
 
 /*
- * Unit test check event hook information
- */
-typedef struct
+**********************************************************************************
+**          TEST CASE FUNCTIONS
+**********************************************************************************
+*/
+
+void Test_BPNode_TblValidationFunc(void)
 {
-    uint16      ExpectedEvent;
-    uint32      MatchCount;
-    const char *ExpectedFormat;
-} UT_CheckEvent_t;
+    /*
+     * Test Case For:
+     * CFE_Status_t BPNode_TblValidationFunc( void *TblData )
+     */
+    BPNode_ExampleTable_t TestTblData;
 
-/* Macro to get expected event name */
-#define UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
-    UT_CheckEvent_Setup_Impl(Evt, ExpectedEvent, #ExpectedEvent, ExpectedFormat)
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    /* nominal case (0) should succeed */
+    UtAssert_INT32_EQ(BPNode_TblValidationFunc(&TestTblData), CFE_SUCCESS);
+
+    /* error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
+    TestTblData.Int1 = 1 + BPNODE_TBL_ELEMENT_1_MAX;
+    UtAssert_INT32_EQ(BPNode_TblValidationFunc(&TestTblData), BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
+}
+
 
 /*
- * Helper function to set up for event checking
- * This attaches the hook function to CFE_EVS_SendEvent
+ * Register the test cases to execute with the unit test tool
  */
-void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
-                              const char *ExpectedFormat);
-
-#endif
+void UtTest_Setup(void)
+{
+    ADD_TEST(BPNode_TblValidationFunc);
+}

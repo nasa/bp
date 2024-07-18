@@ -17,7 +17,7 @@
  ************************************************************************/
 
 /*
-** File: eventcheck.c
+** File: bpnode_test_utils.c
 **
 ** Purpose:
 ** Coverage Unit Test cases for the BPNode Application
@@ -38,7 +38,7 @@
 #include "common_types.h"
 #include "cfe_evs.h"
 
-#include "eventcheck.h"
+#include "bpnode_test_utils.h"
 
 #include "utassert.h"
 #include "uttest.h"
@@ -126,3 +126,16 @@ void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const 
     Evt->ExpectedFormat = ExpectedFormat;
     UT_SetVaHookFunction(UT_KEY(CFE_EVS_SendEvent), UT_CheckEvent_Hook, Evt);
 }
+
+/*
+ * Setup function prior to every test
+ */
+void BPNode_UT_Setup(void)
+{
+    UT_ResetState(0);
+}
+
+/*
+ * Teardown function after every test
+ */
+void BPNode_UT_TearDown(void) {}

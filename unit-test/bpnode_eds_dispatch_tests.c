@@ -17,7 +17,7 @@
  ************************************************************************/
 
 /*
-** File: coveragetest_bpnode_eds_dispatch.c
+** File: bpnode_eds_dispatch_tests.c
 **
 ** Purpose:
 ** Coverage Unit Test cases for the BPNode Application
@@ -36,7 +36,7 @@
  * Includes
  */
 
-#include "bpnode_coveragetest_common.h"
+#include "bpnode_test_utils.h"
 #include "bpnode_app.h"
 #include "bpnode_dispatch.h"
 #include "bpnode_cmds.h"

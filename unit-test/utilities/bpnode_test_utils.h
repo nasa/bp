@@ -17,8 +17,6 @@
  ************************************************************************/
 
 /*
-** File: coveragetest_bpnode_utils.c
-**
 ** Purpose:
 ** Coverage Unit Test cases for the BPNode Application
 **
@@ -32,41 +30,54 @@
 ** complex functions.
 */
 
+#ifndef BPNODE_TEST_UTILS_H
+#define BPNODE_TEST_UTILS_H
+
+#include "common_types.h"
+#include "cfe_evs.h"
+
+#include "utassert.h"
+#include "uttest.h"
+#include "utstubs.h"
+
+#include "cfe.h"
+#include "bpnode_eventids.h"
+#include "bpnode_app.h"
+#include "bpnode_dispatch.h"
+#include "bpnode_cmds.h"
+#include "bpnode_utils.h"
+#include "bpnode_msgids.h"
+#include "bpnode_msg.h"
+#include "bpnode_tbl.h"
+
 /*
- * Includes
+ * Macro to add a test case to the list of tests to execute
  */
-#include "bplib.h"
-#include "bpnode_coveragetest_common.h"
+#define ADD_TEST(test) UtTest_Add((Test_##test), BPNode_UT_Setup, BPNode_UT_TearDown, #test)
 
 /*
-**********************************************************************************
-**          TEST CASE FUNCTIONS
-**********************************************************************************
-*/
-
-void Test_BPNode_TblValidationFunc(void)
-{
-    /*
-     * Test Case For:
-     * CFE_Status_t BPNode_TblValidationFunc( void *TblData )
-     */
-    BPNode_ExampleTable_t TestTblData;
-
-    memset(&TestTblData, 0, sizeof(TestTblData));
-
-    /* nominal case (0) should succeed */
-    UtAssert_INT32_EQ(BPNode_TblValidationFunc(&TestTblData), CFE_SUCCESS);
-
-    /* error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.Int1 = 1 + BPNODE_TBL_ELEMENT_1_MAX;
-    UtAssert_INT32_EQ(BPNode_TblValidationFunc(&TestTblData), BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
-}
-
-
-/*
- * Register the test cases to execute with the unit test tool
+ * Unit test check event hook information
  */
-void UtTest_Setup(void)
+typedef struct
 {
-    ADD_TEST(BPNode_TblValidationFunc);
-}
+    uint16      ExpectedEvent;
+    uint32      MatchCount;
+    const char *ExpectedFormat;
+} UT_CheckEvent_t;
+
+/* Macro to get expected event name */
+#define UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
+    UT_CheckEvent_Setup_Impl(Evt, ExpectedEvent, #ExpectedEvent, ExpectedFormat)
+
+/*
+ * Helper function to set up for event checking
+ * This attaches the hook function to CFE_EVS_SendEvent
+ */
+void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
+                              const char *ExpectedFormat);
+
+
+void BPNode_UT_Setup(void);
+void BPNode_UT_TearDown(void);
+
+#endif

@@ -17,7 +17,7 @@
  ************************************************************************/
 
 /*
-** File: coveragetest_bpnode_app.c
+** File: bpnode_app_tests.c
 **
 ** Purpose:
 ** Coverage Unit Test cases for the BPNode Application
@@ -36,7 +36,7 @@
 ** Includes
 */
 #include "bplib.h"
-#include "bpnode_coveragetest_common.h"
+#include "bpnode_test_utils.h"
 
 /*
 **********************************************************************************
