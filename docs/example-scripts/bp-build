@@ -1,9 +1,9 @@
 #!/bin/bash
-build-bp-err() {
-   echo "build-bp exited on error."
+bp-build-err() {
+   echo "bp-build exited on error."
    exit 1
 }
-trap build-bp-err ERR
+trap bp-build-err ERR
 
    cd $CFS_HOME/build
    make DESTDIR=$CFS_HOME/cfs-build-folder -j2 mission-install

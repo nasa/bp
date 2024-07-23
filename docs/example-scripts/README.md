@@ -27,6 +27,6 @@ Review the `full-bp-test`, `prep-bp-build` and `clean-bp` scripts to understand 
    cd $CFS_HOME
    source cfs-env-vars
    # Clean/configure/build/test
-   ./full-bp-test   # Runs clean-bp, install-toolchain, build-bp, and bp-test
+   ./full-bp-test   # Runs clean-bp, install-toolchain, bp-build, and bp-test
 ```
 

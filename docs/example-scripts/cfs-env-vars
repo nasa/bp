@@ -1,4 +1,4 @@
-export CFS_HOME=~/cfs-home
+export CFS_HOME=~/
 export CFS_CLONE_URL=https://github.com/nasa/cFS.git
 export CFS_REPO=$CFS_HOME/cfs-bundle
 export PSP_CLONE_URL=https://github.com/jphickey/PSP.git

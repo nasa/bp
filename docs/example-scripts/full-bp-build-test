@@ -8,15 +8,16 @@ set -o pipefail
 # Log filename with DOY-HHMM
 LOG_FILENAME=full-bp-test-$(date +%y%j-%H%M).log
 
+source cfs-env-vars
+
 # Log filename with YYYYmmdd-HHMM
 # LOG_FILENAME=full-bp-test-$(date +%Y%m%d-%H%M).log
 
 echo "Logging to ${CFS_HOME}/${LOG_FILENAME}"
 
    cd $CFS_HOME
-   source cfs-env-vars
    ./clean-bp |& tee $LOG_FILENAME
    ./install-toolchain |& tee -a $LOG_FILENAME
    ./prep-bp-build |& tee -a $LOG_FILENAME
-   ./build-bp |& tee -a $LOG_FILENAME
+   ./bp-build |& tee -a $LOG_FILENAME
    ./bp-test |& tee -a $LOG_FILENAME
