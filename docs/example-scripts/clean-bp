@@ -6,6 +6,12 @@ clean-bp-err() {
 trap clean-bp-err ERR
 
    cd $CFS_HOME
+   source cfs-env-vars
+
+   if [ -z "${CFS_REPO}" ]; then
+      echo "Set CFS_REPO in cfs-env-vars."
+      exit 1
+   fi
 
    BP_DELETE_LIST=( \
       bpxfer_defs/ build/ host $CFS_REPO/ cfs-bpapp.tar cfs-build-folder exe \

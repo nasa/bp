@@ -7,18 +7,18 @@ trap prep-bp-build-err ERR
 
    cd $CFS_HOME
    source cfs-env-vars
-   git clone https://github.com/nasa/cFS.git "${CFS_REPO}"
+   git clone "${CFS_CLONE_URL}" "${CFS_REPO}"
    pushd "${CFS_REPO}"
    git submodule init
    git submodule update
    pushd psp
-   git fetch --no-tags --depth=1 https://github.com/jphickey/PSP.git \
+   git fetch --no-tags --depth=1 "${PSP_CLONE_URL}" \
        techdev-iodriver:techdev-iodriver
    git checkout techdev-iodriver
    popd
-   git clone https://github.com/nasa/CF.git apps/cf
-   git clone https://github.com/gskenned/bp.git apps/bp
-   git clone https://github.com/gskenned/bplib.git libs/bplib
+   git clone "${CF_CLONE_URL}" apps/cf
+   git clone "${BP_CLONE_URL}" "${BP_SOURCE}"
+   git clone "${BPLIB_CLONE_URL}" "${BPLIB_SOURCE}"
    popd
    mkdir -p ./bpxfer_defs
    cp  "${CFS_REPO}"/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h

@@ -14,6 +14,7 @@ LOG_FILENAME=full-bp-test-$(date +%y%j-%H%M).log
 echo "Logging to ${CFS_HOME}/${LOG_FILENAME}"
 
    cd $CFS_HOME
+   source cfs-env-vars
    ./clean-bp |& tee $LOG_FILENAME
    ./install-toolchain |& tee -a $LOG_FILENAME
    ./prep-bp-build |& tee -a $LOG_FILENAME
