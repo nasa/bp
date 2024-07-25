@@ -1,10 +1,12 @@
 project(CFS_BPNODE C)
 
 set(APP_SRC_FILES
+  # App files
   fsw/src/bpnode_app.c
   fsw/src/bpnode_cmds.c
   fsw/src/bpnode_utils.c
 
+  # FWP files
   fsw/fwp/fwp_timep.c
 )
 

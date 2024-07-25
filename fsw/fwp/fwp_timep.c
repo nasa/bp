@@ -46,12 +46,12 @@ int64_t BPA_TIMEP_GetMonotonicTime(void)
 /* Returns host time epoch */
 void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch)
 {
-    Epoch.Year   = CFE_MISSION_TIME_EPOCH_YEAR;
-    Epoch.Day    = CFE_MISSION_TIME_EPOCH_DAY;
-    Epoch.Hour   = CFE_MISSION_TIME_EPOCH_HOUR;
-    Epoch.Minute = CFE_MISSION_TIME_EPOCH_MINUTE;
-    Epoch.Second = CFE_MISSION_TIME_EPOCH_SECOND;
-    Epoch.Msec   = CFE_MISSION_TIME_EPOCH_MICROS / 1000;
+    Epoch->Year   = CFE_MISSION_TIME_EPOCH_YEAR;
+    Epoch->Day    = CFE_MISSION_TIME_EPOCH_DAY;
+    Epoch->Hour   = CFE_MISSION_TIME_EPOCH_HOUR;
+    Epoch->Minute = CFE_MISSION_TIME_EPOCH_MINUTE;
+    Epoch->Second = CFE_MISSION_TIME_EPOCH_SECOND;
+    Epoch->Msec   = CFE_MISSION_TIME_EPOCH_MICROS / 1000;
 
     return;
 }

@@ -29,7 +29,7 @@
 */
 
 /* Time epoch */
-struct
+typedef struct
 {
     uint32_t Year;
     uint32_t Day;
@@ -41,7 +41,7 @@ struct
 } BPA_TIMEP_Epoch_t;
 
 /* Host clock state */
-enum 
+typedef enum 
 {
     BPA_TIMEP_CLOCK_INVALID = 0,
     BPA_TIMEP_CLOCK_VALID   = 1
