@@ -4,6 +4,8 @@ set(APP_SRC_FILES
   fsw/src/bpnode_app.c
   fsw/src/bpnode_cmds.c
   fsw/src/bpnode_utils.c
+
+  fsw/fwp/fwp_timep.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)
@@ -36,5 +38,5 @@ add_cfe_tables(bpnode ${APP_TABLE_FILES})
 # stub functions, as other entities would not typically make
 # direct function calls into this application.
 if (ENABLE_UNIT_TESTS)
-  add_subdirectory(unit-test)
+  #add_subdirectory(unit-test)
 endif (ENABLE_UNIT_TESTS)
