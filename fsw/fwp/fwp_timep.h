@@ -23,6 +23,8 @@
 #ifndef FWP_TIMEP_H
 #define FWP_TIMEP_H
 
+#include <stdint.h>
+
 
 /*
 ** Type Definitions

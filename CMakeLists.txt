@@ -40,5 +40,5 @@ add_cfe_tables(bpnode ${APP_TABLE_FILES})
 # stub functions, as other entities would not typically make
 # direct function calls into this application.
 if (ENABLE_UNIT_TESTS)
-  #add_subdirectory(unit-test)
+  add_subdirectory(unit-test)
 endif (ENABLE_UNIT_TESTS)
