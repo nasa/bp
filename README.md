@@ -18,7 +18,9 @@ With bp, cFS can participate in a Delay/Disruption Tolerant Network (DTN) as a D
 
 #### Prerequisites
 
-1. The build requires Ubuntu 22.04.4 LTS, the __cmake__ build system and a compiler toolchain (by default __gcc__).
+1. The bp application has been tested on Ubuntu 22.04.4 LTS.
+
+The build requires the __cmake__ build system and a compiler toolchain (by default __gcc__).
 
 Additionally, the __pkg-config__ tool is used to manage the flags required for dependencies.
 
@@ -41,28 +43,29 @@ See https://github.com/intel/tinycbor.git.
 
 
 ```
+   export CFS_HOME="$(pwd)" # Use CFS_HOME at your discretion. 
    git clone https://github.com/nasa/cFS.git cfs-bundle
-   pushd cfs-bundle
+   cd cfs-bundle
    git submodule init
    git submodule update
-   pushd psp
+   cd psp
    git fetch --no-tags --depth=1 https://github.com/jphickey/PSP.git \
        techdev-iodriver:techdev-iodriver
    git checkout techdev-iodriver
-   popd
+   cd "${CFS_HOME}"/cfs-bundle
    git clone https://github.com/nasa/CF.git apps/cf
    git clone https://github.com/nasa/bp.git apps/bp
    git clone https://github.com/gs/bplib.git libs/bplib
-   popd
-   # Copy the Mission Definitions to a temporary folder (./bpxfer_defs)
-   mkdir -p ./bpxfer_defs
-   cp  ./cfs-bundle/cfe/cmake/sample_defs/sample_perfids.h ./bpxfer_defs/cfe_perfids.h
-   cp -v -t ./bpxfer_defs ./cfs-bundle/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
-   cp -v -t ./bpxfer_defs ./cfs-bundle/apps/bp/.github/buildconfig/*.{cmake,scr}
-   cp -rv -t ./bpxfer_defs ./cfs-bundle/apps/bp/.github/buildconfig/{tx,rx,tables}
+   cd "${CFS_HOME}"
+   # Copy the Mission Definitions to a temporary folder ("${CFS_HOME}"/bpxfer_defs)
+   mkdir -p "${CFS_HOME}"/bpxfer_defs
+   cp  "${CFS_HOME}"/cfs-bundle/cfe/cmake/sample_defs/sample_perfids.h "${CFS_HOME}"/bpxfer_defs/cfe_perfids.h
+   cp -v -t "${CFS_HOME}"/bpxfer_defs "${CFS_HOME}"/cfs-bundle/cfe/cmake/sample_defs/*{osconfig,custom,options}.cmake
+   cp -v -t "${CFS_HOME}"/bpxfer_defs "${CFS_HOME}"/cfs-bundle/apps/bp/.github/buildconfig/*.{cmake,scr}
+   cp -rv -t "${CFS_HOME}"/bpxfer_defs "${CFS_HOME}"/cfs-bundle/apps/bp/.github/buildconfig/{tx,rx,tables}
    cmake -DCMAKE_BUILD_TYPE=Release -DSIMULATION=native \
       -DCMAKE_INSTALL_PREFIX=/exe \
-      -DMISSIONCONFIG=bpxfer -DMISSION_DEFS=$PWD/bpxfer_defs \
+      -DMISSIONCONFIG=bpxfer -DMISSION_DEFS="${CFS_HOME}"/bpxfer_defs \
       -B build -S cfs-bundle/cfe
 ```
 
@@ -73,10 +76,10 @@ See https://github.com/intel/tinycbor.git.
 Run `make` in the build directory.
 
 ```
-   cd ./build
-   make DESTDIR=./cfs-build-folder -j2 mission-install
-   cd ./cfs-build-folder/exe
-   tar -cvf ./cfs-bpapp.tar .
+   cd "${CFS_HOME}"/build
+   make DESTDIR="${CFS_HOME}"/cfs-build-folder -j2 mission-install
+   cd "${CFS_HOME}"/cfs-build-folder/exe
+   tar -cvf "${CFS_HOME}"/cfs-bpapp.tar .
 ```
 
 #### Test
@@ -88,15 +91,15 @@ Run `make` in the build directory.
 - Verify the md5sums match for the transmitted and received data.
 
 ```sh
-   mkdir ./bp-test
-   pushd ./bp-test
+   mkdir "${CFS_HOME}"/bp-test
+   cd "${CFS_HOME}"/bp-test
    tar -xvf cfs-bpapp.tar
-   pushd tx/cf
+   cd tx/cf
    dd if=/dev/urandom of=testdata.bin bs=1k count=1
-   popd
-   mkdir -p ./tx/storage ./rx/storage
-   pushd tx
-   ./core-tx > console_output.log 2>&1 &
+   cd "${CFS_HOME}"/bp-test
+   mkdir -p "${CFS_HOME}"/bp-test/tx/storage "${CFS_HOME}"/bp-test/rx/storage
+   cd "${CFS_HOME}"
+   "${CFS_HOME}"/bp-test/core-tx > console_output.log 2>&1 &
    popd
    pushd rx
    ./core-rx > console_output.log 2>&1 &
