@@ -39,9 +39,9 @@
  */
 static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_DISPATCH_TABLE = {
     .CMD     = {.NoopCmd_indication          = BPNode_NoopCmd,
-                .ResetCountersCmd_indication = BPNode_ResetCountersCmd
-               },
-    .SEND_HK = {.indication = BPNode_SendHkCmd}
+                .ResetAllCountersCmd_indication = BPNode_ResetAllCountersCmd,
+                .SendNodeMibCountersHkCmd_indication = BPNode_SendNodeMibCountersHkCmd
+               }
 };
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
@@ -65,23 +65,26 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
         CFE_MSG_GetMsgId(&SBBufPtr->Msg, &MsgId);
         CFE_MSG_GetSize(&SBBufPtr->Msg, &MsgSize);
         CFE_MSG_GetFcnCode(&SBBufPtr->Msg, &MsgFc);
-        ++BPNode_AppData.ErrCounter;
+
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
 
         if (Status == CFE_STATUS_UNKNOWN_MSG_ID)
         {
             CFE_EVS_SendEvent(BPNODE_MID_ERR_EID, CFE_EVS_EventType_ERROR,
-                              "Invalid command packet,MID = 0x%x", (unsigned int)CFE_SB_MsgIdToValue(MsgId));
+                              "Invalid command packet,MID = 0x%x", 
+                              (uint16) CFE_SB_MsgIdToValue(MsgId));
         }
         else if (Status == CFE_STATUS_WRONG_MSG_LENGTH)
         {
             CFE_EVS_SendEvent(BPNODE_CMD_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u",
-                              (unsigned int)CFE_SB_MsgIdToValue(MsgId), (unsigned int)MsgFc, (unsigned int)MsgSize);
+                              (uint16) CFE_SB_MsgIdToValue(MsgId), 
+                              (uint8) MsgFc, (uint16) MsgSize);
         }
         else
         {
             CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR,
-                              "Invalid ground command code: CC = %d", (int)MsgFc);
+                              "Invalid ground command code: CC = %d", (uint8) MsgFc);
         }
     }
 }

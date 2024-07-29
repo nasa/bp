@@ -48,11 +48,11 @@
 **********************************************************************************
 */
 
-void Test_BPNode_ReportHousekeeping(void)
+void Test_BPNode_SendNodeMibCountersHkCmd(void)
 {
     /*
      * Test Case For:
-     * void BPNode_ReportHousekeeping( const CFE_SB_CmdHdr_t *Msg )
+     * void BPNode_SendNodeMibCountersHkCmd( const BPNode_SendNodeMibCountersHkCmd_t *Msg )
      */
     CFE_MSG_Message_t *MsgSend;
     CFE_MSG_Message_t *MsgTimestamp;
@@ -64,20 +64,15 @@ void Test_BPNode_ReportHousekeeping(void)
     UT_SetDataBuffer(UT_KEY(CFE_SB_TimeStampMsg), &MsgTimestamp, sizeof(MsgTimestamp), false);
 
     /* Call unit under test, NULL pointer confirms command access is through APIs */
-    BPNode_SendHkCmd(NULL);
+    BPNode_SendNodeMibCountersHkCmd(NULL);
 
     /* Confirm message sent*/
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
-    UtAssert_ADDRESS_EQ(MsgSend, &BPNode_AppData.HkTlm);
+    UtAssert_ADDRESS_EQ(MsgSend, &BPNode_AppData.NodeMibCountersHkTlm);
 
     /* Confirm timestamp msg address */
     UtAssert_STUB_COUNT(CFE_SB_TimeStampMsg, 1);
-    UtAssert_ADDRESS_EQ(MsgTimestamp, &BPNode_AppData.HkTlm);
-
-    /*
-     * Confirm that the CFE_TBL_Manage() call was done
-     */
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_ADDRESS_EQ(MsgTimestamp, &BPNode_AppData.NodeMibCountersHkTlm);
 }
 
 void Test_BPNode_NoopCmd(void)
@@ -102,20 +97,20 @@ void Test_BPNode_NoopCmd(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-void Test_BPNode_ResetCountersCmd(void)
+void Test_BPNode_ResetAllCountersCmd(void)
 {
     /*
      * Test Case For:
-     * void BPNode_ResetCounters( const BPNode_ResetCounters_t *Msg )
+     * void BPNode_ResetAllCounters( const BPNode_ResetAllCounters_t *Msg )
      */
-    BPNode_ResetCountersCmd_t TestMsg;
+    BPNode_ResetAllCountersCmd_t TestMsg;
     UT_CheckEvent_t           EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Reset counters command");
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Reset all counters command");
 
-    UtAssert_INT32_EQ(BPNode_ResetCountersCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_INT32_EQ(BPNode_ResetAllCountersCmd(&TestMsg), CFE_SUCCESS);
 
     /*
      * Confirm that the event was generated
@@ -128,7 +123,7 @@ void Test_BPNode_ResetCountersCmd(void)
  */
 void UtTest_Setup(void)
 {
-    ADD_TEST(BPNode_ReportHousekeeping);
+    ADD_TEST(BPNode_SendNodeMibCountersHkCmd);
     ADD_TEST(BPNode_NoopCmd);
-    ADD_TEST(BPNode_ResetCountersCmd);
+    ADD_TEST(BPNode_ResetAllCountersCmd);
 }

@@ -34,11 +34,42 @@
 ** Type definition (BPNode housekeeping)
 */
 
-typedef struct BPNode_HkTlm_Payload
+/* Node MIB config payload */
+typedef struct BPNode_NodeMibConfigHkTlm_Payload
 {
-    uint8 CommandErrorCounter;
-    uint8 CommandCounter;
-    uint8 Spare[2];
-} BPNode_HkTlm_Payload_t;
+    /* TODO */
+} BPNode_NodeMibConfigHkTlm_Payload_t;
+
+/* Source MIB config payload */
+typedef struct BPNode_SourceMibConfigHkTlm_Payload
+{
+    /* TODO */
+} BPNode_SourceMibConfigHkTlm_Payload_t;
+
+/* Node MIB counters payload */
+typedef struct BPNode_NodeMibCountersHkTlm_Payload
+{
+    uint16 AcceptedDirectiveCount;
+    uint16 RejectedDirectiveCount;
+} BPNode_NodeMibCountersHkTlm_Payload_t;
+
+/* Source MIB counters payload */
+typedef struct BPNode_SourceMibCountersHkTlm_Payload
+{
+    /* TODO */
+} BPNode_SourceMibCountersHkTlm_Payload_t;
+
+/* Storage HK payload */
+typedef struct BPNode_StorageHkTlm_Payload
+{
+    /* TODO */
+} BPNode_StorageHkTlm_Payload_t;
+
+/* Channel/contact status payload */
+typedef struct BPNode_ChannelContactStatHkTlm_Payload
+{
+    /* TODO */
+} BPNode_ChannelContactStatHkTlm_Payload_t;
+
 
 #endif

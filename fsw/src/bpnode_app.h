@@ -48,15 +48,9 @@
 typedef struct
 {
     /*
-    ** Command interface counters...
-    */
-    uint8 CmdCounter;
-    uint8 ErrCounter;
-
-    /*
     ** Housekeeping telemetry packet...
     */
-    BPNode_HkTlm_t HkTlm;
+    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;
 
     /*
     ** Run Status variable used in the main processing loop

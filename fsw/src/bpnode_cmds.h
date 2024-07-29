@@ -30,8 +30,8 @@
 #include "cfe_error.h"
 #include "bpnode_msg.h"
 
-CFE_Status_t BPNode_SendHkCmd(const BPNode_SendHkCmd_t *Msg);
+CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg);
 CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg);
-CFE_Status_t BPNode_ResetCountersCmd(const BPNode_ResetCountersCmd_t *Msg);
+CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg);
 
 #endif /* BPNODE_CMDS_H */

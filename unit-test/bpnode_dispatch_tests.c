@@ -56,7 +56,7 @@ void Test_BPNode_TaskPipe(void)
     /* a buffer large enough for any command message */
     union
     {
-        CFE_SB_Buffer_t      SBBuf;
+        CFE_SB_Buffer_t  SBBuf;
         BPNode_NoopCmd_t Noop;
     } TestMsg;
     CFE_SB_MsgId_t    TestMsgId;
@@ -77,10 +77,6 @@ void Test_BPNode_TaskPipe(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
-    BPNode_TaskPipe(&TestMsg.SBBuf);
-
-    TestMsgId = CFE_SB_ValueToMsgId(BPNODE_SEND_HK_MID);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
     BPNode_TaskPipe(&TestMsg.SBBuf);
 
     /* invalid message id */
@@ -107,7 +103,7 @@ void Test_BPNode_ProcessGroundCommand(void)
     /* a buffer large enough for any command message */
     union
     {
-        CFE_SB_Buffer_t               SBBuf;
+        CFE_SB_Buffer_t           SBBuf;
         BPNode_NoopCmd_t          Noop;
         BPNode_ResetCountersCmd_t Reset;
     } TestMsg;
@@ -150,16 +146,16 @@ void Test_BPNode_ProcessGroundCommand(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 
     /* test dispatch of RESET */
-    FcnCode = BPNODE_RESET_COUNTERS_CC;
+    FcnCode = BPNODE_RESET_ALL_COUNTERS_CC;
     Size    = sizeof(TestMsg.Reset);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
     BPNode_ProcessGroundCommand(&TestMsg.SBBuf);
 
-    UtAssert_STUB_COUNT(BPNode_ResetCountersCmd, 1);
+    UtAssert_STUB_COUNT(BPNode_ResetAllCountersCmd, 1);
 
-    FcnCode = BPNODE_RESET_COUNTERS_CC;
+    FcnCode = BPNODE_RESET_ALL_COUNTERS_CC;
     Size    = sizeof(TestMsg.Reset) - 1;
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -168,7 +164,7 @@ void Test_BPNode_ProcessGroundCommand(void)
 
     BPNode_ProcessGroundCommand(&TestMsg.SBBuf);
 
-    UtAssert_STUB_COUNT(BPNode_ResetCountersCmd, 1);
+    UtAssert_STUB_COUNT(BPNode_ResetAllCountersCmd, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 2);
 
     /* test an invalid CC */

@@ -43,29 +43,13 @@
 /*         telemetry, packetize it and send it to the housekeeping task via   */
 /*         the software bus                                                   */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-CFE_Status_t BPNode_SendHkCmd(const BPNode_SendHkCmd_t *Msg)
+CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
-    int i;
-
-    /*
-    ** Get command execution counters...
-    */
-    BPNode_AppData.HkTlm.Payload.CommandErrorCounter = BPNode_AppData.ErrCounter;
-    BPNode_AppData.HkTlm.Payload.CommandCounter      = BPNode_AppData.CmdCounter;
-
     /*
     ** Send housekeeping telemetry packet...
     */
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.HkTlm.TelemetryHeader));
-    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.HkTlm.TelemetryHeader), true);
-
-    /*
-    ** Manage any pending table loads, validations, etc.
-    */
-    for (i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
-    {
-        CFE_TBL_Manage(BPNode_AppData.TblHandles[i]);
-    }
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 
     return CFE_SUCCESS;
 }
@@ -77,7 +61,7 @@ CFE_Status_t BPNode_SendHkCmd(const BPNode_SendHkCmd_t *Msg)
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 {
-    BPNode_AppData.CmdCounter++;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     CFE_EVS_SendEvent(BPNODE_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, 
                         "No-op command. Version %d.%d.%d.",
@@ -93,12 +77,13 @@ CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-CFE_Status_t BPNode_ResetCountersCmd(const BPNode_ResetCountersCmd_t *Msg)
+CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 {
-    BPNode_AppData.CmdCounter = 0;
-    BPNode_AppData.ErrCounter = 0;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
 
-    CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, "Reset counters command");
+    CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, 
+                    "Reset all counters command");
 
     return CFE_SUCCESS;
 }

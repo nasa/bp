@@ -53,7 +53,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-} BPNode_ResetCountersCmd_t;
+} BPNode_ResetAllCountersCmd_t;
 
 /*************************************************************************/
 /*
@@ -63,12 +63,49 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-} BPNode_SendHkCmd_t;
+} BPNode_SendNodeMibCountersHkCmd_t;
 
+
+/* Node MIB config telemetry */
 typedef struct
 {
-    CFE_MSG_TelemetryHeader_t  TelemetryHeader; /**< \brief Telemetry header */
-    BPNode_HkTlm_Payload_t Payload;         /**< \brief Telemetry payload */
-} BPNode_HkTlm_t;
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPNode_NodeMibConfigHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+} BPNode_NodeMibConfigHkTlm_t;
+
+/* Source MIB config telemetry */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPNode_SourceMibConfigHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+} BPNode_SourceMibConfigHkTlm_t;
+
+/* Node MIB counters telemetry */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPNode_NodeMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+} BPNode_NodeMibCountersHkTlm_t;
+
+/* Source MIB counters telemetry */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPNode_SourceMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+} BPNode_SourceMibCountersHkTlm_t;
+
+/* Storage telemetry */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPNode_StorageHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+} BPNode_StorageHkTlm_t;
+
+/* Channel/contact status telemetry */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPNode_ChannelContactStatHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+} BPNode_ChannelContactStatHkTlm_t;
 
 #endif /* BPNODE_MSGSTRUCT_H */

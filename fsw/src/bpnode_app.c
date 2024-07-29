@@ -109,7 +109,15 @@ CFE_Status_t BPNode_ProcessMain(void)
 {
     CFE_Status_t     Status = CFE_SUCCESS;
     CFE_SB_Buffer_t *BufPtr = NULL;
+    uint8            i;
 
+    /* Manage any pending table loads, validations, etc. */
+    for (i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
+    {
+        CFE_TBL_Manage(BPNode_AppData.TblHandles[i]);
+    }
+
+    /* Check for pending commands*/
     do
     {
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
@@ -157,8 +165,9 @@ CFE_Status_t BPNode_AppInit(void)
     /*
     ** Initialize housekeeping packet (clear user data area).
     */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.HkTlm.TelemetryHeader), 
-                CFE_SB_ValueToMsgId(BPNODE_HK_TLM_MID), sizeof(BPNode_AppData.HkTlm));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), 
+                CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
+                sizeof(BPNode_AppData.NodeMibCountersHkTlm));
 
     /*
     ** Create command pipe.
@@ -183,18 +192,6 @@ CFE_Status_t BPNode_AppInit(void)
         CFE_EVS_SendEvent(BPNODE_CR_WKP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
                     "Error creating SB Wakeup Pipe, RC = 0x%08lX", (unsigned long)Status);
 
-        return Status;
-    }
-
-    /*
-    ** Subscribe to Housekeeping request commands
-    */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_SEND_HK_MID), 
-                                                        BPNode_AppData.CommandPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_SUB_HK_ERR_EID, CFE_EVS_EventType_ERROR,
-                "Error Subscribing to HK request, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 

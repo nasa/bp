@@ -43,32 +43,32 @@ CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ResetCountersCmd()
+ * Generated stub function for BPNode_ResetAllCountersCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ResetCountersCmd(const BPNode_ResetCountersCmd_t *Msg)
+CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ResetCountersCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPNode_ResetAllCountersCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ResetCountersCmd, const BPNode_ResetCountersCmd_t *, Msg);
+    UT_GenStub_AddParam(BPNode_ResetAllCountersCmd, const BPNode_ResetAllCountersCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ResetCountersCmd, Basic, NULL);
+    UT_GenStub_Execute(BPNode_ResetAllCountersCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ResetCountersCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPNode_ResetAllCountersCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendHkCmd()
+ * Generated stub function for BPNode_SendNodeMibCountersHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendHkCmd(const BPNode_SendHkCmd_t *Msg)
+CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPNode_SendNodeMibCountersHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendHkCmd, const BPNode_SendHkCmd_t *, Msg);
+    UT_GenStub_AddParam(BPNode_SendNodeMibCountersHkCmd, const BPNode_SendNodeMibCountersHkCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_SendHkCmd, Basic, NULL);
+    UT_GenStub_Execute(BPNode_SendNodeMibCountersHkCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_SendHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPNode_SendNodeMibCountersHkCmd, CFE_Status_t);
 }

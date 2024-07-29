@@ -130,6 +130,7 @@ void Test_BPNode_ProcessMain(void)
     UtAssert_INT32_EQ(BPNode_ProcessMain(), CFE_SB_PIPE_RD_ERR);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES);
 
     /* Receipt of a null buffer */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_PIPE_RD_ERR);
@@ -137,12 +138,14 @@ void Test_BPNode_ProcessMain(void)
     UtAssert_INT32_EQ(BPNode_ProcessMain(), CFE_SB_PIPE_RD_ERR);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 4);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES * 2);
 
     /* Command receive error */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
     UtAssert_INT32_EQ(BPNode_ProcessMain(), CFE_SB_PIPE_RD_ERR);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 5);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES * 3);
 }
 
 
@@ -183,40 +186,34 @@ void Test_BPNode_AppInit(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 3); /* 1 from previous nominal case, 1 from this error path */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_WKP_PIPE_ERR_EID, NULL);
 
-    /* Failure to subscribe to HK requests */
+    /* Failure to subscribe to commands */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_BAD_ARGUMENT);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 4); /* 1 additional event sent from this error path */
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_HK_ERR_EID, NULL);
-
-    /* Failure to subscribe to commands */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 2, CFE_SB_BAD_ARGUMENT);
-    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 5); /* 1 additional event sent from this error path */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_CMD_ERR_EID, NULL);
 
     /* Failure to subscribe to wakeups */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 3, CFE_SB_BAD_ARGUMENT);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 2, CFE_SB_BAD_ARGUMENT);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 6); /* 1 additional event sent from this error path */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 5); /* 1 additional event sent from this error path */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_WKP_ERR_EID, NULL);
 
     /* Failure to register table */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Register), 1, CFE_TBL_ERR_INVALID_OPTIONS);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_INVALID_OPTIONS);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 7); /* 1 from table registration error */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 6); /* 1 from table registration error */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_REG_ERR_EID, NULL);
 
     /* Failure to load table */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Load), 1, CFE_TBL_BAD_ARGUMENT);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_BAD_ARGUMENT);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 8); /* 1 from table load error */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 7); /* 1 from table load error */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_LD_ERR_EID, NULL);
 
     /* Failure to get table address */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_ERR_UNREGISTERED);
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_UNREGISTERED);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 9); /* 1 from table load error */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 8); /* 1 from table load error */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_ADDR_ERR_EID, NULL);
 
 }
