@@ -57,8 +57,8 @@ typedef struct
     CFE_SB_PipeId_t CommandPipe;            /**< \brief Pipe Id for command pipe */
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
-    BPNode_ExampleTable_t *ExampleTblPtr;   /**< \brief Pointer to example table */
-    CFE_TBL_Handle_t TblHandles[BPNODE_NUMBER_OF_TABLES];   /**< \brief Table handles */
+    BPNode_ExampleTable_t *ExampleTblPtr;       /**< \brief Pointer to example table */
+    CFE_TBL_Handle_t       ExampleTblHandle;    /**< \brief Example table handle */
 
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
 

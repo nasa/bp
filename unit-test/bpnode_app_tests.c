@@ -98,7 +98,8 @@ void Test_BPNode_AppMain_CommandErr(void)
 
     /* Command pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_PIPE_RD_ERR);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
 
     BPNode_AppMain();
 
@@ -114,7 +115,8 @@ void Test_BPNode_AppMain_CommandRecvd(void)
 
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 3, CFE_SB_NO_MESSAGE);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
@@ -140,8 +142,48 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+}
 
+/* Test wakeup process after getting an updated table */
+void Test_BPNode_WakeupProcess_TblUpdate(void)
+{
+    CFE_SB_Buffer_t  Buf;
+    CFE_SB_Buffer_t *BufPtr = &Buf;
+
+    /* Successful receipt of one command */
+    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+    UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
+    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+}
+
+/* Test wakeup process after getting a table update error */
+void Test_BPNode_WakeupProcess_TblErr(void)
+{
+    UT_CheckEvent_t  EventTest;
+    CFE_SB_Buffer_t  Buf;
+    CFE_SB_Buffer_t *BufPtr = &Buf;
+
+    /* Successful receipt of one command */
+    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_ERR_NO_ACCESS);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+    UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
+    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_MNG_ERR_EID, NULL);
 }
 
 /* Test wakeup process after receiving null buffer */
@@ -158,7 +200,8 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 /* Test wakeup process after command receive error */
@@ -171,7 +214,8 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
  
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES);
+    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 /* Test app initialization in nominal case */
@@ -311,6 +355,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppMain_CommandErr);
 
     ADD_TEST(Test_BPNode_WakeupProcess_CommandRecvd);
+    ADD_TEST(Test_BPNode_WakeupProcess_TblUpdate);
+    ADD_TEST(Test_BPNode_WakeupProcess_TblErr);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
 

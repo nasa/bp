@@ -108,15 +108,22 @@ CFE_Status_t BPNode_WakeupProcess(void)
 {
     CFE_Status_t     Status = CFE_SUCCESS;
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8            i;
 
     /* Manage any pending table loads, validations, etc. */
-    for (i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
+    CFE_TBL_ReleaseAddress(BPNode_AppData.ExampleTblHandle);
+
+    CFE_TBL_Manage(BPNode_AppData.ExampleTblHandle);
+
+    Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr, 
+                                          BPNode_AppData.ExampleTblHandle);
+
+    if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
     {
-        CFE_TBL_Manage(BPNode_AppData.TblHandles[i]);
+        CFE_EVS_SendEvent(BPNODE_TBL_MNG_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Error managing the table on wakeup, Status=0x%08X", Status);
     }
 
-    /* Check for pending commands*/
+    /* Check for pending commands */
     do
     {
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
@@ -204,7 +211,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Register table */
-    Status = CFE_TBL_Register(&BPNode_AppData.TblHandles[0], "ExampleTable", 
+    Status = CFE_TBL_Register(&BPNode_AppData.ExampleTblHandle, "ExampleTable", 
             sizeof(BPNode_ExampleTable_t), CFE_TBL_OPT_DEFAULT, BPNode_TblValidationFunc);
     if (Status != CFE_SUCCESS)
     {
@@ -214,7 +221,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Load table */
-    Status = CFE_TBL_Load(BPNode_AppData.TblHandles[0], CFE_TBL_SRC_FILE, BPNODE_TABLE_FILE);
+    Status = CFE_TBL_Load(BPNode_AppData.ExampleTblHandle, CFE_TBL_SRC_FILE, BPNODE_TABLE_FILE);
 
     if (Status != CFE_SUCCESS)
     {
@@ -225,7 +232,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     /* Get table address */
     Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr,
-                                        BPNode_AppData.TblHandles[0]);
+                                        BPNode_AppData.ExampleTblHandle);
 
     if (Status != CFE_TBL_INFO_UPDATED)
     {
