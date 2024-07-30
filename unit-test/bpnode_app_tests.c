@@ -1,47 +1,38 @@
-/************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright (c) 2020 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ************************************************************************/
+ *
+ */
+
+/**
+ * \file
+ *  Unit tests for bpnode_app.c
+ */
 
 /*
-** File: bpnode_app_tests.c
-**
-** Purpose:
-** Coverage Unit Test cases for the BPNode Application
-**
-** Notes:
-** This implements various test cases to exercise all code
-** paths through all functions defined in the BPNode application.
-**
-** It is primarily focused at providing examples of the various
-** stub configurations, hook functions, and wrapper calls that
-** are often needed when coercing certain code paths through
-** complex functions.
+** Include Files
 */
 
-/*
-** Includes
-*/
 #include "bplib.h"
 #include "bpnode_test_utils.h"
 
+
 /*
-**********************************************************************************
-**          TEST CASE FUNCTIONS
-**********************************************************************************
+** Function Definitions
 */
 
 /*
@@ -117,9 +108,9 @@ void Test_BPNode_AppMain(void)
 
 /*
 ** Test Case For:
-** void BPNode_ProcessMain( void )
+** void BPNode_WakeupProcess( void )
 */
-void Test_BPNode_ProcessMain(void)
+void Test_BPNode_WakeupProcess(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
@@ -127,7 +118,7 @@ void Test_BPNode_ProcessMain(void)
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_PIPE_RD_ERR);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
-    UtAssert_INT32_EQ(BPNode_ProcessMain(), CFE_SB_PIPE_RD_ERR);
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
     UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES);
@@ -135,14 +126,14 @@ void Test_BPNode_ProcessMain(void)
     /* Receipt of a null buffer */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_PIPE_RD_ERR);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), NULL, sizeof(BufPtr), false);
-    UtAssert_INT32_EQ(BPNode_ProcessMain(), CFE_SB_PIPE_RD_ERR);
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 4);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
     UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES * 2);
 
     /* Command receive error */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
-    UtAssert_INT32_EQ(BPNode_ProcessMain(), CFE_SB_PIPE_RD_ERR);
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 5);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
     UtAssert_STUB_COUNT(CFE_TBL_Manage, BPNODE_NUMBER_OF_TABLES * 3);
@@ -218,12 +209,10 @@ void Test_BPNode_AppInit(void)
 
 }
 
-/*
- * Register the test cases to execute with the unit test tool
- */
+/* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(BPNode_AppMain);
-    ADD_TEST(BPNode_ProcessMain);
+    ADD_TEST(BPNode_WakeupProcess);
     ADD_TEST(BPNode_AppInit);
 }

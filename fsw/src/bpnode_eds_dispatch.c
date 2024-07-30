@@ -1,20 +1,22 @@
-/************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright (c) 2020 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ************************************************************************/
+ *
+ */
 
 /**
  * \file
@@ -22,8 +24,9 @@
  */
 
 /*
-** Include Files:
+** Include Files
 */
+
 #include "bpnode_app.h"
 #include "bpnode_dispatch.h"
 #include "bpnode_cmds.h"
@@ -34,9 +37,7 @@
 #include "bpnode_eds_dispatcher.h"
 #include "bpnode_eds_dictionary.h"
 
-/*
- * Define a lookup table for BPNode command codes
- */
+/* Command code lookup table */
 static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_DISPATCH_TABLE = {
     .CMD     = {.NoopCmd_indication          = BPNode_NoopCmd,
                 .ResetAllCountersCmd_indication = BPNode_ResetAllCountersCmd,
@@ -44,13 +45,12 @@ static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_
                }
 };
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-/*                                                                            */
-/*  Purpose:                                                                  */
-/*     This routine will process any packet that is received on the BPNode    */
-/*     command pipe.                                                          */
-/*                                                                            */
-/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+
+/*
+** Function Definitions
+*/
+
+/* Process packets received on command pipe */
 void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
 {
     CFE_Status_t      Status;
@@ -60,6 +60,7 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
 
     Status = EdsDispatch_BPNode_Application_Telecommand(SBBufPtr, &BPNODE_TC_DISPATCH_TABLE);
 
+    /* Invalid packet */
     if (Status != CFE_SUCCESS)
     {
         CFE_MSG_GetMsgId(&SBBufPtr->Msg, &MsgId);
@@ -68,12 +69,14 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
 
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
 
+        /* Invalid message ID */
         if (Status == CFE_STATUS_UNKNOWN_MSG_ID)
         {
             CFE_EVS_SendEvent(BPNODE_MID_ERR_EID, CFE_EVS_EventType_ERROR,
                               "Invalid command packet,MID = 0x%x", 
                               (uint16) CFE_SB_MsgIdToValue(MsgId));
         }
+        /* Invalid message length */
         else if (Status == CFE_STATUS_WRONG_MSG_LENGTH)
         {
             CFE_EVS_SendEvent(BPNODE_CMD_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
@@ -81,6 +84,7 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
                               (uint16) CFE_SB_MsgIdToValue(MsgId), 
                               (uint8) MsgFc, (uint16) MsgSize);
         }
+        /* Invalid command code */
         else
         {
             CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR,

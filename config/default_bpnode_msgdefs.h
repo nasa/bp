@@ -1,20 +1,22 @@
-/************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright (c) 2020 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ************************************************************************/
+ *
+ */
 
 /**
  * @file
@@ -23,53 +25,65 @@
  *
  *  For BPNode this is only the function/command code definitions
  */
+
 #ifndef BPNODE_MSGDEFS_H
 #define BPNODE_MSGDEFS_H
 
 #include "common_types.h"
 #include "bpnode_fcncodes.h"
 
-/*************************************************************************/
 /*
-** Type definition (BPNode housekeeping)
+** Type Definitions
 */
 
-/* Node MIB config payload */
+/**
+ * \brief Node MIB configuration housekeeping payload
+ */
 typedef struct BPNode_NodeMibConfigHkTlm_Payload
 {
     /* TODO */
 } BPNode_NodeMibConfigHkTlm_Payload_t;
 
-/* Source MIB config payload */
+/**
+ * \brief Source MIB configuration housekeeping payload
+ */
 typedef struct BPNode_SourceMibConfigHkTlm_Payload
 {
     /* TODO */
 } BPNode_SourceMibConfigHkTlm_Payload_t;
 
-/* Node MIB counters payload */
+/**
+ * \brief Node MIB counters housekeeping payload
+ */
 typedef struct BPNode_NodeMibCountersHkTlm_Payload
 {
     uint16 AcceptedDirectiveCount;
     uint16 RejectedDirectiveCount;
 } BPNode_NodeMibCountersHkTlm_Payload_t;
 
-/* Source MIB counters payload */
+/**
+ * \brief Source MIB counters housekeeping payload
+ */
 typedef struct BPNode_SourceMibCountersHkTlm_Payload
 {
     /* TODO */
 } BPNode_SourceMibCountersHkTlm_Payload_t;
 
-/* Storage HK payload */
+/**
+ * \brief Storage housekeeping payload
+ */
 typedef struct BPNode_StorageHkTlm_Payload
 {
     /* TODO */
 } BPNode_StorageHkTlm_Payload_t;
 
-/* Channel/contact status payload */
+/**
+ * \brief Channel/contact status housekeeping payload
+ */
 typedef struct BPNode_ChannelContactStatHkTlm_Payload
 {
     /* TODO */
 } BPNode_ChannelContactStatHkTlm_Payload_t;
 
 
-#endif
+#endif /* BPNODE_MSGDEFS_H */
