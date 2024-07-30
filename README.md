@@ -55,7 +55,7 @@ See https://github.com/intel/tinycbor.git.
    cd "${CFS_HOME}"/cfs-bundle
    git clone https://github.com/nasa/CF.git apps/cf
    git clone https://github.com/nasa/bp.git apps/bp
-   git clone https://github.com/gs/bplib.git libs/bplib
+   git clone https://github.com/nasa/bplib.git libs/bplib
    cd "${CFS_HOME}"
    # Copy the Mission Definitions to a temporary folder ("${CFS_HOME}"/bpxfer_defs)
    mkdir -p "${CFS_HOME}"/bpxfer_defs
@@ -93,19 +93,17 @@ Run `make` in the build directory.
 ```sh
    mkdir "${CFS_HOME}"/bp-test
    cd "${CFS_HOME}"/bp-test
-   tar -xvf cfs-bpapp.tar
-   cd tx/cf
+   tar -xvf "${CFS_HOME}"/cfs-bpapp.tar
+   cd "${CFS_HOME}"bp-test/tx/cf
    dd if=/dev/urandom of=testdata.bin bs=1k count=1
    cd "${CFS_HOME}"/bp-test
    mkdir -p "${CFS_HOME}"/bp-test/tx/storage "${CFS_HOME}"/bp-test/rx/storage
-   cd "${CFS_HOME}"
-   "${CFS_HOME}"/bp-test/core-tx > console_output.log 2>&1 &
-   popd
-   pushd rx
+   cd "${CFS_HOME}"/bp-test/tx
+   ./core-tx > console_output.log 2>&1 &
+   cd "${CFS_HOME}"/bp-test/rx
    ./core-rx > console_output.log 2>&1 &
-   popd
-   sleep 5 && grep -q 'CFE_ES_Main entering OPERATIONAL state' ./tx/console_output.log
-   pushd ./exe/host
+   sleep 5 && grep -q 'CFE_ES_Main entering OPERATIONAL state' "${CFS_HOME}"/bp-test/tx/console_output.log
+   cd "${CFS_HOME}"/bp-test/host
    # Enable Flows
    ./cmdUtil --port 1234 -ELE -I0x1812 -C7 -s8:CFDP
    ./cmdUtil --port 1235 -ELE -I0x1812 -C7 -s8:CFDP
@@ -116,12 +114,12 @@ Run `make` in the build directory.
    # Terminate cFS
    ./cmdUtil --port=1234 --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
    ./cmdUtil --port=1235 --endian=LE --pktid=0x1806 --cmdcode=2 --half=0x0002
-   # Waith for Shutdown
+   # Wait for Shutdown
    sleep 5
    # Dump Tx Log
-   popd
-   cat tx/console_output.log
-   cat rx/console_output.log
-   md5sum tx/cf/testdata.bin
-   md5sum rx/cf/testdata.bin
+   cd "${CFS_HOME}"
+   cat "${CFS_HOME}"/bp-test/tx/console_output.log
+   cat "${CFS_HOME}"/bp-test/rx/console_output.log
+   md5sum "${CFS_HOME}"/bp-test/tx/cf/testdata.bin
+   md5sum "${CFS_HOME}"/bp-test/rx/cf/testdata.bin
 ```
