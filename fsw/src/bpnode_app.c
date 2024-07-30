@@ -80,7 +80,7 @@ void BPNode_AppMain(void)
         /* Performance Log Entry Stamp */
         CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
 
-        if (Status == CFE_SUCCESS)
+        if (Status == CFE_SUCCESS || Status == CFE_SB_TIME_OUT || Status == CFE_SB_NO_MESSAGE)
         {
             /* Process wakeup tasks */
             Status = BPNode_WakeupProcess();
