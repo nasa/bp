@@ -23,24 +23,34 @@
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "cfe_sb_api_typedefs.h"
-
 #include "to_lab_tbl.h"
+#include "cfe_msgids.h"
 
 /*
 ** Add the proper include file for the message IDs below
 */
-#include "cfe_msgids.h"
 
 /*
 ** Common CFS app includes below are commented out
 */
 #include "to_lab_msgids.h"
 #include "ci_lab_msgids.h"
+#include "cf_msgids.h"
+#ifdef HAVE_SAMPLE_APP
+#include "sample_app_msgids.h"
+#endif
+#include "bpnode_msgids.h"
 
 TO_LAB_Subs_t TO_LAB_Subs = {.Subs = {/* CFS App Subscriptions */
                                       {CFE_SB_MSGID_WRAP_VALUE(TO_LAB_HK_TLM_MID), {0, 0}, 4},
                                       {CFE_SB_MSGID_WRAP_VALUE(TO_LAB_DATA_TYPES_MID), {0, 0}, 4},
                                       {CFE_SB_MSGID_WRAP_VALUE(CI_LAB_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(CF_EOT_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(CF_HK_TLM_MID), {0, 0}, 4},
+
+#ifdef HAVE_SAMPLE_APP
+                                      {CFE_SB_MSGID_WRAP_VALUE(SAMPLE_APP_HK_TLM_MID), {0, 0}, 4},
+#endif
 
                                       /* cFE Core subscriptions */
                                       {CFE_SB_MSGID_WRAP_VALUE(CFE_ES_HK_TLM_MID), {0, 0}, 4},
@@ -55,8 +65,9 @@ TO_LAB_Subs_t TO_LAB_Subs = {.Subs = {/* CFS App Subscriptions */
 
                                       {CFE_SB_MSGID_WRAP_VALUE(CFE_ES_APP_TLM_MID), {0, 0}, 4},
                                       {CFE_SB_MSGID_WRAP_VALUE(CFE_ES_MEMSTATS_TLM_MID), {0, 0}, 4},
+                                      /* TO_LAB_UNUSED entry to mark the end of valid MsgIds */
 
-                                      /* TO_UNUSED entry to mark the end of valid MsgIds */
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), {0, 0}, 4},
                                       {CFE_SB_MSGID_RESERVED, {0, 0}, 0}}};
 
 CFE_TBL_FILEDEF(TO_LAB_Subs, TO_LAB_APP.TO_LAB_Subs, TO Lab Sub Tbl, to_lab_sub.tbl)
