@@ -42,6 +42,7 @@
 typedef struct BPNode_NodeMibConfigHkTlm_Payload
 {
     /* TODO */
+    uint32 Spare;
 } BPNode_NodeMibConfigHkTlm_Payload_t;
 
 /**
@@ -50,6 +51,7 @@ typedef struct BPNode_NodeMibConfigHkTlm_Payload
 typedef struct BPNode_SourceMibConfigHkTlm_Payload
 {
     /* TODO */
+    uint32 Spare;
 } BPNode_SourceMibConfigHkTlm_Payload_t;
 
 /**
@@ -67,6 +69,7 @@ typedef struct BPNode_NodeMibCountersHkTlm_Payload
 typedef struct BPNode_SourceMibCountersHkTlm_Payload
 {
     /* TODO */
+    uint32 Spare;
 } BPNode_SourceMibCountersHkTlm_Payload_t;
 
 /**
@@ -75,6 +78,7 @@ typedef struct BPNode_SourceMibCountersHkTlm_Payload
 typedef struct BPNode_StorageHkTlm_Payload
 {
     /* TODO */
+    uint32 Spare;
 } BPNode_StorageHkTlm_Payload_t;
 
 /**
@@ -83,6 +87,7 @@ typedef struct BPNode_StorageHkTlm_Payload
 typedef struct BPNode_ChannelContactStatHkTlm_Payload
 {
     /* TODO */
+    uint32 Spare;
 } BPNode_ChannelContactStatHkTlm_Payload_t;
 
 

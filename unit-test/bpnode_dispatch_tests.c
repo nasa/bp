@@ -76,8 +76,7 @@ void Test_BPNode_ProcessGroundCommand_ValidNoop(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_NOOP_CC;
     size_t            Size = sizeof(BPNode_NoopCmd_t);
-    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -94,7 +93,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidNoop(void)
     CFE_MSG_FcnCode_t FcnCode = BPNODE_NOOP_CC;
     size_t            Size = sizeof(BPNode_NoopCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -112,8 +111,7 @@ void Test_BPNode_ProcessGroundCommand_ValidResetAllCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_ALL_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetAllCountersCmd_t);
-    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -130,7 +128,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetAllCounters(void)
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_ALL_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetAllCountersCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -149,8 +147,7 @@ void Test_BPNode_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
     size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t);
-    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -167,7 +164,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
     size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -185,7 +182,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
 {
     UT_CheckEvent_t   EventTest;
     CFE_MSG_FcnCode_t FcnCode = 1000;   /* Invalid CC */
-    CFE_SB_Buffer_t  *Buf;
+    CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
 

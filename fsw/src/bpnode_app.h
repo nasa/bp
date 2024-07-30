@@ -41,6 +41,7 @@
 #include "bpnode_perfids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
+#include "bpnode_tbl.h"
 
 /*
 ** Type Definitions
