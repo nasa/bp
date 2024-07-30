@@ -37,12 +37,9 @@
 ** Function Definitions
 */
 
-void Test_BPNode_SendNodeMibCountersHkCmd(void)
+/* Test node MIB counter housekeeping packet transmission in nominal case */
+void Test_BPNode_SendNodeMibCountersHkCmd_Nominal(void)
 {
-    /*
-     * Test Case For:
-     * void BPNode_SendNodeMibCountersHkCmd( const BPNode_SendNodeMibCountersHkCmd_t *Msg )
-     */
     CFE_MSG_Message_t *MsgSend;
     CFE_MSG_Message_t *MsgTimestamp;
 
@@ -64,36 +61,28 @@ void Test_BPNode_SendNodeMibCountersHkCmd(void)
     UtAssert_ADDRESS_EQ(MsgTimestamp, &BPNode_AppData.NodeMibCountersHkTlm);
 }
 
-void Test_BPNode_NoopCmd(void)
+/* Test noop command in nominal case */
+void Test_BPNode_NoopCmd_Nominal(void)
 {
-    /*
-     * Test Case For:
-     * void BPNode_NoopCmd( const BPNode_Noop_t *Msg )
-     */
     BPNode_NoopCmd_t TestMsg;
-    UT_CheckEvent_t      EventTest;
+    UT_CheckEvent_t  EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    /* test dispatch of NOOP */
+    /* Test dispatch of noop */
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_NOOP_INF_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_NoopCmd(&TestMsg), CFE_SUCCESS);
 
-    /*
-     * Confirm that the event was generated
-     */
+    /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-void Test_BPNode_ResetAllCountersCmd(void)
+/* Test reset all counters command nominal case */
+void Test_BPNode_ResetAllCountersCmd_Nominal(void)
 {
-    /*
-     * Test Case For:
-     * void BPNode_ResetAllCounters( const BPNode_ResetAllCounters_t *Msg )
-     */
     BPNode_ResetAllCountersCmd_t TestMsg;
-    UT_CheckEvent_t           EventTest;
+    UT_CheckEvent_t              EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
@@ -101,16 +90,14 @@ void Test_BPNode_ResetAllCountersCmd(void)
 
     UtAssert_INT32_EQ(BPNode_ResetAllCountersCmd(&TestMsg), CFE_SUCCESS);
 
-    /*
-     * Confirm that the event was generated
-     */
+    /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
-    ADD_TEST(BPNode_SendNodeMibCountersHkCmd);
-    ADD_TEST(BPNode_NoopCmd);
-    ADD_TEST(BPNode_ResetAllCountersCmd);
+    ADD_TEST(Test_BPNode_SendNodeMibCountersHkCmd_Nominal);
+    ADD_TEST(Test_BPNode_NoopCmd_Nominal);
+    ADD_TEST(Test_BPNode_ResetAllCountersCmd_Nominal);
 }

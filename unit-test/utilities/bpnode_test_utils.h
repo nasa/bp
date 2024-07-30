@@ -52,7 +52,7 @@
 */
 
 /* Macro to add a test case to the list of tests to execute */
-#define ADD_TEST(test) UtTest_Add((Test_##test), BPNode_UT_Setup, BPNode_UT_TearDown, #test)
+#define ADD_TEST(test) UtTest_Add(test, BPNode_UT_Setup, BPNode_UT_TearDown, #test)
 
 /* Macro to get expected event name */
 #define UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \

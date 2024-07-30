@@ -123,6 +123,8 @@ void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const 
 void BPNode_UT_Setup(void)
 {
     UT_ResetState(0);
+
+    memset(&BPNode_AppData, 0, sizeof(BPNode_AppData_t));
 }
 
 /* Teardown function after every test */
