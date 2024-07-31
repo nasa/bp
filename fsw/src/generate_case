@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+import sys
+
+def generate_case(enum_str, cmd_str):
+    return f"""
+        case {enum_str}:
+            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof({cmd_str}_t)))
+            {{
+                {cmd_str}((const {cmd_str}_t *)SBBufPtr);
+            }}
+            break;
+"""
+
+if __name__ == '__main__':
+    print (generate_case(sys.argv[1], sys.argv[2]))

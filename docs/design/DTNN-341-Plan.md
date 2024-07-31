@@ -1,23 +1,29 @@
 DTNN-341 Plan
 
 ```
-Repository: https://aetd-git.gsfc.nasa.gov/gsfc-dtn/bp-cfs
+Repository:  https://aetd-git.gsfc.nasa.gov/gsfc-dtn/bp-cfs
 Branch name: DTNN-341-add-aa-nc-dp-tlmp
-Start the branch from `develop`.
-Merge in changes from nasa/bp branch `DTNN-609-fresh-slate` to apps/bpnode periodically, as needed.
-
-Repository: https://github.com/gskenned/bp fork of nasa/bp
-Branch name: DTNN-341-add-aa-nc-dp-tlmp
-Start the branch from `develop`. Merge in changes from nasa/bp branch `DTNN-609-fresh-slate` periodically, as needed.
 ```
+
+Start the branch from `develop`.
+Merge in changes from nasa/bp-cfs branch `DTNN-609-fresh-slate` periodically, as needed.
+
+```
+Repository:  https://github.com/gskenned/bp fork of nasa/bp
+Branch name: DTNN-341-add-aa-nc-dp-tlmp
+Submodule:   apps/bpnode
+```
+
+Start the branch from `develop`. Merge in changes from nasa/bp branch `DTNN-609-fresh-slate` periodically, as needed.
 
 Implement
 
-Create bp/docs/design
+Create bpnode/docs/design
   Temporary or permanent design documents
-  Add bp/docs/design/dtnn-341-plan.txt - this file
+  Add bpnode/docs/design/DTNN-341-Plan.md - this file
 
-List all commands (directives)
+  Add bpnode/docs/design/DTNN-341-Design.md
+  List all commands (directives)
   Add DP/NC directive stubs
     action or "not implemented" event
     if HK, generate TLM packet stub
