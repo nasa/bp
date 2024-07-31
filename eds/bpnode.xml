@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    GSC-18128-1, "Core Flight Executive Version 6.7"
+    LEW-19710-1, "CCSDS electronic data sheet implementation"
+
+    Copyright (c) 2006-2019 United States Government as represented by
+    the Administrator of the National Aeronautics and Space Administration.
+    All Rights Reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    This document adheres to the Electronic Data Sheet (EDS) XML schema
+    as prescribed in CCSDS book 876.0.
+
+    Purpose:
+      This describes all interface objects for the BPNode application.
+
+-->
+<PackageFile xmlns="http://www.ccsds.org/schema/sois/seds">
+  <Package name="BPNode" shortDescription="BPNode Application Package">
+
+    <DataTypeSet>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="NodeMibConfigHkTlm_Payload" shortDescription="BPNode Node MIB Config">
+        <EntryList>
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SourceMibConfigHkTlm_Payload" shortDescription="BPNode Source MIB Config">
+        <EntryList>
+        </EntryList>
+      </ContainerDataType>
+
+      <!--Node MIB counters telemetry payload-->
+      <ContainerDataType name="NodeMibCountersHkTlm_Payload" shortDescription="BPNode Node MIB Counters">
+        <EntryList>
+          <Entry name="AcceptedDirectiveCount" type="BASE_TYPES/uint16" />
+          <Entry name="RejectedDirectiveCount" type="BASE_TYPES/uint16" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SourceMibCountersHkTlm_Payload" shortDescription="BPNode Source MIB Counters">
+        <EntryList>
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="StorageHkTlm_Payload" shortDescription="BPNode Storage Telemetry">
+        <EntryList>
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ChannelContactStatHkTlm_Payload" shortDescription="BPNode Source MIB Config">
+        <EntryList>
+        </EntryList>
+      </ContainerDataType>
+
+      <ContainerDataType name="CommandBase" baseType="CFE_HDR/CommandHeader">
+      </ContainerDataType>
+
+      <ContainerDataType name="WakeupBase" baseType="CFE_HDR/CommandHeader">
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="NodeMibConfigHkTlm" baseType="CFE_HDR/TelemetryHeader">
+        <EntryList>
+          <Entry type="NodeMibConfigHkTlm_Payload" name="Payload" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SourceMibConfigHkTlm" baseType="CFE_HDR/TelemetryHeader">
+        <EntryList>
+          <Entry type="SourceMibConfigHkTlm_Payload" name="Payload" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--Node MIB counters telemetry-->
+      <ContainerDataType name="NodeMibCountersHkTlm" baseType="CFE_HDR/TelemetryHeader">
+        <EntryList>
+          <Entry type="NodeMibCountersHkTlm_Payload" name="Payload" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SourceMibCountersHkTlm" baseType="CFE_HDR/TelemetryHeader">
+        <EntryList>
+          <Entry type="SourceMibCountersHkTlm_Payload" name="Payload" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="StorageHkTlm" baseType="CFE_HDR/TelemetryHeader">
+        <EntryList>
+          <Entry type="StorageHkTlm_Payload" name="Payload" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ChannelContactStatHkTlm" baseType="CFE_HDR/TelemetryHeader">
+        <EntryList>
+          <Entry type="ChannelContactStatHkTlm_Payload" name="Payload" />
+        </EntryList>
+      </ContainerDataType>
+
+      <!--Noop directive-->
+      <ContainerDataType name="NoopCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="0" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Startup directives
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddAllApplicationsCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="1" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="StartAllApplicationsCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="2" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="VerifyBundleStorageCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="3" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="InitBundleStorageCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="4" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED AND DEFERRED-->
+      <ContainerDataType name="VerifyBundleMetadataCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="5" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RebuildBundleMetadataCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="6" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ClearVolatileCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="7" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED AND DEFERRED-->
+      <ContainerDataType name="ReloadSavedDataCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="8" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Counter directives
+      -->
+
+      <!--Reset all counters directive-->
+      <ContainerDataType name="ResetAllCountersCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="9" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ResetCounterCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="10" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ResetSourceCountersCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="11" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ResetBundleCountersCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="12" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ResetErrorCountersCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="13" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Application directives 
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddApplicationCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="14" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveApplicationCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="15" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SetRegistrationStateCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="16" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="StartApplicationCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="17" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="StopApplicationCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="18" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Policy directives
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddAuthSourcesCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="19" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveAuthSourcesCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="20" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddAuthCustodySourcesCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="21" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveAuthCustodySourcesCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="22" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddAuthCustodiansCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="23" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveAuthCustodiansCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="24" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddAuthReportToEidCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="25" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveAuthReportToEidCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="26" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddLatencyCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="27" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveLatencyCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="28" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Contact directives
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ContactSetupCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="29" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ContactStartCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="30" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ContactStopCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="31" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="ContactTeardownCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="32" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        MIB directives
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddMibArrayKeyCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="33" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveMibArrayKeyCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="34" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SetMibItemCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="35" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Storage directives
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="AddStorageAllocationCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="36" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="RemoveStorageAllocationCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="37" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--UNIMPLEMENTED AND DEFERRED-->
+      <ContainerDataType name="PerformSelfTestCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="38" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!--
+        Telemetry directives
+      -->
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SendNodeMibConfigHkCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="40" />
+        </ConstraintSet>
+      </ContainerDataType> 
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SendSourceMibConfigHkCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="41" />
+        </ConstraintSet>
+      </ContainerDataType> 
+
+      <!--Send node MIB counters housekeeping directive-->
+      <ContainerDataType name="SendNodeMibCountersHkCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="42" />
+        </ConstraintSet>
+      </ContainerDataType> 
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SendSourceMibCountersHkCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="43" />
+        </ConstraintSet>
+      </ContainerDataType>      
+      
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SendStorageHkCmd" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="44" />
+        </ConstraintSet>
+      </ContainerDataType> 
+
+      <!--UNIMPLEMENTED-->
+      <ContainerDataType name="SendChannelContactStatusHk" baseType="CommandBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="45" />
+        </ConstraintSet>
+      </ContainerDataType> 
+
+      <!--Wakeup directive-->
+      <ContainerDataType name="WakeupCmd" baseType="WakeupBase">
+        <ConstraintSet>
+          <ValueConstraint entry="Sec.FunctionCode" value="0" />
+        </ConstraintSet>
+      </ContainerDataType>
+
+      <!-- Note the type name here must be "ExampleTable" to match the C table definition file,
+           but the source code uses the type "ExampleTable" -->
+      <ContainerDataType name="ExampleTable" shortDescription="Example ExampleTable structure">
+        <EntryList>
+          <Entry name="Int1" type="BASE_TYPES/uint16" />
+          <Entry name="Int2" type="BASE_TYPES/uint16" />
+        </EntryList>
+      </ContainerDataType>
+
+    </DataTypeSet>
+
+    <ComponentSet>
+      <Component name="Application">
+        <RequiredInterfaceSet>
+
+          <Interface name="CMD" shortDescription="Software bus telecommand interface" type="CFE_SB/Telecommand">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelecommandDataType" type="CommandBase" />
+            </GenericTypeMapSet>
+          </Interface>
+
+          <!--Wakeup directive-->
+          <Interface name="WAKEUP" shortDescription="Wakeup command" type="CFE_SB/Telecommand">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelecommandDataType" type="WakeupBase" />
+            </GenericTypeMapSet>
+          </Interface>
+
+          <!--UNIMPLEMENTED-->
+          <Interface name="NODE_MIB_CONFIG_HK_TLM" shortDescription="Node MIB config telemetry" type="CFE_SB/Telemetry">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelemetryDataType" type="NodeMibConfigHkTlm" />
+            </GenericTypeMapSet>
+          </Interface>
+          
+          <!--UNIMPLEMENTED-->
+          <Interface name="SOURCE_MIB_CONFIG_HK_TLM" shortDescription="Source MIB config telemetry" type="CFE_SB/Telemetry">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelemetryDataType" type="SourceMibConfigHkTlm" />
+            </GenericTypeMapSet>
+          </Interface>
+
+          <!--Node MIB counters telemetry-->
+          <Interface name="NODE_MIB_COUNTERS_HK_TLM" shortDescription="Node MIB counters telemetry" type="CFE_SB/Telemetry">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelemetryDataType" type="NodeMibCountersHkTlm" />
+            </GenericTypeMapSet>
+          </Interface>
+
+          <!--UNIMPLEMENTED-->
+          <Interface name="SOURCE_MIB_COUNTERS_HK_TLM" shortDescription="Source MIB counters telemetry" type="CFE_SB/Telemetry">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelemetryDataType" type="SourceMibCountersHkTlm" />
+            </GenericTypeMapSet>
+          </Interface>
+
+          <!--UNIMPLEMENTED-->
+          <Interface name="STORAGE_HK_TLM" shortDescription="Storage telemetry" type="CFE_SB/Telemetry">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelemetryDataType" type="StorageHkTlm" />
+            </GenericTypeMapSet>
+          </Interface>
+
+          <!--UNIMPLEMENTED-->
+          <Interface name="CHANNEL_CONTACT_STAT_HK_TLM" shortDescription="Channel/contact status telemetry" type="CFE_SB/Telemetry">
+            <GenericTypeMapSet>
+              <GenericTypeMap name="TelemetryDataType" type="ChannelContactStatHkTlm" />
+            </GenericTypeMapSet>
+          </Interface>
+
+        </RequiredInterfaceSet>
+        <Implementation>
+          <VariableSet>
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="CmdTopicId" initialValue="${CFE_MISSION/BPNODE_CMD_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="WakeupTopicId" initialValue="${CFE_MISSION/BPNODE_WAKEUP_TOPICID}" />
+
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="NodeMibConfigHkTlmTopicId" initialValue="${CFE_MISSION/BPNODE_NODE_MIB_CONFIG_HK_TLM_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="SourceMibConfigHkTlmTopicId" initialValue="${CFE_MISSION/BPNODE_SOURCE_MIB_CONFIG_HK_TLM_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="NodeMibCountersHkTlmTopicId" initialValue="${CFE_MISSION/BPNODE_NODE_MIB_COUNTERS_HK_TLM_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="SourceMibCountersHkTlmTopicId" initialValue="${CFE_MISSION/BPNODE_SOURCE_MIB_COUNTERS_HK_TLM_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="StorageHkTlmTopicId" initialValue="${CFE_MISSION/BPNODE_STORAGE_HK_TLM_TOPICID}" />
+            <Variable type="BASE_TYPES/uint16" readOnly="true" name="ChannelContactStatHkTlmTopicId" initialValue="${CFE_MISSION/BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_TOPICID}" />
+
+          </VariableSet>
+          <!-- Assign fixed numbers to the "TopicId" parameter of each interface -->
+          <ParameterMapSet>
+            <ParameterMap interface="CMD" parameter="TopicId" variableRef="CmdTopicId" />
+            <ParameterMap interface="WAKEUP" parameter="TopicId" variableRef="WakeupTopicId" />
+
+            <ParameterMap interface="NODE_MIB_CONFIG_HK_TLM" parameter="TopicId" variableRef="NodeMibConfigHkTlmTopicId" />
+            <ParameterMap interface="SOURCE_MIB_CONFIG_HK_TLM" parameter="TopicId" variableRef="SourceMibConfigHkTlmTopicId" />
+            <ParameterMap interface="NODE_MIB_COUNTERS_HK_TLM" parameter="TopicId" variableRef="NodeMibCountersHkTlmTopicId" />
+            <ParameterMap interface="SOURCE_MIB_COUNTERS_HK_TLM" parameter="TopicId" variableRef="SourceMibCountersHkTlmTopicId" />
+            <ParameterMap interface="STORAGE_HK_TLM" parameter="TopicId" variableRef="StorageHkTlmTopicId" />
+            <ParameterMap interface="CHANNEL_CONTACT_STAT_HK_TLM" parameter="TopicId" variableRef="ChannelContactStatHkTlmTopicId" />
+          </ParameterMapSet>
+        </Implementation>
+      </Component>
+    </ComponentSet>
+
+  </Package>
+</PackageFile>

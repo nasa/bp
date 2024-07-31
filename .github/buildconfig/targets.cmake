@@ -13,7 +13,7 @@ SET(MISSION_CPUNAMES tx rx)
 
 # This shortcut compiles the same set of apps for all CPUs,
 # but there is no equivalent for PSP_MODULELIST at this time
-list(APPEND MISSION_GLOBAL_APPLIST cf bp bplib ci_lab to_lab sch_lab)
+list(APPEND MISSION_GLOBAL_APPLIST cf bpnode bplib ci_lab to_lab sch_lab)
 set(GLOBAL_PSP_MODULELIST unsock_intf)
 
 SET(tx_PROCESSORID 1)

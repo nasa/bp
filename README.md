@@ -1,3 +1,1 @@
-The readme is for the Bundle Protocol Core Flight System software distribution.
-
-
+# core Flight System (cFS) Bundle Protocol Node (BPNode) Application
