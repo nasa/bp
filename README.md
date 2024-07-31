@@ -94,7 +94,7 @@ Run `make` in the build directory.
    mkdir "${CFS_HOME}"/bp-test
    cd "${CFS_HOME}"/bp-test
    tar -xvf "${CFS_HOME}"/cfs-bpapp.tar
-   cd "${CFS_HOME}"bp-test/tx/cf
+   cd "${CFS_HOME}"/bp-test/tx/cf
    dd if=/dev/urandom of=testdata.bin bs=1k count=1
    cd "${CFS_HOME}"/bp-test
    mkdir -p "${CFS_HOME}"/bp-test/tx/storage "${CFS_HOME}"/bp-test/rx/storage
