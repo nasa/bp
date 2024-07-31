@@ -106,13 +106,13 @@ void BPNode_AppMain(void)
 /* Perform wakeup processing */
 CFE_Status_t BPNode_WakeupProcess(void)
 {
-    CFE_Status_t     Status = CFE_SUCCESS;
+    CFE_Status_t     Status;
     CFE_SB_Buffer_t *BufPtr = NULL;
 
     /* Manage any pending table loads, validations, etc. */
-    CFE_TBL_ReleaseAddress(BPNode_AppData.ExampleTblHandle);
+    (void) CFE_TBL_ReleaseAddress(BPNode_AppData.ExampleTblHandle);
 
-    CFE_TBL_Manage(BPNode_AppData.ExampleTblHandle);
+    (void) CFE_TBL_Manage(BPNode_AppData.ExampleTblHandle);
 
     Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr, 
                                           BPNode_AppData.ExampleTblHandle);
