@@ -1,40 +1,34 @@
-/************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright (c) 2020 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ************************************************************************/
+ *
+ */
+
+/**
+ * \file
+ *  Utility function definitions for BPNode unit tests
+ * 
+ */
+
 
 /*
-** File: bpnode_test_utils.c
-**
-** Purpose:
-** Coverage Unit Test cases for the BPNode Application
-**
-** Notes:
-** This implements various test cases to exercise all code
-** paths through all functions defined in the BPNode application.
-**
-** It is primarily focused at providing examples of the various
-** stub configurations, hook functions, and wrapper calls that
-** are often needed when coercing certain code paths through
-** complex functions.
+** Include Files
 */
 
-/*
- * Includes
- */
 #include "common_types.h"
 #include "cfe_evs.h"
 
@@ -44,9 +38,7 @@
 #include "uttest.h"
 #include "utstubs.h"
 
-/*
- * An example hook function to check for a specific event.
- */
+/* An example hook function to check for a specific event */
 static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
                                 va_list va)
 {
@@ -127,15 +119,15 @@ void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const 
     UT_SetVaHookFunction(UT_KEY(CFE_EVS_SendEvent), UT_CheckEvent_Hook, Evt);
 }
 
-/*
- * Setup function prior to every test
- */
+/* Setup function prior to every test */
 void BPNode_UT_Setup(void)
 {
     UT_ResetState(0);
+
+    memset(&BPNode_AppData, 0, sizeof(BPNode_AppData_t));
 }
 
-/*
- * Teardown function after every test
- */
-void BPNode_UT_TearDown(void) {}
+/* Teardown function after every test */
+void BPNode_UT_TearDown(void) {
+    /* Clean up test environment */
+}

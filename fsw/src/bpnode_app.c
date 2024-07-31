@@ -1,20 +1,22 @@
-/************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright (c) 2020 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ************************************************************************/
+ *
+ */
 
 /**
  * \file
@@ -22,8 +24,9 @@
  */
 
 /*
-** Include Files:
+** Include Files
 */
+
 #include "bpnode_app.h"
 #include "bpnode_cmds.h"
 #include "bpnode_utils.h"
@@ -32,30 +35,31 @@
 #include "bpnode_tbl.h"
 #include "bpnode_version.h"
 
+
 /*
-** Global data
+** Global Data
 */
+
 BPNode_AppData_t BPNode_AppData;
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
-/*                                                                            */
-/* Application entry point and main process loop                              */
-/*                                                                            */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
+
+/*
+** Function Definitions
+*/
+
+/* Application entry point and main process loop */
 void BPNode_AppMain(void)
 {
     CFE_Status_t     Status;
     CFE_SB_Buffer_t *BufPtr;
 
-    /*
-    ** Create the first Performance Log entry
-    */
+    /* Create the first Performance Log entry */
     CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
 
     /*
     ** Perform application-specific initialization
-    ** If the Initialization fails, set the RunStatus to
-    ** CFE_ES_RunStatus_APP_ERROR and the App will not enter the RunLoop
+    ** If the initialization fails, set the RunStatus to
+    ** CFE_ES_RunStatus_APP_ERROR and the app will not enter the run loop
     */
     Status = BPNode_AppInit();
     if (Status != CFE_SUCCESS)
@@ -63,31 +67,26 @@ void BPNode_AppMain(void)
         BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_ERROR;
     }
 
-    /*
-    ** BPNode Runloop
-    */
+    /* BPNode run loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.RunStatus) == true)
     {
-        /*
-        ** Performance Log Exit Stamp
-        */
+        /* Performance Log Exit Stamp */
         CFE_ES_PerfLogExit(BPNODE_PERF_ID);
 
         /* Pend on receipt of wakeup message */
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.WakeupPipe, 
                                                 BPNODE_WAKEUP_PIPE_TIMEOUT);
 
-        /*
-        ** Performance Log Entry Stamp
-        */
+        /* Performance Log Entry Stamp */
         CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
 
-        if (Status == CFE_SUCCESS)
+        if (Status == CFE_SUCCESS || Status == CFE_SB_TIME_OUT || Status == CFE_SB_NO_MESSAGE)
         {
             /* Process wakeup tasks */
-            Status = BPNode_ProcessMain();
+            Status = BPNode_WakeupProcess();
         }
         
+        /* Exit upon pipe read error */
         if (Status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(BPNODE_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
@@ -97,19 +96,34 @@ void BPNode_AppMain(void)
         }
     }
 
-    /*
-    ** Performance Log Exit Stamp
-    */
+    /* Performance Log Exit Stamp */
     CFE_ES_PerfLogExit(BPNODE_PERF_ID);
 
     CFE_ES_ExitApp(BPNode_AppData.RunStatus);
 }
 
-CFE_Status_t BPNode_ProcessMain(void)
+
+/* Perform wakeup processing */
+CFE_Status_t BPNode_WakeupProcess(void)
 {
-    CFE_Status_t     Status = CFE_SUCCESS;
+    CFE_Status_t     Status;
     CFE_SB_Buffer_t *BufPtr = NULL;
 
+    /* Manage any pending table loads, validations, etc. */
+    (void) CFE_TBL_ReleaseAddress(BPNode_AppData.ExampleTblHandle);
+
+    (void) CFE_TBL_Manage(BPNode_AppData.ExampleTblHandle);
+
+    Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr, 
+                                          BPNode_AppData.ExampleTblHandle);
+
+    if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
+    {
+        CFE_EVS_SendEvent(BPNODE_TBL_MNG_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Error managing the table on wakeup, Status=0x%08X", Status);
+    }
+
+    /* Check for pending commands */
     do
     {
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
@@ -118,6 +132,7 @@ CFE_Status_t BPNode_ProcessMain(void)
         {
             BPNode_TaskPipe(BufPtr);
         }
+
     } while (Status == CFE_SUCCESS);
 
     /* Not an error case */
@@ -126,15 +141,11 @@ CFE_Status_t BPNode_ProcessMain(void)
         Status = CFE_SUCCESS;
     }
 
-
     return Status;
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
-/*                                                                            */
-/* Initialization                                                             */
-/*                                                                            */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+
+/* App initialization activities */
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
@@ -144,9 +155,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    /*
-    ** Register the events
-    */
+    /* Register with Event Services */
     Status = CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
     if (Status != CFE_SUCCESS)
     {
@@ -154,15 +163,12 @@ CFE_Status_t BPNode_AppInit(void)
                                                                 (unsigned long)Status);
         return Status;
     }
-    /*
-    ** Initialize housekeeping packet (clear user data area).
-    */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.HkTlm.TelemetryHeader), 
-                CFE_SB_ValueToMsgId(BPNODE_HK_TLM_MID), sizeof(BPNode_AppData.HkTlm));
+    /* Initialize housekeeping packet (clear user data area) */
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), 
+                CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
+                sizeof(BPNode_AppData.NodeMibCountersHkTlm));
 
-    /*
-    ** Create command pipe.
-    */
+    /* Create command pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH, 
                                             "BPNODE_CMD_PIPE");
     if (Status != CFE_SUCCESS)
@@ -173,9 +179,7 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /*
-    ** Create wakeup pipe.
-    */
+    /* Create wakeup pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.WakeupPipe, BPNODE_WAKEUP_PIPE_DEPTH, 
                                             "BPNODE_WAKEUP_PIPE");
     if (Status != CFE_SUCCESS)
@@ -186,21 +190,7 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /*
-    ** Subscribe to Housekeeping request commands
-    */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_SEND_HK_MID), 
-                                                        BPNode_AppData.CommandPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_SUB_HK_ERR_EID, CFE_EVS_EventType_ERROR,
-                "Error Subscribing to HK request, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
-    }
-
-    /*
-    ** Subscribe to ground command packets
-    */
+    /* Subscribe to ground command packets */
     Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CMD_MID), 
                                                         BPNode_AppData.CommandPipe);
     if (Status != CFE_SUCCESS)
@@ -210,9 +200,7 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /*
-    ** Subscribe to wakeup messages on the wakeup pipe
-    */
+    /* Subscribe to wakeup messages on the wakeup pipe */
     Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID), 
                                                         BPNode_AppData.WakeupPipe);
     if (Status != CFE_SUCCESS)
@@ -222,10 +210,8 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /*
-    ** Register and load table
-    */
-    Status = CFE_TBL_Register(&BPNode_AppData.TblHandles[0], "ExampleTable", 
+    /* Register table */
+    Status = CFE_TBL_Register(&BPNode_AppData.ExampleTblHandle, "ExampleTable", 
             sizeof(BPNode_ExampleTable_t), CFE_TBL_OPT_DEFAULT, BPNode_TblValidationFunc);
     if (Status != CFE_SUCCESS)
     {
@@ -234,7 +220,8 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    Status = CFE_TBL_Load(BPNode_AppData.TblHandles[0], CFE_TBL_SRC_FILE, BPNODE_TABLE_FILE);
+    /* Load table */
+    Status = CFE_TBL_Load(BPNode_AppData.ExampleTblHandle, CFE_TBL_SRC_FILE, BPNODE_TABLE_FILE);
 
     if (Status != CFE_SUCCESS)
     {
@@ -243,8 +230,9 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
+    /* Get table address */
     Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr,
-                                        BPNode_AppData.TblHandles[0]);
+                                        BPNode_AppData.ExampleTblHandle);
 
     if (Status != CFE_TBL_INFO_UPDATED)
     {
