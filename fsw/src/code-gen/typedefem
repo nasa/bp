@@ -1,0 +1,45 @@
+./generate_typedef "Noop"  BPNODE_NOOP_CC BPNode_NoopCmd
+./generate_typedef "Add All Applications"  BPNODE_ADD_ALL_APPLICATIONS_CC BPNode_AddAllApplicationsCmd
+./generate_typedef "Start All Applications"  BPNODE_START_ALL_APPLICATIONS_CC BPNode_StartAllApplicationsCmd
+./generate_typedef "Verify Bundle Storage"  BPNODE_VERIFY_BUNDLE_STORAGE_CC BPNode_VerifyBundleStorageCmd
+./generate_typedef "Initialize Bundle Storage"  BPNODE_INIT_BUNDLE_STORAGE_CC BPNode_InitBundleStorageCmd
+./generate_typedef "Verify Bundle Metadata (7.2)"  BPNODE_VERIFY_BUNDLE_METADATA_CC BPNode_VerifyBundleMetadataCmd
+./generate_typedef "Rebuild Bundle Metadata"  BPNODE_REBUILD_BUNDLE_METADATA_CC BPNode_RebuildBundleMetadataCmd
+./generate_typedef "Clear Volatile"  BPNODE_CLEAR_VOLATILE_CC BPNode_ClearVolatileCmd
+./generate_typedef "Reload Saved Data (7.2)"  BPNODE_RELOAD_SAVED_DATA_CC BPNode_ReloadSavedDataCmd
+./generate_typedef "Reset All Counters"  BPNODE_RESET_ALL_COUNTERS_CC BPNode_ResetAllCountersCmd
+./generate_typedef "Reset Counter"  BPNODE_RESET_COUNTER_CC BPNode_ResetCounterCmd
+./generate_typedef "Reset Source Counters"  BPNODE_RESET_SOURCE_COUNTERS_CC BPNode_ResetSourceCountersCmd
+./generate_typedef "Reset Bundle Counters"  BPNODE_RESET_BUNDLE_COUNTERS_CC BPNode_ResetBundleCountersCmd
+./generate_typedef "Reset Error Counters"  BPNODE_RESET_ERROR_COUNTERS_CC BPNode_ResetErrorCountersCmd
+./generate_typedef "Add Application"  BPNODE_ADD_APPLICATION_CC BPNode_AddApplicationCmd
+./generate_typedef "Remove Application"  BPNODE_REMOVE_APPLICATION_CC BPNode_RemoveApplicationCmd
+./generate_typedef "Set Registration State"  BPNODE_SET_REGISTRATION_STATE_CC BPNode_SetRegistrationStateCmd
+./generate_typedef "Start Application"  BPNODE_START_APPLICATION_CC BPNode_StartApplicationCmd
+./generate_typedef "Stop Application"  BPNODE_STOP_APPLICATION_CC BPNode_StopApplicationCmd
+./generate_typedef "Add Authorized Sources"  BPNODE_ADD_AUTH_SOURCES_CC BPNode_AddAuthSourcesCmd
+./generate_typedef "Remove Authorized Sources"  BPNODE_REMOVE_AUTH_SOURCES_CC BPNode_RemoveAuthSourcesCmd
+./generate_typedef "Add Authorized Custody Sources"  BPNODE_ADD_AUTH_CUSTODY_SOURCES_CC BPNode_AddAuthCustodySourcesCmd
+./generate_typedef "Remove Authorized Custody Sources"  BPNODE_REMOVE_AUTH_CUSTODY_SOURCES_CC BPNode_RemoveAuthCustodySourcesCmd
+./generate_typedef "Add Authorized Custodians"  BPNODE_ADD_AUTH_CUSTODIANS_CC BPNode_AddAuthCustodiansCmd
+./generate_typedef "Remove Authorized Custodians"  BPNODE_REMOVE_AUTH_CUSTODIANS_CC BPNode_RemoveAuthCustodiansCmd
+./generate_typedef "Add Authorized Report-to EID"  BPNODE_ADD_AUTH_REPORT_TO_EID_CC BPNode_AddAuthReportToEidCmd
+./generate_typedef "Remove Authorized Report-to EID"  BPNODE_REMOVE_AUTH_REPORT_TO_EID_CC BPNode_RemoveAuthReportToEidCmd
+./generate_typedef "Add Latency"  BPNODE_ADD_LATENCY_CC BPNode_AddLatencyCmd
+./generate_typedef "Remove Latency"  BPNODE_REMOVE_LATENCY_CC BPNode_RemoveLatencyCmd
+./generate_typedef "Contact Setup"  BPNODE_CONTACT_SETUP_CC BPNode_ContactSetupCmd
+./generate_typedef "Contact Start"  BPNODE_CONTACT_START_CC BPNode_ContactStartCmd
+./generate_typedef "Contact Stop"  BPNODE_CONTACT_STOP_CC BPNode_ContactStopCmd
+./generate_typedef "Contact Teardown"  BPNODE_CONTACT_TEARDOWN_CC BPNode_ContactTeardownCmd
+./generate_typedef "Add MIB Array Key"  BPNODE_ADD_MIB_ARRAY_KEY_CC BPNode_AddMibArrayKeyCmd
+./generate_typedef "Remove MIB Array Key"  BPNODE_REMOVE_MIB_ARRAY_KEY_CC BPNode_RemoveMibArrayKeyCmd
+./generate_typedef "Set MIB Item"  BPNODE_SET_MIB_ITEM_CC BPNode_SetMibItemCmd
+./generate_typedef "Add Storage Allocation"  BPNODE_ADD_STORAGE_ALLOCATION_CC BPNode_AddStorageAllocationCmd
+./generate_typedef "Remove Storage Allocation"  BPNODE_REMOVE_STORAGE_ALLOCATION_CC BPNode_RemoveStorageAllocationCmd
+./generate_typedef "Perform Self Test (7.2)"  BPNODE_PERFORM_SELF_TEST_CC BPNode_PerformSelfTestCmd
+./generate_typedef "Send Node MIB Config HK"  BPNODE_SEND_NODE_MIB_CONFIG_HK_CC BPNode_SendNodeMibConfigHkCmd
+./generate_typedef "Send Per-Source MIB Config HK"  BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC BPNode_SendSourceMibConfigHkCmd
+./generate_typedef "Send Node MIB Counter HK"  BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC BPNode_SendNodeMibCountersHkCmd
+./generate_typedef "Send Per-Source MIB Counter HK"  BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC BPNode_SendSourceMibCountersHkCmd
+./generate_typedef "Send Storage HK"  BPNODE_SEND_STORAGE_HK BPNode_SendStorageHk
+./generate_typedef "Send Channel/Contact Status HK"  BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC BPNode_SendChannelContactStatHkCmd

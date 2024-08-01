@@ -1,0 +1,45 @@
+./generate_declaration "Noop"  "This function process a noop command." BPNODE_NOOP_CC BPNode_NoopCmd
+./generate_declaration "Add All Applications"  "This function adds all defined applications." BPNODE_ADD_ALL_APPLICATIONS_CC BPNode_AddAllApplicationsCmd
+./generate_declaration "Start All Applications"  "This function starts all applications" BPNODE_START_ALL_APPLICATIONS_CC BPNode_StartAllApplicationsCmd
+./generate_declaration "Verify Bundle Storage"  "This function verifies bundle storage." BPNODE_VERIFY_BUNDLE_STORAGE_CC BPNode_VerifyBundleStorageCmd
+./generate_declaration "Initialize Bundle Storage"  "This function initializes bundle storage." BPNODE_INIT_BUNDLE_STORAGE_CC BPNode_InitBundleStorageCmd
+./generate_declaration "Verify Bundle Metadata (7.2)"  "This function verifies stored bundle metadata." BPNODE_VERIFY_BUNDLE_METADATA_CC BPNode_VerifyBundleMetadataCmd
+./generate_declaration "Rebuild Bundle Metadata"  "This function rebuilds the cache from stored bundle metadata." BPNODE_REBUILD_BUNDLE_METADATA_CC BPNode_RebuildBundleMetadataCmd
+./generate_declaration "Clear Volatile"  "This function clears the cache." BPNODE_CLEAR_VOLATILE_CC BPNode_ClearVolatileCmd
+./generate_declaration "Reload Saved Data (7.2)"  "This function reloads data saved by modules." BPNODE_RELOAD_SAVED_DATA_CC BPNode_ReloadSavedDataCmd
+./generate_declaration "Reset All Counters"  "This function resets all node counters." BPNODE_RESET_ALL_COUNTERS_CC BPNode_ResetAllCountersCmd
+./generate_declaration "Reset Counter"  "This function resets an individual counter." BPNODE_RESET_COUNTER_CC BPNode_ResetCounterCmd
+./generate_declaration "Reset Source Counters"  "This function resets all counters indexed by Source EID." BPNODE_RESET_SOURCE_COUNTERS_CC BPNode_ResetSourceCountersCmd
+./generate_declaration "Reset Bundle Counters"  "This function resets all bundle counters." BPNODE_RESET_BUNDLE_COUNTERS_CC BPNode_ResetBundleCountersCmd
+./generate_declaration "Reset Error Counters"  "This function resets all error counters." BPNODE_RESET_ERROR_COUNTERS_CC BPNode_ResetErrorCountersCmd
+./generate_declaration "Add Application"  "This function adds an application." BPNODE_ADD_APPLICATION_CC BPNode_AddApplicationCmd
+./generate_declaration "Remove Application"  "This function removes an application." BPNODE_REMOVE_APPLICATION_CC BPNode_RemoveApplicationCmd
+./generate_declaration "Set Registration State"  "This function sets an application's registration state." BPNODE_SET_REGISTRATION_STATE_CC BPNode_SetRegistrationStateCmd
+./generate_declaration "Start Application"  "This function starts an application." BPNODE_START_APPLICATION_CC BPNode_StartApplicationCmd
+./generate_declaration "Stop Application"  "This function stops an application." BPNODE_STOP_APPLICATION_CC BPNode_StopApplicationCmd
+./generate_declaration "Add Authorized Sources"  "This function adds one or more authorized Source EIDs." BPNODE_ADD_AUTH_SOURCES_CC BPNode_AddAuthSourcesCmd
+./generate_declaration "Remove Authorized Sources"  "This function removes one or more authorized Source EIDs." BPNODE_REMOVE_AUTH_SOURCES_CC BPNode_RemoveAuthSourcesCmd
+./generate_declaration "Add Authorized Custody Sources"  "This function adds one or more authorized custody Source EIDs." BPNODE_ADD_AUTH_CUSTODY_SOURCES_CC BPNode_AddAuthCustodySourcesCmd
+./generate_declaration "Remove Authorized Custody Sources"  "This function removes one or more authorized custody Source EIDs." BPNODE_REMOVE_AUTH_CUSTODY_SOURCES_CC BPNode_RemoveAuthCustodySourcesCmd
+./generate_declaration "Add Authorized Custodians"  "This function adds one or more authorized custodian EIDs." BPNODE_ADD_AUTH_CUSTODIANS_CC BPNode_AddAuthCustodiansCmd
+./generate_declaration "Remove Authorized Custodians"  "This function removes one or more auhorized custodian EIDs." BPNODE_REMOVE_AUTH_CUSTODIANS_CC BPNode_RemoveAuthCustodiansCmd
+./generate_declaration "Add Authorized Report-to EID"  "This function adds an authorized Report-to-EID." BPNODE_ADD_AUTH_REPORT_TO_EID_CC BPNode_AddAuthReportToEidCmd
+./generate_declaration "Remove Authorized Report-to EID"  "This function removes an authorized Report-to EID." BPNODE_REMOVE_AUTH_REPORT_TO_EID_CC BPNode_RemoveAuthReportToEidCmd
+./generate_declaration "Add Latency"  "This function  adds a latency (low, medium, high) to a bundle queue." BPNODE_ADD_LATENCY_CC BPNode_AddLatencyCmd
+./generate_declaration "Remove Latency"  "This function removes a latency from a bundle queue." BPNODE_REMOVE_LATENCY_CC BPNode_RemoveLatencyCmd
+./generate_declaration "Contact Setup"  "This function sets up a contact." BPNODE_CONTACT_SETUP_CC BPNode_ContactSetupCmd
+./generate_declaration "Contact Start"  "This function starts a contact." BPNODE_CONTACT_START_CC BPNode_ContactStartCmd
+./generate_declaration "Contact Stop"  "This function stops a contact." BPNODE_CONTACT_STOP_CC BPNode_ContactStopCmd
+./generate_declaration "Contact Teardown"  "This function tears down a contact." BPNODE_CONTACT_TEARDOWN_CC BPNode_ContactTeardownCmd
+./generate_declaration "Add MIB Array Key"  "This function adds a MIB Array Key." BPNODE_ADD_MIB_ARRAY_KEY_CC BPNode_AddMibArrayKeyCmd
+./generate_declaration "Remove MIB Array Key"  "This function removes a MIB Array Key." BPNODE_REMOVE_MIB_ARRAY_KEY_CC BPNode_RemoveMibArrayKeyCmd
+./generate_declaration "Set MIB Item"  "This function sets the value of a MIB item." BPNODE_SET_MIB_ITEM_CC BPNode_SetMibItemCmd
+./generate_declaration "Add Storage Allocation"  "This function adds a given storage allocation assigned to a given Source EID." BPNODE_ADD_STORAGE_ALLOCATION_CC BPNode_AddStorageAllocationCmd
+./generate_declaration "Remove Storage Allocation"  "This function removes a storage allocation by Source EID." BPNODE_REMOVE_STORAGE_ALLOCATION_CC BPNode_RemoveStorageAllocationCmd
+./generate_declaration "Perform Self Test (7.2)"  "This function performs a BPNode self test." BPNODE_PERFORM_SELF_TEST_CC BPNode_PerformSelfTestCmd
+./generate_declaration "Send Node MIB Config HK"  "This function sends Node MIB configuration HK." BPNODE_SEND_NODE_MIB_CONFIG_HK_CC BPNode_SendNodeMibConfigHkCmd
+./generate_declaration "Send Per-Source MIB Config HK"  "This function sends per-source EID MIB configuration HK." BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC BPNode_SendSourceMibConfigHkCmd
+./generate_declaration "Send Node MIB Counter HK"  "This function sends MIB counter HK." BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC BPNode_SendNodeMibCountersHkCmd
+./generate_declaration "Send Per-Source MIB Counter HK"  "This function sends per-source EID MIB counter HK." BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC BPNode_SendSourceMibCountersHkCmd
+./generate_declaration "Send Storage HK"  "This function sends storage HK." BPNODE_SEND_STORAGE_HK BPNode_SendStorageHk
+./generate_declaration "Send Channel/Contact Status HK"  "This function sends channel/contact status HK." BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC BPNode_SendChannelContactStatHkCmd

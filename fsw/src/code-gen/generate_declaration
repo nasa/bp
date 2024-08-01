@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+import sys
+
+def generate_declaration(brief, description, enum_str, cmd_str):
+    brief=brief.capitalize()
+    description=description.capitalize()
+    return f"""/**
+ * \\brief {brief} command
+ *
+ *  \\par Description
+ *       {description}
+ *
+ *  \\par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \\param[in] Msg Pointer to Software Bus buffer
+ *
+ *  \\return Execution status, see \\ref CFEReturnCodes
+ *  \\retval #CFE_SUCCESS \\copybrief CFE_SUCCESS
+ */
+CFE_Status_t {cmd_str}(const {cmd_str}_t *Msg);
+"""
+
+if __name__ == '__main__':
+    print (generate_declaration(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]))
