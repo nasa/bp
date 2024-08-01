@@ -2,7 +2,7 @@
  * \brief Noop command
  *
  *  \par Description
- *       This function process a noop command.
+ *       This function processes a noop command.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None

@@ -74,5 +74,11 @@ Reference: [DTN_CDR_Slides_final_reduced_actual_presentation.pptx](https://nasa.
 
 apps/bpnode/config/default_bpnode_fcncodes.h has 46 directives listed which means the lists may match.
 
-Directive Code Template
+Directive Code Templates
+
+generate case | bpnode_dispatch.c
+generate cmd  | bpnode_cmds.c
+generate typedefs | default_bp_msgstruct.h
+generate declarations | bp_cmd.h
+
 

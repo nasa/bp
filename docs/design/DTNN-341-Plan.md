@@ -1,4 +1,6 @@
-DTNN-341 Plan
+DTNN-341 Plan - Application Agent - Node Configuration Creation and DP/TLMP Updates
+
+**Prepare**
 
 ```
 Repository:  https://aetd-git.gsfc.nasa.gov/gsfc-dtn/bp-cfs
@@ -6,7 +8,7 @@ Branch name: DTNN-341-add-aa-nc-dp-tlmp
 ```
 
 Start the branch from `develop`.
-Merge in changes from nasa/bp-cfs branch `DTNN-609-fresh-slate` periodically, as needed.
+Merge in changes from nasa/bp-cfs branch `main` periodically, as needed.
 
 ```
 Repository:  https://github.com/gskenned/bp fork of nasa/bp
@@ -14,9 +16,9 @@ Branch name: DTNN-341-add-aa-nc-dp-tlmp
 Submodule:   apps/bpnode
 ```
 
-Start the branch from `develop`. Merge in changes from nasa/bp branch `DTNN-609-fresh-slate` periodically, as needed.
+Start the branch from `develop`. Merge in changes from nasa/bp branch `main` periodically, as needed.
 
-Implement
+**Implement**
 
 Create bpnode/docs/design
   Temporary or permanent design documents
@@ -29,7 +31,7 @@ Create bpnode/docs/design
     if HK, generate TLM packet stub
 	skip HK packet generation for now
 
-Test
+**Test**
 
 Send each directive via COSMOS Test Suite.
   Verify result of directive.

@@ -1,4 +1,4 @@
-./generate_declaration "Noop"  "This function process a noop command." BPNODE_NOOP_CC BPNode_NoopCmd
+./generate_declaration "Noop"  "This function processes a noop command." BPNODE_NOOP_CC BPNode_NoopCmd
 ./generate_declaration "Add All Applications"  "This function adds all defined applications." BPNODE_ADD_ALL_APPLICATIONS_CC BPNode_AddAllApplicationsCmd
 ./generate_declaration "Start All Applications"  "This function starts all applications" BPNODE_START_ALL_APPLICATIONS_CC BPNode_StartAllApplicationsCmd
 ./generate_declaration "Verify Bundle Storage"  "This function verifies bundle storage." BPNODE_VERIFY_BUNDLE_STORAGE_CC BPNode_VerifyBundleStorageCmd
