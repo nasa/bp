@@ -78,7 +78,7 @@ Directive Code Templates
 
 generate case | bpnode_dispatch.c
 generate cmd  | bpnode_cmds.c
-generate typedefs | default_bp_msgstruct.h
-generate declarations | bp_cmd.h
+generate typedefs | default_bpnode_msgstruct.h
+generate declarations | bpnode_cmd.h
 
 
