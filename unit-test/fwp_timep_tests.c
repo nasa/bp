@@ -126,8 +126,8 @@ void Test_BPA_TIMEP_GetHostTime(void)
  */
 void UtTest_Setup(void)
 {
-    ADD_TEST(BPA_TIMEP_GetMonotonicTime);
-    ADD_TEST(BPA_TIMEP_GetHostEpoch);
-    ADD_TEST(BPA_TIMEP_GetHostClockState);
-    ADD_TEST(BPA_TIMEP_GetHostTime);
+    ADD_TEST(Test_BPA_TIMEP_GetMonotonicTime);
+    ADD_TEST(Test_BPA_TIMEP_GetHostEpoch);
+    ADD_TEST(Test_BPA_TIMEP_GetHostClockState);
+    ADD_TEST(Test_BPA_TIMEP_GetHostTime);
 }
