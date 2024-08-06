@@ -44,16 +44,6 @@
 ** Function Definitions
 */
 
-/* Send Node MIB Counters housekeeping command */
-CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
-{
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
-    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
-
-    return CFE_SUCCESS;
-}
-
-
 /* Noop command */
 CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 {

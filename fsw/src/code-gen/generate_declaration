@@ -2,8 +2,6 @@
 import sys
 
 def generate_declaration(brief, description, enum_str, cmd_str):
-    brief=brief.capitalize()
-    description=description.capitalize()
     return f"""/**
  * \\brief {brief} command
  *
@@ -12,7 +10,7 @@ def generate_declaration(brief, description, enum_str, cmd_str):
  *
  *  \\par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \\param[in] Msg Pointer to Software Bus buffer
  *
  *  \\return Execution status, see \\ref CFEReturnCodes

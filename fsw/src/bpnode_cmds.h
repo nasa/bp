@@ -56,7 +56,7 @@
 CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg);
 
 /**
- * \brief Add all applications command
+ * \brief Add All Applications command
  *
  *  \par Description
  *       This function adds all defined applications.
@@ -72,7 +72,7 @@ CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg);
 CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *Msg);
 
 /**
- * \brief Start all applications command
+ * \brief Start All Applications command
  *
  *  \par Description
  *       This function starts all applications
@@ -88,7 +88,7 @@ CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *
 CFE_Status_t BPNode_StartAllApplicationsCmd(const BPNode_StartAllApplicationsCmd_t *Msg);
 
 /**
- * \brief Verify bundle storage command
+ * \brief Verify Bundle Storage command
  *
  *  \par Description
  *       This function verifies bundle storage.
@@ -104,7 +104,7 @@ CFE_Status_t BPNode_StartAllApplicationsCmd(const BPNode_StartAllApplicationsCmd
 CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t *Msg);
 
 /**
- * \brief Initialize bundle storage command
+ * \brief Initialize Bundle Storage command
  *
  *  \par Description
  *       This function initializes bundle storage.
@@ -120,7 +120,7 @@ CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t
 CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Msg);
 
 /**
- * \brief Verify bundle metadata (7.2) command
+ * \brief Verify Bundle Metadata (7.2) command
  *
  *  \par Description
  *       This function verifies stored bundle metadata.
@@ -136,7 +136,7 @@ CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Ms
 CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd_t *Msg);
 
 /**
- * \brief Rebuild bundle metadata command
+ * \brief Rebuild Bundle Metadata command
  *
  *  \par Description
  *       This function rebuilds the cache from stored bundle metadata.
@@ -152,7 +152,7 @@ CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd
 CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataCmd_t *Msg);
 
 /**
- * \brief Clear volatile command
+ * \brief Clear Volatile command
  *
  *  \par Description
  *       This function clears the cache.
@@ -168,7 +168,7 @@ CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataC
 CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg);
 
 /**
- * \brief Reload saved data (7.2) command
+ * \brief Reload Saved Data (7.2) command
  *
  *  \par Description
  *       This function reloads data saved by modules.
@@ -184,7 +184,7 @@ CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg);
 CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg);
 
 /**
- * \brief Reset all counters command
+ * \brief Reset All Counters command
  *
  *  \par Description
  *       This function resets all node counters.
@@ -200,7 +200,7 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg);
 CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg);
 
 /**
- * \brief Reset counter command
+ * \brief Reset Counter command
  *
  *  \par Description
  *       This function resets an individual counter.
@@ -216,10 +216,10 @@ CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 CFE_Status_t BPNode_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg);
 
 /**
- * \brief Reset source counters command
+ * \brief Reset Source Counters command
  *
  *  \par Description
- *       This function resets all counters indexed by source eid.
+ *       This function resets all counters indexed by Source EID.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -232,7 +232,7 @@ CFE_Status_t BPNode_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg);
 CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg);
 
 /**
- * \brief Reset bundle counters command
+ * \brief Reset Bundle Counters command
  *
  *  \par Description
  *       This function resets all bundle counters.
@@ -248,7 +248,7 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
 CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t *Msg);
 
 /**
- * \brief Reset error counters command
+ * \brief Reset Error Counters command
  *
  *  \par Description
  *       This function resets all error counters.
@@ -264,7 +264,7 @@ CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t
 CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *Msg);
 
 /**
- * \brief Add application command
+ * \brief Add Application command
  *
  *  \par Description
  *       This function adds an application.
@@ -280,7 +280,7 @@ CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *
 CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg);
 
 /**
- * \brief Remove application command
+ * \brief Remove Application command
  *
  *  \par Description
  *       This function removes an application.
@@ -296,7 +296,7 @@ CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg);
 CFE_Status_t BPNode_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg);
 
 /**
- * \brief Set registration state command
+ * \brief Set Registration State command
  *
  *  \par Description
  *       This function sets an application's registration state.
@@ -312,7 +312,7 @@ CFE_Status_t BPNode_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Ms
 CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg);
 
 /**
- * \brief Start application command
+ * \brief Start Application command
  *
  *  \par Description
  *       This function starts an application.
@@ -328,7 +328,7 @@ CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd
 CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg);
 
 /**
- * \brief Stop application command
+ * \brief Stop Application command
  *
  *  \par Description
  *       This function stops an application.
@@ -344,10 +344,10 @@ CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg);
 
 /**
- * \brief Add authorized sources command
+ * \brief Add Authorized Sources command
  *
  *  \par Description
- *       This function adds one or more authorized source eids.
+ *       This function adds one or more authorized Source EIDs.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -360,10 +360,10 @@ CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg);
 CFE_Status_t BPNode_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg);
 
 /**
- * \brief Remove authorized sources command
+ * \brief Remove Authorized Sources command
  *
  *  \par Description
- *       This function removes one or more authorized source eids.
+ *       This function removes one or more authorized Source EIDs.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -376,10 +376,10 @@ CFE_Status_t BPNode_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg);
 CFE_Status_t BPNode_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg);
 
 /**
- * \brief Add authorized custody sources command
+ * \brief Add Authorized Custody Sources command
  *
  *  \par Description
- *       This function adds one or more authorized custody source eids.
+ *       This function adds one or more authorized custody Source EIDs.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -392,10 +392,10 @@ CFE_Status_t BPNode_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Ms
 CFE_Status_t BPNode_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg);
 
 /**
- * \brief Remove authorized custody sources command
+ * \brief Remove Authorized Custody Sources command
  *
  *  \par Description
- *       This function removes one or more authorized custody source eids.
+ *       This function removes one or more authorized custody Source EIDs.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -408,10 +408,10 @@ CFE_Status_t BPNode_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesC
 CFE_Status_t BPNode_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg);
 
 /**
- * \brief Add authorized custodians command
+ * \brief Add Authorized Custodians command
  *
  *  \par Description
- *       This function adds one or more authorized custodian eids.
+ *       This function adds one or more authorized custodian EIDs.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -424,10 +424,10 @@ CFE_Status_t BPNode_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySo
 CFE_Status_t BPNode_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg);
 
 /**
- * \brief Remove authorized custodians command
+ * \brief Remove Authorized Custodians command
  *
  *  \par Description
- *       This function removes one or more auhorized custodian eids.
+ *       This function removes one or more auhorized custodian EIDs.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -440,10 +440,10 @@ CFE_Status_t BPNode_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Ms
 CFE_Status_t BPNode_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg);
 
 /**
- * \brief Add authorized report-to eid command
+ * \brief Add Authorized Report-to EID command
  *
  *  \par Description
- *       This function adds an authorized report-to-eid.
+ *       This function adds an authorized Report-to-EID.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -456,10 +456,10 @@ CFE_Status_t BPNode_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd
 CFE_Status_t BPNode_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg);
 
 /**
- * \brief Remove authorized report-to eid command
+ * \brief Remove Authorized Report-to EID command
  *
  *  \par Description
- *       This function removes an authorized report-to eid.
+ *       This function removes an authorized Report-to EID.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -472,7 +472,7 @@ CFE_Status_t BPNode_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *
 CFE_Status_t BPNode_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg);
 
 /**
- * \brief Add latency command
+ * \brief Add Latency command
  *
  *  \par Description
  *       This function  adds a latency (low, medium, high) to a bundle queue.
@@ -488,7 +488,7 @@ CFE_Status_t BPNode_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidC
 CFE_Status_t BPNode_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg);
 
 /**
- * \brief Remove latency command
+ * \brief Remove Latency command
  *
  *  \par Description
  *       This function removes a latency from a bundle queue.
@@ -504,7 +504,7 @@ CFE_Status_t BPNode_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg);
 CFE_Status_t BPNode_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg);
 
 /**
- * \brief Contact setup command
+ * \brief Contact Setup command
  *
  *  \par Description
  *       This function sets up a contact.
@@ -520,7 +520,7 @@ CFE_Status_t BPNode_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg);
 CFE_Status_t BPNode_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg);
 
 /**
- * \brief Contact start command
+ * \brief Contact Start command
  *
  *  \par Description
  *       This function starts a contact.
@@ -536,7 +536,7 @@ CFE_Status_t BPNode_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg);
 CFE_Status_t BPNode_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg);
 
 /**
- * \brief Contact stop command
+ * \brief Contact Stop command
  *
  *  \par Description
  *       This function stops a contact.
@@ -552,7 +552,7 @@ CFE_Status_t BPNode_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg);
 CFE_Status_t BPNode_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg);
 
 /**
- * \brief Contact teardown command
+ * \brief Contact Teardown command
  *
  *  \par Description
  *       This function tears down a contact.
@@ -568,10 +568,10 @@ CFE_Status_t BPNode_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg);
 CFE_Status_t BPNode_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg);
 
 /**
- * \brief Add mib array key command
+ * \brief Add MIB Array Key command
  *
  *  \par Description
- *       This function adds a mib array key.
+ *       This function adds a MIB Array Key.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -584,10 +584,10 @@ CFE_Status_t BPNode_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg);
 CFE_Status_t BPNode_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg);
 
 /**
- * \brief Remove mib array key command
+ * \brief Remove MIB Array Key command
  *
  *  \par Description
- *       This function removes a mib array key.
+ *       This function removes a MIB Array Key.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -600,10 +600,10 @@ CFE_Status_t BPNode_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg);
 CFE_Status_t BPNode_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg);
 
 /**
- * \brief Set mib item command
+ * \brief Set MIB Item command
  *
  *  \par Description
- *       This function sets the value of a mib item.
+ *       This function sets the value of a MIB item.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -616,10 +616,10 @@ CFE_Status_t BPNode_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Ms
 CFE_Status_t BPNode_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg);
 
 /**
- * \brief Add storage allocation command
+ * \brief Add Storage Allocation command
  *
  *  \par Description
- *       This function adds a given storage allocation assigned to a given source eid.
+ *       This function adds a given storage allocation assigned to a given Source EID.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -632,10 +632,10 @@ CFE_Status_t BPNode_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg);
 CFE_Status_t BPNode_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg);
 
 /**
- * \brief Remove storage allocation command
+ * \brief Remove Storage Allocation command
  *
  *  \par Description
- *       This function removes a storage allocation by source eid.
+ *       This function removes a storage allocation by Source EID.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -648,10 +648,10 @@ CFE_Status_t BPNode_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd
 CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg);
 
 /**
- * \brief Perform self test (7.2) command
+ * \brief Perform Self Test (7.2) command
  *
  *  \par Description
- *       This function performs a bpnode self test.
+ *       This function performs a BPNode self test.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -664,10 +664,10 @@ CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
 CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg);
 
 /**
- * \brief Send node mib config hk command
+ * \brief Send Node MIB Config HK command
  *
  *  \par Description
- *       This function sends node mib configuration hk.
+ *       This function sends Node MIB configuration HK.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -680,10 +680,10 @@ CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg);
 CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t *Msg);
 
 /**
- * \brief Send per-source mib config hk command
+ * \brief Send Per-Source MIB Config HK command
  *
  *  \par Description
- *       This function sends per-source eid mib configuration hk.
+ *       This function sends per-source EID MIB configuration HK.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -696,10 +696,10 @@ CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t
 CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkCmd_t *Msg);
 
 /**
- * \brief Send node mib counter hk command
+ * \brief Send Node MIB Counter HK command
  *
  *  \par Description
- *       This function sends mib counter hk.
+ *       This function sends MIB counter HK.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -712,10 +712,10 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
 CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg);
 
 /**
- * \brief Send per-source mib counter hk command
+ * \brief Send Per-Source MIB Counter HK command
  *
  *  \par Description
- *       This function sends per-source eid mib counter hk.
+ *       This function sends per-source EID MIB counter HK.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -728,10 +728,10 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkC
 CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCountersHkCmd_t *Msg);
 
 /**
- * \brief Send storage hk command
+ * \brief Send Storage HK command
  *
  *  \par Description
- *       This function sends storage hk.
+ *       This function sends storage HK.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -744,10 +744,10 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
 CFE_Status_t BPNode_SendStorageHk(const BPNode_SendStorageHk_t *Msg);
 
 /**
- * \brief Send channel/contact status hk command
+ * \brief Send Channel/Contact Status HK command
  *
  *  \par Description
- *       This function sends channel/contact status hk.
+ *       This function sends channel/contact status HK.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -758,6 +758,7 @@ CFE_Status_t BPNode_SendStorageHk(const BPNode_SendStorageHk_t *Msg);
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg);
+
 
 
 #endif /* BPNODE_CMDS_H */
