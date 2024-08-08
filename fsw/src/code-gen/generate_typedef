@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+import sys
+
+def generate_typedef(brief, enum_str, cmd_str):
+    brief=brief.capitalize()
+    return f"""/**
+ * \\brief {brief} command 
+ */
+typedef struct
+{{
+    CFE_MSG_CommandHeader_t CommandHeader; /**< \\brief Command header */
+}} {cmd_str}_t;
+"""
+
+if __name__ == '__main__':
+    print (generate_typedef(sys.argv[1], sys.argv[2], sys.argv[3]))
