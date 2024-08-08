@@ -50,6 +50,31 @@ static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_
 ** Function Definitions
 */
 
+/*
+ * Temporary stack dump
+ */
+#include <execinfo.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void print_stack_trace(uint16 num_frames) {
+    void *callstack[128];
+    if (num_frames > 128) num_frames = 128;
+    int frames = backtrace(callstack, num_frames);
+    char **strs = backtrace_symbols(callstack, frames);
+    if (strs == NULL) {
+        perror("backtrace_symbols");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Stack trace:\n");
+    for (int i = 0; i < frames; ++i) {
+        printf("%s\n", strs[i]);
+    }
+
+    free(strs);
+}
+
 /* Process packets received on command pipe */
 void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
 {
@@ -88,7 +113,11 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
         else
         {
             CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR,
-                              "Invalid ground command code: CC = %d", (uint8) MsgFc);
+                              "BPNode_TaskPipe: Invalid ground command code: CC = %d", (uint8) MsgFc);
         }
+
+        printf ("Stack trace should be here.\n");
+        print_stack_trace(8);
+
     }
 }

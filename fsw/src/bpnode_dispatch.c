@@ -399,7 +399,7 @@ void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
 
             CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR, 
-                            "Invalid ground command code: CC = %d", CommandCode);
+                            "BPNode_ProcessGroundCommand: Invalid ground command code: CC = %d", CommandCode);
             break;
     }
 }

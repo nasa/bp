@@ -76,9 +76,21 @@ apps/bpnode/config/default_bpnode_fcncodes.h has 46 directives listed which mean
 
 Directive Code Templates
 
-generate case | bpnode_dispatch.c
-generate cmd  | bpnode_cmds.c
-generate typedefs | default_bpnode_msgstruct.h
-generate declarations | bpnode_cmd.h
+generate case | apps/bpnode/fsw/src/bpnode_dispatch.c
+generate cmd  | apps/bpnode/fsw/src/bpnode_cmds.c
+generate typedefs | apps/bpnode/config/default_bpnode_msgstruct.h
+generate declarations | apps/bpnode/fsw/src/bpnode_cmds.h
+
+generate EDS file | apps/bpnode/eds/bpnode.xml
+
+COSMOS command definitions are in the GEM build.
+
+~/repos/gsfc-dtn/openc3-cosmos-dtnfsw/targets/DTNFSW/cmd_tlm
+
+
+Telemetry Code Templates
+
+
+generate EDS file | bpnode.xml
 
 
