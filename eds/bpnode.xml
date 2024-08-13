@@ -452,14 +452,14 @@
       </ContainerDataType>      
       
       <!--UNIMPLEMENTED-->
-      <ContainerDataType name="SendStorageHk" baseType="CommandBase">
+      <ContainerDataType name="SendStorageHkCmd" baseType="CommandBase">
         <ConstraintSet>
           <ValueConstraint entry="Sec.FunctionCode" value="44" />
         </ConstraintSet>
       </ContainerDataType> 
 
       <!--UNIMPLEMENTED-->
-      <ContainerDataType name="SendChannelContactStatHkCmd" baseType="CommandBase">
+      <ContainerDataType name="SendChannelContactStatusHk" baseType="CommandBase">
         <ConstraintSet>
           <ValueConstraint entry="Sec.FunctionCode" value="45" />
         </ConstraintSet>

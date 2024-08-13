@@ -438,7 +438,7 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
 }
 
 /* Send storage hk command */
-CFE_Status_t BPNode_SendStorageHk(const BPNode_SendStorageHk_t *Msg)
+CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 {
     CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION,
                     "Send storage hk command not implemented");
@@ -447,7 +447,7 @@ CFE_Status_t BPNode_SendStorageHk(const BPNode_SendStorageHk_t *Msg)
 }
 
 /* Send channel/contact status hk command */
-CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
+CFE_Status_t BPNode_SendChannelContactStatusHk(const BPNode_SendChannelContactStatusHk_t *Msg)
 {
     CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION,
                     "Send channel/contact status hk command not implemented");
