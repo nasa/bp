@@ -34,6 +34,7 @@
 #include "bpnode_dispatch.h"
 #include "bpnode_tbl.h"
 #include "bpnode_version.h"
+#include "../fwp/fwp_tablep.h"
 
 
 /*
@@ -121,6 +122,15 @@ CFE_Status_t BPNode_WakeupProcess(void)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_MNG_ERR_EID, CFE_EVS_EventType_ERROR,
                             "Error managing the table on wakeup, Status=0x%08X", Status);
+    }
+    
+    /* Call Table Proxy to update tables*/
+    Status = BPA_TableP_TableUpdate();
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "Error Updating Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
+        return Status;
     }
 
     /* Check for pending commands */
@@ -244,6 +254,14 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
                             "BPNode App Initialized. Version %d.%d.%d.", 
                             BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
-
+    
+    /* Call Table Proxy Init Function Here*/
+    Status = BPA_TableP_TableInit();
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "Error Getting Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
+        return Status;
+    }
     return CFE_SUCCESS;
 }

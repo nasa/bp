@@ -54,4 +54,5 @@
  */
 CFE_Status_t BPNode_TblValidationFunc(void *TblData);
 
+
 #endif /* BPNODE_UTILS_H */
