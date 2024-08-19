@@ -380,17 +380,17 @@ void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             }
             break;
 
-        case BPNODE_SEND_STORAGE_HK:
-            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHk_t)))
+        case BPNODE_SEND_STORAGE_HK_TLM_CMD:
+            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkTlmCmd_t)))
             {
-                BPNode_SendStorageHkCmd((const BPNode_SendStorageHk_t *)SBBufPtr);
+                BPNode_SendStorageHkTlmCmd((const BPNode_SendStorageHkTlmCmd_t *)SBBufPtr);
             }
             break;
 
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
-            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
+            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkTlm_t)))
             {
-                BPNode_SendChannelContactStatusHk((const BPNode_SendChannelContactStatHkCmd_t *)SBBufPtr);
+                BPNode_SendChannelContactStatHkTlm((const BPNode_SendChannelContactStatHkTlm_t *)SBBufPtr);
             }
             break;
 

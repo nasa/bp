@@ -299,17 +299,17 @@
             }
             break;
 
-        case BPNODE_SEND_STORAGE_HK:
-            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHk_t)))
+        case BPNODE_SEND_STORAGE_HK_TLM_CMD:
+            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkTlmCmd_t)))
             {
-                BPNode_SendStorageHk((const BPNode_SendStorageHk_t *)SBBufPtr);
+                BPNode_SendStorageHkTlmCmdTlmCmd((const BPNode_SendStorageHk_t *)SBBufPtr);
             }
             break;
 
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
-            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
+            if (BPNode_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkTlm_t)))
             {
-                BPNode_SendChannelContactStatHkCmd((const BPNode_SendChannelContactStatHkCmd_t *)SBBufPtr);
+                BPNode_SendChannelContactStatHkTlm((const BPNode_SendChannelContactStatHkTlm_t *)SBBufPtr);
             }
             break;
 
