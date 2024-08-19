@@ -39,6 +39,8 @@
 #include "bp_dispatch.h"
 #include "bp_cla_bundle_io.h"
 #include "bplib_routing.h"
+#include "bpl_evm_api.h"
+#include "bpnode_evp_cfs.h"
 
 /************************************************
  * File Data
@@ -65,6 +67,19 @@ static CFE_Status_t BP_SetupLibrary(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
+    BPL_EVM_ProxyCallbacks_t EventProxyCallbacks = {
+        .Initialize_Impl = BPNODE_EVP_Initialize_Impl,
+        .SendEvent_Impl = BPNODE_EVP_SendEvent_Impl,
+    };
+
+    BPL_Status_t BPL_EVM_Status;
+    BPL_EVM_Status = BPL_EVM_Initialize(EventProxyCallbacks);
+    if (BPL_EVM_Status.ReturnValue != BPL_STATUS_SUCCESS)
+    {
+        fprintf(stderr, "%s(): BPL_EVM_Initialize failed\n", __func__);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
     return CFE_SUCCESS;
 }
 
@@ -73,27 +88,11 @@ static CFE_Status_t BP_SetupLibrary(void)
  *-----------------------------------------------*/
 static CFE_Status_t AppInit(void)
 {
-    static const CFE_EVS_BinFilter_t BP_EVENT_FILTER_INIT[] = {
-        {BP_IO_SEND_ERR_EID, CFE_EVS_FIRST_8_STOP},   {BP_IO_RECEIVE_ERR_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_LIB_PROC_ERR_EID, CFE_EVS_FIRST_8_STOP},  {BP_LIB_LOAD_ERR_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_LIB_STORE_ERR_EID, CFE_EVS_FIRST_8_STOP}, {BP_LIB_ACCEPT_ERR_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_FILE_ERR_EID, CFE_EVS_FIRST_8_STOP},      {BP_STORE_INFO_EID, CFE_EVS_FIRST_8_STOP},
-        {BP_BPLIB_INFO_EID, CFE_EVS_FIRST_8_STOP}};
-
-    const size_t   num_event_filters = sizeof(BP_EVENT_FILTER_INIT) / sizeof(BP_EVENT_FILTER_INIT[0]);
     CFE_Status_t   status            = CFE_SUCCESS;
     CFE_ES_AppId_t app_id;
 
-    assert(num_event_filters <= BP_MAX_EVENT_FILTERS);
     memset(&BP_GlobalData, 0, sizeof(BP_GlobalData));
     BP_GlobalData.Throttles = BP_Throttles;
-
-    memcpy(BP_GlobalData.EventFilters, BP_EVENT_FILTER_INIT, sizeof(BP_EVENT_FILTER_INIT));
-
-    /* Register Application with Event Services */
-    status = CFE_EVS_Register(BP_GlobalData.EventFilters, num_event_filters, CFE_EVS_EventFilter_BINARY);
-    if (status != CFE_SUCCESS)
-        return status;
 
     /* Get Application ID */
     status = CFE_ES_GetAppID(&app_id);
@@ -165,7 +164,7 @@ static CFE_Status_t AppInit(void)
     BP_DoRebuildFlowBitmask();
 
     /* Application startup event message */
-    CFE_EVS_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized",
+    (void) BPL_EVM_SendEvent(BP_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BP App Version %d.%d.%d.%d: Initialized",
                       BP_MAJOR_VERSION, BP_MINOR_VERSION, BP_REVISION, BP_MISSION_REV);
 
     return CFE_SUCCESS;
@@ -213,6 +212,7 @@ void BP_AppMain(void)
     }
 
     /* Exit Application */
+    BPL_EVM_Deinitialize();
     CFE_EVS_SendEvent(BP_EXIT_ERR_EID, CFE_EVS_EventType_ERROR, "BP application terminating: result = 0x%08X",
                       (unsigned int)run_status);
     CFE_ES_WriteToSysLog("BP application terminating: result = 0x%08X\n",

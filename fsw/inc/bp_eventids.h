@@ -59,9 +59,6 @@
 #define BP_LIB_CONFIG_ERR_EID              36
 #define BP_FILE_ERR_EID                    37
 #define BP_FILE_POLLING_NOT_ACTIVE_ERR_EID 38
-#define BP_STORE_INFO_EID                  39
-
-#define BP_BPLIB_INFO_EID 40
 
 /* placeholder for CLA/Bundle flow events */
 #define BP_CLA_INIT_INF_EID 50
