@@ -356,5 +356,5 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-} BPNode_SendChannelContactStatHkTlm_t;
+} BPNode_SendChannelContacStatHkTlmCmd_t;
 

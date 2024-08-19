@@ -88,7 +88,7 @@ static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_
                 .SendNodeMibCountersHkCmd_indication = BPNode_SendNodeMibCountersHkCmd,
                 .SendSourceMibCountersHkCmd_indication = BPNode_SendSourceMibCountersHkCmd,
                 .SendStorageHkCmd_indication = BPNode_SendStorageHkTlmCmd,
-                .SendChannelContactStatusHk_indication = BPNode_SendChannelContactStatHkTlm
+                .SendChannelContactStatusHk_indication = BPNode_SendChannelContacStatHkTlmCmd
             }
 };
 

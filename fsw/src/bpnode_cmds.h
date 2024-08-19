@@ -757,7 +757,7 @@ CFE_Status_t BPNode_SendStorageHkTlmCmd(const BPNode_SendStorageHkTlmCmd_t *Msg)
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendChannelContactStatHkTlm(const BPNode_SendChannelContactStatHkTlm_t *Msg);
+CFE_Status_t BPNode_SendChannelContacStatHkTlmCmd(const BPNode_SendChannelContacStatHkTlmCmd_t *Msg);
 
 
 

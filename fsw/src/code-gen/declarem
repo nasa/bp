@@ -41,5 +41,5 @@
 ./generate_declaration "Send Per-Source MIB Config HK"  "This function sends per-source EID MIB configuration HK." BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC BPNode_SendSourceMibConfigHkCmd
 ./generate_declaration "Send Node MIB Counter HK"  "This function sends MIB counter HK." BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC BPNode_SendNodeMibCountersHkCmd
 ./generate_declaration "Send Per-Source MIB Counter HK"  "This function sends per-source EID MIB counter HK." BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC BPNode_SendSourceMibCountersHkCmd
-./generate_declaration "Send Storage HK"  "This function sends storage HK." BPNODE_SEND_STORAGE_HK_TLM_CMD BPNode_SendStorageHkTlmCmd
-./generate_declaration "Send Channel/Contact Status HK"  "This function sends channel/contact status HK." BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC BPNode_SendChannelContactStatHkTlm
+./generate_declaration "Send Storage HK"  "This function sends storage HK." BPNODE_SEND_STORAGE_HK_TLM_CC BPNode_SendStorageHkTlmCmd
+./generate_declaration "Send Channel/Contact Status HK"  "This function sends channel/contact status HK." BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_TLM_CC BPNode_SendChannelContacStatHkTlmCmd

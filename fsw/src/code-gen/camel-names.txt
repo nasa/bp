@@ -42,4 +42,4 @@ BPNode_SendSourceMibConfigHkCmd
 BPNode_SendNodeMibCountersHkCmd
 BPNode_SendSourceMibCountersHkCmd
 BPNode_SendStorageHkTlmCmd
-BPNode_SendChannelContactStatHkTlm
+BPNode_SendChannelContacStatHkTlmCmd

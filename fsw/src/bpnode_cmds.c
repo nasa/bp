@@ -532,7 +532,7 @@ CFE_Status_t BPNode_SendStorageHkTlmCmd(const BPNode_SendStorageHkTlmCmd_t *Msg)
 }
 
 /* Send channel/contact status hk command */
-CFE_Status_t BPNode_SendChannelContactStatHkTlm(const BPNode_SendChannelContactStatHkTlm_t *Msg)
+CFE_Status_t BPNode_SendChannelContacStatHkTlmCmd(const BPNode_SendChannelContacStatHkTlmCmd_t *Msg)
 {
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
