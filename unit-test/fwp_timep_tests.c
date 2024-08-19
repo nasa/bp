@@ -30,20 +30,34 @@
 #include "fwp_timep.h"
 #include "bpnode_test_utils.h"
 
+
 /*
 ** Function Definitions
 */
 
+/* Handler to set seconds value for CFE_TIME_GetTAI to provided value */
+void Test_CFE_TIME_GetTAI_Handler(void *UserObj, UT_EntryKey_t FuncKey, 
+                                                        const UT_StubContext_t *Context)
+{
+    CFE_TIME_SysTime_t Time;
+    uint32 *SecsPtr = UserObj;
+
+    Time.Seconds = *SecsPtr;
+    Time.Subseconds = 0;
+
+    UT_Stub_SetReturnValue(UT_KEY(CFE_TIME_GetTAI), Time);
+}
+
 /* Test BPA_TIMEP_GetMonotonicTime */
 void Test_BPA_TIMEP_GetMonotonicTime(void)
 {
-    OS_time_t TimeMsec;
-    int64 TestTime = 0;
+    int64 TimeTicks = 123450000;
+    int64 TimeMsec = 12345;
 
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), &TimeMsec, sizeof(TimeMsec), false);
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeTicks, 
+                                                            sizeof(TimeTicks), false);
 
-    // TODO figure out how to pass in return value to OS_TimeGetTotalMilliseconds
-    UtAssert_INT32_EQ((int32) BPA_TIMEP_GetMonotonicTime(), (int32) TestTime);
+    UtAssert_INT32_EQ((int32) BPA_TIMEP_GetMonotonicTime(), (int32) TimeMsec);
 }
 
 /* Test BPA_TIMEP_GetHostEpoch */
@@ -78,20 +92,17 @@ void Test_BPA_TIMEP_GetHostClockState(void)
 /* Test BPA_TIMEP_GetHostTime */
 void Test_BPA_TIMEP_GetHostTime(void)
 {
-    // CFE_TIME_SysTime_t HostTime;
-    uint32 MicroSecs = 5678000;
+    uint32 Secs = 1234;
+    uint32 MicroSecs = 567000;
     int64_t ExpectedTime;
-    
-    // TODO Figure out how to set return value of CFE_TIME_GetTAI
-    // HostTime.Seconds = 12340;
-    // ExpectedTime = (HostTime.Seconds * 1000) + (MicroSecs / 1000);
-    ExpectedTime = MicroSecs / 1000;
 
+    ExpectedTime = (Secs * 1000) + (MicroSecs / 1000);
+
+    UT_SetHandlerFunction(UT_KEY(CFE_TIME_GetTAI), &Test_CFE_TIME_GetTAI_Handler, &Secs);
     UT_SetDeferredRetcode(UT_KEY(CFE_TIME_Sub2MicroSecs), 1, MicroSecs);
 
     UtAssert_INT32_EQ(BPA_TIMEP_GetHostTime(), ExpectedTime);
     UtAssert_STUB_COUNT(CFE_TIME_GetTAI, 1);
-
 }
 
 /* Register the test cases to execute with the unit test tool */
