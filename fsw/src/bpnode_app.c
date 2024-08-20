@@ -254,9 +254,5 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
                         VersionString);
 
-    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
-                            "BPNode App Initialized. Version %d.%d.%d.", 
-                            BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
-
     return CFE_SUCCESS;
 }
