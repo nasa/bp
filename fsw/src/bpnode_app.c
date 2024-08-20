@@ -35,6 +35,8 @@
 #include "bpnode_tbl.h"
 #include "bpnode_version.h"
 
+#include "bplib.h"
+#include "fwp.h"
 
 /*
 ** Global Data
@@ -150,6 +152,13 @@ CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
 
+    BPLib_FWP_ProxyCallbacks_t Callbacks = {
+        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
+        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
+        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
+        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime
+    };
+
     /* Zero out the global data structure */
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
@@ -239,6 +248,14 @@ CFE_Status_t BPNode_AppInit(void)
         CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
                     "Error Getting Example Table Address, RC = 0x%08lX", (unsigned long)Status);
         return Status;
+    }
+
+    Status = BPLib_FWP_Init(Callbacks);
+
+    if (Status != BP_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Failure initializing function callbacks in BPLib");
     }
 
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 

@@ -45,5 +45,6 @@
 #define BPNODE_TBL_LD_ERR_EID      15
 #define BPNODE_TBL_ADDR_ERR_EID    16
 #define BPNODE_TBL_MNG_ERR_EID     17
+#define BPNODE_FWP_INIT_ERR_EID    18
 
 #endif /* BPNODE_EVENTS_H */
