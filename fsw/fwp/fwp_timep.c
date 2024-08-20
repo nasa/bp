@@ -46,7 +46,7 @@ int64_t BPA_TIMEP_GetMonotonicTime(void)
 }
 
 /* Returns host time epoch */
-void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch)
+void BPA_TIMEP_GetHostEpoch(BPLib_TIME_Epoch_t *Epoch)
 {
     if (Epoch != NULL)
     {
@@ -62,16 +62,16 @@ void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch)
 }
 
 /* Returns current host clock state */
-BPA_TIMEP_ClockState_t BPA_TIMEP_GetHostClockState(void)
+BPLib_TIME_ClockState_t BPA_TIMEP_GetHostClockState(void)
 {
     CFE_TIME_ClockState_Enum_t HostClockState = CFE_TIME_GetClockState();
 
     if (HostClockState == CFE_TIME_ClockState_VALID)
     {
-        return BPA_TIMEP_CLOCK_VALID;
+        return BPLIB_TIME_CLOCK_VALID;
     }
     
-    return BPA_TIMEP_CLOCK_INVALID;
+    return BPLIB_TIME_CLOCK_INVALID;
 }
 
 /* Returns current host time */

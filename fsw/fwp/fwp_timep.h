@@ -64,7 +64,7 @@ int64_t BPA_TIMEP_GetMonotonicTime(void);
  * 
  *  \param[in] Epoch Pointer to host epoch
  */
-void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch);
+void BPA_TIMEP_GetHostEpoch(BPLib_TIME_Epoch_t *Epoch);
 
 /**
  * \brief FWP Time Proxy Get Host Clock State
@@ -79,7 +79,7 @@ void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch);
  *  \retval BPA_TIMEP_CLOCK_INVALID
  *  \retval BPA_TIMEP_CLOCK_VALID
  */
-BPA_TIMEP_ClockState_t BPA_TIMEP_GetHostClockState(void);
+BPLib_TIME_ClockState_t BPA_TIMEP_GetHostClockState(void);
 
 /**
  * \brief FWP Time Proxy Get Host Time

@@ -63,7 +63,7 @@ void Test_BPA_TIMEP_GetMonotonicTime(void)
 /* Test BPA_TIMEP_GetHostEpoch */
 void Test_BPA_TIMEP_GetHostEpoch_Nominal(void)
 {
-    BPA_TIMEP_Epoch_t Epoch;
+    BPLib_TIME_Epoch_t Epoch;
 
     BPA_TIMEP_GetHostEpoch(&Epoch);
 
@@ -78,7 +78,7 @@ void Test_BPA_TIMEP_GetHostEpoch_Nominal(void)
 /* Test BPA_TIMEP_GetHostEpoch with null arg */
 void Test_BPA_TIMEP_GetHostEpoch_Null(void)
 {
-    BPA_TIMEP_Epoch_t *Epoch = NULL;
+    BPLib_TIME_Epoch_t *Epoch = NULL;
 
     BPA_TIMEP_GetHostEpoch(Epoch);
 
@@ -91,7 +91,7 @@ void Test_BPA_TIMEP_GetHostClockState_Valid(void)
     /* Valid clock state */
     UT_SetDeferredRetcode(UT_KEY(CFE_TIME_GetClockState), 1, CFE_TIME_ClockState_VALID);
 
-    UtAssert_UINT32_EQ(BPA_TIMEP_GetHostClockState(), BPA_TIMEP_CLOCK_VALID);
+    UtAssert_UINT32_EQ(BPA_TIMEP_GetHostClockState(), BPLIB_TIME_CLOCK_VALID);
 }
 
 /* Test BPA_TIMEP_GetHostClockState when invalid */
@@ -100,7 +100,7 @@ void Test_BPA_TIMEP_GetHostClockState_Invalid(void)
     /* Invalid clock state (ex: flywheeling) */
     UT_SetDeferredRetcode(UT_KEY(CFE_TIME_GetClockState), 1, CFE_TIME_ClockState_FLYWHEEL);
 
-    UtAssert_UINT32_EQ(BPA_TIMEP_GetHostClockState(), BPA_TIMEP_CLOCK_INVALID);
+    UtAssert_UINT32_EQ(BPA_TIMEP_GetHostClockState(), BPLIB_TIME_CLOCK_INVALID);
 }
 
 /* Test BPA_TIMEP_GetHostTime */
