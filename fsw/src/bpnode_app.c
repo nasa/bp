@@ -149,6 +149,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
+    char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
     /* Zero out the global data structure */
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
@@ -240,6 +242,17 @@ CFE_Status_t BPNode_AppInit(void)
                     "Error Getting Example Table Address, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
+
+    (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
+        BPNODE_MAJOR_VERSION,
+        BPNODE_MINOR_VERSION,
+        BPNODE_REVISION);
+
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNODE",
+                        BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
+
+    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
+                        VersionString);
 
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
                             "BPNode App Initialized. Version %d.%d.%d.", 
