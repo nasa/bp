@@ -18,7 +18,11 @@ add_cfe_coverage_stubs("bpnode_internal"
 )
 
 # Link with the cfe core stubs and unit test assert libs
-target_link_libraries(coverage-bpnode_internal-stubs ut_core_api_stubs ut_assert)
+target_link_libraries(coverage-bpnode_internal-stubs 
+                          ut_core_api_stubs 
+                          ut_assert
+                          coverage-bplib-stubs
+)
 
 # Include and expose unit test utilities, fsw/inc, and fsw/src includes
 target_include_directories(coverage-bpnode_internal-stubs PUBLIC utilities)
