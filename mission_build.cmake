@@ -1,6 +1,6 @@
 ###########################################################
 #
-# BP App mission build setup
+# BPNode mission build setup
 #
 # This file is evaluated as part of the "prepare" stage
 # and can be used to set up prerequisites for the build,
@@ -8,40 +8,45 @@
 #
 ###########################################################
 
-# The list of header files that control the BP configuration
-set(BP_MISSION_CONFIG_FILE_LIST
-  bp_fcncodes.h
-  bp_interface_cfg.h
-  bp_msg.h
-  bp_msgstruct.h
-  bp_topicids.h
-  bp_tbl.h
-  bp_tblstruct.h
-  bp_topicids.h
+# The list of header files that control the BPNode configuration
+set(BPNODE_MISSION_CONFIG_FILE_LIST
+  bpnode_fcncodes.h
+  bpnode_interface_cfg.h
+  bpnode_mission_cfg.h
+  bpnode_perfids.h
+  bpnode_msg.h
+  bpnode_msgdefs.h
+  bpnode_msgstruct.h
+  bpnode_tbl.h
+  bpnode_tbldefs.h
+  bpnode_tblstruct.h
+  bpnode_topicids.h
 )
 
 if (CFE_EDS_ENABLED_BUILD)
 
   # In an EDS-based build, these files come generated from the EDS tool
-  set(BP_CFGFILE_SRC_bp_interface_cfg "bp_eds_designparameters.h")
-  set(BP_CFGFILE_SRC_bp_fcncodes      "bp_eds_cc.h")
-  set(BP_CFGFILE_SRC_bp_msgstruct     "bp_eds_typedefs.h")
-  set(BP_CFGFILE_SRC_bp_tblstruct     "bp_eds_typedefs.h")
+  set(BPNODE_CFGFILE_SRC_bpnode_interface_cfg "bpnode_eds_designparameters.h")
+  set(BPNODE_CFGFILE_SRC_bpnode_tbldefs       "bpnode_eds_typedefs.h")
+  set(BPNODE_CFGFILE_SRC_bpnode_tblstruct     "bpnode_eds_typedefs.h")
+  set(BPNODE_CFGFILE_SRC_bpnode_msgdefs       "bpnode_eds_typedefs.h")
+  set(BPNODE_CFGFILE_SRC_bpnode_msgstruct     "bpnode_eds_typedefs.h")
+  set(BPNODE_CFGFILE_SRC_bpnode_fcncodes      "bpnode_eds_cc.h")
 
 endif(CFE_EDS_ENABLED_BUILD)
 
 # Create wrappers around the all the config header files
 # This makes them individually overridable by the missions, without modifying
 # the distribution default copies
-foreach(BP_CFGFILE ${BP_MISSION_CONFIG_FILE_LIST})
-  get_filename_component(CFGKEY "${BP_CFGFILE}" NAME_WE)
-  if (DEFINED BP_CFGFILE_SRC_${CFGKEY})
-    set(DEFAULT_SOURCE GENERATED_FILE "${BP_CFGFILE_SRC_${CFGKEY}}")
+foreach(BPNODE_CFGFILE ${BPNODE_MISSION_CONFIG_FILE_LIST})
+  get_filename_component(CFGKEY "${BPNODE_CFGFILE}" NAME_WE)
+  if (DEFINED BPNODE_CFGFILE_SRC_${CFGKEY})
+    set(DEFAULT_SOURCE GENERATED_FILE "${BPNODE_CFGFILE_SRC_${CFGKEY}}")
   else()
-    set(DEFAULT_SOURCE FALLBACK_FILE "${CMAKE_CURRENT_LIST_DIR}/config/default_${BP_CFGFILE}")
+    set(DEFAULT_SOURCE FALLBACK_FILE "${CMAKE_CURRENT_LIST_DIR}/config/default_${BPNODE_CFGFILE}")
   endif()
   generate_config_includefile(
-    FILE_NAME           "${BP_CFGFILE}"
+    FILE_NAME           "${BPNODE_CFGFILE}"
     ${DEFAULT_SOURCE}
   )
 endforeach()
