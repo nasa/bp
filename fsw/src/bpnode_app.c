@@ -252,10 +252,12 @@ CFE_Status_t BPNode_AppInit(void)
 
     Status = BPLib_FWP_Init(Callbacks);
 
-    if (Status != BP_SUCCESS)
+    if (Status != BPLIB_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
                             "Failure initializing function callbacks in BPLib");
+
+        return Status;
     }
 
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
