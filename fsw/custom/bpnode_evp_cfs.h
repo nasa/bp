@@ -10,7 +10,7 @@
  ************************************************/
 
 #include "cfe.h"
-#include "bpl_evm_api.h"
+#include "bpl_em_api.h"
 
 /************************************************
  * Typedefs
@@ -36,7 +36,7 @@
  ************************************************/
 
 BPL_Status_t BPNODE_EVP_Initialize_Impl(void);
-BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
-    char const * EventText, va_list EventTextArgPtr);
+BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EM_EventType_t EventType,
+                                       char const * EventText, va_list EventTextArgPtr);
 
 #endif /* BPNODE_EVP_CFS_H */

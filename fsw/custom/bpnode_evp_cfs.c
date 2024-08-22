@@ -66,28 +66,28 @@ BPL_Status_t BPNODE_EVP_Initialize_Impl(void)
 /*-----------------------------------------------
  * BPNODE_EVP_TranslateTypeToHost
  *-----------------------------------------------*/
-uint16_t BPNODE_EVP_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
+uint16_t BPNODE_EVP_TranslateTypeToHost(BPL_EM_EventType_t EventType)
 {
     uint16_t HostEventType;
     switch (EventType)
     {
-        case BPL_EVM_EventType_DEBUG:
+        case BPL_EM_EventType_DEBUG:
             HostEventType = CFE_EVS_EventType_DEBUG;
             break;
-        case BPL_EVM_EventType_INFO:
+        case BPL_EM_EventType_INFO:
             HostEventType = CFE_EVS_EventType_INFORMATION;
             break;
-        case BPL_EVM_EventType_WARNING:
+        case BPL_EM_EventType_WARNING:
             HostEventType = CFE_EVS_EventType_ERROR;
             break;
-        case BPL_EVM_EventType_ERROR:
+        case BPL_EM_EventType_ERROR:
             HostEventType = CFE_EVS_EventType_ERROR;
             break;
-        case BPL_EVM_EventType_CRITICAL:
+        case BPL_EM_EventType_CRITICAL:
             HostEventType = CFE_EVS_EventType_CRITICAL;
             break;
         default:
-            /* This default case also captures the BPL_EVM_EventType_UNKNOWN case. */
+            /* This default case also captures the BPL_EM_EventType_UNKNOWN case. */
             HostEventType = CFE_EVS_EventType_ERROR;
             break;
     }
@@ -97,7 +97,7 @@ uint16_t BPNODE_EVP_TranslateTypeToHost(BPL_EVM_EventType_t EventType)
 /*-----------------------------------------------
  * BPNODE_EVP_SendEvent_Impl
  *-----------------------------------------------*/
-BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t EventType,
+BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EM_EventType_t EventType,
     char const * EventText, va_list EventTextArgPtr)
 {
     BPL_Status_t ReturnStatus;
@@ -128,7 +128,7 @@ BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EVM_EventType_t Eve
 
     /* TODO: We'll probably want to remove this, or wrap it behind an "if debug" compiler flag. */
     OS_printf("BPNODE_EVP_SendEvent_Impl(%u, %s, %s)\n",
-        EventID, BPL_EVM_EventTypeToString(EventType), ExpandedEventText);
+        EventID, BPL_EM_EventTypeToString(EventType), ExpandedEventText);
 
     ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType, "%s", ExpandedEventText);
 
