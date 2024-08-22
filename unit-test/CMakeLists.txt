@@ -49,9 +49,6 @@ foreach(SRCFILE ${APP_SRC_FILES})
 
     add_cfe_coverage_dependency(bpnode "${UNIT_NAME}" bpnode_internal)
 
-endforeach()
+    add_cfe_coverage_dependency(bpnode "${UNIT_NAME}" bplib)
 
-# The bpnode uses library functions provided by bplib so must be linked
-# with the bplib stub library (this is mainly just an example of how this
-# can be done).
-add_cfe_coverage_dependency(bpnode bpnode_cmds bplib)
+endforeach()
