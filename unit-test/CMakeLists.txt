@@ -14,15 +14,21 @@ add_cfe_coverage_stubs("bpnode_internal"
   stubs/bpnode_cmds_stubs.c
   stubs/bpnode_dispatch_stubs.c
   stubs/bpnode_utils_stubs.c
+  stubs/fwp_timep_stubs.c
 )
 
 # Link with the cfe core stubs and unit test assert libs
-target_link_libraries(coverage-bpnode_internal-stubs ut_core_api_stubs ut_assert)
+target_link_libraries(coverage-bpnode_internal-stubs 
+                          ut_core_api_stubs 
+                          ut_assert
+                          coverage-bplib-stubs
+)
 
 # Include and expose unit test utilities, fsw/inc, and fsw/src includes
 target_include_directories(coverage-bpnode_internal-stubs PUBLIC utilities)
 target_include_directories(coverage-bpnode_internal-stubs PUBLIC ../fsw/inc)
 target_include_directories(coverage-bpnode_internal-stubs PUBLIC ../fsw/src)
+target_include_directories(coverage-bpnode_internal-stubs PUBLIC ../fsw/fwp)
 
 # Generate a dedicated "testrunner" executable for each test file
 # Accomplish this by cycling through all the app's source files, there must be
