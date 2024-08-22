@@ -65,9 +65,9 @@ typedef struct
 */
 typedef struct
 {
-    CFE_SB_MsgId_Atom_t     SendToMID;
-    uint32                  NumRecvFrmMIDs;
-    CFE_SB_MsgId_Atom_t     RecvFrmMIDs[BPNODE_MAX_MID_SUBSCRIPTION];
+    uint32     SendToMID;
+    uint32     NumRecvFrmMIDs;
+    uint32     RecvFrmMIDs[BPNODE_MAX_MID_SUBSCRIPTION];
 } BPNode_ADUProxyTable_t;
 
 /*
@@ -111,7 +111,7 @@ typedef struct
 */
 typedef struct
 {
-    char AuthCustodians[BPNODE_MAX_AUTH_SOURCES];
+    char AuthCustodians[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
 } BPNode_CustodianTable_t;
 
 /*
@@ -119,7 +119,7 @@ typedef struct
 */
 typedef struct
 {
-    char AuthCustodySrc[BPNODE_MAX_AUTH_SOURCES];
+    char AuthCustodySrc[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
 } BPNode_CustodyTable_t;
 
 /*
@@ -174,7 +174,7 @@ typedef struct
 */
 typedef struct
 {
-    char AuthReportToEIDs[BPNODE_MAX_AUTH_SOURCES];
+    char AuthReportToEIDs[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
 } BPNode_ReportToTable_t;
 
 
@@ -183,8 +183,8 @@ typedef struct
 */
 typedef struct
 {
-    char AuthSrcEIDs[BPNODE_MAX_AUTH_SOURCES];
-} BPNode_SrcAuthPolicyTable_t;
+    char AuthSrcEIDs[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
+} BPNode_SrcAuthTable_t;
 
 /*
 ** Source Latency Table

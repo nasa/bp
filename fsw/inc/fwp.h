@@ -29,5 +29,6 @@
 */
 
 #include "fwp_timep.h"
+#include "fwp_tablep.h"
 
 #endif

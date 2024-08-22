@@ -8,6 +8,7 @@ set(APP_SRC_FILES
 
   # FWP files
   fsw/fwp/fwp_timep.c
+  fsw/fwp/fwp_tablep.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)
@@ -22,6 +23,18 @@ endif()
 
 set(APP_TABLE_FILES
   fsw/tables/bpnode_tbl.c
+  fsw/tables/crs_tbl.c
+  fsw/tables/adup_config_tbl.c
+  fsw/tables/contacts_tbl.c
+  fsw/tables/custodian_auth_policy_tbl.c
+  fsw/tables/custody_auth_policy_tbl.c
+  fsw/tables/channel_config_tbl.c
+  fsw/tables/reportto_eid_auth_policy_tbl.c
+  fsw/tables/src_auth_policy_tbl.c
+  fsw/tables/src_latency_policy_tbl.c
+  fsw/tables/storage_tbl.c
+  fsw/tables/mib_config_pn_tbl.c
+  fsw/tables/mib_config_ps_tbl.c
 )
 
 # Create the app module
