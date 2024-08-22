@@ -151,6 +151,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
+    char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
         .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
@@ -260,9 +262,16 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
-                            "BPNode App Initialized. Version %d.%d.%d.", 
-                            BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
+    (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
+        BPNODE_MAJOR_VERSION,
+        BPNODE_MINOR_VERSION,
+        BPNODE_REVISION);
+
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNODE",
+                        BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
+
+    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
+                        VersionString);
 
     return CFE_SUCCESS;
 }
