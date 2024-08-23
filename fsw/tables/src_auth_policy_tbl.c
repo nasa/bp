@@ -34,4 +34,4 @@ BPNode_SrcAuthTable_t SrcAuthTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(SrcAuthTable, BPNODE.SrcAuthTable, Source Auth Policy Table, src_auth_tbl.tbl)
+CFE_TBL_FILEDEF(SrcAuthTable, BPNODE.SrcAuthTable, Source Auth Policy Table, bpnode_src_auth.tbl)

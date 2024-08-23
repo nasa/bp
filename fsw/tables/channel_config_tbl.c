@@ -21,62 +21,124 @@
 
 
 BPNode_ChannelTable_t ChannelTable = {
-    .ChannelID              = 1,
-    .AddAutomatically       = true,
-    .LocalServiceNumber     = 2,
-    .RegState               = 0,
-    .RequestCustody         = false,
-    .IncludePrevNodeBlk     = false,
-    .IncludeHopCountBlk     = false,
-    .MaxBundlePayloadSize   = 15864,
-    .HopLimit               = 10,
-    .SendBytesPerCycle      = 15864,
-    .ReceiveBytesPerCycle   = 15864,
-    .ADUWrapping            = false,
-    .ADUUnwrapping          = false,
-    .PriBlkConfig           =   
+    .ChannelSet = {
         {
-            .Version            = 7, 
-            .BundleProcFlags    = 4, 
-            .CrcType            = 1, 
-            .DestEID            = "100.1", 
-            .SrcEID             = "101.1", 
-            .ReportToEID        = "100.1", 
-            .LifeTime           = 10000
+            .ChannelID              = 1,
+            .AddAutomatically       = true,
+            .LocalServiceNumber     = 2,
+            .RegState               = 0,
+            .RequestCustody         = false,
+            .IncludePrevNodeBlk     = false,
+            .IncludeHopCountBlk     = false,
+            .MaxBundlePayloadSize   = 15864,
+            .HopLimit               = 10,
+            .SendBytesPerCycle      = 15864,
+            .ReceiveBytesPerCycle   = 15864,
+            .ADUWrapping            = false,
+            .ADUUnwrapping          = false,
+            .PriBlkConfig           =   
+                {
+                    .Version            = 7, 
+                    .BundleProcFlags    = 4, 
+                    .CrcType            = 1, 
+                    .DestEID            = "100.1", 
+                    .SrcEID             = "101.1", 
+                    .ReportToEID        = "100.1", 
+                    .LifeTime           = 10000
+                },
+            .CanBlkConfig           = 
+                {
+                    {
+                        .BlockType          = 1,
+                        .BlockNum           = 1,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 2,
+                        .BlockNum           = 2,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 3,
+                        .BlockNum           = 3,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 4,
+                        .BlockNum           = 4,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 5,
+                        .BlockNum           = 5,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                }
         },
-    .CanBlkConfig           = 
         {
-            {
-                .BlockType          = 1,
-                .BlockNum           = 1,
-                .BlockProcFlags     = 1,
-                .CrcType            = 1
-            },
-            {
-                .BlockType          = 2,
-                .BlockNum           = 2,
-                .BlockProcFlags     = 1,
-                .CrcType            = 1
-            },
-            {
-                .BlockType          = 3,
-                .BlockNum           = 3,
-                .BlockProcFlags     = 1,
-                .CrcType            = 1
-            },
-            {
-                .BlockType          = 4,
-                .BlockNum           = 4,
-                .BlockProcFlags     = 1,
-                .CrcType            = 1
-            },
-            {
-                .BlockType          = 5,
-                .BlockNum           = 5,
-                .BlockProcFlags     = 1,
-                .CrcType            = 1
-            },
-        }
+            .ChannelID              = 2,
+            .AddAutomatically       = true,
+            .LocalServiceNumber     = 2,
+            .RegState               = 0,
+            .RequestCustody         = false,
+            .IncludePrevNodeBlk     = false,
+            .IncludeHopCountBlk     = false,
+            .MaxBundlePayloadSize   = 15864,
+            .HopLimit               = 10,
+            .SendBytesPerCycle      = 15864,
+            .ReceiveBytesPerCycle   = 15864,
+            .ADUWrapping            = false,
+            .ADUUnwrapping          = false,
+            .PriBlkConfig           =   
+                {
+                    .Version            = 7, 
+                    .BundleProcFlags    = 4, 
+                    .CrcType            = 1, 
+                    .DestEID            = "100.1", 
+                    .SrcEID             = "101.1", 
+                    .ReportToEID        = "100.1", 
+                    .LifeTime           = 10000
+                },
+            .CanBlkConfig           = 
+                {
+                    {
+                        .BlockType          = 1,
+                        .BlockNum           = 1,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 2,
+                        .BlockNum           = 2,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 3,
+                        .BlockNum           = 3,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 4,
+                        .BlockNum           = 4,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                    {
+                        .BlockType          = 5,
+                        .BlockNum           = 5,
+                        .BlockProcFlags     = 1,
+                        .CrcType            = 1
+                    },
+                }
+        },        
+    }
 };
 
 /*
@@ -86,4 +148,4 @@ BPNode_ChannelTable_t ChannelTable = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ChannelTable, BPNODE.ChannelTable, Channel Config Table, channel_tbl.tbl)
+CFE_TBL_FILEDEF(ChannelTable, BPNODE.ChannelTable, Channel Config Table, bpnode_channel.tbl)

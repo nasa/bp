@@ -22,7 +22,6 @@ else()
 endif()
 
 set(APP_TABLE_FILES
-  fsw/tables/bpnode_tbl.c
   fsw/tables/crs_tbl.c
   fsw/tables/adup_config_tbl.c
   fsw/tables/contacts_tbl.c
@@ -41,6 +40,8 @@ set(APP_TABLE_FILES
 add_cfe_app(bpnode ${APP_SRC_FILES})
 
 target_include_directories(bpnode PUBLIC fsw/inc)
+target_include_directories(bpnode PUBLIC fsw/src)
+target_include_directories(bpnode PUBLIC fsw/fwp)
 
 # Include bplib
 add_cfe_app_dependency(bpnode bplib)

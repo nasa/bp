@@ -21,9 +21,11 @@
 
 
 BPNode_ADUProxyTable_t ADUProxyTable = {
-    .SendToMID          = 0x1801, /*Send-to message ID (MID), cFS Message ID*/
-    .NumRecvFrmMIDs     = 3, /*Num of Recv-From MIDs, number of valid MIDs in the following array*/
-    .RecvFrmMIDs        = {0x1801,0x1802,0x1803} /*Receive-From MIDs, list of the MIDs that we should subscribe to*/
+    .ADUP_Set ={
+        {.SendToMID = 0x1801, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}},
+        {.SendToMID = 0x1802, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}},
+        {.SendToMID = 0x1803, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}},
+    }
 };
 
 /*
@@ -33,4 +35,4 @@ BPNode_ADUProxyTable_t ADUProxyTable = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ADUProxyTable, BPNODE.ADUProxyTable, ADU Proxy Config Table, adup_config_tbl.tbl)
+CFE_TBL_FILEDEF(ADUProxyTable, BPNODE.ADUProxyTable, ADU Proxy Config Table, bpnode_adup.tbl)

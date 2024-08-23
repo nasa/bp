@@ -21,20 +21,59 @@
 
 
 BPNode_MIBConfigPSTable_t MIBConfigPSTable = {
-    .EIDPattern                             = "ipn",
-    .ParamSetMaxLifetime                    = 1000, 
-    .ParamSetMaxBSRGenerationRate           = 20000,
-    .ParamSetMaxCBRGenerationRate           = 20000,
-    .BundleSetBehaviorReceivedBSRGenerate   = false,
-    .BundleSetBehaviorAcceptedBSRGenerate   = false,
-    .BundleSetBehaviorForwardedBSRGenerate  = false,
-    .BundleSetBehaviorDeliveredBSRGenerate  = false,
-    .BundleSetBehaviorDeletedBSRGenerate    = false,
-    .BundleSetBehaviorReceivedCBRGenerate   = false,
-    .BundleSetBehaviorAcceptedCBRGenerate   = false,
-    .BundleSetBehaviorForwardedCBRGenerate  = false,
-    .BundleSetBehaviorDeliveredCBRGenerate  = false,
-    .BundleSetBehaviorDeletedCBRGenerate    = false,    
+    .MIB_PS_Set = {
+        {
+            .SrcEID                                 = "100.1",
+            .EIDPattern                             = "ipn",
+            .ParamSetMaxLifetime                    = 1000, 
+            .ParamSetMaxBSRGenerationRate           = 20000,
+            .ParamSetMaxCBRGenerationRate           = 20000,
+            .BundleSetBehaviorReceivedBSRGenerate   = false,
+            .BundleSetBehaviorAcceptedBSRGenerate   = false,
+            .BundleSetBehaviorForwardedBSRGenerate  = false,
+            .BundleSetBehaviorDeliveredBSRGenerate  = false,
+            .BundleSetBehaviorDeletedBSRGenerate    = false,
+            .BundleSetBehaviorReceivedCBRGenerate   = false,
+            .BundleSetBehaviorAcceptedCBRGenerate   = false,
+            .BundleSetBehaviorForwardedCBRGenerate  = false,
+            .BundleSetBehaviorDeliveredCBRGenerate  = false,
+            .BundleSetBehaviorDeletedCBRGenerate    = false, 
+        },
+        {
+            .SrcEID                                 = "101.1",
+            .EIDPattern                             = "ipn",
+            .ParamSetMaxLifetime                    = 1000, 
+            .ParamSetMaxBSRGenerationRate           = 20000,
+            .ParamSetMaxCBRGenerationRate           = 20000,
+            .BundleSetBehaviorReceivedBSRGenerate   = false,
+            .BundleSetBehaviorAcceptedBSRGenerate   = false,
+            .BundleSetBehaviorForwardedBSRGenerate  = false,
+            .BundleSetBehaviorDeliveredBSRGenerate  = false,
+            .BundleSetBehaviorDeletedBSRGenerate    = false,
+            .BundleSetBehaviorReceivedCBRGenerate   = false,
+            .BundleSetBehaviorAcceptedCBRGenerate   = false,
+            .BundleSetBehaviorForwardedCBRGenerate  = false,
+            .BundleSetBehaviorDeliveredCBRGenerate  = false,
+            .BundleSetBehaviorDeletedCBRGenerate    = false, 
+        },
+        {
+            .SrcEID                                 = "102.1",
+            .EIDPattern                             = "ipn",
+            .ParamSetMaxLifetime                    = 1000, 
+            .ParamSetMaxBSRGenerationRate           = 20000,
+            .ParamSetMaxCBRGenerationRate           = 20000,
+            .BundleSetBehaviorReceivedBSRGenerate   = false,
+            .BundleSetBehaviorAcceptedBSRGenerate   = false,
+            .BundleSetBehaviorForwardedBSRGenerate  = false,
+            .BundleSetBehaviorDeliveredBSRGenerate  = false,
+            .BundleSetBehaviorDeletedBSRGenerate    = false,
+            .BundleSetBehaviorReceivedCBRGenerate   = false,
+            .BundleSetBehaviorAcceptedCBRGenerate   = false,
+            .BundleSetBehaviorForwardedCBRGenerate  = false,
+            .BundleSetBehaviorDeliveredCBRGenerate  = false,
+            .BundleSetBehaviorDeletedCBRGenerate    = false, 
+        },
+    }
 };
 
 /*
@@ -44,4 +83,4 @@ BPNode_MIBConfigPSTable_t MIBConfigPSTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(MIBConfigPSTable, BPNODE.MIBConfigPSTable, MIB pre source Table, mib_ps_tbl.tbl)
+CFE_TBL_FILEDEF(MIBConfigPSTable, BPNODE.MIBConfigPSTable, MIB pre source Table, bpnode_mib_ps.tbl)

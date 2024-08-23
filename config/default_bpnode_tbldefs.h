@@ -46,19 +46,15 @@
 #define BPNODE_MAX_NUM_LATENCY_SRC      100
 #define BPNODE_MAX_NUM_STORE_SET        10
 #define BPNODE_MAX_NUM_CANONICAL_BLOCK  10
+#define BPNODE_MAX_NUM_ADUPROXY         10
+#define BPNODE_MAX_NUM_CONTACTS         10
+#define BPNODE_MAX_NUM_CHANNELS         10
+#define BPNODE_MAX_NUM_MIB_PS           10
+#define BPNODE_MAX_MUN_CRS              10
 
 /*
 ** Type Definitions
 */
-
-/**
- * \brief Example table structure
- */
-typedef struct
-{
-    uint16 Int1;
-    uint16 Int2;
-} BPNode_ExampleTable_t;
 
 /*
 ** ADU PRoxy Config Table
@@ -68,7 +64,12 @@ typedef struct
     uint32     SendToMID;
     uint32     NumRecvFrmMIDs;
     uint32     RecvFrmMIDs[BPNODE_MAX_MID_SUBSCRIPTION];
-} BPNode_ADUProxyTable_t;
+} BPNode_ADUProxySet_t;
+
+typedef struct
+{
+    BPNode_ADUProxySet_t ADUP_Set[BPNODE_MAX_NUM_ADUPROXY];
+}BPNode_ADUProxyTable_t;
 
 /*
 ** CRS Table
@@ -78,6 +79,11 @@ typedef struct
     char        DestEID[BPNODE_MAX_EID_LENGTH];
     uint32      TimeTrigger;
     uint32      SizeTrigger;
+} BPNode_CRSSet_t;
+
+typedef struct
+{
+    BPNode_CRSSet_t CRS_Set[BPNODE_MAX_MUN_CRS];
 } BPNode_CRSTable_t;
 
 /*
@@ -104,6 +110,11 @@ typedef struct
     uint32      RetransmitTimeout;
     uint32      CSTimeTrigger;
     uint32      CSSizeTrigger;
+} BPNode_ContactsSet_t;
+
+typedef struct
+{
+    BPNode_ContactsSet_t ContactSet[BPNODE_MAX_NUM_CONTACTS];
 } BPNode_ContactsTable_t;
 
 /*
@@ -167,6 +178,11 @@ typedef struct
     bool                    ADUUnwrapping;
     BPNode_PriBlkConfig_t   PriBlkConfig;
     BPNode_CanBlkConfig_t   CanBlkConfig[BPNODE_MAX_NUM_CANONICAL_BLOCK];
+} BPNode_ChannelSet_t;
+
+typedef struct
+{
+    BPNode_ChannelSet_t ChannelSet[BPNODE_MAX_NUM_CHANNELS];
 } BPNode_ChannelTable_t;
 
 /*
@@ -260,6 +276,7 @@ typedef struct
 */
 typedef struct
 {
+    char        SrcEID[BPNODE_MAX_EID_LENGTH];
     char        EIDPattern[BPNODE_MAX_EID_LENGTH];
     uint32      ParamSetMaxLifetime;
     uint32      ParamSetMaxBSRGenerationRate;
@@ -274,6 +291,11 @@ typedef struct
     bool        BundleSetBehaviorForwardedCBRGenerate;
     bool        BundleSetBehaviorDeliveredCBRGenerate;
     bool        BundleSetBehaviorDeletedCBRGenerate;    
+} BPNode_MIBConfigPSSet_t;
+
+typedef struct
+{
+    BPNode_MIBConfigPSSet_t MIB_PS_Set[BPNODE_MAX_NUM_MIB_PS];
 } BPNode_MIBConfigPSTable_t;
 
 #endif /* BPNODE_TBLDEFS_H */

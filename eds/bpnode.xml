@@ -472,15 +472,6 @@
         </ConstraintSet>
       </ContainerDataType>
 
-      <!-- Note the type name here must be "ExampleTable" to match the C table definition file,
-           but the source code uses the type "ExampleTable" -->
-      <ContainerDataType name="ExampleTable" shortDescription="Example ExampleTable structure">
-        <EntryList>
-          <Entry name="Int1" type="BASE_TYPES/uint16" />
-          <Entry name="Int2" type="BASE_TYPES/uint16" />
-        </EntryList>
-      </ContainerDataType>
-
       <!-- BPNode Tables start here  -->
       <StringDataType length="256" name="EIDString" />
       

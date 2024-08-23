@@ -41,4 +41,4 @@ BPNode_StorageTable_t StorageTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(StorageTable, BPNODE.StorageTable, Storage Table, storage_tbl.tbl)
+CFE_TBL_FILEDEF(StorageTable, BPNODE.StorageTable, Storage Table, bpnode_storage.tbl)

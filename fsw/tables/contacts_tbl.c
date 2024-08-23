@@ -22,17 +22,34 @@
 
 BPNode_ContactsTable_t ContactsTable = 
 {
-    .ContactID              = 5, /*Contact ID, uint32*/ 
-    .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
-    .CLAType                = 1, /*CLA Type, enum*/
-    .CLAddr                 = "127.0.0.1", /*CL ip address*/
-    .PortNum                = 1001, /*Port Number, int32*/
-    .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
-    .SendBytePerCycle       = 101, /*Maximum bytes to send per wakeup, uint32*/
-    .ReceiveBytePerCycle    = 200, /*Maximum bytes to receive per wakeup, uint32*/
-    .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
-    .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
-    .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
+    .ContactSet = {
+        {
+            .ContactID              = 1, /*Contact ID, uint32*/ 
+            .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
+            .CLAType                = 1, /*CLA Type, enum*/
+            .CLAddr                 = "127.0.0.1", /*CL ip address*/
+            .PortNum                = 1001, /*Port Number, int32*/
+            .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
+            .SendBytePerCycle       = 101, /*Maximum bytes to send per wakeup, uint32*/
+            .ReceiveBytePerCycle    = 200, /*Maximum bytes to receive per wakeup, uint32*/
+            .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
+            .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
+            .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
+        },
+        {
+            .ContactID              = 2, /*Contact ID, uint32*/ 
+            .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
+            .CLAType                = 1, /*CLA Type, enum*/
+            .CLAddr                 = "127.0.0.1", /*CL ip address*/
+            .PortNum                = 1001, /*Port Number, int32*/
+            .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
+            .SendBytePerCycle       = 101, /*Maximum bytes to send per wakeup, uint32*/
+            .ReceiveBytePerCycle    = 200, /*Maximum bytes to receive per wakeup, uint32*/
+            .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
+            .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
+            .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
+        },                
+    }
 };
 
 /*
@@ -42,4 +59,4 @@ BPNode_ContactsTable_t ContactsTable =
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, contacts_tbl.tbl) 
+CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, bpnode_contacts.tbl) 

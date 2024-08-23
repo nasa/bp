@@ -41,14 +41,6 @@
 CFE_Status_t BPNode_TblValidationFunc(void *TblData)
 {
     CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_ExampleTable_t *TblDataPtr = (BPNode_ExampleTable_t *)TblData;
-
-    /* Validate data values are within allowed range */
-    if (TblDataPtr->Int1 > BPNODE_TBL_ELEMENT_1_MAX)
-    {
-        /* First element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-    }
 
     return ReturnCode;
 }

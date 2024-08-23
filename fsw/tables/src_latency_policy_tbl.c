@@ -42,4 +42,4 @@ BPNode_SrcLatencyTable_t SrcLatencyTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(SrcLatencyTable, BPNODE.SrcLatencyTable, Source Latency Policy Table, src_latency_tbl.tbl)
+CFE_TBL_FILEDEF(SrcLatencyTable, BPNODE.SrcLatencyTable, Source Latency Policy Table, bpnode_latency.tbl)

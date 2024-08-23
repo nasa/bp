@@ -21,9 +21,11 @@
 
 
 BPNode_CRSTable_t CRSTable = {
-    .DestEID        = "100.1", /*Destination EID, string (Node_Number.Service_Number)*/
-    .TimeTrigger    = 2, /* CRS Time Trigger, timeout value that triggers ARP to send the CRS to PI, in seconds, uint32*/
-    .SizeTrigger    = 10 /*Size trigger, CRS size trigger, maximum size for the CRS generated within ARP before it is encoded and sent out, size_t*/
+    .CRS_Set = {
+        {.DestEID = "100.1", .TimeTrigger = 2, .SizeTrigger = 10},
+        {.DestEID = "100.2", .TimeTrigger = 2, .SizeTrigger = 10},
+        {.DestEID = "100.3", .TimeTrigger = 2, .SizeTrigger = 10},
+    }
 };
 
 /*
@@ -33,5 +35,5 @@ BPNode_CRSTable_t CRSTable = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(CRSTable, BPNODE.CRSTable, Compressed Reporting Table, crs_tbl.tbl)
+CFE_TBL_FILEDEF(CRSTable, BPNODE.CRSTable, Compressed Reporting Table, bpnode_crs.tbl)
 

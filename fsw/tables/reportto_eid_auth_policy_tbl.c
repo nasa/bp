@@ -31,4 +31,4 @@ BPNode_ReportToTable_t ReportToTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ReportToTable, BPNODE.ReportToTable, Report-To auth Table, reportto_tbl.tbl)
+CFE_TBL_FILEDEF(ReportToTable, BPNODE.ReportToTable, Report-To auth Table, bpnode_reportto.tbl)

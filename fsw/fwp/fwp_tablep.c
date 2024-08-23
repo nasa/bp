@@ -26,7 +26,7 @@
 */
 
 #include "fwp_tablep.h"
-#include "../src/bpnode_utils.h"
+#include "bpnode_utils.h"
 
 /*
 ** Function Definitions
@@ -40,7 +40,7 @@ CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData)
     BPNode_ADUProxyTable_t *TblDataPtr = (BPNode_ADUProxyTable_t *)TblData;
 
     /* Validate data values are within allowed range */
-    if (TblDataPtr->NumRecvFrmMIDs <= 0)
+    if (TblDataPtr[0].ADUP_Set->NumRecvFrmMIDs <= 0)
     {
         /* element is out of range, return an appropriate error code */
         ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
@@ -56,7 +56,7 @@ CFE_Status_t BPNode_ChannelConfigTblValidateFunc(void *TblData)
     BPNode_ChannelTable_t *TblDataPtr = (BPNode_ChannelTable_t *)TblData;
 
     /* Validate data values are within allowed range */
-    if (TblDataPtr->HopLimit <= 0)
+    if (TblDataPtr[0].ChannelSet->HopLimit <= 0)
     {
         /* element is out of range, return an appropriate error code */
         ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
@@ -72,7 +72,7 @@ CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData)
     BPNode_ContactsTable_t *TblDataPtr = (BPNode_ContactsTable_t *)TblData;
 
     /* Validate data values are within allowed range */
-    if (TblDataPtr->PortNum <= 0)
+    if (TblDataPtr[0].ContactSet->PortNum <= 0)
     {
         /* element is out of range, return an appropriate error code */
         ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
@@ -88,7 +88,7 @@ CFE_Status_t BPNode_CRSTblValidateFunc(void *TblData)
     BPNode_CRSTable_t *TblDataPtr = (BPNode_CRSTable_t *)TblData;
 
     /* Validate data values are within allowed range */
-    if (TblDataPtr->SizeTrigger <= 0)
+    if (TblDataPtr[0].CRS_Set->SizeTrigger <= 0)
     {
         /* element is out of range, return an appropriate error code */
         ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
@@ -140,7 +140,7 @@ CFE_Status_t BPNode_MIBConfigPSTblValidateFunc(void *TblData)
     BPNode_MIBConfigPSTable_t *TblDataPtr = (BPNode_MIBConfigPSTable_t *)TblData;
 
     /* Validate data values are within allowed range */
-    if (TblDataPtr->ParamSetMaxLifetime <= 0)
+    if (TblDataPtr[0].MIB_PS_Set->ParamSetMaxLifetime <= 0)
     {
         /* element is out of range, return an appropriate error code */
         ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
@@ -204,7 +204,7 @@ CFE_Status_t BPA_TableP_TableInit(void)
     CFE_Status_t Status;
      
     BPNode_AppData.TblNameParamsArr = TblNameParamsArr0;        
-    int length = sizeof(TblNameParamsArr0)/sizeof(TblNameParamsArr0[0]);
+    static int length = sizeof(TblNameParamsArr0)/sizeof(TblNameParamsArr0[0]);
     
     for (int i = 0; i < length; i++)
     {
@@ -213,7 +213,7 @@ CFE_Status_t BPA_TableP_TableInit(void)
         if (Status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(BPNODE_TBL_REG_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error Registering Table, RC = 0x%08lX", (unsigned long)Status);
+                    "Error Registering Table: %s, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
         }
         /* Load table */
@@ -221,7 +221,7 @@ CFE_Status_t BPA_TableP_TableInit(void)
         if (Status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(BPNODE_TBL_LD_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "Error Loading Table, RC = 0x%08lX", (unsigned long)Status);
+                        "Error Loading Table : %s, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
         }
         /* Get table address */
@@ -230,7 +230,7 @@ CFE_Status_t BPA_TableP_TableInit(void)
         if (Status != CFE_TBL_INFO_UPDATED)
         {
             CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "Error Getting Table Address, RC = 0x%08lX", (unsigned long)Status);
+                        "Error Getting Table: %s Address, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
         }   
         
@@ -245,7 +245,7 @@ CFE_Status_t BPA_TableP_TableUpdate(void)
 {
     CFE_Status_t Status;
     
-    int length = sizeof(TblNameParamsArr0)/sizeof(TblNameParamsArr0[0]);
+    static int length = sizeof(TblNameParamsArr0)/sizeof(TblNameParamsArr0[0]);
     for (int i = 0; i < length; i++)
     {
         /* Manage any pending table loads, validations, etc. */
@@ -259,7 +259,7 @@ CFE_Status_t BPA_TableP_TableUpdate(void)
         if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
         {
             CFE_EVS_SendEvent(BPNODE_TBL_MNG_ERR_EID, CFE_EVS_EventType_ERROR,
-                                "Error managing the table on wakeup, Status=0x%08X", Status);
+                                "Error managing the table: %s on wakeup, Status=0x%08X", BPNode_AppData.TblNameParamsArr[i].TableName, Status);
             return Status;
         }
         
