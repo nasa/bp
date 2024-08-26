@@ -35,6 +35,8 @@
 #include "bpnode_tbl.h"
 #include "bpnode_version.h"
 
+#include "bplib.h"
+#include "fwp.h"
 
 /*
 ** Global Data
@@ -149,6 +151,15 @@ CFE_Status_t BPNode_WakeupProcess(void)
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
+    char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+
+    BPLib_FWP_ProxyCallbacks_t Callbacks = {
+        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
+        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
+        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
+        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime
+    };
 
     /* Zero out the global data structure */
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
@@ -241,9 +252,26 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, 
-                            "BPNode App Initialized. Version %d.%d.%d.", 
-                            BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
+    Status = BPLib_FWP_Init(Callbacks);
+
+    if (Status != BPLIB_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Failure initializing function callbacks in BPLib");
+
+        return Status;
+    }
+
+    (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
+        BPNODE_MAJOR_VERSION,
+        BPNODE_MINOR_VERSION,
+        BPNODE_REVISION);
+
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNODE",
+                        BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
+
+    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
+                        VersionString);
 
     return CFE_SUCCESS;
 }
