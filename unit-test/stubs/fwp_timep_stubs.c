@@ -44,9 +44,9 @@ int64_t BPA_TIMEP_GetMonotonicTime(void)
  * Generated stub function for BPA_TIMEP_GetHostEpoch()
  * ----------------------------------------------------
  */
-void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch)
+void BPA_TIMEP_GetHostEpoch(BPLib_TIME_Epoch_t *Epoch)
 {
-    UT_GenStub_AddParam(BPA_TIMEP_GetHostEpoch, BPA_TIMEP_Epoch_t *, Epoch);
+    UT_GenStub_AddParam(BPA_TIMEP_GetHostEpoch, BPLib_TIME_Epoch_t *, Epoch);
 
     UT_GenStub_Execute(BPA_TIMEP_GetHostEpoch, Basic, NULL);
 }
@@ -56,13 +56,13 @@ void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch)
  * Generated stub function for BPA_TIMEP_GetHostClockState()
  * ----------------------------------------------------
  */
-BPA_TIMEP_ClockState_t BPA_TIMEP_GetHostClockState(void)
+BPLib_TIME_ClockState_t BPA_TIMEP_GetHostClockState(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPA_TIMEP_GetHostClockState, BPA_TIMEP_ClockState_t);
+    UT_GenStub_SetupReturnBuffer(BPA_TIMEP_GetHostClockState, BPLib_TIME_ClockState_t);
 
     UT_GenStub_Execute(BPA_TIMEP_GetHostClockState, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPA_TIMEP_GetHostClockState, BPA_TIMEP_ClockState_t);
+    return UT_GenStub_GetReturnValue(BPA_TIMEP_GetHostClockState, BPLib_TIME_ClockState_t);
 }
 
 /*

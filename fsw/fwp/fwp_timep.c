@@ -1,28 +1,30 @@
-/************************************************************************
- * NASA Docket No. GSC-18,719-1, and identified as “core Flight System: Bootes”
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright (c) 2020 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ************************************************************************/
+ *
+ */
+
+/**
+ * \file
+ *   This file contains the source code for the FWP Time Proxy.
+ */
 
 /*
-** \file
-**   This file contains the source code for the FWP Time Proxy.
-*/
-
-/*
-** Include
+** Include Files
 */
 
 #include "cfe.h"
@@ -44,29 +46,32 @@ int64_t BPA_TIMEP_GetMonotonicTime(void)
 }
 
 /* Returns host time epoch */
-void BPA_TIMEP_GetHostEpoch(BPA_TIMEP_Epoch_t *Epoch)
+void BPA_TIMEP_GetHostEpoch(BPLib_TIME_Epoch_t *Epoch)
 {
-    Epoch->Year   = CFE_MISSION_TIME_EPOCH_YEAR;
-    Epoch->Day    = CFE_MISSION_TIME_EPOCH_DAY;
-    Epoch->Hour   = CFE_MISSION_TIME_EPOCH_HOUR;
-    Epoch->Minute = CFE_MISSION_TIME_EPOCH_MINUTE;
-    Epoch->Second = CFE_MISSION_TIME_EPOCH_SECOND;
-    Epoch->Msec   = CFE_MISSION_TIME_EPOCH_MICROS / 1000;
+    if (Epoch != NULL)
+    {
+        Epoch->Year   = CFE_MISSION_TIME_EPOCH_YEAR;
+        Epoch->Day    = CFE_MISSION_TIME_EPOCH_DAY;
+        Epoch->Hour   = CFE_MISSION_TIME_EPOCH_HOUR;
+        Epoch->Minute = CFE_MISSION_TIME_EPOCH_MINUTE;
+        Epoch->Second = CFE_MISSION_TIME_EPOCH_SECOND;
+        Epoch->Msec   = CFE_MISSION_TIME_EPOCH_MICROS / 1000;
+    }
 
     return;
 }
 
 /* Returns current host clock state */
-BPA_TIMEP_ClockState_t BPA_TIMEP_GetHostClockState(void)
+BPLib_TIME_ClockState_t BPA_TIMEP_GetHostClockState(void)
 {
     CFE_TIME_ClockState_Enum_t HostClockState = CFE_TIME_GetClockState();
 
     if (HostClockState == CFE_TIME_ClockState_VALID)
     {
-        return BPA_TIMEP_CLOCK_VALID;
+        return BPLIB_TIME_CLOCK_VALID;
     }
     
-    return BPA_TIMEP_CLOCK_INVALID;
+    return BPLIB_TIME_CLOCK_INVALID;
 }
 
 /* Returns current host time */

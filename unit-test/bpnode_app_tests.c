@@ -289,6 +289,26 @@ void Test_BPNode_AppInit_FailedTblInit(void)
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_REG_ERR_EID, NULL);
 }
 
+
+/* Test app initialization in nominal case */
+void Test_BPNode_AppInit_FailedFwpInit(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    /* Nominal case should return CFE_SUCCESS */
+    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
+
+    /* Nominal case should return CFE_SUCCESS */
+    UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
+
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CALLBACK_INIT_ERROR);
+    
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, NULL);
+
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -311,4 +331,5 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedCommandSub);
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
     ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
 }

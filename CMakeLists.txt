@@ -40,8 +40,8 @@ set(APP_TABLE_FILES
 add_cfe_app(bpnode ${APP_SRC_FILES})
 
 target_include_directories(bpnode PUBLIC fsw/inc)
-target_include_directories(bpnode PUBLIC fsw/src)
 target_include_directories(bpnode PUBLIC fsw/fwp)
+target_include_directories(bpnode PUBLIC fsw/src)
 
 # Include bplib
 add_cfe_app_dependency(bpnode bplib)

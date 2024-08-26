@@ -19,7 +19,11 @@ add_cfe_coverage_stubs("bpnode_internal"
 )
 
 # Link with the cfe core stubs and unit test assert libs
-target_link_libraries(coverage-bpnode_internal-stubs ut_core_api_stubs ut_assert)
+target_link_libraries(coverage-bpnode_internal-stubs 
+                          ut_core_api_stubs 
+                          ut_assert
+                          coverage-bplib-stubs
+)
 
 # Include and expose unit test utilities, fsw/inc, and fsw/src includes
 target_include_directories(coverage-bpnode_internal-stubs PUBLIC utilities)
@@ -46,9 +50,6 @@ foreach(SRCFILE ${APP_SRC_FILES})
 
     add_cfe_coverage_dependency(bpnode "${UNIT_NAME}" bpnode_internal)
 
-endforeach()
+    add_cfe_coverage_dependency(bpnode "${UNIT_NAME}" bplib)
 
-# The bpnode uses library functions provided by bplib so must be linked
-# with the bplib stub library (this is mainly just an example of how this
-# can be done).
-add_cfe_coverage_dependency(bpnode bpnode_cmds bplib)
+endforeach()
