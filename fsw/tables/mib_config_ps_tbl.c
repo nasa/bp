@@ -38,6 +38,7 @@ BPNode_MIBConfigPSTable_t MIBConfigPSTable = {
             .BundleSetBehaviorForwardedCBRGenerate  = false,
             .BundleSetBehaviorDeliveredCBRGenerate  = false,
             .BundleSetBehaviorDeletedCBRGenerate    = false, 
+            .Spare                                  = 0,
         },
         {
             .SrcEID                                 = "101.1",
@@ -55,6 +56,7 @@ BPNode_MIBConfigPSTable_t MIBConfigPSTable = {
             .BundleSetBehaviorForwardedCBRGenerate  = false,
             .BundleSetBehaviorDeliveredCBRGenerate  = false,
             .BundleSetBehaviorDeletedCBRGenerate    = false, 
+            .Spare                                  = 0,
         },
         {
             .SrcEID                                 = "102.1",
@@ -72,6 +74,7 @@ BPNode_MIBConfigPSTable_t MIBConfigPSTable = {
             .BundleSetBehaviorForwardedCBRGenerate  = false,
             .BundleSetBehaviorDeliveredCBRGenerate  = false,
             .BundleSetBehaviorDeletedCBRGenerate    = false, 
+            .Spare                                  = 0,
         },
     }
 };

@@ -42,8 +42,7 @@
 #define BPNODE_MAX_MID_SUBSCRIPTION     10
 #define BPNODE_MAX_AUTH_SOURCES         10
 #define BPNODE_MAX_EID_LENGTH           256
-#define BPNODE_MAX_STORAGE_PARTITIONS   100
-#define BPNODE_MAX_NUM_LATENCY_SRC      100
+#define BPNODE_MAX_NUM_LATENCY_SRC      10
 #define BPNODE_MAX_NUM_STORE_SET        10
 #define BPNODE_MAX_NUM_CANONICAL_BLOCK  10
 #define BPNODE_MAX_NUM_ADUPROXY         10
@@ -101,7 +100,7 @@ typedef struct
 {
     uint32      ContactID;
     char        DestEIDs[BPNODE_MAX_EID_LENGTH];
-    CLAType_t   CLAType;  
+    uint32      CLAType;  
     char        CLAddr[BPNODE_MAX_EID_LENGTH];
     int32       PortNum;
     uint32      DestLTPEngineID;
@@ -138,9 +137,9 @@ typedef struct
 */
 typedef struct
 {
-    uint8       Version;
+    uint32      Version;
+    uint32      CrcType;
     uint64      BundleProcFlags;
-    uint8       CrcType;
     char        DestEID[BPNODE_MAX_EID_LENGTH];
     char        SrcEID[BPNODE_MAX_EID_LENGTH];
     char        ReportToEID[BPNODE_MAX_EID_LENGTH];
@@ -152,7 +151,8 @@ typedef struct
     uint32      BlockType;
     uint32      BlockNum;
     uint64      BlockProcFlags;
-    uint8       CrcType;
+    uint32      CrcType;
+    uint32      Spare;       
 }BPNode_CanBlkConfig_t;
 
 typedef enum {
@@ -164,18 +164,19 @@ typedef enum {
 typedef struct
 {
     uint32                  ChannelID;
+    uint32                  Spare;
     bool                    AddAutomatically;
-    uint32                  LocalServiceNumber;
-    uint8                   RegState;
     bool                    RequestCustody;
     bool                    IncludePrevNodeBlk;
     bool                    IncludeHopCountBlk;
-    uint32                  MaxBundlePayloadSize;
-    uint8                   HopLimit;
-    uint32                  SendBytesPerCycle;
-    uint32                  ReceiveBytesPerCycle;
     bool                    ADUWrapping;
     bool                    ADUUnwrapping;
+    uint8                   RegState;
+    uint8                   HopLimit;
+    uint32                  LocalServiceNumber;
+    uint32                  MaxBundlePayloadSize;
+    uint32                  SendBytesPerCycle;
+    uint32                  ReceiveBytesPerCycle;
     BPNode_PriBlkConfig_t   PriBlkConfig;
     BPNode_CanBlkConfig_t   CanBlkConfig[BPNODE_MAX_NUM_CANONICAL_BLOCK];
 } BPNode_ChannelSet_t;
@@ -214,8 +215,9 @@ typedef enum
 
 typedef struct
 {
-    char SrcEID[BPNODE_MAX_EID_LENGTH];
-    SrcLatency Latency;    
+    char    SrcEID[BPNODE_MAX_EID_LENGTH];
+    uint32  Latency;
+    uint32  Spare;    
 }BPNode_SrcLatencySet_t;
 
 typedef struct
@@ -267,6 +269,7 @@ typedef struct
     bool        ParamSupportBIBE;
     bool        ParamSupportCustody;
     bool        ParamSupportConfidentiality;
+    bool        Spare;
 
 } BPNode_MIBConfigPNTable_t;
 
@@ -281,16 +284,17 @@ typedef struct
     uint32      ParamSetMaxLifetime;
     uint32      ParamSetMaxBSRGenerationRate;
     uint32      ParamSetMaxCBRGenerationRate;
-    bool        BundleSetBehaviorReceivedBSRGenerate;
-    bool        BundleSetBehaviorAcceptedBSRGenerate;
-    bool        BundleSetBehaviorForwardedBSRGenerate;
-    bool        BundleSetBehaviorDeliveredBSRGenerate;
-    bool        BundleSetBehaviorDeletedBSRGenerate;
-    bool        BundleSetBehaviorReceivedCBRGenerate;
-    bool        BundleSetBehaviorAcceptedCBRGenerate;
-    bool        BundleSetBehaviorForwardedCBRGenerate;
-    bool        BundleSetBehaviorDeliveredCBRGenerate;
-    bool        BundleSetBehaviorDeletedCBRGenerate;    
+    uint8       BundleSetBehaviorReceivedBSRGenerate;
+    uint8       BundleSetBehaviorAcceptedBSRGenerate;
+    uint8       BundleSetBehaviorForwardedBSRGenerate;
+    uint8       BundleSetBehaviorDeliveredBSRGenerate;
+    uint8       BundleSetBehaviorDeletedBSRGenerate;
+    uint8       BundleSetBehaviorReceivedCBRGenerate;
+    uint8       BundleSetBehaviorAcceptedCBRGenerate;
+    uint8       BundleSetBehaviorForwardedCBRGenerate;
+    uint8       BundleSetBehaviorDeliveredCBRGenerate;
+    uint8       BundleSetBehaviorDeletedCBRGenerate;  
+    uint16      Spare;
 } BPNode_MIBConfigPSSet_t;
 
 typedef struct

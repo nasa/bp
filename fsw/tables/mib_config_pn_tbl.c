@@ -46,6 +46,7 @@ BPNode_MIBConfigPNTable_t MIBConfigPNTable = {
     .ParamSupportBIBE                   = false,
     .ParamSupportCustody                = false,
     .ParamSupportConfidentiality        = false,
+    .Spare                              = true
 };
 
 /*

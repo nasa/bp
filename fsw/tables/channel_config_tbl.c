@@ -24,23 +24,24 @@ BPNode_ChannelTable_t ChannelTable = {
     .ChannelSet = {
         {
             .ChannelID              = 1,
+            .Spare                  = 0,        
             .AddAutomatically       = true,
-            .LocalServiceNumber     = 2,
-            .RegState               = 0,
             .RequestCustody         = false,
             .IncludePrevNodeBlk     = false,
             .IncludeHopCountBlk     = false,
-            .MaxBundlePayloadSize   = 15864,
-            .HopLimit               = 10,
-            .SendBytesPerCycle      = 15864,
-            .ReceiveBytesPerCycle   = 15864,
             .ADUWrapping            = false,
             .ADUUnwrapping          = false,
+            .RegState               = 0,
+            .HopLimit               = 10,
+            .LocalServiceNumber     = 2,
+            .MaxBundlePayloadSize   = 15864,
+            .SendBytesPerCycle      = 15864,
+            .ReceiveBytesPerCycle   = 15864,
             .PriBlkConfig           =   
                 {
                     .Version            = 7, 
-                    .BundleProcFlags    = 4, 
                     .CrcType            = 1, 
+                    .BundleProcFlags    = 4, 
                     .DestEID            = "100.1", 
                     .SrcEID             = "101.1", 
                     .ReportToEID        = "100.1", 
@@ -52,53 +53,59 @@ BPNode_ChannelTable_t ChannelTable = {
                         .BlockType          = 1,
                         .BlockNum           = 1,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 2,
                         .BlockNum           = 2,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 3,
                         .BlockNum           = 3,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 4,
                         .BlockNum           = 4,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 5,
                         .BlockNum           = 5,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                 }
         },
         {
             .ChannelID              = 2,
+            .Spare                  = 0,        
             .AddAutomatically       = true,
-            .LocalServiceNumber     = 2,
-            .RegState               = 0,
             .RequestCustody         = false,
             .IncludePrevNodeBlk     = false,
             .IncludeHopCountBlk     = false,
-            .MaxBundlePayloadSize   = 15864,
-            .HopLimit               = 10,
-            .SendBytesPerCycle      = 15864,
-            .ReceiveBytesPerCycle   = 15864,
             .ADUWrapping            = false,
             .ADUUnwrapping          = false,
+            .RegState               = 0,
+            .HopLimit               = 10,
+            .LocalServiceNumber     = 2,
+            .MaxBundlePayloadSize   = 15864,
+            .SendBytesPerCycle      = 15864,
+            .ReceiveBytesPerCycle   = 15864,
             .PriBlkConfig           =   
                 {
                     .Version            = 7, 
-                    .BundleProcFlags    = 4, 
                     .CrcType            = 1, 
+                    .BundleProcFlags    = 2, 
                     .DestEID            = "100.1", 
                     .SrcEID             = "101.1", 
                     .ReportToEID        = "100.1", 
@@ -110,34 +117,39 @@ BPNode_ChannelTable_t ChannelTable = {
                         .BlockType          = 1,
                         .BlockNum           = 1,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 2,
                         .BlockNum           = 2,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 3,
                         .BlockNum           = 3,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 4,
                         .BlockNum           = 4,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                     {
                         .BlockType          = 5,
                         .BlockNum           = 5,
                         .BlockProcFlags     = 1,
-                        .CrcType            = 1
+                        .CrcType            = 1,
+                        .Spare              = 0        
                     },
                 }
-        },        
+        },       
     }
 };
 

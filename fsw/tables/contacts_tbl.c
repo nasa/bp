@@ -26,7 +26,7 @@ BPNode_ContactsTable_t ContactsTable =
         {
             .ContactID              = 1, /*Contact ID, uint32*/ 
             .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
-            .CLAType                = 1, /*CLA Type, enum*/
+            .CLAType                = 1, /*CLA Type, uint32 */
             .CLAddr                 = "127.0.0.1", /*CL ip address*/
             .PortNum                = 1001, /*Port Number, int32*/
             .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
@@ -39,7 +39,7 @@ BPNode_ContactsTable_t ContactsTable =
         {
             .ContactID              = 2, /*Contact ID, uint32*/ 
             .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
-            .CLAType                = 1, /*CLA Type, enum*/
+            .CLAType                = 1, /*CLA Type, uint32 */
             .CLAddr                 = "127.0.0.1", /*CL ip address*/
             .PortNum                = 1001, /*Port Number, int32*/
             .DestLTPEngineID        = 1, /*Destination LTP engine ID*/

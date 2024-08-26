@@ -487,8 +487,8 @@
         </DimensionList>
       </ArrayDataType> 
             
-      <!-- ADU Proxy Config Table  -->     
-      <ContainerDataType name="ADUProxyTable" shortDescription="ADU Proxy Config Table structure">
+      <!-- ADU Proxy Config Table  -->           
+      <ContainerDataType name="ADUProxySet" shortDescription="ADU Proxy Config Table Set structure">
         <EntryList>
           <Entry name="SendToMID" type="CFE_SB/MsgIdValue" />
           <Entry name="NumRecvFrmMIDs" type="BASE_TYPES/uint32" />
@@ -496,21 +496,45 @@
         </EntryList>
       </ContainerDataType>
       
+      <ArrayDataType name="ADUProxySetArray" dataTypeRef="ADUProxySet">
+        <DimensionList>
+          <Dimension size="10" />
+        </DimensionList>
+      </ArrayDataType> 
+      
+      <ContainerDataType name="ADUProxyTable" shortDescription="ADU Proxy Table Array">
+        <EntryList>
+          <Entry name="ADUProxySet" type="ADUProxySetArray" />
+        </EntryList>
+      </ContainerDataType>      
+            
       <!-- CRS Config Table  -->     
-      <ContainerDataType name="CRSTable" shortDescription="CRS Table structure">
+      <ContainerDataType name="CRSSet" shortDescription="CRS Table Set structure">
         <EntryList>
           <Entry name="DestEID" type="EIDString" />
           <Entry name="TimeTrigger" type="BASE_TYPES/uint32" />
           <Entry name="SizeTrigger" type="BASE_TYPES/uint32" />
         </EntryList>
       </ContainerDataType>
+
+      <ArrayDataType name="CRSSetArray" dataTypeRef="CRSSet">
+        <DimensionList>
+          <Dimension size="10" />
+        </DimensionList>
+      </ArrayDataType> 
+
+      <ContainerDataType name="CRSTable" shortDescription="CRS Table Array">
+        <EntryList>
+          <Entry name="CRSSet" type="CRSSetArray" />
+        </EntryList>
+      </ContainerDataType>      
       
       <!-- Contacts Config Table  -->     
-      <ContainerDataType name="ContactsTable" shortDescription="Ccontacts Table structure">
+      <ContainerDataType name="ContactsSet" shortDescription="Ccontacts Table Set structure">
         <EntryList>
           <Entry name="ContactID" type="BASE_TYPES/uint32" />
           <Entry name="DestEIDs" type="EIDString" />
-          <Entry name="CLAType" type="BASE_TYPES/uint8" />
+          <Entry name="CLAType" type="BASE_TYPES/uint32" />
           <Entry name="CLAddr" type="EIDString" />
           <Entry name="PortNum" type="BASE_TYPES/int32" />
           <Entry name="DestLTPEngineID" type="BASE_TYPES/uint32" />
@@ -521,6 +545,18 @@
           <Entry name="CSSizeTrigger" type="BASE_TYPES/uint32" />
         </EntryList>
       </ContainerDataType>
+
+      <ArrayDataType name="ContactsSetArray" dataTypeRef="ContactsSet">
+        <DimensionList>
+          <Dimension size="10" />
+        </DimensionList>
+      </ArrayDataType> 
+
+      <ContainerDataType name="ContactsTable" shortDescription="Contacts Table Array">
+        <EntryList>
+          <Entry name="ContactsSet" type="ContactsSetArray" />
+        </EntryList>
+      </ContainerDataType>      
 
       <!-- Custodian Authorization Policy Table  -->     
       <ContainerDataType name="CustodianTable" shortDescription="Custodian Authorization Policy Table structure">
@@ -539,9 +575,9 @@
       <!-- Channel Config Table  -->           
       <ContainerDataType name="PriBlkConfigEntry" shortDescription="Primary Block Config structure">
         <EntryList>
-          <Entry name="Version" type="BASE_TYPES/uint8" />
+          <Entry name="Version" type="BASE_TYPES/uint32" />
+          <Entry name="CrcType" type="BASE_TYPES/uint32" />
           <Entry name="BundleProcFlags" type="BASE_TYPES/uint64" />
-          <Entry name="CrcType" type="BASE_TYPES/uint8" />
           <Entry name="DestEID" type="EIDString" />
           <Entry name="SrcEID" type="EIDString" />
           <Entry name="ReportToEID" type="EIDString" />
@@ -554,7 +590,8 @@
           <Entry name="BlockType" type="BASE_TYPES/uint32" />
           <Entry name="BlockNum" type="BASE_TYPES/uint32" />
           <Entry name="BlockProcFlags" type="BASE_TYPES/uint64" />
-          <Entry name="CrcType" type="BASE_TYPES/uint8" />
+          <Entry name="CrcType" type="BASE_TYPES/uint32" />
+          <Entry name="Spare" type="BASE_TYPES/uint32" />
         </EntryList>
       </ContainerDataType>
 
@@ -564,26 +601,39 @@
         </DimensionList>
       </ArrayDataType>
                             
-      <ContainerDataType name="ChannelTable" shortDescription="Channel Config Table structure">
+      <ContainerDataType name="ChannelSet" shortDescription="Channel Config Table Set structure">
         <EntryList>
           <Entry name="ChannelID" type="BASE_TYPES/uint32" />
+          <Entry name="Spare" type="BASE_TYPES/uint32" />
           <Entry name="AddAutomatically" type="BASE_TYPES/uint8" />
-          <Entry name="LocalServiceNumber" type="BASE_TYPES/uint32" />
-          <Entry name="RegState" type="BASE_TYPES/uint8" />
           <Entry name="RequestCustody" type="BASE_TYPES/uint8" />
           <Entry name="IncludePrevNodeBlk" type="BASE_TYPES/uint8" />
           <Entry name="IncludeHopCountBlk" type="BASE_TYPES/uint8" />
-          <Entry name="MaxBundlePayloadSize" type="BASE_TYPES/uint32" />
-          <Entry name="HopLimit" type="BASE_TYPES/uint8" />
-          <Entry name="SendBytesPerCycle" type="BASE_TYPES/uint32" />
-          <Entry name="ReceiveBytesPerCycle" type="BASE_TYPES/uint32" />
           <Entry name="ADUWrapping" type="BASE_TYPES/uint8" />
           <Entry name="ADUUnwrapping" type="BASE_TYPES/uint8" />
+          <Entry name="RegState" type="BASE_TYPES/uint8" />
+          <Entry name="HopLimit" type="BASE_TYPES/uint8" />
+          <Entry name="LocalServiceNumber" type="BASE_TYPES/uint32" />
+          <Entry name="MaxBundlePayloadSize" type="BASE_TYPES/uint32" />
+          <Entry name="SendBytesPerCycle" type="BASE_TYPES/uint32" />
+          <Entry name="ReceiveBytesPerCycle" type="BASE_TYPES/uint32" />
           <Entry name="PriBlkConfig" type="PriBlkConfigEntry" />
           <Entry name="CanBlkConfig" type="CanBlksArray" />
         </EntryList>
       </ContainerDataType>
+      
+      <ArrayDataType name="ChannelSetArray" dataTypeRef="ChannelSet">
+        <DimensionList>
+          <Dimension size="10" />
+        </DimensionList>
+      </ArrayDataType> 
 
+      <ContainerDataType name="ChannelTable" shortDescription="Channel Table Array">
+        <EntryList>
+          <Entry name="ChannelSet" type="ChannelSetArray" />
+        </EntryList>
+      </ContainerDataType>      
+      
       <!-- Report-To Auth Policy Table  -->     
       <ContainerDataType name="ReportToTable" shortDescription="Report-To Authorization Policy Table structure">
         <EntryList>
@@ -602,7 +652,8 @@
       <ContainerDataType name="SrcLatencySet" shortDescription="Latency Set structure">
         <EntryList>
           <Entry name="SrcEID" type="EIDString" />
-          <Entry name="Latency" type="BASE_TYPES/uint8" />
+          <Entry name="Latency" type="BASE_TYPES/uint32" />
+          <Entry name="Spare" type="BASE_TYPES/uint32" />
         </EntryList>
       </ContainerDataType>
 
@@ -665,13 +716,14 @@
           <Entry name="ParamSetBehaviorWrapResponse" type="BASE_TYPES/uint8" />
           <Entry name="ParamSupportBIBE" type="BASE_TYPES/uint8" />
           <Entry name="ParamSupportCustody" type="BASE_TYPES/uint8" />
-          <Entry name="ParamSupportConfidentiality" type="BASE_TYPES/uint8" />
+          <Entry name="ParamSupportConfidentiality" type="BASE_TYPES/uint16" />
         </EntryList>
       </ContainerDataType>
 
       <!-- MIB Config Per Source Table  -->     
-      <ContainerDataType name="MIBConfigPSTable" shortDescription="MIB Config Per Sorce structure">
+      <ContainerDataType name="MIBConfigPSSet" shortDescription="MIB Config Per Source structure">
         <EntryList>
+          <Entry name="SrcEID" type="EIDString" />
           <Entry name="EIDPattern" type="EIDString" />
           <Entry name="ParamSetMaxLifetime" type="BASE_TYPES/uint32" />
           <Entry name="ParamSetMaxBSRGenerationRate" type="BASE_TYPES/uint32" />
@@ -686,8 +738,21 @@
           <Entry name="BundleSetBehaviorForwardedCBRGenerate" type="BASE_TYPES/uint8" />
           <Entry name="BundleSetBehaviorDeliveredCBRGenerate" type="BASE_TYPES/uint8" />
           <Entry name="BundleSetBehaviorDeletedCBRGenerate" type="BASE_TYPES/uint8" />
+          <Entry name="Spare" type="BASE_TYPES/uint16" />
         </EntryList>
       </ContainerDataType>
+      
+      <ArrayDataType name="MIBConfigPSSetArray" dataTypeRef="MIBConfigPSSet">
+        <DimensionList>
+          <Dimension size="10" />
+        </DimensionList>
+      </ArrayDataType> 
+
+      <ContainerDataType name="MIBConfigPSTable" shortDescription="MIB Per Source Table Array">
+        <EntryList>
+          <Entry name="MIBConfigPSSet" type="MIBConfigPSSetArray" />
+        </EntryList>
+      </ContainerDataType>        
                                                                                                                                                                                                                                                                                                                                                                                                 
     </DataTypeSet>
 
