@@ -98,7 +98,7 @@ uint16_t BPNODE_EVP_TranslateTypeToHost(BPL_EM_EventType_t EventType)
  * BPNODE_EVP_SendEvent_Impl
  *-----------------------------------------------*/
 BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EM_EventType_t EventType,
-    char const * EventText, va_list EventTextArgPtr)
+                                       char const * EventText, va_list EventTextArgPtr)
 {
     BPL_Status_t ReturnStatus;
     CFE_Status_t ProxyStatus;
@@ -115,7 +115,8 @@ BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EM_EventType_t Even
 
     memset(&ExpandedEventText, 0, sizeof(ExpandedEventText));
     ExpandedLength = vsnprintf((char *)ExpandedEventText, sizeof(ExpandedEventText),
-        EventText, EventTextArgPtr);
+                               EventText, EventTextArgPtr);
+
     if (ExpandedLength >= (int)sizeof(ExpandedEventText))
     {
         /* Mark character before zero terminator to indicate truncation */
@@ -128,14 +129,15 @@ BPL_Status_t BPNODE_EVP_SendEvent_Impl(uint16_t EventID, BPL_EM_EventType_t Even
 
     /* TODO: We'll probably want to remove this, or wrap it behind an "if debug" compiler flag. */
     OS_printf("BPNODE_EVP_SendEvent_Impl(%u, %s, %s)\n",
-        EventID, BPL_EM_EventTypeToString(EventType), ExpandedEventText);
+              EventID, BPL_EM_EventTypeToString(EventType), ExpandedEventText);
 
     ProxyStatus = CFE_EVS_SendEvent(EventID, HostEventType, "%s", ExpandedEventText);
 
     if (ProxyStatus != CFE_SUCCESS)
     {
         OS_printf("BPNODE_EVP_SendEvent_Impl CFE_EVS_SendEvent returned error status: 0x%08X!\n",
-            ProxyStatus);
+                  ProxyStatus);
+
         ReturnStatus.ReturnValue = BPL_STATUS_ERROR_GENERAL;
     }
     else
