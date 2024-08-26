@@ -38,7 +38,7 @@
 */
 
 /* Define filenames of default data images for tables */
-#define CRS_TABLE_FILE "/cf/bpn_crs.tbl"
+#define CRS_TABLE_FILE "/cf/bpnode_crs.tbl"
 #define ADUP_CONFIG_TABLE_FILE "/cf/bpnode_adup.tbl"
 #define CONTACTS_TABLE_FILE "/cf/bpnode_contacts.tbl"
 #define CUSTODIAN_TABLE_FILE "/cf/bpnode_custodian.tbl"

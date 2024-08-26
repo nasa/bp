@@ -96,6 +96,13 @@ void Test_BPA_TableP_TableUpdate_Nominal(void)
     UtAssert_INT32_EQ((int32) BPA_TableP_TableUpdate(), (int32) CFE_SUCCESS);    
 }
 
+void Test_BPA_TableP_TableUpdate_Nominal_Info_Updated(void)
+{
+    BPNode_AppData.TblNameParamsArr = TblNameParamsArr_test;
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
+    UtAssert_INT32_EQ((int32) BPA_TableP_TableUpdate(), (int32) CFE_SUCCESS);    
+}
+
 void Test_BPA_TableP_TableUpdate_Fail(void)
 {
     BPNode_AppData.TblNameParamsArr = TblNameParamsArr_test;
@@ -112,8 +119,7 @@ void Test_BPA_TableP_SingleTableUpdate_Nominal(void)
 
 void Test_BPA_TableP_SingleTableUpdate_Fail(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetStatus), CFE_TBL_INFO_UPDATE_PENDING);
-    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Update), CFE_TBL_ERR_INVALID_OPTIONS);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetStatus), CFE_TBL_ERR_NEVER_LOADED);
     UtAssert_INT32_NEQ((int32) BPA_TableP_SingleTableUpdate(1), (int32) CFE_SUCCESS);    
 }
 
@@ -356,6 +362,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TableP_TableInit_Fail_GetAddress);
     
     ADD_TEST(Test_BPA_TableP_TableUpdate_Nominal);
+    ADD_TEST(Test_BPA_TableP_TableUpdate_Nominal_Info_Updated);
     ADD_TEST(Test_BPA_TableP_TableUpdate_Fail);
     
     ADD_TEST(Test_BPA_TableP_SingleTableUpdate_Nominal);
