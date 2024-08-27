@@ -56,7 +56,7 @@
 */
 
 /*
-** ADU PRoxy Config Table
+** ADU Proxy Config Table
 */
 typedef struct
 {
