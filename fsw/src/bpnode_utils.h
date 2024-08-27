@@ -32,8 +32,6 @@
 
 #include "bpnode_app.h"
 
-#define TOTAL_NUM_TABLES    12
-
 /*
 ** Exported Functions
 */

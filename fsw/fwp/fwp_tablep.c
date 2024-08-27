@@ -208,7 +208,7 @@ CFE_Status_t BPA_TableP_TableInit(void)
      
     BPNode_AppData.TblNameParamsArr = TblNameParamsArr0;        
     
-    for (int i = 0; i < TOTAL_NUM_TABLES; i++)
+    for (int i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
     {
         Status = CFE_TBL_Register(&BPNode_AppData.TblNameParamsArr[i].TableHandle, BPNode_AppData.TblNameParamsArr[i].TableName, 
                 BPNode_AppData.TblNameParamsArr[i].TableSize, CFE_TBL_OPT_DEFAULT, BPNode_AppData.TblNameParamsArr[i].TblValidationFuncPtr);
@@ -247,7 +247,7 @@ CFE_Status_t BPA_TableP_TableUpdate(void)
 {
     CFE_Status_t Status;
     
-    for (int i = 0; i < TOTAL_NUM_TABLES; i++)
+    for (int i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
     {
         /* Manage any pending table loads, validations, etc. */
         (void) CFE_TBL_ReleaseAddress(BPNode_AppData.TblNameParamsArr[i].TableHandle);
