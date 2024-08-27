@@ -109,7 +109,15 @@ void BPNode_AppMain(void)
 CFE_Status_t BPNode_WakeupProcess(void)
 {
     CFE_Status_t     Status;
+    BPLib_Status_t   BpStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
+
+    BpStatus = BPLib_TIME_MaintenanceActivities();
+
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        OS_printf("Time maintenace activities error: %d", BpStatus);
+    }
 
     /* Manage any pending table loads, validations, etc. */
     (void) CFE_TBL_ReleaseAddress(BPNode_AppData.ExampleTblHandle);
@@ -151,6 +159,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
+    BPLib_Status_t BpStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
@@ -260,6 +269,13 @@ CFE_Status_t BPNode_AppInit(void)
                             "Failure initializing function callbacks in BPLib");
 
         return Status;
+    }
+
+    BpStatus = BPLib_TIME_Init();
+
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        OS_printf("Boo, error initializing time %d", BpStatus);
     }
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
