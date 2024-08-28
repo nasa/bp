@@ -272,14 +272,6 @@ CFE_Status_t BPA_TableP_TableUpdate(void)
 }
 
 CFE_Status_t BPA_TableP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle)
-{
-    CFE_Status_t Status;
-    
-    Status = CFE_TBL_GetStatus(TblHandle);
-    if (Status == CFE_TBL_INFO_UPDATE_PENDING)
-    {
-        Status = CFE_TBL_Update(TblHandle);
-    }
-    
-    return Status;
+{    
+    return CFE_TBL_Modified(TblHandle);
 }
