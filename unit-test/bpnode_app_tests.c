@@ -156,7 +156,7 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
-    UT_SetDefaultReturnValue(UT_KEY(BPA_TableP_TableUpdate), CFE_TBL_ERR_INVALID_HANDLE);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), CFE_TBL_ERR_INVALID_HANDLE);
     UtAssert_INT32_NEQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
@@ -280,9 +280,9 @@ void Test_BPNode_AppInit_FailedTblInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    /* Failure to call BPA_TableP_TableInit() */
+    /* Failure to call BPA_TABLEP_TableInit() */
     
-    UT_SetDefaultReturnValue(UT_KEY(BPA_TableP_TableInit), CFE_TBL_ERR_INVALID_HANDLE);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableInit), CFE_TBL_ERR_INVALID_HANDLE);
     UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);

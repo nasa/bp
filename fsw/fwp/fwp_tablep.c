@@ -202,7 +202,7 @@ BPNode_TblNameParams_t TblNameParamsArr0[] =
 
 
 /*Initialize table proxy, load default tables*/
-CFE_Status_t BPA_TableP_TableInit(void)
+CFE_Status_t BPA_TABLEP_TableInit(void)
 {
     CFE_Status_t Status;
      
@@ -243,7 +243,7 @@ CFE_Status_t BPA_TableP_TableInit(void)
     return CFE_SUCCESS;  
 }
 
-CFE_Status_t BPA_TableP_TableUpdate(void)
+CFE_Status_t BPA_TABLEP_TableUpdate(void)
 {
     CFE_Status_t Status;
     
@@ -271,7 +271,7 @@ CFE_Status_t BPA_TableP_TableUpdate(void)
     return CFE_SUCCESS;
 }
 
-CFE_Status_t BPA_TableP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle)
+CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle)
 {    
     return CFE_TBL_Modified(TblHandle);
 }

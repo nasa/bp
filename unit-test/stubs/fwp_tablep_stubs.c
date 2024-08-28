@@ -35,44 +35,44 @@
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPA_TableP_TableInit()
+ * Generated stub function for BPA_TABLEP_TableInit()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TableP_TableInit(void) {
-  UT_GenStub_SetupReturnBuffer(BPA_TableP_TableInit, CFE_Status_t);
+CFE_Status_t BPA_TABLEP_TableInit(void) {
+  UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableInit, CFE_Status_t);
 
-  UT_GenStub_Execute(BPA_TableP_TableInit, Basic, NULL);
+  UT_GenStub_Execute(BPA_TABLEP_TableInit, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPA_TableP_TableInit, CFE_Status_t);
+  return UT_GenStub_GetReturnValue(BPA_TABLEP_TableInit, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPA_TableP_TableUpdate()
+ * Generated stub function for BPA_TABLEP_TableUpdate()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TableP_TableUpdate(void) {
-  UT_GenStub_SetupReturnBuffer(BPA_TableP_TableUpdate, CFE_Status_t);
+CFE_Status_t BPA_TABLEP_TableUpdate(void) {
+  UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableUpdate, CFE_Status_t);
 
-  UT_GenStub_Execute(BPA_TableP_TableUpdate, Basic, NULL);
+  UT_GenStub_Execute(BPA_TABLEP_TableUpdate, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPA_TableP_TableUpdate, CFE_Status_t);
+  return UT_GenStub_GetReturnValue(BPA_TABLEP_TableUpdate, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPA_TableP_SingleTableUpdate()
+ * Generated stub function for BPA_TABLEP_SingleTableUpdate()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TableP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle) {
-  UT_GenStub_SetupReturnBuffer(BPA_TableP_SingleTableUpdate, CFE_Status_t);
+CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle) {
+  UT_GenStub_SetupReturnBuffer(BPA_TABLEP_SingleTableUpdate, CFE_Status_t);
 
-  UT_GenStub_AddParam(BPA_TableP_SingleTableUpdate, CFE_TBL_Handle_t,
+  UT_GenStub_AddParam(BPA_TABLEP_SingleTableUpdate, CFE_TBL_Handle_t,
                       TblHandle);
 
-  UT_GenStub_Execute(BPA_TableP_SingleTableUpdate, Basic, NULL);
+  UT_GenStub_Execute(BPA_TABLEP_SingleTableUpdate, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPA_TableP_SingleTableUpdate, CFE_Status_t);
+  return UT_GenStub_GetReturnValue(BPA_TABLEP_SingleTableUpdate, CFE_Status_t);
 }
 
 /*

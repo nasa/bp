@@ -113,7 +113,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
 
     /* Call Table Proxy to update tables*/
-    Status = BPA_TableP_TableUpdate();
+    Status = BPA_TABLEP_TableUpdate();
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
@@ -154,7 +154,8 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
-        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime
+        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate
     };
 
     /* Zero out the global data structure */
@@ -218,7 +219,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Call Table Proxy Init Function Here to load default tables*/
-    Status = BPA_TableP_TableInit();
+    Status = BPA_TABLEP_TableInit();
     if (Status != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
