@@ -29,13 +29,13 @@
 /* ==================== */
 
 /* CFE_EVS_Register() proxy */
-int64_t AA_FWP_EVP_Register(const void* Filters, uint16_t NumEventFilters, uint16_t FilterScheme)
+int64_t BPA_EVP_Register(const void* Filters, uint16_t NumEventFilters, uint16_t FilterScheme)
 {
     return (int64_t) CFE_EVS_Register(Filters, NumEventFilters, FilterScheme);
 }
 
 /* CFE_EVS_SendEvent() proxy */
-int64_t AA_FWP_EVP_SendEvent(uint16_t EventID, BPL_EM_EventType_t EventType,
+int64_t BPA_EVP_SendEvent(uint16_t EventID, uint16_t EventType,
                              char const* EventText, va_list EventTextArgPtr)
 {
     BPL_Status_t ReturnStatus;

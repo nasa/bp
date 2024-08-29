@@ -159,6 +159,8 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime
+        .BPA_EVP_Register  = BPA_EVP_Register
+        .BPA_EVP_SendEvent = BPA_EVP_SendEvent
     };
 
     /* Zero out the global data structure */
