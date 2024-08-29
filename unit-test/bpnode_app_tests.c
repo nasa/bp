@@ -84,11 +84,12 @@ void Test_BPNode_AppMain_WakeupErr(void)
     /* Wakeup pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_PIPE_ERR_EID, "SB Pipe Read Error, App Will Exit");
 
     BPNode_AppMain();
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_PIPE_ERR_EID, "SB Pipe Read Error, App Will Exit");
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app main loop after command pipe read error */
@@ -100,11 +101,12 @@ void Test_BPNode_AppMain_CommandErr(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_PIPE_ERR_EID, "SB Pipe Read Error, App Will Exit");
 
     BPNode_AppMain();
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_PIPE_ERR_EID, "SB Pipe Read Error, App Will Exit");
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app main loop after receiving one command */
@@ -176,6 +178,7 @@ void Test_BPNode_WakeupProcess_TblErr(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_ERR_NO_ACCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_MNG_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
@@ -183,7 +186,7 @@ void Test_BPNode_WakeupProcess_TblErr(void)
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
     UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_MNG_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test wakeup process after receiving null buffer */
@@ -225,12 +228,12 @@ void Test_BPNode_AppInit_Nominal(void)
 
     /* Nominal case should return CFE_SUCCESS */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
-
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after EVS registration failure */
@@ -252,11 +255,12 @@ void Test_BPNode_AppInit_FailedCmdPipeCreate(void)
 
     /* Failure to create command pipe */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_CreatePipe), 1, CFE_SB_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_CMD_PIPE_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_CMD_PIPE_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after wakeup pipe creation failure */
@@ -266,11 +270,12 @@ void Test_BPNode_AppInit_FailedWakeupPipeCreate(void)
 
     /* Failure to create wakeup pipe */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_CreatePipe), 2, CFE_SB_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_WKP_PIPE_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_WKP_PIPE_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after failure to subscribe to commands */
@@ -280,11 +285,12 @@ void Test_BPNode_AppInit_FailedCommandSub(void)
 
     /* Failure to subscribe to commands */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_CMD_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_CMD_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after failure to subscribe to wakeups */
@@ -294,11 +300,12 @@ void Test_BPNode_AppInit_FailedWakeupSub(void)
 
     /* Failure to subscribe to wakeups */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 2, CFE_SB_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_WKP_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_SUB_WKP_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after failure to register table */
@@ -308,11 +315,12 @@ void Test_BPNode_AppInit_FailedTblRegister(void)
 
     /* Failure to register table */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Register), 1, CFE_TBL_ERR_INVALID_OPTIONS);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_REG_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_INVALID_OPTIONS);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_REG_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after failure to load table */
@@ -322,11 +330,12 @@ void Test_BPNode_AppInit_FailedTblLoad(void)
 
     /* Failure to load table */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Load), 1, CFE_TBL_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_LD_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_BAD_ARGUMENT);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_LD_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after failure to get table address */
@@ -336,12 +345,12 @@ void Test_BPNode_AppInit_FailedTblGetAddr(void)
 
     /* Failure to get table address */
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_ERR_UNREGISTERED);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_ADDR_ERR_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_UNREGISTERED);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_ADDR_ERR_EID, NULL);
-
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization in nominal case */
@@ -354,13 +363,13 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 
     /* Nominal case should return CFE_SUCCESS */
     UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, NULL);
 
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CALLBACK_INIT_ERROR);
     
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, NULL);
-
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Register the test cases to execute with the unit test tool */

@@ -64,11 +64,12 @@ void Test_BPNode_TaskPipe_InvalidMsgId(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, NULL);
     
     BPNode_TaskPipe(&Buf);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test task pipe processing with an invalid message length */
@@ -84,11 +85,12 @@ void Test_BPNode_TaskPipe_InvalidLength(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID, NULL);
     
     BPNode_TaskPipe(&Buf);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test task pipe processing with an invalid command code */
@@ -104,11 +106,12 @@ void Test_BPNode_TaskPipe_InvalidCmdCode(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
     
     BPNode_TaskPipe(&Buf);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 
