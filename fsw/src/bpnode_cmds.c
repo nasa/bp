@@ -47,11 +47,13 @@
 /* Send Node MIB Counters housekeeping command */
 CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
-    BPLib_TIME_GetMonotonicTime(&BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime);
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    BPLib_TIME_MonotonicTime_t MonotonicTime;
 
-    OS_printf("Monotonic time = %ld\n", BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime.Time);
-    OS_printf("CF is %ld\n",  BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor);
+    BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
 
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);

@@ -61,11 +61,12 @@ typedef struct BPNode_SourceMibConfigHkTlm_Payload
  */
 typedef struct BPNode_NodeMibCountersHkTlm_Payload
 {
-    uint16 AcceptedDirectiveCount;
-    uint16 RejectedDirectiveCount;
+    uint16 AcceptedDirectiveCount;  /**< \brief Accepted Directive Counter */
+    uint16 RejectedDirectiveCount;  /**< \brief Rejected Directive Counter */
 
-    BPLib_TIME_MonotonicTime_t MonotonicTime;
-    int64 CorrelationFactor;
+    uint32 TimeBootEra;             /**< \brief Boot Era for Monotonic Time */
+    int64  MonotonicTime;           /**< \brief Monotonic Time Counter */
+    int64  CorrelationFactor;       /**< \brief Time Correlation Factor */
 } BPNode_NodeMibCountersHkTlm_Payload_t;
 
 /**
