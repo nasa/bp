@@ -18,24 +18,23 @@
  *
  */
 
+#ifndef FWP_EVP_H
+#define FWP_EVP_H
+
 /* ======== */
 /* Includes */
 /* ======== */
 #include "cfe.h"
-#include "fwp_evp.h"
+#include "bplib.h"
 
-/* ==================== */
-/* Function definitions */
-/* ==================== */
+/* ======== */
+/* Typedefs */
+/* ======== */
 
-/* CFE_EVS_Register() proxy */
-int64_t BPA_EVP_Register(const void* Filters, uint16_t NumEventFilters, uint16_t FilterScheme)
-{
-    return (int64_t) CFE_EVS_Register(Filters, NumEventFilters, FilterScheme);
-}
+/* ================== */
+/* Exported Functions */
+/* ================== */
+BPLib_Status_t BPA_EVP_Register(const void* Filters, uint16_t NumEventFilters, uint16_t FilterScheme);
+BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText);
 
-/* CFE_EVS_SendEvent() proxy */
-int64_t BPA_EVP_SendEvent(uint16_t EventID, char const* EventType, char const* EventText)
-{
-    return (int64_t) CFE_EVS_SendEvent(EventID, EventType, "%s", EventText);
-}
+#endif /* FWP_EVP_H */

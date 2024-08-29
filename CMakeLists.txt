@@ -8,6 +8,7 @@ set(APP_SRC_FILES
 
   # FWP files
   fsw/fwp/fwp_timep.c
+  fsw/fwp/fwp_evp.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)
