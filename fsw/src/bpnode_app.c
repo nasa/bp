@@ -112,11 +112,13 @@ CFE_Status_t BPNode_WakeupProcess(void)
     BPLib_Status_t   BpStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
 
+    /* Update time as needed */
     BpStatus = BPLib_TIME_MaintenanceActivities();
 
     if (BpStatus != BPLIB_SUCCESS)
     {
-        OS_printf("Time maintenace activities error: %d", BpStatus);
+        CFE_EVS_SendEvent(BPNODE_TIME_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
     /* Manage any pending table loads, validations, etc. */
@@ -266,7 +268,7 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != BPLIB_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Failure initializing function callbacks in BPLib");
+                            "Error initializing function callbacks in BPLib");
 
         return Status;
     }
@@ -275,7 +277,10 @@ CFE_Status_t BPNode_AppInit(void)
 
     if (BpStatus != BPLIB_SUCCESS)
     {
-        OS_printf("Boo, error initializing time %d", BpStatus);
+        CFE_EVS_SendEvent(BPNODE_TIME_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Error initializing BPLib Time Management, RC = %d", BpStatus);
+        
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
@@ -286,7 +291,7 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNODE",
                         BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
 
-    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
+    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNode Initialized: %s",
                         VersionString);
 
     return CFE_SUCCESS;
