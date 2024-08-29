@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef BPNODE_EVP_CFS_H
-#define BPNODE_EVP_CFS_H
+#ifndef FWP_EVP_H
+#define FWP_EVP_H
 
 /* ======== */
 /* Includes */
@@ -30,19 +30,11 @@
 /* ======== */
 /* Typedefs */
 /* ======== */
-#define BPNODE_EVP_MSG_TRUNCATED ('$')
-
-// Defines the max length of the expanded event string
-// Limits:
-// - must be greater than or equal to 2
-// - must be less than or equal to host limit (CFE_MISSION_EVS_MAX_MESSAGE_LENGTH)
-#define BPNODE_EVP_MAX_MESSAGE_LENGTH (CFE_MISSION_EVS_MAX_MESSAGE_LENGTH)
 
 /* ================== */
 /* Exported Functions */
 /* ================== */
 BPL_Status_t BPA_EVP_Register(void);
-BPL_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPL_EM_EventType_t EventType,
-                               char const * EventText, va_list EventTextArgPtr);
+BPL_Status_t BPA_EVP_SendEvent(uint16_t EventID, char const* EventType, char const* EventText);
 
-#endif /* BPNODE_EVP_CFS_H */
+#endif /* FWP_EVP_H */
