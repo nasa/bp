@@ -18,30 +18,27 @@
  *
  */
 
-/**
- * @file
- *
- *  The BPNode example table source file.
- */
-
 /*
-** Include Files
+** \file
+**   This file contains the source code for the Source Auth Table
 */
 
-#include "cfe_tbl_filedef.h"
+#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "bpnode_tbl.h"
 
 /*
 ** The following is an example of the declaration statement that defines the desired
 ** contents of the table image.
 */
-BPNode_ExampleTable_t ExampleTable = {1, 2};
+BPNode_SrcAuthTable_t SrcAuthTable = {
+    .AuthSrcEIDs = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
+};
 
 /*
 ** The macro below identifies:
 **    1) the data structure type to use as the table image format
 **    2) the name of the table to be placed into the cFE Example Table File Header
-**    3) a brief description of the contents of the file image
+**    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ExampleTable, BPNODE.ExampleTable, Example Table, bpnode_tbl.tbl)
+CFE_TBL_FILEDEF(SrcAuthTable, BPNODE.SrcAuthTable, Source Auth Policy Table, bpnode_src_auth.tbl)

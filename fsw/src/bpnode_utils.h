@@ -32,7 +32,6 @@
 
 #include "bpnode_app.h"
 
-
 /*
 ** Exported Functions
 */
@@ -53,5 +52,6 @@
  *  \retval #BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE Validation failure
  */
 CFE_Status_t BPNode_TblValidationFunc(void *TblData);
+
 
 #endif /* BPNODE_UTILS_H */
