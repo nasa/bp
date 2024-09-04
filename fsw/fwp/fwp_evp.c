@@ -36,5 +36,35 @@ BPLib_Status_t BPA_EVP_Init(void)
 /* CFE_EVS_SendEvent() proxy */
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText)
 {
-    return (BPLib_Status_t) CFE_EVS_SendEvent(EventID, EventType, "%s", EventText);
+    int32 Status;
+
+    Status = CFE_EVS_SendEvent(EventID, EventType, "%s", EventText);
+    
+    switch(Status)
+    {
+        case CFE_SUCCESS:
+            Status = BPLIB_SUCCESS;
+            break;
+        case CFE_EVS_INVALID_PARAMETER:
+            /* Returned by CFE_EVS_SendEvent() from cfe_evs.c */
+            Status = BPLIB_EM_INVALID_PARAMETER;
+            break;
+        case CFE_EVS_APP_ILLEGAL_APP_ID:
+            /* Returned by EVS_GetCurrentContext() from cfe_evs_utils.c */
+            Status = BPLIB_EM_ILLEGAL_APP_ID;
+            break;
+        case CFE_EVS_APP_NOT_REGISTERED:
+            /* Returned by EVS_NotRegistered() from cfe_evs_utils.c */
+            Status = BPLIB_EM_APP_NOT_REGISTERED;
+            break;
+        case CFE_EVS_APP_SQUELCHED:
+            /* Returned by CFE_EVS_SendEvent() from cfe_evs.c */
+            Status = BPLIB_EM_APP_SQUELCHED;
+            break;
+        default:
+            Status = BPLIB_UNKNOWN;
+            break;
+    }
+
+    return Status;
 }
