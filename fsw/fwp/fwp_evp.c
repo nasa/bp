@@ -30,7 +30,34 @@
 /* CFE_EVS_Register() proxy */
 BPLib_Status_t BPA_EVP_Init(void)
 {
-    return (BPLib_Status_t) CFE_EVS_Register(Filters, NumEventFilters, FilterScheme);
+    int32 Status;
+
+    /* Call EVS Register with legacy default values */
+    Status = CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
+
+    switch(Status)
+    {
+        case CFE_SUCCESS:
+            Status = BPLIB_SUCCESS;
+            break;
+        case CFE_EVS_APP_ILLEGAL_APP_ID:
+            /* Returned by EVS_GetCurrentContext() from cfe_evs_utils.c */
+            Status = BPLIB_EM_ILLEGAL_APP_ID;
+            break;
+        case CFE_EVS_UNKNOWN_FILTER:
+            /* Returned by CFE_EVS_Register() from cfe_evs.c */
+            Status = BPLIB_EM_UNKNOWN_FILTER;
+            break;
+        case CFE_ES_BAD_ARGUMENT:
+            /* Returned by CFE_EVS_Register() from cfe_evs.c */
+            Status = BPLIB_EM_BAD_ARGUMENT;
+            break;
+        default:
+            Status = BPLIB_UNKNOWN;
+            break;
+    }
+
+    return Status;
 }
 
 /* CFE_EVS_SendEvent() proxy */
