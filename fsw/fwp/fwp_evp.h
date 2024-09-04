@@ -34,7 +34,7 @@
 /* ================== */
 /* Exported Functions */
 /* ================== */
-BPLib_Status_t BPA_EVP_Register(const void* Filters, uint16_t NumEventFilters, uint16_t FilterScheme);
+BPLib_Status_t BPA_EVP_Init(void);
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText);
 
 #endif /* FWP_EVP_H */

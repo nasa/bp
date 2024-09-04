@@ -28,7 +28,7 @@
 /* ==================== */
 
 /* CFE_EVS_Register() proxy */
-BPLib_Status_t BPA_EVP_Register(const void* Filters, uint16_t NumEventFilters, uint16_t FilterScheme)
+BPLib_Status_t BPA_EVP_Init(void)
 {
     return (BPLib_Status_t) CFE_EVS_Register(Filters, NumEventFilters, FilterScheme);
 }
