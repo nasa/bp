@@ -81,6 +81,7 @@ void Test_BPA_EVP_Init_BadReturn(void)
 void Test_BPA_EVP_SendEvent_Nominal(void)
 {
     BPLib_Status_t Status;
+    UT_CheckEvent_t EventTest;
 
     /* TODO: Create handler that reports which type of event was given? */
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), &Test_CFE_EVS_SendEvent_GetEventType_Handler, ???);
@@ -92,6 +93,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_True(Status == BPLIB_SUCCESS);
+    UT_CHECKEVENT_SETUP(&EventTest, 42, "INFO event message test");
 
 
     /* === ERROR event message test === */
@@ -101,6 +103,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_True(Status == BPLIB_SUCCESS);
+    UT_CHECKEVENT_SETUP(&EventTest, 01, "ERROR event message test");
 
 
     /* === DEBUG event message test === */
@@ -110,6 +113,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_True(Status == BPLIB_SUCCESS);
+    UT_CHECKEVENT_SETUP(&EventTest, 0x42, "DEBUG event message test");
 
 
     /* === CRITICAL event message test === */
@@ -119,6 +123,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_True(Status == BPLIB_SUCCESS);
+    UT_CHECKEVENT_SETUP(&EventTest, (unsigned long) 123, "CRITICAL event message test");
 }
 
 void Test_BPA_EVP_SendEvent_BadReturn(void)
