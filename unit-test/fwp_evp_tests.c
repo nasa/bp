@@ -121,25 +121,10 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     UtAssert_True(Status == BPLIB_SUCCESS);
 }
 
-void Test_BPA_EVP_SendEvent_TruncatedString(void)
-{
-    /* TODO: - Create char array of size BPLIB_EM_MAX_MESSAGE_LENGTH + 5 */
-    /*       - Loop over array assigning each element in array to A (set last character to H) */
-    /*       - Pass character array to BPLib_EM_SendEvent as EventText argument */
-}
-
-void Test_BPA_EVP_SendEvent_LenError(void)
-{
-    /* TODO: Test if len < 2 */
-    /* TODO: test if len > mission max len */
-}
-
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPA_EVP_Init_Nominal);
     ADD_TEST(Test_BPA_EVP_Init_BadReturn);
     ADD_TEST(Test_BPA_EVP_SendEvent_Nominal);
-    ADD_TEST(Test_BPA_EVP_SendEvent_TruncatedString);
-    ADD_TEST(Test_BPA_EVP_SendEvent_LenError);
 }
