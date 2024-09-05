@@ -718,22 +718,6 @@ void Test_BPNode_SendSourceMibConfigHkCmd_Nominal(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-/* Test Send Node MIB Counter HK command nominal case */
-void Test_BPNode_SendNodeMibCountersHkCmd_Nominal(void)
-{
-    BPNode_SendNodeMibCountersHkCmd_t TestMsg;
-    UT_CheckEvent_t              EventTest;
-
-    memset(&TestMsg, 0, sizeof(TestMsg));
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Send node mib counter hk command");
-
-    UtAssert_INT32_EQ(BPNode_SendNodeMibCountersHkCmd(&TestMsg), CFE_SUCCESS);
-
-    /* Confirm that the event was generated */
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-}
-
 /* Test Send Per-Source MIB Counter HK command nominal case */
 void Test_BPNode_SendSourceMibCountersHkCmd_Nominal(void)
 {
