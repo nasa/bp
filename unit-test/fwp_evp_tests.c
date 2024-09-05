@@ -29,6 +29,12 @@
 #include "fwp_evp.h"
 #include "bpnode_test_utils.h"
 
+/* ================= */
+/* Handler Functions */
+/* ================= */
+// void Test_CFE_EVS_Register_GetArgs_Handler(void* UserObj, UT_EntryKey_t FuncKey, 
+//                                              const UT_StubContext_t* Context)
+
 /* ==================== */
 /* Function Definitions */
 /* ==================== */
@@ -39,6 +45,9 @@ void Test_BPA_EVP_Init_Nominal(void)
     BPLib_Status_t Status;
 
     /* TODO: Create utility to check EVP_Init arguments */
+    // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
+
+    /* Call the function under test */
     Status = BPA_EVP_Init();
 
     /* Verify that the EVS function that is being proxied, was called */
@@ -48,9 +57,11 @@ void Test_BPA_EVP_Init_Nominal(void)
 
 void Test_BPA_EVP_Init_BadReturn(void)
 {
-    /* TODO: Set deffered return code for EVS_Register to be non-success */
+    /* Set return code for CFE_EVS_Register to be non-success */
 
     /* TODO: Create utility to check EVP_Init arguments */
+    // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
+
     /* TODO: Verify that the EVS function that is being proxied, was called */
 }
 
