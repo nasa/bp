@@ -32,7 +32,7 @@
 /* ================= */
 /* Handler Functions */
 /* ================= */
-// void Test_CFE_EVS_Register_GetArgs_Handler(void* UserObj, UT_EntryKey_t FuncKey, 
+// void Test_CFE_EVS_Register_GetArgs_Handler(void* UserObj, UT_EntryKey_t FuncKey,
 //                                              const UT_StubContext_t* Context)
 
 /* ==================== */
@@ -58,11 +58,17 @@ void Test_BPA_EVP_Init_Nominal(void)
 void Test_BPA_EVP_Init_BadReturn(void)
 {
     /* Set return code for CFE_EVS_Register to be non-success */
+    UT_Stub_SetReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_APP_ILLEGAL_APP_ID);
 
     /* TODO: Create utility to check EVP_Init arguments */
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
 
-    /* TODO: Verify that the EVS function that is being proxied, was called */
+    /* Call function under test */
+    Status = BPA_EVP_Init();
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_Register, 1);
+    UtAssert_True(Status == BPLIB_EM_ILLEGAL_APP_ID);
 }
 
 void Test_BPA_EVP_SendEvent_Nominal(void)
