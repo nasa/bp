@@ -75,6 +75,9 @@ void Test_BPA_EVP_SendEvent_LenError(void)
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
-    ADD_TEST(Test_BPA_EVP_Init_);
-    ADD_TEST(Test_BPA_EVP_SendEvent_);
+    ADD_TEST(Test_BPA_EVP_Init_Nominal);
+    ADD_TEST(Test_BPA_EVP_Init_BadReturn);
+    ADD_TEST(Test_BPA_EVP_SendEvent_Nominal);
+    ADD_TEST(Test_BPA_EVP_SendEvent_TruncatedString);
+    ADD_TEST(Test_BPA_EVP_SendEvent_LenError);
 }
