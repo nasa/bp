@@ -48,6 +48,7 @@ void Test_BPA_EVP_Init_Nominal(void)
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
 
     /* Call the function under test */
+    Status = BPLIB_UNKNOWN;
     Status = BPA_EVP_Init();
 
     /* Verify that the EVS function that is being proxied, was called */
@@ -57,6 +58,8 @@ void Test_BPA_EVP_Init_Nominal(void)
 
 void Test_BPA_EVP_Init_BadReturn(void)
 {
+    BPLib_Status_t Status;
+
     /* Set return code for CFE_EVS_Register to be non-success */
     UT_Stub_SetReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_APP_ILLEGAL_APP_ID);
 
@@ -64,6 +67,7 @@ void Test_BPA_EVP_Init_BadReturn(void)
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
 
     /* Call function under test */
+    Status = BPLIB_UNKNOWN;
     Status = BPA_EVP_Init();
 
     /* Verify that the EVS function that is being proxied, was called */
