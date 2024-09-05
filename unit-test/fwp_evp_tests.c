@@ -36,8 +36,14 @@
 /* Test a nominal call to BPA_EVP_Init() */
 void Test_BPA_EVP_Init_Nominal(void)
 {
+    BPLib_Status_t Status;
+
     /* TODO: Create utility to check EVP_Init arguments */
-    /* TODO: Verify that the EVS function that is being proxied, was called */
+    Status = BPA_EVP_Init();
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_Register, 1);
+    UtAssert_True(Status == BPLIB_SUCCESS);
 }
 
 void Test_BPA_EVP_Init_BadReturn(void)
