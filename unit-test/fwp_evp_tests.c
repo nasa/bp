@@ -49,6 +49,7 @@ void Test_BPA_EVP_Init_Nominal(void)
 void Test_BPA_EVP_Init_BadReturn(void)
 {
     /* TODO: Set deffered return code for EVS_Register to be non-success */
+
     /* TODO: Create utility to check EVP_Init arguments */
     /* TODO: Verify that the EVS function that is being proxied, was called */
 }
@@ -60,7 +61,9 @@ void Test_BPA_EVP_SendEvent_Nominal()
 
 void Test_BPA_EVP_SendEvent_TruncatedString()
 {
-    /* TODO: Pass BPA_EVP_SendEvent a string that is longer than BPLIB_EM_MAX_MESSAGE_LENGTH */
+    /* TODO: - Create char array of size BPLIB_EM_MAX_MESSAGE_LENGTH + 5 */
+    /*       - Loop over array assigning each element in array to A (set last character to H) */
+    /*       - Pass character array to BPLib_EM_SendEvent as EventText argument */
 }
 
 void Test_BPA_EVP_SendEvent_LenError()
