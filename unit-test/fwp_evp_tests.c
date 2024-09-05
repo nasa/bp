@@ -54,19 +54,19 @@ void Test_BPA_EVP_Init_BadReturn(void)
     /* TODO: Verify that the EVS function that is being proxied, was called */
 }
 
-void Test_BPA_EVP_SendEvent_Nominal()
+void Test_BPA_EVP_SendEvent_Nominal(void)
 {
     /* TODO: Add all possible nominal cases */
 }
 
-void Test_BPA_EVP_SendEvent_TruncatedString()
+void Test_BPA_EVP_SendEvent_TruncatedString(void)
 {
     /* TODO: - Create char array of size BPLIB_EM_MAX_MESSAGE_LENGTH + 5 */
     /*       - Loop over array assigning each element in array to A (set last character to H) */
     /*       - Pass character array to BPLib_EM_SendEvent as EventText argument */
 }
 
-void Test_BPA_EVP_SendEvent_LenError()
+void Test_BPA_EVP_SendEvent_LenError(void)
 {
     /* TODO: Test if len < 2 */
     /* TODO: test if len > mission max len */
