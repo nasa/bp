@@ -121,10 +121,28 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     UtAssert_True(Status == BPLIB_SUCCESS);
 }
 
+void Test_BPA_EVP_SendEvent_BadReturn(void)
+{
+    BPLib_Status_t Status;
+
+    /* Make CFE_EVS_SendEvent return an error code */
+    UT_Stub_SetReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_SQUELCHED);
+
+    /* Call function under test */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_ERROR,
+                                "Bad return ERROR event message test");
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_True(Status == BPLIB_EM_APP_SQUELCHED);
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPA_EVP_Init_Nominal);
     ADD_TEST(Test_BPA_EVP_Init_BadReturn);
     ADD_TEST(Test_BPA_EVP_SendEvent_Nominal);
+    ADD_TEST(Test_BPA_EVP_SendEvent_BadReturn);
 }
