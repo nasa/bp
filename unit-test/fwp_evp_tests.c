@@ -35,6 +35,9 @@
 // void Test_CFE_EVS_Register_GetArgs_Handler(void* UserObj, UT_EntryKey_t FuncKey,
 //                                              const UT_StubContext_t* Context)
 
+// void Test_CFE_EVS_SendEvent_GetEventType_Handler(void* UserObj, UT_EntryKey_t FuncKey,
+//                                                  const UT_StubContext_t* Context)
+
 /* ==================== */
 /* Function Definitions */
 /* ==================== */
@@ -80,6 +83,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     BPLib_Status_t Status;
 
     /* TODO: Create handler that reports which type of event was given? */
+    // UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), &Test_CFE_EVS_SendEvent_GetEventType_Handler, ???);
 
     /* === INFO event message test === */
     Status = BPLIB_UNKNOWN;
