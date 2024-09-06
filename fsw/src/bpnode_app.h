@@ -52,13 +52,22 @@
 */
 typedef struct
 {
+    char                        TableName[256];
+    char                        TableFileName[256];
+    CFE_TBL_Handle_t            TableHandle;
+    uint32                      TableSize;
+    void*                       TablePtr;
+    CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
+}BPNode_TblNameParams_t;
+
+typedef struct
+{
     uint32 RunStatus;                       /**< \brief Run status for main processing loop */
 
     CFE_SB_PipeId_t CommandPipe;            /**< \brief Pipe Id for command pipe */
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
-    BPNode_ExampleTable_t *ExampleTblPtr;       /**< \brief Pointer to example table */
-    CFE_TBL_Handle_t       ExampleTblHandle;    /**< \brief Example table handle */
+    BPNode_TblNameParams_t  *TblNameParamsArr;
 
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
 
