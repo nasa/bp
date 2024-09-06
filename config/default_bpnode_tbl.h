@@ -38,6 +38,17 @@
 */
 
 /* Define filenames of default data images for tables */
-#define BPNODE_TABLE_FILE "/cf/bpnode_tbl.tbl"
+#define CRS_TABLE_FILE "/cf/bpnode_crs.tbl"
+#define ADUP_CONFIG_TABLE_FILE "/cf/bpnode_adup.tbl"
+#define CONTACTS_TABLE_FILE "/cf/bpnode_contacts.tbl"
+#define CUSTODIAN_TABLE_FILE "/cf/bpnode_custodian.tbl"
+#define CUSTODY_TABLE_FILE "/cf/bpnode_custody.tbl"
+#define CHANNEL_TABLE_FILE "/cf/bpnode_channel.tbl"
+#define REPORTTO_TABLE_FILE "/cf/bpnode_reportto.tbl"
+#define SRC_AUTH_TABLE_FILE "/cf/bpnode_src_auth.tbl"
+#define SRC_LATENCY_TABLE_FILE "/cf/bpnode_latency.tbl"
+#define STORAGE_TABLE_FILE "/cf/bpnode_storage.tbl"
+#define MIB_CONFIG_PN_TABLE_FILE "/cf/bpnode_mib_pn.tbl"
+#define MIB_CONFIG_PS_TABLE_FILE "/cf/bpnode_mib_ps.tbl"
 
 #endif /* BPNODE_TBL_H */

@@ -37,6 +37,7 @@
 
 #include "bplib.h"
 #include "fwp.h"
+#include "fwp_tablep.h"
 
 /*
 ** Global Data
@@ -121,18 +122,13 @@ CFE_Status_t BPNode_WakeupProcess(void)
                     "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
-    /* Manage any pending table loads, validations, etc. */
-    (void) CFE_TBL_ReleaseAddress(BPNode_AppData.ExampleTblHandle);
-
-    (void) CFE_TBL_Manage(BPNode_AppData.ExampleTblHandle);
-
-    Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr, 
-                                          BPNode_AppData.ExampleTblHandle);
-
-    if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
+    /* Call Table Proxy to update tables*/
+    Status = BPA_TABLEP_TableUpdate();
+    if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TBL_MNG_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error managing the table on wakeup, Status=0x%08X", Status);
+        CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "Error Updating Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
+        return Status;
     }
 
     /* Check for pending commands */
@@ -169,7 +165,8 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
-        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime
+        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate
     };
 
     /* Zero out the global data structure */
@@ -232,34 +229,12 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /* Register table */
-    Status = CFE_TBL_Register(&BPNode_AppData.ExampleTblHandle, "ExampleTable", 
-            sizeof(BPNode_ExampleTable_t), CFE_TBL_OPT_DEFAULT, BPNode_TblValidationFunc);
+    /* Call Table Proxy Init Function Here to load default tables*/
+    Status = BPA_TABLEP_TableInit();
     if (Status != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_TBL_REG_ERR_EID, CFE_EVS_EventType_ERROR,
-                "Error Registering Example Table, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
-    }
-
-    /* Load table */
-    Status = CFE_TBL_Load(BPNode_AppData.ExampleTblHandle, CFE_TBL_SRC_FILE, BPNODE_TABLE_FILE);
-
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_TBL_LD_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error Loading Example Table, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
-    }
-
-    /* Get table address */
-    Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.ExampleTblPtr,
-                                        BPNode_AppData.ExampleTblHandle);
-
-    if (Status != CFE_TBL_INFO_UPDATED)
     {
         CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error Getting Example Table Address, RC = 0x%08lX", (unsigned long)Status);
+                    "Error Getting Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 

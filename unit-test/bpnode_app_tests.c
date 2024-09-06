@@ -29,6 +29,7 @@
 
 #include "bplib.h"
 #include "bpnode_test_utils.h"
+#include "fwp_tablep.h"
 
 
 /*
@@ -144,7 +145,6 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
@@ -169,44 +169,26 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 
 
 /* Test wakeup process after getting an updated table */
-void Test_BPNode_WakeupProcess_TblUpdate(void)
+void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
 
     /* Successful receipt of one command */
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
-    UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
-
-    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
-
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
-}
-
-/* Test wakeup process after getting a table update error */
-void Test_BPNode_WakeupProcess_TblErr(void)
-{
-    UT_CheckEvent_t  EventTest;
-    CFE_SB_Buffer_t  Buf;
-    CFE_SB_Buffer_t *BufPtr = &Buf;
-
-    /* Successful receipt of one command */
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_ERR_NO_ACCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_MNG_ERR_EID, NULL);
 
-    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), CFE_TBL_ERR_INVALID_HANDLE);
+    UtAssert_INT32_NEQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+<<<<<<< HEAD
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+=======
+>>>>>>> main
 }
 
 /* Test wakeup process after receiving null buffer */
@@ -223,7 +205,6 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
@@ -237,7 +218,6 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
  
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
@@ -246,8 +226,6 @@ void Test_BPNode_AppInit_Nominal(void)
 {
     UT_CheckEvent_t EventTest;
 
-    /* Nominal case should return CFE_SUCCESS */
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
@@ -329,49 +307,21 @@ void Test_BPNode_AppInit_FailedWakeupSub(void)
 }
 
 /* Test app initialization after failure to register table */
-void Test_BPNode_AppInit_FailedTblRegister(void)
+void Test_BPNode_AppInit_FailedTblInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    /* Failure to register table */
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Register), 1, CFE_TBL_ERR_INVALID_OPTIONS);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_REG_ERR_EID, NULL);
 
-    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_INVALID_OPTIONS);
+    /* Failure to call BPA_TABLEP_TableInit() */    
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableInit), CFE_TBL_ERR_INVALID_HANDLE);
+
+    UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-/* Test app initialization after failure to load table */
-void Test_BPNode_AppInit_FailedTblLoad(void)
-{
-    UT_CheckEvent_t EventTest;
-
-    /* Failure to load table */
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Load), 1, CFE_TBL_BAD_ARGUMENT);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_LD_ERR_EID, NULL);
-
-    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_BAD_ARGUMENT);
-
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-}
-
-/* Test app initialization after failure to get table address */
-void Test_BPNode_AppInit_FailedTblGetAddr(void)
-{
-    UT_CheckEvent_t EventTest;
-
-    /* Failure to get table address */
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_ERR_UNREGISTERED);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_ADDR_ERR_EID, NULL);
-
-    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_TBL_ERR_UNREGISTERED);
-
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-}
 
 /* Test app initialization when FWP initialization fails */
 void Test_BPNode_AppInit_FailedFwpInit(void)
@@ -415,8 +365,7 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPNode_WakeupProcess_CommandRecvd);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
-    ADD_TEST(Test_BPNode_WakeupProcess_TblUpdate);
-    ADD_TEST(Test_BPNode_WakeupProcess_TblErr);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailedTblUpdate);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
 
@@ -426,9 +375,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupPipeCreate);
     ADD_TEST(Test_BPNode_AppInit_FailedCommandSub);
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
-    ADD_TEST(Test_BPNode_AppInit_FailedTblRegister);
-    ADD_TEST(Test_BPNode_AppInit_FailedTblLoad);
-    ADD_TEST(Test_BPNode_AppInit_FailedTblGetAddr);
+    ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
     ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
 }
