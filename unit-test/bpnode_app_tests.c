@@ -162,7 +162,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_TBL_Manage, 1);
+    UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
@@ -171,13 +171,14 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 /* Test wakeup process after getting an updated table */
 void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
 {
+    UT_CheckEvent_t  EventTest;
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
 
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_MNG_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_ADDR_ERR_EID, NULL);
 
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), CFE_TBL_ERR_INVALID_HANDLE);
     UtAssert_INT32_NEQ(BPNode_WakeupProcess(), CFE_SUCCESS);
@@ -185,10 +186,7 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-<<<<<<< HEAD
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-=======
->>>>>>> main
 }
 
 /* Test wakeup process after receiving null buffer */
@@ -311,7 +309,7 @@ void Test_BPNode_AppInit_FailedTblInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_REG_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TBL_ADDR_ERR_EID, NULL);
 
     /* Failure to call BPA_TABLEP_TableInit() */    
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableInit), CFE_TBL_ERR_INVALID_HANDLE);
