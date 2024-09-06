@@ -41,7 +41,7 @@
 #define CRS_TABLE_FILE "/cf/bpnode_crs.tbl"
 #define ADUP_CONFIG_TABLE_FILE "/cf/bpnode_adup.tbl"
 #define CONTACTS_TABLE_FILE "/cf/bpnode_contacts.tbl"
-#define CUSTODIAN_TABLE_FILE "/cf/bpnode_custodian.tbl"
+#define CUSTODIAN_TABLE_FILE "/cf/bpnode_custodia.tbl"
 #define CUSTODY_TABLE_FILE "/cf/bpnode_custody.tbl"
 #define CHANNEL_TABLE_FILE "/cf/bpnode_channel.tbl"
 #define REPORTTO_TABLE_FILE "/cf/bpnode_reportto.tbl"
