@@ -37,32 +37,14 @@
 /* Test nominal table validation */
 void Test_BPNode_TblValidationFunc_Nominal(void)
 {
-    BPNode_ExampleTable_t TestTblData;
-
-    memset(&TestTblData, 0, sizeof(TestTblData));
-
     /* Nominal case (0) should succeed */
-    UtAssert_INT32_EQ(BPNode_TblValidationFunc(&TestTblData), CFE_SUCCESS);
+    UtAssert_INT32_EQ(BPNode_TblValidationFunc(NULL), CFE_SUCCESS);
 }
 
-/* Test invalid table validation */
-void Test_BPNode_TblValidationFunc_Invalid(void)
-{
-    BPNode_ExampleTable_t TestTblData;
-
-    memset(&TestTblData, 0, sizeof(TestTblData));
-
-    /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.Int1 = 1 + BPNODE_TBL_ELEMENT_1_MAX;
-
-    UtAssert_INT32_EQ(BPNode_TblValidationFunc(&TestTblData), 
-                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
-}
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_TblValidationFunc_Nominal);
-    ADD_TEST(Test_BPNode_TblValidationFunc_Invalid);
 
 }

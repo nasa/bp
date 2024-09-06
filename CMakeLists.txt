@@ -8,6 +8,7 @@ set(APP_SRC_FILES
 
   # FWP files
   fsw/fwp/fwp_timep.c
+  fsw/fwp/fwp_tablep.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)
@@ -21,7 +22,18 @@ else()
 endif()
 
 set(APP_TABLE_FILES
-  fsw/tables/bpnode_tbl.c
+  fsw/tables/bpnode_adup_config_tbl.c
+  fsw/tables/bpnode_channel_config_tbl.c
+  fsw/tables/bpnode_contacts_tbl.c
+  fsw/tables/bpnode_crs_tbl.c
+  fsw/tables/bpnode_custodian_auth_policy_tbl.c
+  fsw/tables/bpnode_custody_auth_policy_tbl.c
+  fsw/tables/bpnode_mib_config_pn_tbl.c
+  fsw/tables/bpnode_mib_config_ps_tbl.c
+  fsw/tables/bpnode_reportto_eid_auth_policy_tbl.c
+  fsw/tables/bpnode_src_auth_policy_tbl.c
+  fsw/tables/bpnode_src_latency_policy_tbl.c
+  fsw/tables/bpnode_storage_tbl.c
 )
 
 # Create the app module
@@ -29,6 +41,7 @@ add_cfe_app(bpnode ${APP_SRC_FILES})
 
 target_include_directories(bpnode PUBLIC fsw/inc)
 target_include_directories(bpnode PUBLIC fsw/fwp)
+target_include_directories(bpnode PUBLIC fsw/src)
 
 # Include bplib
 add_cfe_app_dependency(bpnode bplib)
