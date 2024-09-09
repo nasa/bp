@@ -97,10 +97,6 @@ static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_
 ** Function Definitions
 */
 
-#include <execinfo.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 /* Process packets received on command pipe */
 void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
 {
@@ -139,7 +135,7 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
         else
         {
             CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR,
-                              "BPNode_TaskPipe: Invalid ground command code: CC = %d", (uint8) MsgFc);
+                              "Invalid ground command code: CC = %d", (uint8) MsgFc);
         }
     }
 }

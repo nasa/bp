@@ -151,7 +151,7 @@ CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
 
     CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, 
-                    "Reset all counters command not implemented");
+                    "Reset all counters command");
 
     return CFE_SUCCESS;
 }
@@ -500,9 +500,6 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
 /* Send Node MIB Counters housekeeping command */
 CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
-    // Don't increment the counter, at least for testing.
-    // BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 

@@ -201,7 +201,11 @@ void Test_BPNode_ResetAllCountersCmd_Nominal(void)
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Reset all counters command not implemented");
+    /**
+     * The correct event message is "Reset all counters command" because
+     * the Reset all counters command IS implemented.
+     */
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Reset all counters command");
 
     UtAssert_INT32_EQ(BPNode_ResetAllCountersCmd(&TestMsg), CFE_SUCCESS);
 
