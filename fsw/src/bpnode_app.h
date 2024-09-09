@@ -42,6 +42,10 @@
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
 #include "bpnode_tbl.h"
+#include "bpnode_eventids.h"
+#include "bpnode_adu_in.h"
+#include "bpnode_adu_out.h"
+
 
 /*
 ** Type Definitions
@@ -58,7 +62,7 @@ typedef struct
     uint32                      TableSize;
     void*                       TablePtr;
     CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
-}BPNode_TblNameParams_t;
+} BPNode_TblNameParams_t;
 
 typedef struct
 {
@@ -70,6 +74,9 @@ typedef struct
     BPNode_TblNameParams_t  *TblNameParamsArr;
 
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
+
+    BPNode_AduInData_t  AduInData[BPNODE_TOTAL_ADU_PROXIES];
+    BPNode_AduOutData_t AduOutData[BPNODE_TOTAL_ADU_PROXIES];    
 
 } BPNode_AppData_t;
 
@@ -128,5 +135,16 @@ CFE_Status_t BPNode_AppInit(void);
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
 CFE_Status_t BPNode_WakeupProcess(void);
+
+/**
+ * \brief Clean up app
+ *
+ *  \par Description
+ *       This function cleans up the main and child tasks and readies them for shutdown.
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ */
+void BPNode_AppCleanup(void);
 
 #endif /* BPNODE_APP_H */

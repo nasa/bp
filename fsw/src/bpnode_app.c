@@ -99,8 +99,7 @@ void BPNode_AppMain(void)
         }
     }
 
-    /* Performance Log Exit Stamp */
-    CFE_ES_PerfLogExit(BPNODE_PERF_ID);
+    BPNode_AppCleanup();
 
     CFE_ES_ExitApp(BPNode_AppData.RunStatus);
 }
@@ -237,6 +236,33 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
+    /* Create ADU In child tasks */
+    Status = BPNode_AduInCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
+    /* Create ADU Out child tasks */
+    Status = BPNode_AduOutCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
+    /* Create delete handler for app exit */
+    Status = OS_TaskInstallDeleteHandler(&BPNode_AppCleanup);
+
+    if (Status != OS_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_DELETE_HNDLR_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Failure to install delete handler, RC = %d", Status);        
+    }
+
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
         BPNODE_MAJOR_VERSION,
         BPNODE_MINOR_VERSION,
@@ -249,4 +275,34 @@ CFE_Status_t BPNode_AppInit(void)
                         VersionString);
 
     return CFE_SUCCESS;
+}
+
+/* Clean up app */
+void BPNode_AppCleanup(void)
+{
+    uint8 i;
+
+    CFE_EVS_SendEvent(BPNODE_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+                        "App terminating, error = %d", BPNode_AppData.RunStatus);
+
+    CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
+
+    /* Signal to ADU child tasks to exit */
+    for (i = 0; i < BPNODE_TOTAL_ADU_PROXIES; i++)
+    {
+        BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[i].PerfId);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduOutData[0].ExitSemId, 
+                                                            BPNODE_SEM_WAIT_MSEC);
+        CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[i].PerfId);
+
+        BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        CFE_ES_PerfLogExit(BPNode_AppData.AduInData[i].PerfId);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduInData[0].ExitSemId, 
+                                                            BPNODE_SEM_WAIT_MSEC);
+        CFE_ES_PerfLogEntry(BPNode_AppData.AduInData[i].PerfId);
+    }
+
+    /* Performance Log Exit Stamp */
+    CFE_ES_PerfLogExit(BPNODE_PERF_ID);
 }

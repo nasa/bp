@@ -30,7 +30,7 @@
  * These definitions are now provided in two separate files, one for
  * the public/mission scope and one for internal scope.
  *
- * @note This file may be overridden/superceded by mission-provided defintions
+ * @note This file may be overridden/superceded by mission-provided definitions
  * either by overriding this header or by generating definitions from a command/data
  * dictionary tool.
  */
@@ -40,5 +40,15 @@
 
 #include "bpnode_mission_cfg.h"
 #include "bpnode_internal_cfg.h"
+
+#define BPNODE_TOTAL_ADU_PROXIES    (1u)
+
+#define BPNODE_ADU_IN_STACK_SIZE  (8192u)
+#define BPNODE_ADU_OUT_STACK_SIZE (8192u)
+
+#define BPNODE_ADU_IN_PRIORITY  (100)
+#define BPNODE_ADU_OUT_PRIORITY (BPNODE_ADU_IN_PRIORITY + BPNODE_TOTAL_ADU_PROXIES)
+
+#define BPNODE_SEM_WAIT_MSEC    (5000u)
 
 #endif /* BPNODE_PLATFORM_CFG_H */
