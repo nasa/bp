@@ -110,9 +110,39 @@ int32 BPNode_AduInCreateTasks(void)
 /* Task initialization for ADU In task(s) */
 int32 BPNode_AduIn_TaskInit(uint32 *AduInId)
 {
-    int32  Status;
+    CFE_ES_TaskId_t TaskId;
+    int32           Status;
+    uint8           i;
 
-    *AduInId = 0; /* TODO set ID properly */
+    /* Set to invalid value */
+    *AduInId = BPNODE_TOTAL_ADU_PROXIES; 
+
+    /* Get the task ID of currently running child task */
+    Status = CFE_ES_GetTaskID(&TaskId);
+
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_IN_NO_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+                          "[ADU In #?]: Failed to get task ID. Error = %d", Status);
+        return Status;        
+    }
+
+    /* Map this task's ID to an ADU In ID */
+    for (i = 0; i < BPNODE_TOTAL_ADU_PROXIES; i++)
+    {
+        if (TaskId == BPNode_AppData.AduInData[i].TaskId)
+        {
+            *AduInId = i;
+        }
+    }
+
+    if (*AduInId == BPNODE_TOTAL_ADU_PROXIES)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_IN_INV_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+                          "[ADU In #?]: Task ID does not match any known task IDs. ID = %d", 
+                          TaskId);
+        return CFE_ES_ERR_RESOURCEID_NOT_VALID;
+    }
 
     BPNode_AppData.AduInData[*AduInId].PerfId = BPNODE_ADU_IN_PERF_ID_BASE + *AduInId;
 
