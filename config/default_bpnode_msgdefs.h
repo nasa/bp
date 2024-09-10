@@ -61,6 +61,8 @@ typedef struct BPNode_NodeMibCountersHkTlm_Payload
 {
     uint16 AcceptedDirectiveCount;
     uint16 RejectedDirectiveCount;
+    uint16 AduCountDelivered;
+    uint16 AduCountReceived;
 } BPNode_NodeMibCountersHkTlm_Payload_t;
 
 /**

@@ -139,7 +139,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 
     /* Map this task's ID to a channel ID */
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
-    {
+    { 
         if (TaskId == BPNode_AppData.AduInData[i].TaskId)
         {
             *ChanId = i;
@@ -170,6 +170,20 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
                         *ChanId, Status);
         return Status;
     }
+
+    /* Subscribe to TO Lab HK to simulate ADU processing */
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(0x0880), 
+                                            BPNode_AppData.AduInData[*ChanId].AduPipe);
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_IN_SUB_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+                        "[ADU In #%d]: Error subscribing to ADUs, Error = %d", 
+                        *ChanId, Status);
+        return Status;
+    }
+
+    /* Set state to started to allow simulated flow of ADUs */
+    BPNode_AppData.AduConfigs[*ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     /* Notify main task that child task is running */
     CFE_ES_PerfLogExit(BPNode_AppData.AduInData[*ChanId].PerfId);

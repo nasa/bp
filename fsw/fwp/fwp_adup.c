@@ -29,7 +29,14 @@
 
 #include "cfe.h"
 #include "fwp_adup.h"
+#include "bpnode_app.h"
 
+
+/*
+** Global Data
+*/
+
+BPNode_AppData_t BPNode_AppData;
 
 /*
 ** Function Definitions
@@ -38,6 +45,7 @@
 /* Ingest an ADU */
 BPLib_Status_t BPA_ADUP_In(void *AduPtr)
 {
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived++;
     return BPLIB_SUCCESS;
 }
 
