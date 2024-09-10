@@ -18,26 +18,49 @@
  *
  */
 
-/*
-** \file
-**   This file contains the source code for the ADU Proxy Config Table
-*/
-
-#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "bpnode_tbl.h"
-
-
-BPNode_ADUProxyTable_t ADUProxyTable = {
-    .ADUP_Set ={
-        {.SendToMID = 0x1801, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}}
-    }
-};
+/**
+ * \file
+ *   This file contains the source code for the FWP ADU Proxy.
+ */
 
 /*
-** The macro below identifies:
-**    1) the data structure type to use as the table image format
-**    2) the name of the table to be placed into the cFE Example Table File Header
-**    3) a brief description of the contents of the file image
-**    4) the desired name of the table image binary file that is cFE compatible
+** Include Files
 */
-CFE_TBL_FILEDEF(ADUProxyTable, BPNODE.ADUProxyTable, ADU Proxy Config Table, bpnode_adup.tbl)
+
+#include "cfe.h"
+#include "fwp_adup.h"
+
+
+/*
+** Function Definitions
+*/
+
+/* Ingest an ADU */
+BPLib_Status_t BPA_ADUP_In(void *AduPtr)
+{
+    return BPLIB_SUCCESS;
+}
+
+/* Send out an ADU */
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
+{
+    return BPLIB_SUCCESS;
+}
+
+/* Add a new application's configurations */
+void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
+{
+    return;
+}
+
+/* Start an application */
+void BPA_ADUP_StartApplication(uint8_t AppId)
+{
+    return;
+}
+
+/* Stop an application */
+void BPA_ADUP_StopApplication(uint8_t AppId)
+{
+    return;
+}

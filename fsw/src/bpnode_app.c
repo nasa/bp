@@ -148,6 +148,7 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_Status_t Status;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
         .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
@@ -236,6 +237,12 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
+    /* Initialize ADU configuration data to set all applications to stopped */
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STOPPED;
+    }
+
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
 
@@ -288,7 +295,7 @@ void BPNode_AppCleanup(void)
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
 
     /* Signal to ADU child tasks to exit */
-    for (i = 0; i < BPNODE_TOTAL_ADU_PROXIES; i++)
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[i].PerfId);

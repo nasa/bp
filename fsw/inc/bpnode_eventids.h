@@ -48,6 +48,7 @@
 #define BPNODE_FWP_INIT_ERR_EID                 18
 #define BPNODE_EXIT_CRIT_EID                    19
 #define BPNODE_DELETE_HNDLR_ERR_EID             20
+
 #define BPNODE_ADU_IN_INIT_SEM_ERR_EID          21
 #define BPNODE_ADU_IN_EXIT_SEM_ERR_EID          22
 #define BPNODE_ADU_IN_CREATE_ERR_EID            23
@@ -57,14 +58,17 @@
 #define BPNODE_ADU_IN_EXIT_CRIT_EID             27
 #define BPNODE_ADU_IN_NO_ID_ERR_EID             28
 #define BPNODE_ADU_IN_INV_ID_ERR_EID            29
-#define BPNODE_ADU_OUT_INIT_SEM_ERR_EID         30
-#define BPNODE_ADU_OUT_EXIT_SEM_ERR_EID         31
-#define BPNODE_ADU_OUT_CREATE_ERR_EID           32
-#define BPNODE_ADU_OUT_RUN_ERR_EID              33
-#define BPNODE_ADU_OUT_INIT_SEM_TK_ERR_EID      34
-#define BPNODE_ADU_OUT_INIT_INF_EID             35
-#define BPNODE_ADU_OUT_EXIT_CRIT_EID            36
-#define BPNODE_ADU_OUT_NO_ID_ERR_EID            37
-#define BPNODE_ADU_OUT_INV_ID_ERR_EID           38
+#define BPNODE_ADU_IN_CR_PIPE_ERR_EID           30
+#define BPNODE_ADU_IN_SUB_PIPE_ERR_EID          31
+
+#define BPNODE_ADU_OUT_INIT_SEM_ERR_EID         40
+#define BPNODE_ADU_OUT_EXIT_SEM_ERR_EID         41
+#define BPNODE_ADU_OUT_CREATE_ERR_EID           42
+#define BPNODE_ADU_OUT_RUN_ERR_EID              43
+#define BPNODE_ADU_OUT_INIT_SEM_TK_ERR_EID      44
+#define BPNODE_ADU_OUT_INIT_INF_EID             45
+#define BPNODE_ADU_OUT_EXIT_CRIT_EID            46
+#define BPNODE_ADU_OUT_NO_ID_ERR_EID            47
+#define BPNODE_ADU_OUT_INV_ID_ERR_EID           48
 
 #endif /* BPNODE_EVENTS_H */

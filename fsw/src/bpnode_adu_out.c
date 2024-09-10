@@ -30,21 +30,28 @@
 #include "bpnode_app.h"
 #include "bpnode_adu_out.h"
 
+
 /*
 ** Global Data
 */
 
 BPNode_AppData_t BPNode_AppData;
 
+
+/*
+** Function Definitions
+*/
+
 /* Create all ADU Out child task(s) */
 int32 BPNode_AduOutCreateTasks(void)
 {
-    int32 Status;
-    uint8 i;
-    char  NameBuff[OS_MAX_API_NAME];
+    int32  Status;
+    uint8  i;
+    char   NameBuff[OS_MAX_API_NAME];
+    uint16 TaskPriority;
     
     /* Create all of the ADU Out task(s) */
-    for (i = 0; i < BPNODE_TOTAL_ADU_PROXIES; i++)
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
         /*
         ** Create an initialization and an exit semaphore for each ADU Out Task, to signal 
@@ -76,9 +83,11 @@ int32 BPNode_AduOutCreateTasks(void)
 
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_OUT_BASE_NAME, i);
+        TaskPriority = BPNODE_ADU_IN_PRIORITY_BASE + i;
+
         Status = CFE_ES_CreateChildTask(&BPNode_AppData.AduOutData[i].TaskId,
                                 NameBuff, BPNode_AduOut_AppMain,
-                                0, BPNODE_ADU_OUT_STACK_SIZE, BPNODE_ADU_OUT_PRIORITY, 0);
+                                0, BPNODE_ADU_OUT_STACK_SIZE, TaskPriority, 0);
 
         if (Status != CFE_SUCCESS)
         {
@@ -107,14 +116,14 @@ int32 BPNode_AduOutCreateTasks(void)
 }
 
 /* Task initialization for ADU Out task(s) */
-int32 BPNode_AduOut_TaskInit(uint32 *AduOutId)
+int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 {
     CFE_ES_TaskId_t TaskId;
     int32           Status;
     uint8           i;
 
     /* Set to invalid value */
-    *AduOutId = BPNODE_TOTAL_ADU_PROXIES; 
+    *ChanId = BPNODE_MAX_NUM_CHANNELS; 
 
     /* Get the task ID of currently running child task */
     Status = CFE_ES_GetTaskID(&TaskId);
@@ -126,16 +135,16 @@ int32 BPNode_AduOut_TaskInit(uint32 *AduOutId)
         return Status;        
     }
 
-    /* Map this task's ID to an ADU Out ID */
-    for (i = 0; i < BPNODE_TOTAL_ADU_PROXIES; i++)
+    /* Map this task's ID to a channel ID */
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
         if (TaskId == BPNode_AppData.AduOutData[i].TaskId)
         {
-            *AduOutId = i;
+            *ChanId = i;
         }
     }
 
-    if (*AduOutId == BPNODE_TOTAL_ADU_PROXIES)
+    if (*ChanId == BPNODE_MAX_NUM_CHANNELS)
     {
         CFE_EVS_SendEvent(BPNODE_ADU_OUT_INV_ID_ERR_EID, CFE_EVS_EventType_ERROR,
                           "[ADU Out #?]: Task ID does not match any known task IDs. ID = %d", 
@@ -143,28 +152,28 @@ int32 BPNode_AduOut_TaskInit(uint32 *AduOutId)
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
 
-    BPNode_AppData.AduOutData[*AduOutId].PerfId = BPNODE_ADU_OUT_PERF_ID_BASE + *AduOutId;
+    BPNode_AppData.AduOutData[*ChanId].PerfId = BPNODE_ADU_OUT_PERF_ID_BASE + *ChanId;
 
     /* Start performance log */
-    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[*AduOutId].PerfId);
+    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[*ChanId].PerfId);
 
     /* Notify main task that child task is running */
-    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[*AduOutId].PerfId);
-    Status = OS_BinSemGive(BPNode_AppData.AduOutData[*AduOutId].InitSemId);
-    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[*AduOutId].PerfId);
+    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[*ChanId].PerfId);
+    Status = OS_BinSemGive(BPNode_AppData.AduOutData[*ChanId].InitSemId);
+    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[*ChanId].PerfId);
 
     if (Status != OS_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_SEM_TK_ERR_EID, CFE_EVS_EventType_ERROR,
                           "[ADU Out #%d]: Failed to give init semaphore. Error = %d", 
-                          *AduOutId, Status);
+                          *ChanId, Status);
         return Status;
     }
 
-    BPNode_AppData.AduOutData[*AduOutId].RunStatus = CFE_ES_RunStatus_APP_RUN;
+    BPNode_AppData.AduOutData[*ChanId].RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_INF_EID, CFE_EVS_EventType_INFORMATION,
-                      "[ADU Out #%d]: Child Task Initialized.", *AduOutId);
+                      "[ADU Out #%d]: Child Task Initialized.", *ChanId);
 
     return CFE_SUCCESS;
 }
@@ -172,47 +181,54 @@ int32 BPNode_AduOut_TaskInit(uint32 *AduOutId)
 /* Main loop for ADU Out task(s) */
 void BPNode_AduOut_AppMain(void)
 {
-    int32  Status;
-    uint32 AduOutId;
+    int32 Status;
+    uint8 ChanId;
 
     /* Perform task-specific initialization */
-    Status = BPNode_AduOut_TaskInit(&AduOutId);
+    Status = BPNode_AduOut_TaskInit(&ChanId);
 
     if (Status != CFE_SUCCESS)
     {
-        BPNode_AppData.AduOutData[AduOutId].RunStatus = CFE_ES_RunStatus_APP_ERROR;
+        BPNode_AppData.AduOutData[ChanId].RunStatus = CFE_ES_RunStatus_APP_ERROR;
     }
 
     /* ADU Out task loop */
-    while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[AduOutId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
+    while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        /* TODO */
+        if (BPNode_AppData.AduConfigs[ChanId].AppState == BPA_ADUP_APP_STARTED)
+        {
+            /* TODO pull bundle from PI out queue and send out */
+        }
+        else 
+        {
+            (void) OS_TaskDelay(BPNODE_ADU_OUT_SLEEP_MSEC);
+        }
     }
 
     /* Exit gracefully */
-    BPNode_AduOut_TaskExit(AduOutId);
+    BPNode_AduOut_TaskExit(ChanId);
 
     return;
 }
 
 /* Exit child task */
-void BPNode_AduOut_TaskExit(uint32 AduOutId)
+void BPNode_AduOut_TaskExit(uint8 ChanId)
 {
     /* Signal to the main task that the child task has exited */
-    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[AduOutId].PerfId);
-    (void) OS_BinSemGive(BPNode_AppData.AduOutData[AduOutId].ExitSemId);
-    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[AduOutId].PerfId);
+    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
+    (void) OS_BinSemGive(BPNode_AppData.AduOutData[ChanId].ExitSemId);
+    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[ChanId].PerfId);
 
     CFE_EVS_SendEvent(BPNODE_ADU_OUT_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
                       "[ADU Out #%d]: Terminating Task. RunStatus = %d.",
-                      AduOutId, BPNode_AppData.AduOutData[AduOutId].RunStatus);
+                      ChanId, BPNode_AppData.AduOutData[ChanId].RunStatus);
 
     /* In case event services is not working, add a message to the system log */
     CFE_ES_WriteToSysLog("[ADU Out #%d]: Terminating Task. RunStatus = %d.\n",
-                         AduOutId, BPNode_AppData.AduOutData[AduOutId].RunStatus);
+                         ChanId, BPNode_AppData.AduOutData[ChanId].RunStatus);
 
     /* Exit the perf log */
-    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[AduOutId].PerfId);
+    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

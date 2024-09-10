@@ -37,17 +37,26 @@
 ** Macro Definitions
 */
 
-#define BPNODE_ADU_IN_INIT_SEM_BASE_NAME "BPN_ADU_IN_INIT"
+#define BPNODE_ADU_IN_INIT_SEM_BASE_NAME "BPN_ADU_IN_INIT" /**< \brief Initialization semaphore base name */
 
-#define BPNODE_ADU_IN_EXIT_SEM_BASE_NAME "BPN_ADU_IN_EXIT"
+#define BPNODE_ADU_IN_EXIT_SEM_BASE_NAME "BPN_ADU_IN_EXIT" /**< \brief Exit semaphore base name */
 
-#define BPNODE_ADU_IN_BASE_NAME "BPNODE.ADU_IN"
+#define BPNODE_ADU_IN_BASE_NAME "BPNODE.ADU_IN" /**< \brief Task base name */
+
+#define BPNODE_ADU_IN_SLEEP_MSEC (1000u) /**< \brief Sleep time */
+
+#define BPNODE_ADU_PIPE_DEPTH (32u)     /**< \brief ADU pipe depth */
+
+#define BPNODE_ADU_IN_PIPE_BASE_NAME "BPNODE_ADU_PIPE"  /**< \brief ADU pipe base name */
 
 
 /*
 ** Type Definitions
 */
 
+/** 
+** \brief ADU In Task Data
+*/
 typedef struct
 {
     CFE_ES_TaskId_t TaskId;
@@ -55,6 +64,7 @@ typedef struct
     osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
+    CFE_SB_PipeId_t AduPipe;
 } BPNode_AduInData_t;
 
 
@@ -86,13 +96,13 @@ int32 BPNode_AduInCreateTasks(void);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AduInId Pointer to ADU In ID to set
+ *  \param[in] ChanId Pointer to channel ID to set
  *
  *  \return Validation status
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  *  \retval OSAL or cFE error code
  */
-int32 BPNode_AduIn_TaskInit(uint32 *AduInId);
+int32 BPNode_AduIn_TaskInit(uint8 *ChanId);
 
 /**
  * \brief ADU In Main Task
@@ -114,9 +124,9 @@ void BPNode_AduIn_AppMain(void);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AduInId ADU In task ID
+ *  \param[in] ChanId Channel ID for this task
  */
-void BPNode_AduIn_TaskExit(uint32 AduInId);
+void BPNode_AduIn_TaskExit(uint8 ChanId);
 
 
 #endif /* BPNODE_ADU_IN_H */

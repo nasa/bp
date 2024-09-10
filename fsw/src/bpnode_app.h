@@ -45,6 +45,7 @@
 #include "bpnode_eventids.h"
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
+#include "fwp_adup.h"
 
 
 /*
@@ -52,7 +53,7 @@
 */
 
 /** 
-** \brief Global Data
+** \brief Table Data
 */
 typedef struct
 {
@@ -64,6 +65,9 @@ typedef struct
     CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
 } BPNode_TblNameParams_t;
 
+/** 
+** \brief Global Data
+*/
 typedef struct
 {
     uint32 RunStatus;                       /**< \brief Run status for main processing loop */
@@ -75,8 +79,9 @@ typedef struct
 
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
 
-    BPNode_AduInData_t  AduInData[BPNODE_TOTAL_ADU_PROXIES];
-    BPNode_AduOutData_t AduOutData[BPNODE_TOTAL_ADU_PROXIES];    
+    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for Adu In tasks */
+    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for Adu Out tasks */
+    BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
 
 } BPNode_AppData_t;
 

@@ -37,17 +37,22 @@
 ** Macro Definitions
 */
 
-#define BPNODE_ADU_OUT_INIT_SEM_BASE_NAME "BPN_ADU_OUT_INIT"
+#define BPNODE_ADU_OUT_INIT_SEM_BASE_NAME "BPN_ADU_OUT_INIT" /**< \brief Initialization semaphore base name */
 
-#define BPNODE_ADU_OUT_EXIT_SEM_BASE_NAME "BPN_ADU_OUT_EXIT"
+#define BPNODE_ADU_OUT_EXIT_SEM_BASE_NAME "BPN_ADU_OUT_EXIT" /**< \brief Exit semaphore base name */
 
-#define BPNODE_ADU_OUT_BASE_NAME "BPNODE.ADU_OUT"
+#define BPNODE_ADU_OUT_BASE_NAME "BPNODE.ADU_OUT"   /**< \brief Task base name */
+
+#define BPNODE_ADU_OUT_SLEEP_MSEC (1000u)           /**< \brief Sleep time */
 
 
 /*
 ** Type Definitions
 */
 
+/** 
+** \brief ADU Out Task Data
+*/
 typedef struct
 {
     CFE_ES_TaskId_t TaskId;
@@ -86,13 +91,13 @@ int32 BPNode_AduOutCreateTasks(void);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AduOutId Pointer to ADU Out ID to set
+ *  \param[in] ChanId Pointer to channel ID to set
  *
  *  \return Validation status
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  *  \retval OSAL or cFE error code
  */
-int32 BPNode_AduOut_TaskInit(uint32 *AduOutId);
+int32 BPNode_AduOut_TaskInit(uint8 *ChanId);
 
 /**
  * \brief ADU Out Main Task
@@ -114,9 +119,9 @@ void BPNode_AduOut_AppMain(void);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AduOutId ADU Out task ID
+ *  \param[in] ChanId Channel ID for this task
  */
-void BPNode_AduOut_TaskExit(uint32 AduOutId);
+void BPNode_AduOut_TaskExit(uint8 ChanId);
 
 
 #endif /* BPNODE_ADU_OUT_H */
