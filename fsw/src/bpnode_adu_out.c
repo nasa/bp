@@ -32,13 +32,6 @@
 
 
 /*
-** Global Data
-*/
-
-BPNode_AppData_t BPNode_AppData;
-
-
-/*
 ** Function Definitions
 */
 
