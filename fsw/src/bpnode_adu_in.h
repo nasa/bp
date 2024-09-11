@@ -43,9 +43,9 @@
 
 #define BPNODE_ADU_IN_BASE_NAME "BPNODE.ADU_IN" /**< \brief Task base name */
 
-#define BPNODE_ADU_IN_SLEEP_MSEC (1000u) /**< \brief Sleep time */
+#define BPNODE_ADU_IN_SLEEP_MSEC (1000u)        /**< \brief Sleep time */
 
-#define BPNODE_ADU_PIPE_DEPTH (32u)     /**< \brief ADU pipe depth */
+#define BPNODE_ADU_PIPE_DEPTH (32u)             /**< \brief ADU pipe depth */
 
 #define BPNODE_ADU_IN_PIPE_BASE_NAME "BPNODE_ADU_PIPE"  /**< \brief ADU pipe base name */
 
@@ -79,7 +79,8 @@ typedef struct
  *       Initialize init and exit semaphores, then create the child task(s)
  *
  *  \par Assumptions, External Events, and Notes:
- *       None
+ *       - Note: This is the only function in this file called by the main task, all other
+ *         functions are called by the child task(s)
  *
  *  \return Validation status
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS

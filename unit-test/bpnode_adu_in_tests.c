@@ -376,7 +376,7 @@ void Test_BPNode_AduIn_AppMain_ChanIdErr(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
-/* Test BPNode_AduIn_AppMain when app state is started */
+/* Test BPNode_AduIn_AppMain when app state is stopped */
 void Test_BPNode_AduIn_AppMain_AppStopped(void)
 {
     uint8 ChanId = 0;

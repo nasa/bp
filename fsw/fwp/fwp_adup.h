@@ -92,7 +92,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr);
  *  \param[in] AduPtr Pointer to the ADU
  * 
  *  \return Execution status
- *  \retval BPLIB_SUCCESS Ingest was successful
+ *  \retval BPLIB_SUCCESS Output was successful
  */
 BPLib_Status_t BPA_ADUP_Out(void *AduPtr);
 
@@ -118,7 +118,7 @@ void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] ChanId Application ID corresponding to an ADU Task ID
+ *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
  */
 void BPA_ADUP_StartApplication(uint8_t ChanId);
 
@@ -131,9 +131,8 @@ void BPA_ADUP_StartApplication(uint8_t ChanId);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] ChanId Application ID corresponding to an ADU Task ID
+ *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
  */
 void BPA_ADUP_StopApplication(uint8_t ChanId);
-
 
 #endif /* FWP_ADUP_H */

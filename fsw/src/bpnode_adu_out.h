@@ -74,7 +74,8 @@ typedef struct
  *       Initialize init and exit semaphores, then create the child task(s)
  *
  *  \par Assumptions, External Events, and Notes:
- *       None
+ *       - Note: This is the only function in this file called by the main task, all other
+ *         functions are called by the child task(s)
  *
  *  \return Validation status
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS

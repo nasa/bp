@@ -278,7 +278,7 @@ void Test_BPNode_AduOut_AppMain_ChanIdErr(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
 }
 
-/* Test BPNode_AduOut_AppMain when app state is started */
+/* Test BPNode_AduOut_AppMain when app state is stopped */
 void Test_BPNode_AduOut_AppMain_AppStopped(void)
 {
     uint8 ChanId = 0;

@@ -79,8 +79,8 @@ typedef struct
 
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
 
-    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for Adu In tasks */
-    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for Adu Out tasks */
+    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
+    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
 
 } BPNode_AppData_t;
