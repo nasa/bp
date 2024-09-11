@@ -237,10 +237,13 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /* Initialize ADU configuration data to set all applications to stopped */
+    /* 
+    ** Initialize ADU configuration data to set all applications to started
+    ** TODO replace with reading in configs from ADU/channel config tables
+    */
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
-        BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STOPPED;
+        BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STARTED;
     }
 
     /* Create ADU In child tasks */

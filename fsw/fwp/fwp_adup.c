@@ -62,13 +62,13 @@ void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
 }
 
 /* Start an application */
-void BPA_ADUP_StartApplication(uint8_t AppId)
+void BPA_ADUP_StartApplication(uint8_t ChanId)
 {
     return;
 }
 
 /* Stop an application */
-void BPA_ADUP_StopApplication(uint8_t AppId)
+void BPA_ADUP_StopApplication(uint8_t ChanId)
 {
     return;
 }

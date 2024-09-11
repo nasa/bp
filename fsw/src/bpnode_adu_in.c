@@ -124,9 +124,6 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
     uint8           i;
     char            NameBuff[OS_MAX_API_NAME];
 
-    /* Set to invalid value */
-    *ChanId = BPNODE_MAX_NUM_CHANNELS; 
-
     /* Get the task ID of currently running child task */
     Status = CFE_ES_GetTaskID(&TaskId);
 
@@ -182,9 +179,6 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
         return Status;
     }
 
-    /* Set state to started to allow simulated flow of ADUs */
-    BPNode_AppData.AduConfigs[*ChanId].AppState = BPA_ADUP_APP_STARTED;
-
     /* Notify main task that child task is running */
     CFE_ES_PerfLogExit(BPNode_AppData.AduInData[*ChanId].PerfId);
     Status = OS_BinSemGive(BPNode_AppData.AduInData[*ChanId].InitSemId);
@@ -211,14 +205,31 @@ void BPNode_AduIn_AppMain(void)
 {
     int32 Status;
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8 ChanId;
+    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS; /* Set to garbage value */
 
     /* Perform task-specific initialization */
     Status = BPNode_AduIn_TaskInit(&ChanId);
 
     if (Status != CFE_SUCCESS)
     {
-        BPNode_AppData.AduInData[ChanId].RunStatus = CFE_ES_RunStatus_APP_ERROR;
+        /* Channel ID can't be determined, shut down immediately */
+        if (ChanId == BPNODE_MAX_NUM_CHANNELS)
+        {
+            CFE_EVS_SendEvent(BPNODE_ADU_IN_UNK_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+                      "Terminating Unknown ADU In Task.");
+
+            /* In case event services is not working, add a message to the system log */
+            CFE_ES_WriteToSysLog("Terminating Unknown ADU In Task.\n");
+
+            CFE_ES_ExitChildTask();
+
+            return;
+        }
+        /* If channel ID can be determined, ready normal shutdown */
+        else
+        {
+            BPNode_AppData.AduInData[ChanId].RunStatus = CFE_ES_RunStatus_APP_ERROR;
+        }
     }
 
     /* ADU In task loop */

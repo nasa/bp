@@ -32,6 +32,7 @@
 */
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "bplib.h"
 
 
@@ -117,9 +118,9 @@ void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AppId Application ID corresponding to an ADU Task ID
+ *  \param[in] ChanId Application ID corresponding to an ADU Task ID
  */
-void BPA_ADUP_StartApplication(uint8_t AppId);
+void BPA_ADUP_StartApplication(uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Stop Application
@@ -130,9 +131,9 @@ void BPA_ADUP_StartApplication(uint8_t AppId);
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AppId Application ID corresponding to an ADU Task ID
+ *  \param[in] ChanId Application ID corresponding to an ADU Task ID
  */
-void BPA_ADUP_StopApplication(uint8_t AppId);
+void BPA_ADUP_StopApplication(uint8_t ChanId);
 
 
 #endif /* FWP_ADUP_H */
