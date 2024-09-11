@@ -159,7 +159,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_EVP_Register  = BPA_EVP_Register,
+        .BPA_EVP_Init      = BPA_EVP_Init,
         .BPA_EVP_SendEvent = BPA_EVP_SendEvent
     };
 
@@ -169,7 +169,7 @@ CFE_Status_t BPNode_AppInit(void)
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     /* Register with Event Services */
-    Status = BPLib_EM_Init(NULL, 0, CFE_EVS_EventFilter_BINARY);
+    Status = BPLib_EM_Init();
     if (Status != CFE_SUCCESS)
     {
         CFE_ES_WriteToSysLog("BPNode: Error Registering Events, RC = 0x%08lX\n", 
