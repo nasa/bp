@@ -156,7 +156,8 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     /* Fail Time activities */
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_MaintenanceActivities), 1, BPLIB_TIME_WRITE_ERROR);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_WKP_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_WKP_ERR_EID, 
+                                    "Error doing time maintenance activities, RC = %d");
 
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
