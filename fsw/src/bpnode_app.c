@@ -271,7 +271,8 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != OS_SUCCESS)
     {
         CFE_EVS_SendEvent(BPNODE_DELETE_HNDLR_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Failure to install delete handler, RC = %d", Status);        
+                            "Failure to install delete handler, RC = %d", Status);   
+        return Status;
     }
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
@@ -302,16 +303,14 @@ void BPNode_AppCleanup(void)
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[i].PerfId);
+        BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+
+        CFE_ES_PerfLogExit(BPNODE_PERF_ID);
         (void) OS_BinSemTimedWait(BPNode_AppData.AduOutData[0].ExitSemId, 
                                                             BPNODE_SEM_WAIT_MSEC);
-        CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[i].PerfId);
-
-        BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        CFE_ES_PerfLogExit(BPNode_AppData.AduInData[i].PerfId);
         (void) OS_BinSemTimedWait(BPNode_AppData.AduInData[0].ExitSemId, 
                                                             BPNODE_SEM_WAIT_MSEC);
-        CFE_ES_PerfLogEntry(BPNode_AppData.AduInData[i].PerfId);
+        CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Performance Log Exit Stamp */
