@@ -59,7 +59,7 @@ CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 {
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    CFE_EVS_SendEvent(BPNODE_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, 
+    BPLib_EM_SendEvent(BPNODE_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, 
                         "No-op command. Version %d.%d.%d.",
                         BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
 
@@ -73,7 +73,7 @@ CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
 
-    CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, 
+    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, 
                     "Reset all counters command");
 
     return CFE_SUCCESS;

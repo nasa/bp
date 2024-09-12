@@ -33,6 +33,7 @@
 #include "cfe_evs.h"
 
 #include "bpnode_test_utils.h"
+#include "bplib.h"
 
 #include "utassert.h"
 #include "uttest.h"
@@ -47,7 +48,7 @@ static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCou
     const char *     Spec;
 
     /*
-     * The CFE_EVS_SendEvent stub passes the EventID as the
+     * The BPLib_EM_SendEvent stub passes the EventID as the
      * first context argument.
      */
     if (Context->ArgCount > 0)
@@ -57,7 +58,7 @@ static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCou
         {
             if (State->ExpectedFormat != NULL)
             {
-                Spec = UT_Hook_GetArgValueByName(Context, "Spec", const char *);
+                Spec = UT_Hook_GetArgValueByName(Context, "EventText", const char *);
                 if (Spec != NULL)
                 {
                     /*
@@ -100,7 +101,7 @@ static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCou
 
 /*
  * Helper function to set up for event checking
- * This attaches the hook function to CFE_EVS_SendEvent
+ * This attaches the hook function to BPLib_EM_SendEvent
  */
 void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
                               const char *ExpectedFormat)
@@ -116,7 +117,7 @@ void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const 
     memset(Evt, 0, sizeof(*Evt));
     Evt->ExpectedEvent  = ExpectedEvent;
     Evt->ExpectedFormat = ExpectedFormat;
-    UT_SetVaHookFunction(UT_KEY(CFE_EVS_SendEvent), UT_CheckEvent_Hook, Evt);
+    UT_SetVaHookFunction(UT_KEY(BPLib_EM_SendEvent), UT_CheckEvent_Hook, Evt);
 }
 
 /* Setup function prior to every test */

@@ -36,10 +36,6 @@ BPLib_Status_t BPA_EVP_Init(void)
 {
     UT_GenStub_SetupReturnBuffer(BPA_EVP_Init, BPLib_Status_t);
 
-    UT_GenStub_AddParam(BPA_EVP_Init, const void*, Filters);
-    UT_GenStub_AddParam(BPA_EVP_Init, uint16_t, NumEventFilters);
-    UT_GenStub_AddParam(BPA_EVP_Init, uint16_t, FilterScheme);
-
     UT_GenStub_Execute(BPA_EVP_Init, Basic, NULL);
 
     return UT_GenStub_GetReturnValue(BPA_EVP_Init, BPLib_Status_t);

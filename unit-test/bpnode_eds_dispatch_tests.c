@@ -48,7 +48,7 @@ void Test_BPNode_TaskPipe_Nominal(void)
 
     UtAssert_VOIDCALL(BPNode_TaskPipe(&Buf));
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test task pipe processing with an invalid message ID */
@@ -67,7 +67,7 @@ void Test_BPNode_TaskPipe_InvalidMsgId(void)
     
     BPNode_TaskPipe(&Buf);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, NULL);
 }
 
@@ -87,7 +87,7 @@ void Test_BPNode_TaskPipe_InvalidLength(void)
     
     BPNode_TaskPipe(&Buf);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID, NULL);
 }
 
@@ -107,7 +107,7 @@ void Test_BPNode_TaskPipe_InvalidCmdCode(void)
     
     BPNode_TaskPipe(&Buf);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
 }
 

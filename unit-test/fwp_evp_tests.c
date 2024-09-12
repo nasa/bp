@@ -56,7 +56,7 @@ void Test_BPA_EVP_Init_Nominal(void)
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_Register, 1);
-    UtAssert_True(Status == BPLIB_SUCCESS);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 }
 
 void Test_BPA_EVP_Init_BadReturn(void)
@@ -64,7 +64,7 @@ void Test_BPA_EVP_Init_BadReturn(void)
     BPLib_Status_t Status;
 
     /* Set return code for CFE_EVS_Register to be non-success */
-    UT_Stub_SetReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_APP_ILLEGAL_APP_ID);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_APP_ILLEGAL_APP_ID);
 
     /* TODO: Create utility to check EVP_Init arguments */
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
@@ -75,55 +75,53 @@ void Test_BPA_EVP_Init_BadReturn(void)
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_Register, 1);
-    UtAssert_True(Status == BPLIB_EM_ILLEGAL_APP_ID);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_ILLEGAL_APP_ID);
 }
 
 void Test_BPA_EVP_SendEvent_Nominal(void)
 {
     BPLib_Status_t Status;
-    UT_CheckEvent_t EventTest;
+    uint16_t stubCount;
+
+    stubCount = 1;
 
     /* TODO: Create handler that reports which type of event was given? */
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), &Test_CFE_EVS_SendEvent_GetEventType_Handler, ???);
 
     /* === INFO event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPLib_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION, "INFO event message test");
+    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION, "INFO event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_True(Status == BPLIB_SUCCESS);
-    UT_CHECKEVENT_SETUP(&EventTest, 42, "INFO event message test");
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 
 
     /* === ERROR event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPLib_EVP_SendEvent(01, CFE_EVS_EventType_ERROR, "ERROR event message test");
+    Status = BPA_EVP_SendEvent(01, CFE_EVS_EventType_ERROR, "ERROR event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_True(Status == BPLIB_SUCCESS);
-    UT_CHECKEVENT_SETUP(&EventTest, 01, "ERROR event message test");
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 
 
     /* === DEBUG event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPLib_EVP_SendEvent(0x42, CFE_EVS_EventType_DEBUG, "DEBUG event message test");
+    Status = BPA_EVP_SendEvent(0x42, CFE_EVS_EventType_DEBUG, "DEBUG event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_True(Status == BPLIB_SUCCESS);
-    UT_CHECKEVENT_SETUP(&EventTest, 0x42, "DEBUG event message test");
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 
 
     /* === CRITICAL event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPLib_EVP_SendEvent((unsigned long) 123, CFE_EVS_EventType_CRITICAL, "CRITICAL event message test");
+    Status = BPA_EVP_SendEvent((unsigned long) 123, CFE_EVS_EventType_CRITICAL, "CRITICAL event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_True(Status == BPLIB_SUCCESS);
-    UT_CHECKEVENT_SETUP(&EventTest, (unsigned long) 123, "CRITICAL event message test");
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 }
 
 void Test_BPA_EVP_SendEvent_BadReturn(void)
@@ -131,7 +129,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     BPLib_Status_t Status;
 
     /* Make CFE_EVS_SendEvent return an error code */
-    UT_Stub_SetReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_SQUELCHED);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_SQUELCHED);
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
@@ -140,7 +138,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_True(Status == BPLIB_EM_APP_SQUELCHED);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_APP_SQUELCHED);
 }
 
 /* Register the test cases to execute with the unit test tool */

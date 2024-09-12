@@ -43,6 +43,8 @@
 #include "bpnode_msg.h"
 #include "bpnode_tbl.h"
 
+#include "bplib.h"
+
 /*
 ** Type Definitions
 */

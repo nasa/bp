@@ -50,7 +50,7 @@ void Test_BPNode_TaskPipe_Nominal(void)
 
     BPNode_TaskPipe(&Buf);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_STUB_COUNT(BPNode_NoopCmd, 1);
 }
 
@@ -84,7 +84,7 @@ void Test_BPNode_ProcessGroundCommand_ValidNoop(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPNode_NoopCmd, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid noop */
@@ -103,7 +103,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidNoop(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPNode_NoopCmd, 0);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
 }
 
 /* Test ground command processing after receiving a valid reset-all-counters */
@@ -119,7 +119,7 @@ void Test_BPNode_ProcessGroundCommand_ValidResetAllCounters(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPNode_ResetAllCountersCmd, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-all-counters */
@@ -138,7 +138,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetAllCounters(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPNode_ResetAllCountersCmd, 0);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
 }
 
 
@@ -155,7 +155,7 @@ void Test_BPNode_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPNode_SendNodeMibCountersHkCmd, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-counters-hk */
@@ -174,7 +174,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPNode_SendNodeMibCountersHkCmd, 0);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
 }
 
 /* Test ground command processing after receiving an invalid command code */
@@ -189,7 +189,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
     BPNode_ProcessGroundCommand(&Buf);
 
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
 }
 
 /* Test command length verification in nominal case */
@@ -202,7 +202,7 @@ void Test_BPNode_VerifyCmdLength_Nominal(void)
 
     BPNode_VerifyCmdLength(NULL, ExpectedLength);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
@@ -220,7 +220,7 @@ void Test_BPNode_VerifyCmdLength_InvalidLength(void)
 
     BPNode_VerifyCmdLength(NULL, ExpectedLength);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 

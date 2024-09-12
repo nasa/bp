@@ -155,7 +155,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
         .BPA_EVP_Init                 = BPA_EVP_Init,
         .BPA_EVP_SendEvent            = BPA_EVP_SendEvent
     };
