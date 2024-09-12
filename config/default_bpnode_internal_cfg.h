@@ -45,7 +45,7 @@
 
 #define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200)  /* Timeout of wakeup pipe */
 
-#define BPNODE_NUMBER_OF_TABLES             (1)     /* Number of table(s) */
+#define BPNODE_NUMBER_OF_TABLES             (12)     /* Number of table(s) */
 
 #define BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE  (-1)    /* Table validation error code */
 
