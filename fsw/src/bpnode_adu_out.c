@@ -46,12 +46,7 @@ int32 BPNode_AduOutCreateTasks(void)
     /* Create all of the ADU Out task(s) */
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
-        /*
-        ** Create an initialization and an exit semaphore for each ADU Out Task, to signal 
-        ** that the task has completed its initialization procedures or exited, respectively. 
-        ** The child task  returns the semaphore after completing the relevant procedure.
-        */
-
+        /* Create init semaphore so main task knows when child initialized */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_OUT_INIT_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.AduOutData[i].InitSemId, NameBuff, 0, 0);
 
@@ -59,17 +54,6 @@ int32 BPNode_AduOutCreateTasks(void)
         {
             CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_SEM_ERR_EID, CFE_EVS_EventType_ERROR,
                         "Failed to create the ADU Out #%d task init semaphore. Error = %d.", 
-                        i, Status);
-            return Status;
-        }
-
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_OUT_EXIT_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.AduOutData[i].ExitSemId, NameBuff, 0, 0);
-
-        if (Status != OS_SUCCESS)
-        {
-            CFE_EVS_SendEvent(BPNODE_ADU_OUT_EXIT_SEM_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "Failed to create the ADU Out #%d task exit semaphore. Error = %d.", 
                         i, Status);
             return Status;
         }
@@ -221,11 +205,6 @@ void BPNode_AduOut_AppMain(void)
 /* Exit child task */
 void BPNode_AduOut_TaskExit(uint8 ChanId)
 {
-    /* Signal to the main task that the child task has exited */
-    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
-    (void) OS_BinSemGive(BPNode_AppData.AduOutData[ChanId].ExitSemId);
-    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[ChanId].PerfId);
-
     CFE_EVS_SendEvent(BPNODE_ADU_OUT_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
                       "[ADU Out #%d]: Terminating Task. RunStatus = %d.",
                       ChanId, BPNode_AppData.AduOutData[ChanId].RunStatus);

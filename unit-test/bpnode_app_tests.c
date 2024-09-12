@@ -326,32 +326,23 @@ void Test_BPNode_AppInit_FailedAduOutTasks(void)
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
 }
 
-/* Test app initialization after failure to install delete handler */
-void Test_BPNode_AppInit_FailedDeleteHandler(void)
+/* Test app exit in nominal case */
+void Test_BPNode_AppExit_Nominal(void)
 {
     UT_CheckEvent_t EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_DELETE_HNDLR_ERR_EID, 
-                                "Failure to install delete handler, RC = %d");
-
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
-    UT_SetDeferredRetcode(UT_KEY(OS_TaskInstallDeleteHandler), 1, OS_ERROR);
-
-    UtAssert_INT32_EQ(BPNode_AppInit(), OS_ERROR);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-}
-
-/* Test app cleanup in nominal case */
-void Test_BPNode_AppCleanup_Nominal(void)
-{
-    UT_CheckEvent_t EventTest;
+    uint8 i;
 
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_EXIT_CRIT_EID, 
                                 "App terminating, error = %d");
 
-    BPNode_AppCleanup();
+    BPNode_AppExit();
 
-    UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPNODE_MAX_NUM_CHANNELS * 2);
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+        UtAssert_UINT32_EQ(BPNode_AppData.AduInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+    }
+
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -380,7 +371,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
-    ADD_TEST(Test_BPNode_AppInit_FailedDeleteHandler);
 
-    ADD_TEST(Test_BPNode_AppCleanup_Nominal);
+    ADD_TEST(Test_BPNode_AppExit_Nominal);
 }

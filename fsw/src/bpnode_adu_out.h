@@ -39,8 +39,6 @@
 
 #define BPNODE_ADU_OUT_INIT_SEM_BASE_NAME "BPN_ADU_OUT_INIT" /**< \brief Initialization semaphore base name */
 
-#define BPNODE_ADU_OUT_EXIT_SEM_BASE_NAME "BPN_ADU_OUT_EXIT" /**< \brief Exit semaphore base name */
-
 #define BPNODE_ADU_OUT_BASE_NAME "BPNODE.ADU_OUT"   /**< \brief Task base name */
 
 #define BPNODE_ADU_OUT_SLEEP_MSEC (1000u)           /**< \brief Sleep time */
@@ -57,7 +55,6 @@ typedef struct
 {
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
-    osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
 } BPNode_AduOutData_t;
@@ -71,7 +68,7 @@ typedef struct
  * \brief Create ADU Out Task(s)
  *
  *  \par Description
- *       Initialize init and exit semaphores, then create the child task(s)
+ *       Initialize init semaphore, then create the child task(s)
  *
  *  \par Assumptions, External Events, and Notes:
  *       - Note: This is the only function in this file called by the main task, all other

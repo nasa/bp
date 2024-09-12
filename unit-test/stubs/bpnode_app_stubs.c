@@ -29,6 +29,16 @@
 
 /*
  * ----------------------------------------------------
+ * Generated stub function for BPNode_AppExit()
+ * ----------------------------------------------------
+ */
+void BPNode_AppExit(void)
+{
+    UT_GenStub_Execute(BPNode_AppExit, Basic, NULL);
+}
+
+/*
+ * ----------------------------------------------------
  * Generated stub function for BPNode_AppInit()
  * ----------------------------------------------------
  */

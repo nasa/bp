@@ -142,14 +142,14 @@ CFE_Status_t BPNode_AppInit(void);
 CFE_Status_t BPNode_WakeupProcess(void);
 
 /**
- * \brief Clean up app
+ * \brief Exit app
  *
  *  \par Description
- *       This function cleans up the main and child tasks and readies them for shutdown.
+ *       This function cleans up the main and child tasks and shuts them down
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
  */
-void BPNode_AppCleanup(void);
+void BPNode_AppExit(void);
 
 #endif /* BPNODE_APP_H */
