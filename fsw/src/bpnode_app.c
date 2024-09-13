@@ -38,6 +38,7 @@
 #include "bplib.h"
 #include "fwp.h"
 #include "fwp_tablep.h"
+#include "bpnode_cla_bundle_io.h"
 
 /*
 ** Global Data
@@ -155,7 +156,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
     };
 
     /* Zero out the global data structure */
@@ -222,8 +223,8 @@ CFE_Status_t BPNode_AppInit(void)
     Status = BPA_TABLEP_TableInit();
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error Getting Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
+        CFE_EVS_SendEvent(BPNODE_TBL_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "Error Getting Table initialized in Table Proxy, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
 
@@ -236,6 +237,15 @@ CFE_Status_t BPNode_AppInit(void)
 
         return Status;
     }
+    
+    /* Create the CLA task(s) */
+    Status = BPNODE_CLA_Init();
+    if (Status != CFE_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_CLA_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Failure initializing CLA tasks");
+        return Status;
+    }    
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
         BPNODE_MAJOR_VERSION,

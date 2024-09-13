@@ -45,6 +45,24 @@
 #define BPNODE_TBL_LD_ERR_EID      15
 #define BPNODE_TBL_ADDR_ERR_EID    16
 #define BPNODE_TBL_MNG_ERR_EID     17
-#define BPNODE_FWP_INIT_ERR_EID    18
+#define BPNODE_TBL_INIT_ERR_EID    18
+#define BPNODE_FWP_INIT_ERR_EID    19
+#define BPNODE_CLA_INIT_ERR_EID    20
+
+#define BPNODE_IO_SEND_ERR_EID                 30
+#define BPNODE_IO_RECEIVE_ERR_EID              31
+#define BPNODE_LIB_PROC_ERR_EID                32
+#define BPNODE_LIB_LOAD_ERR_EID                33
+#define BPNODE_LIB_STORE_ERR_EID               34
+#define BPNODE_LIB_ACCEPT_ERR_EID              35
+#define BPNODE_LIB_CONFIG_ERR_EID              36
+#define BPNODE_FILE_ERR_EID                    37
+#define BPNODE_FILE_POLLING_NOT_ACTIVE_ERR_EID 38
+#define BPNODE_STORE_INFO_EID                  39
+
+/* placeholder for CLA/Bundle flow events */
+#define BPNODE_CLA_INIT_INF_EID     50
+#define BPNODE_CLA_ERR_EID          51
+#define BPNODE_CLA_INFO_EID         52
 
 #endif /* BPNODE_EVENTS_H */
