@@ -185,6 +185,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
     CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
 
     BPNode_ProcessGroundCommand(&Buf);
 

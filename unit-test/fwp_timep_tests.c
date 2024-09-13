@@ -67,12 +67,12 @@ void Test_BPA_TIMEP_GetHostEpoch_Nominal(void)
 
     BPA_TIMEP_GetHostEpoch(&Epoch);
 
-    UtAssert_UINT32_EQ(Epoch.Year, CFE_MISSION_TIME_EPOCH_YEAR);
-    UtAssert_UINT32_EQ(Epoch.Day, CFE_MISSION_TIME_EPOCH_DAY);
-    UtAssert_UINT32_EQ(Epoch.Hour, CFE_MISSION_TIME_EPOCH_HOUR);
-    UtAssert_UINT32_EQ(Epoch.Minute, CFE_MISSION_TIME_EPOCH_MINUTE);
-    UtAssert_UINT32_EQ(Epoch.Second, CFE_MISSION_TIME_EPOCH_SECOND);
-    UtAssert_UINT32_EQ(Epoch.Msec, CFE_MISSION_TIME_EPOCH_MICROS / 1000);
+    UtAssert_UINT16_EQ(Epoch.Year, CFE_MISSION_TIME_EPOCH_YEAR);
+    UtAssert_UINT16_EQ(Epoch.Day, CFE_MISSION_TIME_EPOCH_DAY);
+    UtAssert_UINT16_EQ(Epoch.Hour, CFE_MISSION_TIME_EPOCH_HOUR);
+    UtAssert_UINT16_EQ(Epoch.Minute, CFE_MISSION_TIME_EPOCH_MINUTE);
+    UtAssert_UINT16_EQ(Epoch.Second, CFE_MISSION_TIME_EPOCH_SECOND);
+    UtAssert_UINT16_EQ(Epoch.Msec, CFE_MISSION_TIME_EPOCH_MICROS / 1000);
 }
 
 /* Test BPA_TIMEP_GetHostEpoch with null arg */

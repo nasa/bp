@@ -64,6 +64,7 @@ void Test_BPNode_TaskPipe_InvalidMsgId(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, NULL);
     
     BPNode_TaskPipe(&Buf);
 
@@ -84,6 +85,7 @@ void Test_BPNode_TaskPipe_InvalidLength(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID, NULL);
     
     BPNode_TaskPipe(&Buf);
 
@@ -104,6 +106,7 @@ void Test_BPNode_TaskPipe_InvalidCmdCode(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
     
     BPNode_TaskPipe(&Buf);
 

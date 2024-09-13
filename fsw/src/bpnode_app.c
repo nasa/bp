@@ -110,7 +110,17 @@ void BPNode_AppMain(void)
 CFE_Status_t BPNode_WakeupProcess(void)
 {
     CFE_Status_t     Status;
+    BPLib_Status_t   BpStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
+
+    /* Update time as needed */
+    BpStatus = BPLib_TIME_MaintenanceActivities();
+
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_TIME_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "Error doing time maintenance activities, RC = %d", BpStatus);
+    }
 
     /* Call Table Proxy to update tables*/
     Status = BPA_TABLEP_TableUpdate();
@@ -147,6 +157,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
 CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
+    BPLib_Status_t BpStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
