@@ -55,8 +55,8 @@
 #define ADD_TEST(test) UtTest_Add(test, BPNode_UT_Setup, BPNode_UT_TearDown, #test)
 
 /* Macro to get expected event name */
-#define UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
-    UT_CheckEvent_Setup_Impl(Evt, ExpectedEvent, #ExpectedEvent, ExpectedFormat)
+#define BPNode_UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
+    BPNode_UT_CheckEvent_Setup_Impl(Evt, ExpectedEvent, #ExpectedEvent, ExpectedFormat)
 
 
 /*
@@ -80,7 +80,7 @@ typedef struct
 ** Helper function to set up for event checking
 ** This attaches the hook function to BPLib_EM_SendEvent
 */
-void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
+void BPNode_UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
                               const char *ExpectedFormat);
 
 /* Unit test case set up */

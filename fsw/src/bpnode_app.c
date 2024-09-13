@@ -176,12 +176,12 @@ CFE_Status_t BPNode_AppInit(void)
     if (BpStatus != BPLIB_SUCCESS)
     {
         CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
-                                (unsigned long)Status);
+                                (unsigned long) BpStatus);
 
         /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
         CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
                             "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
-                            (unsigned long)Status);
+                            (unsigned long) BpStatus);
 
         return BpStatus;
     }
@@ -194,8 +194,8 @@ CFE_Status_t BPNode_AppInit(void)
     BpStatus = BPLib_TIME_Init();
     if (BpStatus != BPLIB_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TIME_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error initializing BPLib Time Management, RC = %d", Status);
+        BPLib_EM_SendEvent(BPNODE_TIME_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Error initializing BPLib Time Management, RC = %d", BpStatus);
         
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
@@ -206,7 +206,7 @@ CFE_Status_t BPNode_AppInit(void)
     if (BpStatus != CFE_SUCCESS)
     {
         CFE_ES_WriteToSysLog("BPNode: Error Registering Events, RC = 0x%08lX\n", 
-                                                                (unsigned long)Status);
+                                                                (unsigned long) BpStatus);
         return BpStatus;
     }
     /* Initialize housekeeping packet (clear user data area) */
