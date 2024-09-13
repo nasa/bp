@@ -1894,11 +1894,12 @@ void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
     CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
 
     BPNode_ProcessGroundCommand(&Buf);
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test command length verification in nominal case */
