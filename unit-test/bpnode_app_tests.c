@@ -164,7 +164,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -258,7 +258,7 @@ void Test_BPNode_AppInit_FailedCmdPipeCreate(void)
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_CMD_PIPE_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after wakeup pipe creation failure */
@@ -273,7 +273,7 @@ void Test_BPNode_AppInit_FailedWakeupPipeCreate(void)
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CR_WKP_PIPE_ERR_EID, NULL);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test app initialization after failure to subscribe to commands */
