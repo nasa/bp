@@ -62,20 +62,63 @@ void Test_BPA_EVP_Init_Nominal(void)
 void Test_BPA_EVP_Init_BadReturn(void)
 {
     BPLib_Status_t Status;
+    uint16_t stubCount;
 
-    /* Set return code for CFE_EVS_Register to be non-success */
-    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_APP_ILLEGAL_APP_ID);
+    stubCount = 1;
 
     /* TODO: Create utility to check EVP_Init arguments */
     // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
+
+    /* ===== CFE_EVS_APP_ILLEGAL_APP_ID / BPLIB_EM_ILLEGAL_APP_ID returned ===== */
+    /* Set return code for CFE_EVS_Register to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_APP_ILLEGAL_APP_ID);
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
     Status = BPA_EVP_Init();
 
     /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_Register, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_Register, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_ILLEGAL_APP_ID);
+
+
+    /* ===== CFE_EVS_UNKNOWN_FILTER / BPLIB_EM_UNKNOWN_FILTER returned ===== */
+    /* Set return code for CFE_EVS_Register to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_Register), CFE_EVS_UNKNOWN_FILTER);
+
+    /* Call function under test */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_Init();
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_Register, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_UNKNOWN_FILTER);
+
+
+    /* ===== CFE_ES_BAD_ARGUMENT / BPLIB_EM_BAD_ARGUMENT returned ===== */
+    /* Set return code for CFE_EVS_Register to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_Register), CFE_ES_BAD_ARGUMENT);
+
+    /* Call function under test */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_Init();
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_Register, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_BAD_ARGUMENT);
+
+
+    /* ===== -1 / BPLIB_UNKNOWN returned ===== */
+    /* Set return code for CFE_EVS_Register to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_Register), -1);
+
+    /* Call function under test */
+    Status = BPLIB_SUCCESS;
+    Status = BPA_EVP_Init();
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_Register, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_UNKNOWN);
 }
 
 void Test_BPA_EVP_SendEvent_Nominal(void)
@@ -127,9 +170,27 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
 void Test_BPA_EVP_SendEvent_BadReturn(void)
 {
     BPLib_Status_t Status;
+    uint16_t stubCount;
 
-    /* Make CFE_EVS_SendEvent return an error code */
-    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_SQUELCHED);
+    stubCount = 1;
+
+    /* ===== CFE_EVS_INVALID_PARAMETER / BPLIB_EM_INVALID_PARAMETER returned ===== */
+    /* Set return code for CFE_EVS_SendEvent to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_INVALID_PARAMETER);
+
+    /* Call function under test */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION,
+                                "Bad return INFO event message test");
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_INVALID_PARAMETER);
+
+
+    /* ===== CFE_EVS_APP_ILLEGAL_APP_ID / BPLIB_EM_ILLEGAL_APP_ID returned ===== */
+    /* Set return code for CFE_EVS_SendEvent to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_ILLEGAL_APP_ID);
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
@@ -137,8 +198,50 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
                                 "Bad return ERROR event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_ILLEGAL_APP_ID);
+
+
+    /* ===== CFE_EVS_APP_NOT_REGISTERED / BPLIB_EM_APP_NOT_REGISTERED returned ===== */
+    /* Set return code for CFE_EVS_SendEvent to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_NOT_REGISTERED);
+
+    /* Call function under test */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_DEBUG,
+                        "Bad return DEBUG event message test");
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_APP_NOT_REGISTERED);
+
+
+    /* ===== CFE_EVS_APP_SQUELCHED / BPLIB_EM_APP_SQUELCHED returned ===== */
+    /* Set return code for CFE_EVS_SendEvent to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), CFE_EVS_APP_SQUELCHED);
+
+    /* Call function under test */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION,
+                                "Bad return INFO event message test");
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_APP_SQUELCHED);
+
+
+    /* ===== -1 / BPLIB_UNKNOWN returned ===== */
+    /* Set return code for CFE_EVS_SendEvent to be non-success */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_EVS_SendEvent), -1);
+
+    /* Call function under test */
+    Status = BPLIB_SUCCESS;
+    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_ERROR,
+                                "Bad return ERROR event message test");
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_UNKNOWN);
 }
 
 /* Register the test cases to execute with the unit test tool */

@@ -30,7 +30,7 @@
 /* CFE_EVS_Register() proxy */
 BPLib_Status_t BPA_EVP_Init(void)
 {
-    int32 Status;
+    BPLib_Status_t Status;
 
     /* Call EVS Register with legacy default values */
     Status = CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
@@ -63,7 +63,7 @@ BPLib_Status_t BPA_EVP_Init(void)
 /* CFE_EVS_SendEvent() proxy */
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText)
 {
-    int32 Status;
+    BPLib_Status_t Status;
 
     Status = CFE_EVS_SendEvent(EventID, EventType, "%s", EventText);
     
