@@ -181,6 +181,16 @@ CFE_Status_t BPNode_AppInit(void)
 
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
+    Status = BPLib_TIME_Init();
+    if (Status != BPLIB_SUCCESS)
+    {
+        CFE_EVS_SendEvent(BPNODE_TIME_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Error initializing BPLib Time Management, RC = %d", Status);
+        
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+
     /* Register with Event Services */
     Status = BPLib_EM_Init();
     if (Status != CFE_SUCCESS)
