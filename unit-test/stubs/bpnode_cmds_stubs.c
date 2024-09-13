@@ -541,18 +541,18 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendChannelContacStatHkTlmCmd()
+ * Generated stub function for BPNode_SendChannelContactStatHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendChannelContacStatHkTlmCmd(const BPNode_SendChannelContacStatHkTlmCmd_t *Msg)
+CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendChannelContacStatHkTlmCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPNode_SendChannelContactStatHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendChannelContacStatHkTlmCmd, const BPNode_SendChannelContacStatHkTlmCmd_t *, Msg);
+    UT_GenStub_AddParam(BPNode_SendChannelContactStatHkCmd, const BPNode_SendChannelContactStatHkCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_SendChannelContacStatHkTlmCmd, Basic, NULL);
+    UT_GenStub_Execute(BPNode_SendChannelContactStatHkCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_SendChannelContacStatHkTlmCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPNode_SendChannelContactStatHkCmd, CFE_Status_t);
 }
 
 /*
@@ -621,18 +621,18 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendStorageHkTlmCmd()
+ * Generated stub function for BPNode_SendStorageHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendStorageHkTlmCmd(const BPNode_SendStorageHkTlmCmd_t *Msg)
+CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendStorageHkTlmCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPNode_SendStorageHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendStorageHkTlmCmd, const BPNode_SendStorageHkTlmCmd_t *, Msg);
+    UT_GenStub_AddParam(BPNode_SendStorageHkCmd, const BPNode_SendStorageHkCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_SendStorageHkTlmCmd, Basic, NULL);
+    UT_GenStub_Execute(BPNode_SendStorageHkCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_SendStorageHkTlmCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPNode_SendStorageHkCmd, CFE_Status_t);
 }
 
 /*

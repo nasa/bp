@@ -750,32 +750,32 @@ void Test_BPNode_SendSourceMibCountersHkCmd_Nominal(void)
 }
 
 /* Test Send Storage HK command nominal case */
-void Test_BPNode_SendStorageHkTlmCmd_Nominal(void)
+void Test_BPNode_SendStorageHkCmd_Nominal(void)
 {
-    BPNode_SendStorageHkTlmCmd_t TestMsg;
+    BPNode_SendStorageHkCmd_t TestMsg;
     UT_CheckEvent_t              EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Send storage hk command not implemented");
 
-    UtAssert_INT32_EQ(BPNode_SendStorageHkTlmCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_INT32_EQ(BPNode_SendStorageHkCmd(&TestMsg), CFE_SUCCESS);
 
     /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test Send Channel/Contact Status HK command nominal case */
-void Test_BPNode_SendChannelContacStatHkTlmCmd_Nominal(void)
+void Test_BPNode_SendChannelContactStatHkCmd_Nominal(void)
 {
-    BPNode_SendChannelContacStatHkTlmCmd_t TestMsg;
+    BPNode_SendChannelContactStatHkCmd_t TestMsg;
     UT_CheckEvent_t              EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Send channel/contact status hk command not implemented");
 
-    UtAssert_INT32_EQ(BPNode_SendChannelContacStatHkTlmCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_INT32_EQ(BPNode_SendChannelContactStatHkCmd(&TestMsg), CFE_SUCCESS);
 
     /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
@@ -827,6 +827,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_SendNodeMibCountersHkCmd_Nominal);
     ADD_TEST(Test_BPNode_SendSourceMibConfigHkCmd_Nominal);
     ADD_TEST(Test_BPNode_SendSourceMibCountersHkCmd_Nominal);
-    ADD_TEST(Test_BPNode_SendStorageHkTlmCmd_Nominal);
-    ADD_TEST(Test_BPNode_SendChannelContacStatHkTlmCmd_Nominal);
+    ADD_TEST(Test_BPNode_SendStorageHkCmd_Nominal);
+    ADD_TEST(Test_BPNode_SendChannelContactStatHkCmd_Nominal);
 }

@@ -741,7 +741,7 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendStorageHkTlmCmd(const BPNode_SendStorageHkTlmCmd_t *Msg);
+CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg);
 
 /**
  * \brief Send Channel/Contact Status HK command
@@ -757,7 +757,7 @@ CFE_Status_t BPNode_SendStorageHkTlmCmd(const BPNode_SendStorageHkTlmCmd_t *Msg)
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendChannelContacStatHkTlmCmd(const BPNode_SendChannelContacStatHkTlmCmd_t *Msg);
+CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg);
 
 
 

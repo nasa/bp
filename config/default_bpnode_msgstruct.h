@@ -389,7 +389,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-} BPNode_SendStorageHkTlmCmd_t;
+} BPNode_SendStorageHkCmd_t;
 
 /**
  * \brief Send channel/contact status hk command
@@ -397,7 +397,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-} BPNode_SendChannelContacStatHkTlmCmd_t;
+} BPNode_SendChannelContactStatHkCmd_t;
 
 
 /*

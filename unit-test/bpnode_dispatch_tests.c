@@ -1808,8 +1808,8 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
 /* Test ground command processing after receiving a valid send-storage-hk-tlm */
 void Test_BPNode_ProcessGroundCommand_ValidSendStorageHkTlm(void)
 {
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_STORAGE_HK_TLM_CC;
-    size_t            Size = sizeof(BPNode_SendStorageHkTlmCmd_t);
+    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_STORAGE_HK_CC;
+    size_t            Size = sizeof(BPNode_SendStorageHkCmd_t);
     CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
@@ -1817,15 +1817,15 @@ void Test_BPNode_ProcessGroundCommand_ValidSendStorageHkTlm(void)
 
     BPNode_ProcessGroundCommand(&Buf);
 
-    UtAssert_STUB_COUNT(BPNode_SendStorageHkTlmCmd, 1);
+    UtAssert_STUB_COUNT(BPNode_SendStorageHkCmd, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-storage-hk-tlm */
 void Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
 {
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_STORAGE_HK_TLM_CC;
-    size_t            Size = sizeof(BPNode_SendStorageHkTlmCmd_t) - 1; /* Invalid length */
+    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_STORAGE_HK_CC;
+    size_t            Size = sizeof(BPNode_SendStorageHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
     UT_CheckEvent_t   EventTest;
@@ -1840,7 +1840,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
 
     BPNode_ProcessGroundCommand(&Buf);
 
-    UtAssert_STUB_COUNT(BPNode_SendStorageHkTlmCmd, 0);
+    UtAssert_STUB_COUNT(BPNode_SendStorageHkCmd, 0);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
@@ -1848,8 +1848,8 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
 /* Test ground command processing after receiving a valid send-channel-contact-stat-hk-tlm */
 void Test_BPNode_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
 {
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_TLM_CC;
-    size_t            Size = sizeof(BPNode_SendChannelContacStatHkTlmCmd_t);
+    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC;
+    size_t            Size = sizeof(BPNode_SendChannelContactStatHkCmd_t);
     CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
@@ -1857,15 +1857,15 @@ void Test_BPNode_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
 
     BPNode_ProcessGroundCommand(&Buf);
 
-    UtAssert_STUB_COUNT(BPNode_SendChannelContacStatHkTlmCmd, 1);
+    UtAssert_STUB_COUNT(BPNode_SendChannelContactStatHkCmd, 1);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-channel-contact-stat-hk-tlm */
 void Test_BPNode_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 {
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_TLM_CC;
-    size_t            Size = sizeof(BPNode_SendChannelContacStatHkTlmCmd_t) - 1; /* Invalid length */
+    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC;
+    size_t            Size = sizeof(BPNode_SendChannelContactStatHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
     UT_CheckEvent_t   EventTest;
@@ -1880,7 +1880,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 
     BPNode_ProcessGroundCommand(&Buf);
 
-    UtAssert_STUB_COUNT(BPNode_SendChannelContacStatHkTlmCmd, 0);
+    UtAssert_STUB_COUNT(BPNode_SendChannelContactStatHkCmd, 0);
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
