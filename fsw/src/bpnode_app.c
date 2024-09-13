@@ -160,6 +160,22 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_EVP_SendEvent            = BPA_EVP_SendEvent
     };
 
+    /* Initialize the FWP before using BPLib functions */
+    Status = BPLib_FWP_Init(Callbacks);
+
+    if (Status != BPLIB_SUCCESS)
+    {
+        CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
+                                (unsigned long)Status);
+
+        /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
+        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
+                            (unsigned long)Status);
+
+        return Status;
+    }
+
     /* Zero out the global data structure */
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
@@ -226,16 +242,6 @@ CFE_Status_t BPNode_AppInit(void)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
                     "Error Getting Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
-    }
-
-    Status = BPLib_FWP_Init(Callbacks);
-
-    if (Status != BPLIB_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Failure initializing function callbacks in BPLib");
-
         return Status;
     }
 
