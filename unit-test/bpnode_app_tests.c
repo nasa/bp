@@ -80,7 +80,7 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 /* Test app main loop after wakeup pipe read error */
 void Test_BPNode_AppMain_WakeupErr(void)
 {
-    UT_CheckEvent_t  EventTest;
+    UT_CheckEvent_t EventTest;
 
     /* Wakeup pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -330,7 +330,7 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, "BPNode: Failure initializing function callbacks, RC = 0x%08lX");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CALLBACK_INIT_ERROR);
     
@@ -349,7 +349,7 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
     
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 

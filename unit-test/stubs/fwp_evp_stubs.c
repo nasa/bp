@@ -46,13 +46,13 @@ BPLib_Status_t BPA_EVP_Init(void)
  * Generated stub function for BPA_EVP_SendEvent()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const *EventText)
+BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const *Spec)
 {
     UT_GenStub_SetupReturnBuffer(BPA_EVP_SendEvent, BPLib_Status_t);
 
     UT_GenStub_AddParam(BPA_EVP_SendEvent, uint16_t, EventID);
     UT_GenStub_AddParam(BPA_EVP_SendEvent, BPLib_EM_EventType_t, EventType);
-    UT_GenStub_AddParam(BPA_EVP_SendEvent, char const *, EventText);
+    UT_GenStub_AddParam(BPA_EVP_SendEvent, char const *, Spec);
 
     UT_GenStub_Execute(BPA_EVP_SendEvent, Basic, NULL);
 

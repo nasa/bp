@@ -61,11 +61,11 @@ BPLib_Status_t BPA_EVP_Init(void)
 }
 
 /* CFE_EVS_SendEvent() proxy */
-BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText)
+BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* Spec)
 {
     BPLib_Status_t Status;
 
-    Status = CFE_EVS_SendEvent(EventID, EventType, "%s", EventText);
+    Status = CFE_EVS_SendEvent(EventID, EventType, "%s", Spec);
     
     switch(Status)
     {
