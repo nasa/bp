@@ -73,4 +73,7 @@
 #define BPNODE_ADU_OUT_INV_ID_ERR_EID           48
 #define BPNODE_ADU_OUT_UNK_EXIT_CRIT_EID        49
 
+#define BPNODE_TIME_INIT_ERR_EID                50
+#define BPNODE_TIME_WKP_ERR_EID                 51
+
 #endif /* BPNODE_EVENTS_H */
