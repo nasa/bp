@@ -29,6 +29,7 @@
 
 #include "cfe.h"
 #include "fwp_adup.h"
+#include "fwp_tablep.h"
 #include "bpnode_app.h"
 
 
@@ -50,19 +51,93 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
 }
 
 /* Add a new application's configurations */
-void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
+BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 {
-    return;
+    BPA_ADUP_Config_t *AduConfigs = &BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX][ChanId];
+    BPNode_ChannelSet_t  *ChanConfigs = &BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX][ChanId];
+
+    /*
+    ** Set ADU proxy configurations
+    */
+
+    BPNode_AppData.AduOutData[ChanId].SendToMsgId = AduConfigs->SendToMsgId;
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = AduConfigs->NumRecvFrmMsgIds;
+
+    for (i = 0; i < AduConfigs->NumRecvFrmMsgIds)
+    {
+        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = AduConfigs->RecvFrmMsgIds[i];
+    }
+
+    /*
+    ** Set channel configurations
+    */
+
+    BPNode_AppData.AduConfigs[ChanId].AddAutomatically = ChanConfigs->AddAutomatically;
+
+    BPNode_AppData.AduInData[ChanId].AduWrapping = ChanConfigs->AduWrapping;
+    BPNode_AppData.AduInData[ChanId].RecvBytesPerCycle = ChanConfigs->RecvBytesPerCycle;
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = ChanConfigs->MaxBundlePayloadSize;
+
+    BPNode_AppData.AduOutData[ChanId].AduUnwrapping = ChanConfigs->AduUnwrapping;
+    BPNode_AppData.AduOutData[ChanId].SendBytesPerCycle = ChanConfigs->SendBytesPerCycle;
+    
+    return BPLIB_SUCCESS;
 }
 
 /* Start an application */
-void BPA_ADUP_StartApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
 {
-    return;
+    CFE_Status_t Status;
+    uint8 i;
+
+    /* Subscribe to all related message IDs */
+    for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
+    {
+        Status = CFE_SB_Subscribe(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i],
+                                  BPNode_AppData.AduInData[ChanId].AduPipe);
+        if (Status != CFE_SUCCESS)
+        {
+            CFE_EVS_SendEvent(BPNODE_ADU_SUB_ERR_EID, CFE_EVS_EventType_ERROR,
+                             "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x", 
+                             ChanId, Status, 
+                             CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i]));
+            
+            return BPLIB_ERROR;
+        }
+    } 
+
+    /* Set app state to started */
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+
+    return BPLIB_SUCCESS;
 }
 
 /* Stop an application */
-void BPA_ADUP_StopApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
 {
-    return;
+    CFE_Status_t Status;
+    uint8 i;
+
+    /* Unsubscribe from all related message IDs */
+    for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
+    {
+        Status = CFE_SB_Unsubscribe(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i],
+                                  BPNode_AppData.AduInData[ChanId].AduPipe);
+        if (Status != CFE_SUCCESS)
+        {
+            CFE_EVS_SendEvent(BPNODE_ADU_UNSUB_ERR_EID, CFE_EVS_EventType_ERROR,
+                             "Error unsubscribing from ADU on channel #%d, Error = %d, MsgId = 0x%x", 
+                             ChanId, Status, 
+                             CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i]));
+            
+            return BPLIB_ERROR;
+        }
+    } 
+
+    /* Set app state to stopped */
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
+
+    /* TODO empty pipe */
+
+    return BPLIB_SUCCESS;
 }

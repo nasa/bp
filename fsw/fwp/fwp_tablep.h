@@ -30,6 +30,19 @@
 #include "bpnode_eventids.h"
 #include "bpnode_tbl.h"
 
+#define BPNODE_ADU_TBL_IDX      0
+#define BPNODE_CHAN_TBL_IDX     1
+#define BPNODE_CON_TBL_IDX      2
+#define BPNODE_CRS_TBL_IDX      3
+#define BPNODE_CSTDN_TBL_IDX    4
+#define BPNODE_CSTDY_TBL_IDX    5
+#define BPNODE_MIBN_TBL_IDX     6
+#define BPNODE_MIBS_TBL_IDX     7
+#define BPNODE_REP_TBL_IDX      8
+#define BPNODE_AUTH_TBL_IDX     9
+#define BPNODE_LATE_TBL_IDX    10
+#define BPNODE_STOR_TBL_IDX    11
+
 CFE_Status_t BPA_TABLEP_TableInit(void);
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
 CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);

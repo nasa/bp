@@ -29,6 +29,7 @@
 */
 
 #include "fwp_tablep.h"
+#include "fwp_adup.h"
 #include "bpnode_utils.h"
 
 /*
@@ -39,17 +40,32 @@
 /* Validate ADU Proxy table data */
 CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData)
 {
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_ADUProxyTable_t *TblDataPtr = (BPNode_ADUProxyTable_t *)TblData;
+    BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
+    uint8_t i, j;
 
-    /* Validate data values are within allowed range */
-    if (TblDataPtr[0].ADUP_Set->NumRecvFrmMIDs <= 0)
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
-        /* element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
+        /*
+        ** Validate array length and that message IDs are all valid
+        */
+       
+        if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[0].SendToMsgId) ||
+            TblDataPtr->Entries[i].NumRecvFrmMsgIds >= BPNODE_MAX_CHAN_SUBSCRIPTION)
+        {
+            return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
+        }
+
+        for (j = 0; j < TblDataPtr->Entries[i].NumRecvFrmMsgIds; j++)
+        {
+            if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].RecvFrmMsgIds[j]))
+            {
+                return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
+            }
+        }  
+
     }
 
-    return ReturnCode;
+    return CFE_SUCCESS;
 }
 
 /* Validate Channel Config table data */
@@ -186,7 +202,7 @@ CFE_Status_t BPNode_StorageTblValidateFunc(void *TblData)
 
 BPNode_TblNameParams_t TblNameParamsArr0[] = 
 {
-    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPNode_ADUProxyTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ADUPTblValidateFunc},
+    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ADUPTblValidateFunc},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPNode_ChannelTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ChannelConfigTblValidateFunc},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CRSTblValidateFunc},

@@ -29,7 +29,7 @@
 
 #include "bpnode_app.h"
 #include "bpnode_adu_in.h"
-#include "fwp_adup.h"
+#include "fwp.h"
 
 
 /*
@@ -145,17 +145,6 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
         return Status;
     }
 
-    /* Subscribe to TO Lab HK to simulate ADU processing */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(0x0880), 
-                                            BPNode_AppData.AduInData[*ChanId].AduPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_ADU_IN_SUB_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "[ADU In #%d]: Error subscribing to ADUs, Error = %d", 
-                        *ChanId, Status);
-        return Status;
-    }
-
     /* Notify main task that child task is running */
     CFE_ES_PerfLogExit(BPNode_AppData.AduInData[*ChanId].PerfId);
     Status = OS_BinSemGive(BPNode_AppData.AduInData[*ChanId].InitSemId);
@@ -218,8 +207,8 @@ void BPNode_AduIn_AppMain(void)
             do
             {
                 Status = CFE_SB_ReceiveBuffer(&BufPtr, 
-                                        BPNode_AppData.AduInData[ChanId].AduPipe,
-                                        BPNode_AppData.AduConfigs[ChanId].InPendTimeout);
+                                              BPNode_AppData.AduInData[ChanId].AduPipe,
+                                              BPNODE_ADU_IN_SB_TIMEOUT);
 
                 if (Status == CFE_SUCCESS && BufPtr != NULL)
                 {

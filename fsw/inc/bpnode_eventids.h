@@ -59,8 +59,7 @@
 #define BPNODE_ADU_IN_NO_ID_ERR_EID             28
 #define BPNODE_ADU_IN_INV_ID_ERR_EID            29
 #define BPNODE_ADU_IN_CR_PIPE_ERR_EID           30
-#define BPNODE_ADU_IN_SUB_PIPE_ERR_EID          31
-#define BPNODE_ADU_IN_UNK_EXIT_CRIT_EID         32
+#define BPNODE_ADU_IN_UNK_EXIT_CRIT_EID         31
 
 #define BPNODE_ADU_OUT_INIT_SEM_ERR_EID         40
 #define BPNODE_ADU_OUT_EXIT_SEM_ERR_EID         41
@@ -75,5 +74,7 @@
 
 #define BPNODE_TIME_INIT_ERR_EID                50
 #define BPNODE_TIME_WKP_ERR_EID                 51
+#define BPNODE_ADU_SUB_ERR_EID                  52
+#define BPNODE_ADU_UNSUB_ERR_EID                53
 
 #endif /* BPNODE_EVENTS_H */

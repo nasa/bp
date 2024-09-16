@@ -24,12 +24,14 @@
 */
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "bpnode_tbl.h"
+#include "cfe.h"
+#include "fwp_adup.h"
 
 
-BPNode_ADUProxyTable_t ADUProxyTable = {
-    .ADUP_Set ={
-        {.SendToMID = 0x1801, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}}
+BPA_ADUP_Config_t ADUProxyTable[BPNODE_MAX_NUM_CHANNELS] = 
+{
+    {
+        0x1801, 3, {0x1801,0x1802,0x1803}
     }
 };
 

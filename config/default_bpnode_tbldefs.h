@@ -39,7 +39,6 @@
 /************************************************************************
  * Macro Definitions
  ************************************************************************/
-#define BPNODE_MAX_MID_SUBSCRIPTION     10
 #define BPNODE_MAX_AUTH_SOURCES         10
 #define BPNODE_MAX_EID_LENGTH           256
 #define BPNODE_MAX_NUM_LATENCY_SRC      10
@@ -52,21 +51,6 @@
 /*
 ** Type Definitions
 */
-
-/*
-** ADU Proxy Config Table
-*/
-typedef struct
-{
-    uint32     SendToMID;
-    uint32     NumRecvFrmMIDs;
-    uint32     RecvFrmMIDs[BPNODE_MAX_MID_SUBSCRIPTION];
-} BPNode_ADUProxySet_t;
-
-typedef struct
-{
-    BPNode_ADUProxySet_t ADUP_Set[BPNODE_MAX_NUM_CHANNELS];
-}BPNode_ADUProxyTable_t;
 
 /*
 ** CRS Table
@@ -157,24 +141,22 @@ typedef enum {
     Active,
     PassiveDefer,
     PassiveAbandon,
-}RegistrationState_t;
+} RegistrationState_t;
 
 typedef struct
 {
-    uint32                  ChannelID;
-    uint32                  Spare;
     bool                    AddAutomatically;
     bool                    RequestCustody;
     bool                    IncludePrevNodeBlk;
     bool                    IncludeHopCountBlk;
-    bool                    ADUWrapping;
-    bool                    ADUUnwrapping;
+    bool                    AduWrapping;
+    bool                    AduUnwrapping;
     uint8                   RegState;
     uint8                   HopLimit;
     uint32                  LocalServiceNumber;
     uint32                  MaxBundlePayloadSize;
     uint32                  SendBytesPerCycle;
-    uint32                  ReceiveBytesPerCycle;
+    uint32                  RecvBytesPerCycle;
     BPNode_PriBlkConfig_t   PriBlkConfig;
     BPNode_CanBlkConfig_t   CanBlkConfig[BPNODE_MAX_NUM_CANONICAL_BLOCK];
 } BPNode_ChannelSet_t;

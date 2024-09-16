@@ -34,6 +34,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "bplib.h"
+#include "bpnode_platform_cfg.h"
+
+
+/*
+** Macro Definitions
+*/
+
+#define BPNODE_MAX_CHAN_SUBSCRIPTION     10     /**< \brief Max number of message IDs one channel can subscribe to */
 
 
 /*
@@ -50,15 +58,43 @@ typedef enum
 } BPA_ADUP_ApplicationState_t;
 
 /** 
-** \brief Configurations needed to ADU ingest/output
+** \brief General configurations needed for ADU ingest/output
 */
 typedef struct 
 {
-    bool     Packetize;
-    uint32_t InPendTimeout;
-    uint32_t OutPendTimeout;
+    bool   AddAutomatically;
     BPA_ADUP_ApplicationState_t AppState;
 } BPA_ADUP_Configs_t;
+
+typedef struct
+{
+    bool   AddAutomatically;
+    bool   AduWrapping;
+    bool   AduUnwrapping;
+    uint32 MaxBundlePayloadSize;
+    uint32 SendBytesPerCycle;
+    uint32 RecvBytesPerCycle;
+
+} BPA_ADUP_AddAppConfigs_t;
+
+/** 
+** \brief ADU Proxy Config Table Entry
+*/
+typedef struct
+{
+    CFE_SB_MsgId_t SendToMsgId;
+    uint32         NumRecvFrmMsgIds;
+    CFE_SB_MsgId_t RecvFrmMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
+} BPA_ADUP_Config_t ;
+
+/** 
+** \brief ADU Proxy Config Table
+*/
+typedef struct
+{
+    BPA_ADUP_Config_t Entries[BPNODE_MAX_NUM_CHANNELS];
+} BPA_ADUP_Table_t;
+
 
 /*
 ** Exported Functions
@@ -100,14 +136,17 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr);
  * \brief FWP ADU Proxy Add Application
  *
  *  \par Description
- *       Adds new application configurations
+ *       Adds new application configurations from ADU Proxy and Channel Config Tables
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AppConfigs Pointer to the new application configurations
+ *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
  */
-void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs);
+BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Start Application
@@ -119,8 +158,11 @@ void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs);
  *       None
  * 
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
  */
-void BPA_ADUP_StartApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Stop Application
@@ -132,7 +174,10 @@ void BPA_ADUP_StartApplication(uint8_t ChanId);
  *       None
  * 
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
  */
-void BPA_ADUP_StopApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
 
 #endif /* FWP_ADUP_H */

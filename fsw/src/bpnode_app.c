@@ -263,7 +263,6 @@ CFE_Status_t BPNode_AppInit(void)
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STARTED;
-        BPNode_AppData.AduConfigs[i].InPendTimeout = BPNODE_WAKEUP_PIPE_TIMEOUT;
     }
 
     /* Create ADU In child tasks */

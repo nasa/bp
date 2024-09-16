@@ -53,7 +53,7 @@
 
 BPNode_TblNameParams_t TblNameParamsArr_test[] = 
 {
-    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPNode_ADUProxyTable_t),      NULL, NULL},
+    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, NULL},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPNode_ChannelTable_t),       NULL, NULL},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, NULL},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, NULL},
@@ -125,19 +125,19 @@ void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
 
 void Test_BPNode_ADUPTblValidateFunc_Nominal(void)
 {
-    BPNode_ADUProxyTable_t TestTblData;
+    BPA_ADUP_Table_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
-    TestTblData.ADUP_Set[0].NumRecvFrmMIDs = 1;
+    TestTblData.Entries[0].NumRecvFrmMIDs = 1;
     UtAssert_INT32_EQ((int32) BPNode_ADUPTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_ADUPTblValidateFunc_Invalid(void)
 {
-    BPNode_ADUProxyTable_t TestTblData;
+    BPA_ADUP_Table_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.ADUP_Set[0].NumRecvFrmMIDs = 0;
+    TestTblData.Entries[0].NumRecvFrmMIDs = 0;
 
     UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
                                                 BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
