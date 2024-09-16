@@ -86,6 +86,12 @@ static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCou
                     {
                         ++State->MatchCount;
                     }
+                    else // Print mismatched expected vs. actual event format strings.
+                    {
+                        UtPrintf("CheckEvent: Mismatched event format string.");
+                        UtPrintf("CheckEvent: Expected - [%s]", State->ExpectedFormat);
+                        UtPrintf("CheckEvent: Actual - [%s]", Spec);
+                    }
                 }
             }
             else
