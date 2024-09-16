@@ -61,7 +61,7 @@ void Test_BPNode_TaskPipe_InvalidMsgId(void)
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_INVALID_MSG_ID;
     UT_CheckEvent_t   EventTest;
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, 
+    BPLIB_EM_UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, 
                                 "Invalid command packet,MID = 0x%x");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
@@ -185,7 +185,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
     CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
+    BPLIB_EM_UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
 
     BPNode_ProcessGroundCommand(&Buf);
 

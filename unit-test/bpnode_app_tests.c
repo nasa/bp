@@ -226,8 +226,6 @@ void Test_BPNode_AppInit_Nominal(void)
     UT_CheckEvent_t EventTest;
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, "BPNODE Initialized: %s");
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
-
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -328,7 +326,6 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, "BPNode: Failure initializing function callbacks, RC = 0x%08lX");
 
@@ -345,7 +342,7 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
 
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_Init), 1, BPLIB_TIME_READ_ERROR);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_INIT_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_INIT_ERR_EID, "Error initializing BPLib Time Management, RC = %d");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
     

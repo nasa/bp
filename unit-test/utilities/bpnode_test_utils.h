@@ -55,7 +55,7 @@
 #define ADD_TEST(test) UtTest_Add(test, BPNode_UT_Setup, BPNode_UT_TearDown, #test)
 
 /* Macro to get expected event name */
-#define UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
+#define BPNODE_UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
     UT_CheckEvent_Setup_Impl(Evt, ExpectedEvent, #ExpectedEvent, ExpectedFormat)
 
 

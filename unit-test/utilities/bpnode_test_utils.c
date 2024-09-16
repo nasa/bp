@@ -41,7 +41,7 @@
 
 /* An example hook function to check for a specific event */
 static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
-                                va_list va)
+                                      va_list va)
 {
     UT_CheckEvent_t *State = UserObj;
     uint16           EventId;
