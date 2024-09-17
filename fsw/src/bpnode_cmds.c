@@ -544,7 +544,19 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
 CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
     BPLib_TIME_MonotonicTime_t MonotonicTime;
+    uint8 i;
 
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+
+    /* Get ADU counts for all ADU child tasks */
+    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
+    }
+
+    /* Get DTN time data */
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;

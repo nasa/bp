@@ -70,6 +70,7 @@ typedef struct
     uint32          MaxBundlePayloadSize;
     uint32          NumRecvFromMsgIds;
     CFE_SB_MsgId_t  RecvFromMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
+    uint16          AduCountReceived;
 } BPNode_AduInData_t;
 
 

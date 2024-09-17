@@ -46,7 +46,7 @@
  *          This drives the number of entries in the channel and ADU proxy configuration
  *          tables, as well as the number of ADU In/Out tasks 
  */
-#define BPNODE_MAX_NUM_CHANNELS     (1u)
+#define BPNODE_MAX_NUM_CHANNELS     (2u)
 
 /**
  * \brief ADU In Task stack size 

@@ -88,6 +88,6 @@
 #define BPNODE_ADD_APP_INF_EID                  60
 #define BPNODE_STRT_APP_INF_EID                 61
 #define BPNODE_STOP_APP_INF_EID                 62
-
+#define BPNODE_AUTO_ADD_APP_INF_EID             63
 
 #endif /* BPNODE_EVENTS_H */

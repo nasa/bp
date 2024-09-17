@@ -52,7 +52,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
             /* TODO remove header */
         }
 
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived++;
+        BPNode_AppData.AduInData[ChanId].AduCountReceived++;
 
         /* TODO pass to PI */
     }
@@ -76,6 +76,8 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
 
     /* Send ADU onto Software Bus */
     CFE_SB_TransmitMsg((CFE_MSG_Message_t *) AduPtr, false);
+
+    BPNode_AppData.AduOutData[ChanId].AduCountDelivered++;
 
     return BPLIB_SUCCESS;
 }
@@ -142,16 +144,16 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
     /* Check for channel ID validity */
     if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_STOP_CHAN_ERR_EID, CFE_EVS_EventType_ERROR,
-            "Error with stop-application directive, invalid ChanId=%d", ChanId);
+        CFE_EVS_SendEvent(BPNODE_ADU_STRT_CHAN_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with start-application directive, invalid ChanId=%d", ChanId);
         return BPLIB_ERROR;
     }
 
-    /* App state must be started */
-    if (BPNode_AppData.AduConfigs[ChanId].AppState != BPA_ADUP_APP_STARTED)
+    /* App state must be added */
+    if (BPNode_AppData.AduConfigs[ChanId].AppState != BPA_ADUP_APP_ADDED)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_STOP_STAT_ERR_EID, CFE_EVS_EventType_ERROR,
-            "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
+        CFE_EVS_SendEvent(BPNODE_ADU_STRT_STAT_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with start-application directive, invalid AppState=%d for ChanId=%d", 
             BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
         return BPLIB_ERROR;
     }
@@ -167,7 +169,6 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
                              "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x", 
                              ChanId, Status, 
                              CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i]));
-            
             return BPLIB_ERROR;
         }
     } 

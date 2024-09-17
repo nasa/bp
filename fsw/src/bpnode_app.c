@@ -157,6 +157,7 @@ CFE_Status_t BPNode_AppInit(void)
     BPLib_Status_t BpStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    BPNode_ChannelTable_t *ChanConfigs;
     uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
@@ -256,15 +257,6 @@ CFE_Status_t BPNode_AppInit(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    /* 
-    ** Initialize ADU configuration data to set all applications to started
-    ** TODO replace with reading in configs from ADU/channel config tables
-    */
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
-    {
-        BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STARTED;
-    }
-
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
 
@@ -282,6 +274,21 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
+
+    ChanConfigs = (BPNode_ChannelTable_t *) BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
+
+    /* Add all applications set to be loaded at startup */
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        if (ChanConfigs->ChannelSet[i].AddAutomatically == true)
+        {
+            /* Ignore return value, no failure conditions are possible here */
+            (void) BPA_ADUP_AddApplication(i);
+
+            CFE_EVS_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+                        "Automatically added app configurations for ChanId=%d", i);
+        }
+    }    
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
         BPNODE_MAJOR_VERSION,
