@@ -47,11 +47,21 @@
 /* Noop command */
 CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
 {
+    char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
+    (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
+        BPNODE_MAJOR_VERSION,
+        BPNODE_MINOR_VERSION,
+        BPNODE_REVISION);
+
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
+                        BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
+
     CFE_EVS_SendEvent(BPNODE_NOOP_INF_EID, CFE_EVS_EventType_INFORMATION, 
-                        "No-op command. Version %d.%d.%d.",
-                        BPNODE_MAJOR_VERSION, BPNODE_MINOR_VERSION, BPNODE_REVISION);
+                        "No-op command. %s", VersionString);
 
     return CFE_SUCCESS;
 }
