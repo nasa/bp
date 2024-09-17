@@ -30,16 +30,6 @@
 #include "fwp_evp.h"
 #include "bpnode_test_utils.h"
 
-/* ================= */
-/* Handler Functions */
-/* ================= */
-
-// void Test_CFE_EVS_Register_GetArgs_Handler(void* UserObj, UT_EntryKey_t FuncKey,
-//                                              const UT_StubContext_t* Context)
-
-// void Test_CFE_EVS_SendEvent_GetEventType_Handler(void* UserObj, UT_EntryKey_t FuncKey,
-//                                                  const UT_StubContext_t* Context)
-
 /* ==================== */
 /* Function Definitions */
 /* ==================== */
@@ -48,9 +38,6 @@
 void Test_BPA_EVP_Init_Nominal(void)
 {
     BPLib_Status_t Status;
-
-    /* TODO: Create utility to check EVP_Init arguments */
-    // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
 
     /* Call the function under test */
     Status = BPLIB_UNKNOWN;
@@ -68,9 +55,6 @@ void Test_BPA_EVP_Init_BadReturn(void)
     uint16_t stubCount;
 
     stubCount = 1;
-
-    /* TODO: Create utility to check EVP_Init arguments */
-    // UT_SetHandlerFunction(UT_KEY(CFE_EVS_Register), &Test_CFE_EVS_Register_GetArgs_Handler, ???);
 
     /* ===== CFE_EVS_APP_ILLEGAL_APP_ID / BPLIB_EM_ILLEGAL_APP_ID returned ===== */
     /* Set return code for CFE_EVS_Register to be non-success */
@@ -131,9 +115,6 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     uint16_t stubCount;
 
     stubCount = 1;
-
-    /* TODO: Create handler that reports which type of event was given? */
-    // UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), &Test_CFE_EVS_SendEvent_GetEventType_Handler, ???);
 
     /* === INFO event message test === */
     Status = BPLIB_UNKNOWN;
