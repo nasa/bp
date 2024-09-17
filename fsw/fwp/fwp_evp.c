@@ -21,13 +21,14 @@
 /* ======== */
 /* Includes */
 /* ======== */
+
 #include "fwp_evp.h"
 
 /* ==================== */
 /* Function definitions */
 /* ==================== */
 
-/* CFE_EVS_Register() proxy */
+/* Proxy for event management initialization */
 BPLib_Status_t BPA_EVP_Init(void)
 {
     BPLib_Status_t Status;
@@ -60,7 +61,7 @@ BPLib_Status_t BPA_EVP_Init(void)
     return Status;
 }
 
-/* CFE_EVS_SendEvent() proxy */
+/* Proxy for software event generation */
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* Spec)
 {
     BPLib_Status_t Status;

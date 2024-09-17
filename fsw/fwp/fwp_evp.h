@@ -24,17 +24,43 @@
 /* ======== */
 /* Includes */
 /* ======== */
+
 #include "cfe.h"
 #include "bplib.h"
-
-/* ======== */
-/* Typedefs */
-/* ======== */
 
 /* ================== */
 /* Exported Functions */
 /* ================== */
+
+/**
+ * \brief  FWP Event Management Proxy's Initialization
+ * \par    Description
+ *           Initialize event mangament
+ * \par    Assumptions, External Events, and Notes:
+ *           None
+ * \return Execution status
+ * \retval BPLIB_SUCCESS: Execution was successful
+ * \retval BPLIB_EM_ILLEGAL_APP_ID: Unable to find caller's AppID
+ * \retval BPLIB_EM_UNKNOWN_FILTER: Given filter scheme is not binary
+ * \retval BPLIB_EM_BAD_ARGUMENT: Number of filters do not match filters given
+ * \retval BPLIB_UNKNOWN: Unknown status
+ */
 BPLib_Status_t BPA_EVP_Init(void);
+
+/**
+ * \brief  FWP Event Management Proxy's Event Generation
+ * \par    Description
+ *           Generate a software event
+ * \par    Assumptions, External Events, and Notes:
+ *           None
+ * \return Execution status
+ * \retval BPLIB_SUCCESS: Execution was successful
+ * \retval BPLIB_EM_INVALID_PARAMETER: Text to output is NULL
+ * \retval BPLIB_EM_ILLEGAL_APP_ID: Unable to find caller's AppID
+ * \retval BPLIB_EM_APP_NOT_REGISTERED: Application associated with AppID was not registered
+ * \retval BPLIB_EM_APP_SQUELCHED: App is not filtered but squelch token doesn't allow event generation
+ * \retval BPLIB_UNKNOWN: Unknown status
+ */
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText);
 
 #endif /* FWP_EVP_H */

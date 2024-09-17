@@ -26,12 +26,14 @@
 /* ============= */
 /* Include Files */
 /* ============= */
+
 #include "fwp_evp.h"
 #include "bpnode_test_utils.h"
 
 /* ================= */
 /* Handler Functions */
 /* ================= */
+
 // void Test_CFE_EVS_Register_GetArgs_Handler(void* UserObj, UT_EntryKey_t FuncKey,
 //                                              const UT_StubContext_t* Context)
 
@@ -42,7 +44,7 @@
 /* Function Definitions */
 /* ==================== */
 
-/* Test a nominal call to BPA_EVP_Init() */
+// Test a nominal call to BPA_EVP_Init()
 void Test_BPA_EVP_Init_Nominal(void)
 {
     BPLib_Status_t Status;
@@ -59,6 +61,7 @@ void Test_BPA_EVP_Init_Nominal(void)
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 }
 
+// Test that BPA_EVP_Init() returns a bad value when expected
 void Test_BPA_EVP_Init_BadReturn(void)
 {
     BPLib_Status_t Status;
@@ -121,6 +124,7 @@ void Test_BPA_EVP_Init_BadReturn(void)
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_UNKNOWN);
 }
 
+// Test that BPA_EVP_SendEvent() returns BPLIB_SUCCESS when run nominally
 void Test_BPA_EVP_SendEvent_Nominal(void)
 {
     BPLib_Status_t Status;
@@ -167,6 +171,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
 }
 
+// Test that BPA_EVP_SendEvent returns a bad value when expected
 void Test_BPA_EVP_SendEvent_BadReturn(void)
 {
     BPLib_Status_t Status;
