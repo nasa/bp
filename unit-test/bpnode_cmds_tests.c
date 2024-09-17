@@ -70,7 +70,7 @@ void Test_BPNode_NoopCmd_Nominal(void)
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     /* Test dispatch of noop */
-    BPLIB_EM_UT_CHECKEVENT_SETUP(&EventTest, BPNODE_NOOP_INF_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_NOOP_INF_EID, NULL);
 
     UtAssert_INT32_EQ(BPNode_NoopCmd(&TestMsg), CFE_SUCCESS);
 
@@ -86,7 +86,7 @@ void Test_BPNode_ResetAllCountersCmd_Nominal(void)
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    BPLIB_EM_UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Reset all counters command");
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Reset all counters command");
 
     UtAssert_INT32_EQ(BPNode_ResetAllCountersCmd(&TestMsg), CFE_SUCCESS);
 
