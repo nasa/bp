@@ -23,15 +23,19 @@
 **   This file contains the source code for the ADU Proxy Config Table
 */
 
-#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "cfe.h"
 #include "fwp_adup.h"
+#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 
 
-BPA_ADUP_Config_t ADUProxyTable[BPNODE_MAX_NUM_CHANNELS] = 
-{
+BPA_ADUP_Config_t ADUProxyTable[BPNODE_MAX_NUM_CHANNELS] = {
     {
-        0x1801, 3, {0x1801,0x1802,0x1803}
+        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(0x1801), 
+        .NumRecvFrmMsgIds = 3,
+        .RecvFrmMsgIds = {  CFE_SB_MSGID_WRAP_VALUE(0x1801), 
+                            CFE_SB_MSGID_WRAP_VALUE(0x1802), 
+                            CFE_SB_MSGID_WRAP_VALUE(0x1803)
+        },
     }
 };
 

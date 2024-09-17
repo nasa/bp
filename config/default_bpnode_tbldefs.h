@@ -155,8 +155,6 @@ typedef struct
     uint8                   HopLimit;
     uint32                  LocalServiceNumber;
     uint32                  MaxBundlePayloadSize;
-    uint32                  SendBytesPerCycle;
-    uint32                  RecvBytesPerCycle;
     BPNode_PriBlkConfig_t   PriBlkConfig;
     BPNode_CanBlkConfig_t   CanBlkConfig[BPNODE_MAX_NUM_CANONICAL_BLOCK];
 } BPNode_ChannelSet_t;

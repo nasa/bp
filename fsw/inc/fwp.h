@@ -32,5 +32,6 @@
 
 #include "fwp_timep.h"
 #include "fwp_tablep.h"
+#include "fwp_adup.h"
 
 #endif

@@ -58,8 +58,7 @@ typedef struct
     osal_id_t       InitSemId;
     uint32          PerfId;
     uint32          RunStatus;
-    bool            AduUnwrapping;
-    uint32          SendBytesPerCycle;
+    bool            AduWrapping;
     CFE_SB_MsgId_t  SendToMsgId;
 } BPNode_AduOutData_t;
 

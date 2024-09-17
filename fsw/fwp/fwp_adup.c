@@ -38,9 +38,29 @@
 */
 
 /* Ingest an ADU */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr)
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived++;
+    CFE_SB_Buffer_t *Buf = (CFE_SB_Buffer_t *) AduPtr;
+    CFE_MSG_Size_t   Size;
+
+    CFE_MSG_GetSize(&Buf->Msg, &Size);
+
+    if (Size < BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize)
+    {
+        if (BPNode_AppData.AduInData[ChanId].AduUnwrapping == true)
+        {
+            /* TODO remove header */
+        }
+
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived++;
+
+        /* TODO pass to PI */
+    }
+    else 
+    {
+        /* TODO error? */
+    }
+    
     return BPLIB_SUCCESS;
 }
 
@@ -53,33 +73,32 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
 /* Add a new application's configurations */
 BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 {
-    BPA_ADUP_Config_t *AduConfigs = &BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX][ChanId];
-    BPNode_ChannelSet_t  *ChanConfigs = &BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX][ChanId];
+    uint8_t i;
+    BPA_ADUP_Table_t *AduConfigs = (BPA_ADUP_Table_t *) BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr;
+    BPNode_ChannelTable_t  *ChanConfigs = (BPNode_ChannelTable_t *) BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
 
     /*
     ** Set ADU proxy configurations
     */
 
-    BPNode_AppData.AduOutData[ChanId].SendToMsgId = AduConfigs->SendToMsgId;
-    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = AduConfigs->NumRecvFrmMsgIds;
+    BPNode_AppData.AduOutData[ChanId].SendToMsgId = AduConfigs->Entries[ChanId].SendToMsgId;
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = AduConfigs->Entries[ChanId].NumRecvFrmMsgIds;
 
-    for (i = 0; i < AduConfigs->NumRecvFrmMsgIds)
+    for (i = 0; i < AduConfigs->Entries[ChanId].NumRecvFrmMsgIds; i++)
     {
-        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = AduConfigs->RecvFrmMsgIds[i];
+        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = AduConfigs->Entries[ChanId].RecvFrmMsgIds[i];
     }
 
     /*
     ** Set channel configurations
     */
 
-    BPNode_AppData.AduConfigs[ChanId].AddAutomatically = ChanConfigs->AddAutomatically;
+    BPNode_AppData.AduConfigs[ChanId].AddAutomatically = ChanConfigs->ChannelSet[ChanId].AddAutomatically;
 
-    BPNode_AppData.AduInData[ChanId].AduWrapping = ChanConfigs->AduWrapping;
-    BPNode_AppData.AduInData[ChanId].RecvBytesPerCycle = ChanConfigs->RecvBytesPerCycle;
-    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = ChanConfigs->MaxBundlePayloadSize;
+    BPNode_AppData.AduInData[ChanId].AduUnwrapping = ChanConfigs->ChannelSet[ChanId].AduUnwrapping;
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = ChanConfigs->ChannelSet[ChanId].MaxBundlePayloadSize;
 
-    BPNode_AppData.AduOutData[ChanId].AduUnwrapping = ChanConfigs->AduUnwrapping;
-    BPNode_AppData.AduOutData[ChanId].SendBytesPerCycle = ChanConfigs->SendBytesPerCycle;
+    BPNode_AppData.AduOutData[ChanId].AduWrapping = ChanConfigs->ChannelSet[ChanId].AduWrapping;
     
     return BPLIB_SUCCESS;
 }
@@ -88,7 +107,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
 {
     CFE_Status_t Status;
-    uint8 i;
+    uint8_t i;
 
     /* Subscribe to all related message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
@@ -116,7 +135,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
 BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
 {
     CFE_Status_t Status;
-    uint8 i;
+    uint8_t i;
 
     /* Unsubscribe from all related message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)

@@ -66,17 +66,6 @@ typedef struct
     BPA_ADUP_ApplicationState_t AppState;
 } BPA_ADUP_Configs_t;
 
-typedef struct
-{
-    bool   AddAutomatically;
-    bool   AduWrapping;
-    bool   AduUnwrapping;
-    uint32 MaxBundlePayloadSize;
-    uint32 SendBytesPerCycle;
-    uint32 RecvBytesPerCycle;
-
-} BPA_ADUP_AddAppConfigs_t;
-
 /** 
 ** \brief ADU Proxy Config Table Entry
 */

@@ -31,6 +31,7 @@
 */
 
 #include "cfe.h"
+#include "fwp.h"
 
 
 /*
@@ -64,11 +65,10 @@ typedef struct
     uint32          PerfId;
     uint32          RunStatus;
     CFE_SB_PipeId_t AduPipe;
-    bool            AduWrapping;
-    uint32          RecvBytesPerCycle;
+    bool            AduUnwrapping;
     uint32          MaxBundlePayloadSize;
     uint32          NumRecvFromMsgIds;
-    CFE_SB_MsgId_t  RecvFromMsgIds[BPNODE_MAX_MID_SUBSCRIPTION];
+    CFE_SB_MsgId_t  RecvFromMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
 } BPNode_AduInData_t;
 
 

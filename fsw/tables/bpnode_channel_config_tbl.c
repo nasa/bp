@@ -30,20 +30,14 @@
 BPNode_ChannelTable_t ChannelTable = {
     .ChannelSet = {
         {
-            .ChannelID              = 1,
-            .Spare                  = 0,        
             .AddAutomatically       = true,
             .RequestCustody         = false,
             .IncludePrevNodeBlk     = false,
             .IncludeHopCountBlk     = false,
-            .ADUWrapping            = false,
-            .ADUUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
             .LocalServiceNumber     = 2,
             .MaxBundlePayloadSize   = 15864,
-            .SendBytesPerCycle      = 15864,
-            .ReceiveBytesPerCycle   = 15864,
             .PriBlkConfig           =   
                 {
                     .Version            = 7, 
