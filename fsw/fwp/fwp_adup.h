@@ -54,7 +54,8 @@
 typedef enum 
 {
     BPA_ADUP_APP_STOPPED = 0,
-    BPA_ADUP_APP_STARTED = 1
+    BPA_ADUP_APP_ADDED   = 1,
+    BPA_ADUP_APP_STARTED = 2
 } BPA_ADUP_ApplicationState_t;
 
 /** 
@@ -99,11 +100,12 @@ typedef struct
  *       - The pointer type is void to allow implementations with different pointer types
  * 
  *  \param[in] AduPtr Pointer to the ADU
+ *  \param[in] ChanId Channel ID
  * 
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Ingest was successful
  */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr);
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Out
@@ -115,11 +117,12 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr);
  *       - The pointer type is void to allow implementations with different pointer types
  * 
  *  \param[in] AduPtr Pointer to the ADU
+ *  \param[in] ChanId Channel ID
  * 
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr);
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Add Application

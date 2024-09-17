@@ -206,19 +206,38 @@ void BPNode_AduIn_AppMain(void)
             /* Check for ADUs to ingest */
             do
             {
+                CFE_ES_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
+
                 Status = CFE_SB_ReceiveBuffer(&BufPtr, 
                                               BPNode_AppData.AduInData[ChanId].AduPipe,
                                               BPNODE_ADU_IN_SB_TIMEOUT);
 
+                CFE_ES_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
+
                 if (Status == CFE_SUCCESS && BufPtr != NULL)
                 {
-                    Status = BPA_ADUP_In((void *) BufPtr);
+                    Status = BPA_ADUP_In((void *) BufPtr, ChanId);
                 }
 
-            } while (Status == CFE_SUCCESS);
+            } while (Status == BPLIB_SUCCESS);
         }
         else 
         {
+            /* Check if the application was recently stopped and the pipe needs to be cleared */
+            if (BPNode_AppData.AduInData[ChanId].ClearPipe == true)
+            {
+                CFE_ES_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
+
+                while (Status == CFE_SUCCESS)
+                {
+                    Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.AduInData[ChanId].AduPipe,
+                                                CFE_SB_POLL);
+                }
+
+                CFE_ES_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
+            }
+
+            /* Sleep until app is started again */
             (void) OS_TaskDelay(BPNODE_ADU_IN_SLEEP_MSEC);
         }
     }

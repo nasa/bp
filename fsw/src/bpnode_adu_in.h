@@ -65,6 +65,7 @@ typedef struct
     uint32          PerfId;
     uint32          RunStatus;
     CFE_SB_PipeId_t AduPipe;
+    bool            ClearPipe;
     bool            AduUnwrapping;
     uint32          MaxBundlePayloadSize;
     uint32          NumRecvFromMsgIds;

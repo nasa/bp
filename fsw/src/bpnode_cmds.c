@@ -203,10 +203,24 @@ CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *
 /* Add application command */
 CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_Status_t Status;
 
-    CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION,
-                    "Add application command not implemented");
+    /* Add application configurations */
+    Status = BPA_ADUP_AddApplication(Msg->ChanId);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        CFE_EVS_SendEvent(BPNODE_ADD_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+                        "Successful add-application directive for ChanId=%d",
+                        Msg->ChanId);
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        /* Error events reported in ADU proxy */
+    }
 
     return CFE_SUCCESS;
 }
@@ -236,10 +250,25 @@ CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd
 /* Start application command */
 CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_Status_t Status;
 
-    CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION,
-                    "Start application command not implemented");
+    /* Start application */
+    Status = BPA_ADUP_StartApplication(Msg->ChanId);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        CFE_EVS_SendEvent(BPNODE_STRT_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+                        "Successful start-application directive for ChanId=%d",
+                        Msg->ChanId);
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        /* Error events reported in ADU proxy */
+    }
+
 
     return CFE_SUCCESS;
 }
@@ -247,10 +276,24 @@ CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 /* Stop application command */
 CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_Status_t Status;
 
-    CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION,
-                    "Stop application command not implemented");
+    /* Stop application */
+    Status = BPA_ADUP_StopApplication(Msg->ChanId);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        CFE_EVS_SendEvent(BPNODE_STOP_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+                        "Successful stop-application directive for ChanId=%d",
+                        Msg->ChanId);
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        /* Error events reported in ADU proxy */
+    }
 
     return CFE_SUCCESS;
 }

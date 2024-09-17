@@ -58,15 +58,25 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
     }
     else 
     {
-        /* TODO error? */
+        CFE_EVS_SendEvent(BPNODE_ADU_TOO_BIG_ERR_EID, CFE_EVS_EventType_ERROR,
+                    "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d",
+                    ChanId, Size, BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize);
     }
     
     return BPLIB_SUCCESS;
 }
 
 /* Send out an ADU */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
 {
+    if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
+    {
+        /* TODO add header */
+    }
+
+    /* Send ADU onto Software Bus */
+    CFE_SB_TransmitMsg((CFE_MSG_Message_t *) AduPtr, false);
+
     return BPLIB_SUCCESS;
 }
 
@@ -76,6 +86,23 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     uint8_t i;
     BPA_ADUP_Table_t *AduConfigs = (BPA_ADUP_Table_t *) BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr;
     BPNode_ChannelTable_t  *ChanConfigs = (BPNode_ChannelTable_t *) BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
+
+    /* Check for channel ID validity */
+    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_ADD_CHAN_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with add-application directive, invalid ChanId=%d", ChanId);
+        return BPLIB_ERROR;
+    }
+
+    /* App state must be either stopped or added */
+    if (BPNode_AppData.AduConfigs[ChanId].AppState == BPA_ADUP_APP_STARTED)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with add-application directive, invalid AppState=%d for ChanId=%d", 
+            BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
+        return BPLIB_ERROR;
+    }
 
     /*
     ** Set ADU proxy configurations
@@ -100,6 +127,9 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 
     BPNode_AppData.AduOutData[ChanId].AduWrapping = ChanConfigs->ChannelSet[ChanId].AduWrapping;
     
+    /* Set app state to added */
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;
+
     return BPLIB_SUCCESS;
 }
 
@@ -108,6 +138,23 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
 {
     CFE_Status_t Status;
     uint8_t i;
+
+    /* Check for channel ID validity */
+    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_STOP_CHAN_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with stop-application directive, invalid ChanId=%d", ChanId);
+        return BPLIB_ERROR;
+    }
+
+    /* App state must be started */
+    if (BPNode_AppData.AduConfigs[ChanId].AppState != BPA_ADUP_APP_STARTED)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_STOP_STAT_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
+            BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
+        return BPLIB_ERROR;
+    }
 
     /* Subscribe to all related message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
@@ -137,6 +184,23 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     CFE_Status_t Status;
     uint8_t i;
 
+    /* Check for channel ID validity */
+    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_STOP_CHAN_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with stop-application directive, invalid ChanId=%d", ChanId);
+        return BPLIB_ERROR;
+    }
+
+    /* App state must be started */
+    if (BPNode_AppData.AduConfigs[ChanId].AppState != BPA_ADUP_APP_STARTED)
+    {
+        CFE_EVS_SendEvent(BPNODE_ADU_STOP_STAT_ERR_EID, CFE_EVS_EventType_ERROR,
+            "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
+            BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
+        return BPLIB_ERROR;
+    }
+
     /* Unsubscribe from all related message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
     {
@@ -156,7 +220,8 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     /* Set app state to stopped */
     BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
-    /* TODO empty pipe */
+    /* Notify ADU In task to clear pipe */
+    BPNode_AppData.AduInData[ChanId].ClearPipe = true;
 
     return BPLIB_SUCCESS;
 }

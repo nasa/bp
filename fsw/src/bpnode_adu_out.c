@@ -157,6 +157,8 @@ void BPNode_AduOut_AppMain(void)
 {
     int32 Status;
     uint8 ChanId = BPNODE_MAX_NUM_CHANNELS; /* Set to garbage value */
+    bool  NewMsgRecvd;
+    CFE_SB_Buffer_t *Buf;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -188,7 +190,14 @@ void BPNode_AduOut_AppMain(void)
     {
         if (BPNode_AppData.AduConfigs[ChanId].AppState == BPA_ADUP_APP_STARTED)
         {
-            /* TODO pull bundle from PI out queue and send out */
+            /* TODO Pend on bundle from PI out queue */
+            NewMsgRecvd = false;
+            Buf = NULL;
+
+            if (NewMsgRecvd == true)
+            {
+                (void) BPA_ADUP_Out((void *) Buf, ChanId);
+            }
         }
         else 
         {
