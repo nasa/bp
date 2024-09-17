@@ -37,12 +37,59 @@
 #include "bpnode_eds_dispatcher.h"
 #include "bpnode_eds_dictionary.h"
 
+/**
+ * If there are mismatched names in the build, check bpnode/eds/bpnode.xml
+ * See also bpnode/config/default_bpnode_msgstruct.h
+ */
 /* Command code lookup table */
 static const EdsDispatchTable_BPNode_Application_CFE_SB_Telecommand_t BPNODE_TC_DISPATCH_TABLE = {
-    .CMD     = {.NoopCmd_indication          = BPNode_NoopCmd,
+    .CMD = {
+                .NoopCmd_indication = BPNode_NoopCmd,
+                .AddAllApplicationsCmd_indication = BPNode_AddAllApplicationsCmd,
+                .StartAllApplicationsCmd_indication = BPNode_StartAllApplicationsCmd,
+                .VerifyBundleStorageCmd_indication = BPNode_VerifyBundleStorageCmd,
+                .InitBundleStorageCmd_indication = BPNode_InitBundleStorageCmd,
+                .VerifyBundleMetadataCmd_indication = BPNode_VerifyBundleMetadataCmd,
+                .RebuildBundleMetadataCmd_indication = BPNode_RebuildBundleMetadataCmd,
+                .ClearVolatileCmd_indication = BPNode_ClearVolatileCmd,
+                .ReloadSavedDataCmd_indication = BPNode_ReloadSavedDataCmd,
                 .ResetAllCountersCmd_indication = BPNode_ResetAllCountersCmd,
-                .SendNodeMibCountersHkCmd_indication = BPNode_SendNodeMibCountersHkCmd
-               }
+                .ResetCounterCmd_indication = BPNode_ResetCounterCmd,
+                .ResetSourceCountersCmd_indication = BPNode_ResetSourceCountersCmd,
+                .ResetBundleCountersCmd_indication = BPNode_ResetBundleCountersCmd,
+                .ResetErrorCountersCmd_indication = BPNode_ResetErrorCountersCmd,
+                .AddApplicationCmd_indication = BPNode_AddApplicationCmd,
+                .RemoveApplicationCmd_indication = BPNode_RemoveApplicationCmd,
+                .SetRegistrationStateCmd_indication = BPNode_SetRegistrationStateCmd,
+                .StartApplicationCmd_indication = BPNode_StartApplicationCmd,
+                .StopApplicationCmd_indication = BPNode_StopApplicationCmd,
+                .AddAuthSourcesCmd_indication = BPNode_AddAuthSourcesCmd,
+                .RemoveAuthSourcesCmd_indication = BPNode_RemoveAuthSourcesCmd,
+                .AddAuthCustodySourcesCmd_indication = BPNode_AddAuthCustodySourcesCmd,
+                .RemoveAuthCustodySourcesCmd_indication = BPNode_RemoveAuthCustodySourcesCmd,
+                .AddAuthCustodiansCmd_indication = BPNode_AddAuthCustodiansCmd,
+                .RemoveAuthCustodiansCmd_indication = BPNode_RemoveAuthCustodiansCmd,
+                .AddAuthReportToEidCmd_indication = BPNode_AddAuthReportToEidCmd,
+                .RemoveAuthReportToEidCmd_indication = BPNode_RemoveAuthReportToEidCmd,
+                .AddLatencyCmd_indication = BPNode_AddLatencyCmd,
+                .RemoveLatencyCmd_indication = BPNode_RemoveLatencyCmd,
+                .ContactSetupCmd_indication = BPNode_ContactSetupCmd,
+                .ContactStartCmd_indication = BPNode_ContactStartCmd,
+                .ContactStopCmd_indication = BPNode_ContactStopCmd,
+                .ContactTeardownCmd_indication = BPNode_ContactTeardownCmd,
+                .AddMibArrayKeyCmd_indication = BPNode_AddMibArrayKeyCmd,
+                .RemoveMibArrayKeyCmd_indication = BPNode_RemoveMibArrayKeyCmd,
+                .SetMibItemCmd_indication = BPNode_SetMibItemCmd,
+                .AddStorageAllocationCmd_indication = BPNode_AddStorageAllocationCmd,
+                .RemoveStorageAllocationCmd_indication = BPNode_RemoveStorageAllocationCmd,
+                .PerformSelfTestCmd_indication = BPNode_PerformSelfTestCmd,
+                .SendNodeMibConfigHkCmd_indication = BPNode_SendNodeMibConfigHkCmd,
+                .SendSourceMibConfigHkCmd_indication = BPNode_SendSourceMibConfigHkCmd,
+                .SendNodeMibCountersHkCmd_indication = BPNode_SendNodeMibCountersHkCmd,
+                .SendSourceMibCountersHkCmd_indication = BPNode_SendSourceMibCountersHkCmd,
+                .SendStorageHkCmd_indication = BPNode_SendStorageHkCmd,
+                .SendChannelContactStatusHk_indication = BPNode_SendChannelContactStatHkCmd
+            }
 };
 
 
