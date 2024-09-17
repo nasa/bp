@@ -281,7 +281,7 @@ CFE_Status_t BPNode_AppInit(void)
                     BPNODE_MINOR_VERSION,
                     BPNODE_REVISION);
 
-    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNODE",
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
                                 BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
 
     BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
