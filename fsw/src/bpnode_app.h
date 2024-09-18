@@ -45,7 +45,7 @@
 #include "bpnode_eventids.h"
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
-#include "fwp_adup.h"
+#include "fwp.h"
 
 
 /*

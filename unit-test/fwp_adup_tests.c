@@ -40,27 +40,46 @@
 void Test_BPA_ADUP_In_Nominal(void)
 {
     CFE_SB_Buffer_t Buf;
+    uint8_t ChanId = 0;
     uint16 ExpAduCountRecv = 1;
+    CFE_MSG_Size_t Size = 10;
 
-    UtAssert_INT32_EQ(BPA_ADUP_In(&Buf), BPLIB_SUCCESS);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived, 
-                                ExpAduCountRecv);
+    /* Set global data */
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 100;
+
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+
+    UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.AduInData[ChanId].AduCountReceived, ExpAduCountRecv);
 }
 
 /* Test BPA_ADUP_Out */
 void Test_BPA_ADUP_Out_Nominal(void)
 {
     CFE_SB_Buffer_t Buf;
+    uint8_t ChanId = 0;
+    uint16 ExpAduCountDel = 1;
 
-    UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf), BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.AduOutData[ChanId].AduCountDelivered, ExpAduCountDel);
 }
 
 /* Test BPA_ADUP_AddApplication */
 void Test_BPA_ADUP_AddApplication_Nominal(void)
 {
-    BPA_ADUP_Configs_t Configs;
+    uint8_t ChanId = 0;
+    BPA_ADUP_Table_t AduTbl;
+    BPNode_ChannelTable_t ChanTbl;
 
-    UtAssert_VOIDCALL(BPA_ADUP_AddApplication(&Configs));
+    memset(&AduTbl, 0, sizeof(AduTbl));
+    memset(&ChanTbl, 0, sizeof(ChanTbl));
+
+    BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr = &AduTbl;
+    BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr = &ChanTbl;
+
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
+
+    UtAssert_INT32_EQ(BPA_ADUP_AddApplication(ChanId), BPLIB_SUCCESS);
 }
 
 /* Test BPA_ADUP_StartApplication */
@@ -68,7 +87,9 @@ void Test_BPA_ADUP_StartApplication_Nominal(void)
 {
     uint8_t ChanId = 0;
 
-    UtAssert_VOIDCALL(BPA_ADUP_StartApplication(ChanId));
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;
+
+    UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_SUCCESS);
 }
 
 /* Test BPA_ADUP_StopApplication */
@@ -76,7 +97,9 @@ void Test_BPA_ADUP_StopApplication_Nominal(void)
 {
     uint8_t ChanId = 0;
 
-    UtAssert_VOIDCALL(BPA_ADUP_StopApplication(ChanId));
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+
+    UtAssert_INT32_EQ(BPA_ADUP_StopApplication(ChanId), BPLIB_SUCCESS);
 }
 
 /* Register the test cases to execute with the unit test tool */

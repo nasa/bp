@@ -33,6 +33,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "cfe.h"
 #include "bplib.h"
 #include "bpnode_platform_cfg.h"
 

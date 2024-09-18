@@ -127,7 +127,7 @@ void Test_BPNode_ADUPTblValidateFunc_Nominal(void)
 {
     BPA_ADUP_Table_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
-    TestTblData.Entries[0].NumRecvFrmMIDs = 1;
+    TestTblData.Entries[0].NumRecvFrmMsgIds = 1;
     UtAssert_INT32_EQ((int32) BPNode_ADUPTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
@@ -137,7 +137,7 @@ void Test_BPNode_ADUPTblValidateFunc_Invalid(void)
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.Entries[0].NumRecvFrmMIDs = 0;
+    TestTblData.Entries[0].NumRecvFrmMsgIds = 0;
 
     UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
                                                 BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);

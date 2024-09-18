@@ -29,7 +29,6 @@
 
 #include "cfe.h"
 #include "fwp_adup.h"
-#include "fwp_tablep.h"
 #include "bpnode_app.h"
 
 
@@ -45,8 +44,10 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 
     CFE_MSG_GetSize(&Buf->Msg, &Size);
 
-    if (Size < BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize)
+    /* Validate ADU is an acceptable size */
+    if (Size <= BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize)
     {
+        /* Remove header from ADU */
         if (BPNode_AppData.AduInData[ChanId].AduUnwrapping == true)
         {
             /* TODO remove header */
@@ -69,6 +70,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 /* Send out an ADU */
 BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
 {
+    /* Add cFS header to ADU */
     if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
     {
         /* TODO add header */
@@ -158,7 +160,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
         return BPLIB_ERROR;
     }
 
-    /* Subscribe to all related message IDs */
+    /* Subscribe to all configured message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
     {
         Status = CFE_SB_Subscribe(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i],
@@ -202,7 +204,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
         return BPLIB_ERROR;
     }
 
-    /* Unsubscribe from all related message IDs */
+    /* Unsubscribe from all configured message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
     {
         Status = CFE_SB_Unsubscribe(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i],

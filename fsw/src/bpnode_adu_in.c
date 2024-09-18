@@ -29,7 +29,6 @@
 
 #include "bpnode_app.h"
 #include "bpnode_adu_in.h"
-#include "fwp.h"
 
 
 /*
