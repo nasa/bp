@@ -68,7 +68,7 @@
  * \brief ADU Out Task priority base 
  *          The channel ID is added to the base value to get the final task priority
  */
-#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_ADU_IN_PRIORITY + BPNODE_MAX_NUM_CHANNELS)
+#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_ADU_IN_PRIORITY_BASE + BPNODE_MAX_NUM_CHANNELS)
 
 /**
  * \brief Number of milliseconds to wait when trying to take a semaphore
