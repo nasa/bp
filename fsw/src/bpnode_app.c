@@ -169,7 +169,7 @@ CFE_Status_t BPNode_AppInit(void)
     };
 
     /* Zero out the global data structure */
-    memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
+    CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
@@ -237,6 +237,7 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
+    /* Initialize the Framework Proxy callback function pointers */
     Status = BPLib_FWP_Init(Callbacks);
 
     if (Status != BPLIB_SUCCESS)
@@ -247,6 +248,7 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
+    /* Initialize Time Management */
     BpStatus = BPLib_TIME_Init();
 
     if (BpStatus != BPLIB_SUCCESS)

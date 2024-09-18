@@ -126,18 +126,54 @@ void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
 void Test_BPNode_ADUPTblValidateFunc_Nominal(void)
 {
     BPA_ADUP_Table_t TestTblData;
+
     memset(&TestTblData, 0, sizeof(TestTblData));
-    TestTblData.Entries[0].NumRecvFrmMsgIds = 1;
+    
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_IsValidMsgId), true);
+
     UtAssert_INT32_EQ((int32) BPNode_ADUPTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
-void Test_BPNode_ADUPTblValidateFunc_Invalid(void)
+/* Test that the ADU table validation fails when a NumRecvFrmMsgIds value is out of range */
+void Test_BPNode_ADUPTblValidateFunc_InvNumRecv(void)
 {
     BPA_ADUP_Table_t TestTblData;
+
     memset(&TestTblData, 0, sizeof(TestTblData));
 
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_IsValidMsgId), true);
+
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.Entries[0].NumRecvFrmMsgIds = 0;
+    TestTblData.Entries[0].NumRecvFrmMsgIds = BPNODE_MAX_CHAN_SUBSCRIPTION + 1;
+
+    UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
+                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
+}
+
+/* Test that the ADU table validation fails when a SendToMsgId is not a valid message ID */
+void Test_BPNode_ADUPTblValidateFunc_InvSendTo(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    /* Set the first check to fail */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, false);
+
+    UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
+                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
+}
+
+/* Test that the ADU table validation fails when a RecvFrmMsgIds is not a valid message ID */
+void Test_BPNode_ADUPTblValidateFunc_InvRecvFrm(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    /* Set the first check to succeed and second check to fail */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, true);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, false);
 
     UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
                                                 BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
@@ -368,7 +404,9 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TABLEP_SingleTableUpdate_Nominal);
     
     ADD_TEST(Test_BPNode_ADUPTblValidateFunc_Nominal);
-    ADD_TEST(Test_BPNode_ADUPTblValidateFunc_Invalid);
+    ADD_TEST(Test_BPNode_ADUPTblValidateFunc_InvNumRecv);
+    ADD_TEST(Test_BPNode_ADUPTblValidateFunc_InvRecvFrm);
+    ADD_TEST(Test_BPNode_ADUPTblValidateFunc_InvSendTo);
 
     ADD_TEST(Test_BPNode_ChannelConfigTblValidateFunc_Nominal);
     ADD_TEST(Test_BPNode_ChannelConfigTblValidateFunc_Invalid);

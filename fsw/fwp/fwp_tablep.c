@@ -49,8 +49,8 @@ CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData)
         ** Validate array length and that message IDs are all valid
         */
        
-        if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[0].SendToMsgId) ||
-            TblDataPtr->Entries[i].NumRecvFrmMsgIds >= BPNODE_MAX_CHAN_SUBSCRIPTION)
+        if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].SendToMsgId) ||
+            TblDataPtr->Entries[i].NumRecvFrmMsgIds > BPNODE_MAX_CHAN_SUBSCRIPTION)
         {
             return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
         }

@@ -277,20 +277,40 @@ void Test_BPNode_ResetErrorCountersCmd_Nominal(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-/* Test Add Application command nominal case */
+/* Test add-application command nominal case */
 void Test_BPNode_AddApplicationCmd_Nominal(void)
 {
     BPNode_AddApplicationCmd_t TestMsg;
-    UT_CheckEvent_t              EventTest;
+    UT_CheckEvent_t            EventTest;
+    uint16                     ExpAcceptedCount = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Add application command not implemented");
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADD_APP_INF_EID, 
+                            "Successful add-application directive for ChanId=%d");
 
     UtAssert_INT32_EQ(BPNode_AddApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
+                            ExpAcceptedCount);
 
     /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test add-application command failure case */
+void Test_BPNode_AddApplicationCmd_Failure(void)
+{
+    BPNode_AddApplicationCmd_t TestMsg;
+    uint16                     ExpRejectedCount = 1;
+
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_AddApplication), BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_AddApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 /* Test Remove Application command nominal case */
@@ -325,36 +345,77 @@ void Test_BPNode_SetRegistrationStateCmd_Nominal(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-/* Test Start Application command nominal case */
+/* Test start-application command nominal case */
 void Test_BPNode_StartApplicationCmd_Nominal(void)
 {
     BPNode_StartApplicationCmd_t TestMsg;
     UT_CheckEvent_t              EventTest;
+    uint16                       ExpAcceptedCount = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Start application command not implemented");
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_STRT_APP_INF_EID, 
+                            "Successful start-application directive for ChanId=%d");
 
     UtAssert_INT32_EQ(BPNode_StartApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
+                            ExpAcceptedCount);
 
     /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
-/* Test Stop Application command nominal case */
-void Test_BPNode_StopApplicationCmd_Nominal(void)
+/* Test start-application command failure case */
+void Test_BPNode_StartApplicationCmd_Failure(void)
 {
-    BPNode_StopApplicationCmd_t TestMsg;
-    UT_CheckEvent_t              EventTest;
+    BPNode_StartApplicationCmd_t TestMsg;
+    uint16                       ExpRejectedCount = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Stop application command not implemented");
+    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_StartApplication), BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_StartApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+}
+
+
+/* Test stop-application command nominal case */
+void Test_BPNode_StopApplicationCmd_Nominal(void)
+{
+    BPNode_StopApplicationCmd_t TestMsg;
+    UT_CheckEvent_t             EventTest;
+    uint16                      ExpAcceptedCount = 1;
+
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_STOP_APP_INF_EID, 
+                            "Successful stop-application directive for ChanId=%d");
 
     UtAssert_INT32_EQ(BPNode_StopApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
+                            ExpAcceptedCount);
 
     /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test stop-application command failure case */
+void Test_BPNode_StopApplicationCmd_Failure(void)
+{
+    BPNode_StopApplicationCmd_t TestMsg;
+    uint16                      ExpRejectedCount = 1;
+
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_StopApplication), BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_StopApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
 }
 
 /* Test Add Authorized Sources command nominal case */
@@ -798,11 +859,19 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ResetSourceCountersCmd_Nominal);
     ADD_TEST(Test_BPNode_ResetBundleCountersCmd_Nominal);
     ADD_TEST(Test_BPNode_ResetErrorCountersCmd_Nominal);
+
     ADD_TEST(Test_BPNode_AddApplicationCmd_Nominal);
+    ADD_TEST(Test_BPNode_AddApplicationCmd_Failure);
+
     ADD_TEST(Test_BPNode_RemoveApplicationCmd_Nominal);
     ADD_TEST(Test_BPNode_SetRegistrationStateCmd_Nominal);
+
     ADD_TEST(Test_BPNode_StartApplicationCmd_Nominal);
+    ADD_TEST(Test_BPNode_StartApplicationCmd_Failure);
+
     ADD_TEST(Test_BPNode_StopApplicationCmd_Nominal);
+    ADD_TEST(Test_BPNode_StopApplicationCmd_Failure);
+
     ADD_TEST(Test_BPNode_AddAuthSourcesCmd_Nominal);
     ADD_TEST(Test_BPNode_RemoveAuthSourcesCmd_Nominal);
     ADD_TEST(Test_BPNode_AddAuthCustodySourcesCmd_Nominal);

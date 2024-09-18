@@ -57,8 +57,8 @@
 */
 typedef struct
 {
-    char                        TableName[256];
-    char                        TableFileName[256];
+    char                        TableName[OS_MAX_API_NAME];
+    char                        TableFileName[OS_MAX_PATH_LEN];
     CFE_TBL_Handle_t            TableHandle;
     uint32                      TableSize;
     void*                       TablePtr;
