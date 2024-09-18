@@ -83,6 +83,19 @@ typedef struct
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
 
+    BPA_ADUP_Table_t            *AduTblPtr;
+    BPNode_ChannelTable_t       *ChanTblPtr;
+    BPNode_ContactsTable_t      *ContactsTblPtr;
+    BPNode_CRSTable_t           *CrsTblPtr;
+    BPNode_CustodianTable_t     *CustodianTblPtr;
+    BPNode_CustodyTable_t       *CustodyTblPtr;
+    BPNode_MIBConfigPNTable_t   *MibPnTblPtr;
+    BPNode_MIBConfigPSTable_t   *MibPsTblPtr;
+    BPNode_ReportToTable_t      *ReportTblPtr;
+    BPNode_SrcAuthTable_t       *AuthTblPtr;
+    BPNode_SrcLatencyTable_t    *LatTblPtr;
+    BPNode_StorageTable_t       *StorTblPtr;
+    
 } BPNode_AppData_t;
 
 

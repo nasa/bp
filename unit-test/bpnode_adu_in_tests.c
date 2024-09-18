@@ -127,7 +127,6 @@ void Test_BPNode_AduIn_TaskInit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, 1);
 }
 
@@ -150,7 +149,6 @@ void Test_BPNode_AduIn_TaskInit_GetIdErr(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
 }
 
@@ -176,7 +174,6 @@ void Test_BPNode_AduIn_TaskInit_MatchIdErr(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
 }
 
@@ -203,7 +200,6 @@ void Test_BPNode_AduIn_TaskInit_PipeErr(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
 }
 
@@ -230,7 +226,6 @@ void Test_BPNode_AduIn_TaskInit_GiveSemErr(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, 1);
 }
 

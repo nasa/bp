@@ -157,7 +157,6 @@ CFE_Status_t BPNode_AppInit(void)
     BPLib_Status_t BpStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
-    BPNode_ChannelTable_t *ChanConfigs;
     uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
@@ -277,12 +276,10 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    ChanConfigs = (BPNode_ChannelTable_t *) BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
-
     /* Add all applications set to be loaded at startup */
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
-        if (ChanConfigs->ChannelSet[i].AddAutomatically == true)
+        if (BPNode_AppData.ChanTblPtr->ChannelSet[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);

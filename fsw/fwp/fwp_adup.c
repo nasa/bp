@@ -88,8 +88,6 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
 BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 {
     uint8_t i;
-    BPA_ADUP_Table_t *AduConfigs = (BPA_ADUP_Table_t *) BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr;
-    BPNode_ChannelTable_t  *ChanConfigs = (BPNode_ChannelTable_t *) BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
 
     /* Check for channel ID validity */
     if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
@@ -112,24 +110,24 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     ** Set ADU proxy configurations
     */
 
-    BPNode_AppData.AduOutData[ChanId].SendToMsgId = AduConfigs->Entries[ChanId].SendToMsgId;
-    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = AduConfigs->Entries[ChanId].NumRecvFrmMsgIds;
+    BPNode_AppData.AduOutData[ChanId].SendToMsgId = BPNode_AppData.AduTblPtr->Entries[ChanId].SendToMsgId;
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = BPNode_AppData.AduTblPtr->Entries[ChanId].NumRecvFrmMsgIds;
 
-    for (i = 0; i < AduConfigs->Entries[ChanId].NumRecvFrmMsgIds; i++)
+    for (i = 0; i < BPNode_AppData.AduTblPtr->Entries[ChanId].NumRecvFrmMsgIds; i++)
     {
-        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = AduConfigs->Entries[ChanId].RecvFrmMsgIds[i];
+        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = BPNode_AppData.AduTblPtr->Entries[ChanId].RecvFrmMsgIds[i];
     }
 
     /*
     ** Set channel configurations
     */
 
-    BPNode_AppData.AduConfigs[ChanId].AddAutomatically = ChanConfigs->ChannelSet[ChanId].AddAutomatically;
+    BPNode_AppData.AduConfigs[ChanId].AddAutomatically = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AddAutomatically;
 
-    BPNode_AppData.AduInData[ChanId].AduUnwrapping = ChanConfigs->ChannelSet[ChanId].AduUnwrapping;
-    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = ChanConfigs->ChannelSet[ChanId].MaxBundlePayloadSize;
+    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AduUnwrapping;
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].MaxBundlePayloadSize;
 
-    BPNode_AppData.AduOutData[ChanId].AduWrapping = ChanConfigs->ChannelSet[ChanId].AduWrapping;
+    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AduWrapping;
     
     /* Set app state to added */
     BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;

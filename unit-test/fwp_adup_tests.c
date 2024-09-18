@@ -68,14 +68,9 @@ void Test_BPA_ADUP_Out_Nominal(void)
 void Test_BPA_ADUP_AddApplication_Nominal(void)
 {
     uint8_t ChanId = 0;
-    BPA_ADUP_Table_t AduTbl;
-    BPNode_ChannelTable_t ChanTbl;
 
-    memset(&AduTbl, 0, sizeof(AduTbl));
-    memset(&ChanTbl, 0, sizeof(ChanTbl));
-
-    BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr = &AduTbl;
-    BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr = &ChanTbl;
+    BPNode_AppData.AduTblPtr = &TestAduTbl;
+    BPNode_AppData.ChanTblPtr = &TestChanTbl;
 
     BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
