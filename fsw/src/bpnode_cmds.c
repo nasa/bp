@@ -159,7 +159,9 @@ CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 {
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
-
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+    
     CFE_EVS_SendEvent(BPNODE_RESET_INF_EID, CFE_EVS_EventType_INFORMATION, 
                     "Reset all counters command");
 
