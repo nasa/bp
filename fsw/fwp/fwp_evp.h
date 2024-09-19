@@ -66,12 +66,13 @@ BPLib_Status_t BPA_EVP_Init(void);
  * \par    Assumptions, External Events, and Notes:
  *           None
  * \return Execution status
- * \retval BPLIB_SUCCESS: Execution was successful
- * \retval BPLIB_EM_INVALID_PARAMETER: Text to output is NULL
- * \retval BPLIB_EM_ILLEGAL_APP_ID: Unable to find caller's AppID
- * \retval BPLIB_EM_APP_NOT_REGISTERED: Application associated with AppID was not registered
- * \retval BPLIB_EM_APP_SQUELCHED: App is not filtered but squelch token doesn't allow event generation
- * \retval BPLIB_UNKNOWN: Unknown status
+ * \retval BPLIB_SUCCESS (0): Execution was successful
+ * \retval BPLIB_EM_MSG_TRUNCATED (0): Event message string was truncated due to host limitations
+ * \retval BPLIB_EM_INVALID_PARAMETER (-11u): Text to output is NULL
+ * \retval BPLIB_EM_ILLEGAL_APP_ID (-8u): Unable to find caller's AppID
+ * \retval BPLIB_EM_APP_NOT_REGISTERED (-12u): Application associated with AppID was not registered
+ * \retval BPLIB_EM_APP_SQUELCHED (-13u): App is not filtered but squelch token doesn't allow event generation
+ * \retval BPLIB_UNKNOWN (-2u): Unknown status
  */
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* EventText);
 
