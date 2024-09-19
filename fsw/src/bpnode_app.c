@@ -92,7 +92,7 @@ void BPNode_AppMain(void)
         /* Exit upon pipe read error */
         if (Status != CFE_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
                               "SB Pipe Read Error, App Will Exit");
 
             BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_ERROR;
@@ -115,7 +115,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
     if (BpStatus != BPLIB_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_TIME_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_TIME_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
@@ -123,7 +123,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     Status = BPA_TABLEP_TableUpdate();
     if (Status != CFE_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                     "Error Updating Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
@@ -179,7 +179,7 @@ CFE_Status_t BPNode_AppInit(void)
                                 (unsigned long) BpStatus);
 
         /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
-        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
                             (unsigned long) BpStatus);
 
@@ -191,16 +191,6 @@ CFE_Status_t BPNode_AppInit(void)
 
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    BpStatus = BPLib_TIME_Init();
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TIME_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error initializing BPLib Time Management, RC = %d", BpStatus);
-        
-        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-    }
-
-
     /* Register with Event Services */
     BpStatus = BPLib_EM_Init();
     if (BpStatus != CFE_SUCCESS)
@@ -209,6 +199,15 @@ CFE_Status_t BPNode_AppInit(void)
                                 (unsigned long)BpStatus);
 
         return BpStatus;
+    }
+
+    BpStatus = BPLib_TIME_Init();
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_TIME_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing BPLib Time Management, RC = %d", BpStatus);
+        
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
     /* Initialize housekeeping packet (clear user data area) */
@@ -222,7 +221,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     if (Status != CFE_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CR_CMD_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_CR_CMD_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error creating SB Command Pipe, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
@@ -234,7 +233,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     if (Status != CFE_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CR_WKP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_CR_WKP_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error creating SB Wakeup Pipe, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
@@ -246,7 +245,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     if (Status != CFE_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_SUB_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_SUB_CMD_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
@@ -258,7 +257,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     if (Status != CFE_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Subscribing to wakeup messages, RC = 0x%08lX",
                             (unsigned long)Status);
 
@@ -269,7 +268,7 @@ CFE_Status_t BPNode_AppInit(void)
     BpStatus = BPA_TABLEP_TableInit();
     if (BpStatus != CFE_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Getting Table from Table Proxy, RC = 0x%08lX",
                             (unsigned long)BpStatus);
 
@@ -312,7 +311,7 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
                                 BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
 
-    BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNODE Initialized: %s",
+    BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION, "BPNode Initialized: %s",
                         VersionString);
 
     return CFE_SUCCESS;
@@ -323,7 +322,7 @@ void BPNode_AppExit(void)
 {
     uint8 i;
 
-    CFE_EVS_SendEvent(BPNODE_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+    CFE_EVS_SendEvent(BPNODE_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "App terminating, error = %d", BPNode_AppData.RunStatus);
 
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
