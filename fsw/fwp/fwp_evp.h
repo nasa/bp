@@ -28,6 +28,18 @@
 #include "cfe.h"
 #include "bplib.h"
 
+/* ====== */
+/* Macros */
+/* ====== */
+
+/* This character is used as an indication
+   that the input string was truncated due
+   to reaching the host's size limit */
+#define BPLIB_EM_MSG_TRUNCATED ('$')
+
+/* Defines the max length of the expanded event string */
+#define BPLIB_EM_MAX_MESSAGE_LENGTH (CFE_MISSION_EVS_MAX_MESSAGE_LENGTH)
+
 /* ================== */
 /* Exported Functions */
 /* ================== */

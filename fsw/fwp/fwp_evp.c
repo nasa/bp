@@ -65,13 +65,39 @@ BPLib_Status_t BPA_EVP_Init(void)
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* Spec)
 {
     BPLib_Status_t Status;
+    size_t SpecLen;
+    char EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH];
+    bool Truncated;
 
-    Status = CFE_EVS_SendEvent(EventID, EventType, "%s", Spec);
+    // Default to indicating that the string is nottruncated
+    Truncated = false;
+
+    // Copy the max message length amount of characters to the final event string
+    strncpy(EventStr, Spec, BPLIB_EM_MAX_MESSAGE_LENGTH);
+
+    /* Verify that the max message length for EM is more than a truncation character and >= the pre-defined
+       max length of an EVS message according to CFE */
+    SpecLen = strlen(Spec);
+    if (SpecLen >= BPLIB_EM_MAX_MESSAGE_LENGTH)
+    {
+        /* Put the truncation character at the end of the string,
+           leaving a space for the null character */
+        EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH - 2u] = BPLIB_EM_MSG_TRUNCATED;
+
+        // Indicate that truncation occured
+        Truncated = true;
+    }
+
+    // Use host-specific event generator
+    Status = CFE_EVS_SendEvent(EventID, EventType, "%s", EventStr);
     
+    // Translate host specific return codes into BPLib return codes
     switch(Status)
     {
         case CFE_SUCCESS:
-            Status = BPLIB_SUCCESS;
+            /* BPLIB_EM_MSG_TRUNCATED == BPLIB_SUCCESS but for those
+               in the meatspace this distinction is meaningful */
+            Status = Truncated ? BPLIB_EM_MSG_TRUNCATED : BPLIB_SUCCESS;
             break;
         case CFE_EVS_INVALID_PARAMETER:
             /* Returned by CFE_EVS_SendEvent() from cfe_evs.c */
