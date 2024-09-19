@@ -189,6 +189,7 @@ void BPNode_AduOut_AppMain(void)
         if (BPNode_AppData.AduConfigs[ChanId].AppState == BPA_ADUP_APP_STARTED)
         {
             /* TODO pull bundle from PI out queue and send out */
+            (void) OS_TaskDelay(BPNODE_ADU_OUT_SLEEP_MSEC);
         }
         else 
         {

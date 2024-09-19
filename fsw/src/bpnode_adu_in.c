@@ -145,8 +145,8 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
         return Status;
     }
 
-    /* Subscribe to TO Lab HK to simulate ADU processing */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(0x0880), 
+    /* Subscribe to cFE TIME diagnostics HK to simulate ADU processing */
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(0x0806), 
                                             BPNode_AppData.AduInData[*ChanId].AduPipe);
     if (Status != CFE_SUCCESS)
     {
