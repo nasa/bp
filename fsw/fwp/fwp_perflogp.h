@@ -19,20 +19,49 @@
  */
 
 /**
- * @file
- *   Top-level Framework Proxy (FWP) include header
+ * \file
+ *   This file contains the header definitions for the FWP Perf Log Proxy.
  */
-#ifndef FWP_H
-#define FWP_H
 
+#ifndef FWP_PERFLOGP_H
+#define FWP_PERFLOGP_H
 
 /*
-** Include
+** Include Files
 */
 
-#include "fwp_timep.h"
-#include "fwp_tablep.h"
-#include "fwp_evp.h"
-#include "fwp_perflogp.h"
+#include <stdint.h>
+#include "bplib.h"
 
-#endif
+/**
+ * \brief FWP PerfLog Proxy Entry
+ *
+ *  \par Description
+ *       Entry marker for use with Software Performance Tool
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \param[in] Perf Log ID
+ * 
+ *  \return None
+ */
+void BPA_PERFLOGP_Entry(uint32_t PerfLogID);
+
+/**
+ * \brief FWP PerfLog Proxy Exit
+ *
+ *  \par Description
+ *       Exit marker for use with Software Performance Tool
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] Perf Log ID
+ * 
+ *  \return None
+ */
+void BPA_PERFLOGP_Exit(uint32_t PerfLogID);
+
+#endif /* FWP_PERFLOGP_H */
+

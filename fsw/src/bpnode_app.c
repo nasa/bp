@@ -57,7 +57,7 @@ void BPNode_AppMain(void)
     CFE_SB_Buffer_t *BufPtr;
 
     /* Create the first Performance Log entry */
-    CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
+    BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
     /*
     ** Perform application-specific initialization
@@ -74,14 +74,14 @@ void BPNode_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.RunStatus) == true)
     {
         /* Performance Log Exit Stamp */
-        CFE_ES_PerfLogExit(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 
         /* Pend on receipt of wakeup message */
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.WakeupPipe, 
                                                 BPNODE_WAKEUP_PIPE_TIMEOUT);
 
         /* Performance Log Entry Stamp */
-        CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status == CFE_SUCCESS || Status == CFE_SB_TIME_OUT || Status == CFE_SB_NO_MESSAGE)
         {
@@ -99,10 +99,7 @@ void BPNode_AppMain(void)
         }
     }
 
-    /* Performance Log Exit Stamp */
-    CFE_ES_PerfLogExit(BPNODE_PERF_ID);
-
-    CFE_ES_ExitApp(BPNode_AppData.RunStatus);
+    BPNode_AppExit();
 }
 
 
@@ -160,6 +157,7 @@ CFE_Status_t BPNode_AppInit(void)
     BPLib_Status_t BpStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
         .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
@@ -168,7 +166,9 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
         .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
         .BPA_EVP_Init                 = BPA_EVP_Init,
-        .BPA_EVP_SendEvent            = BPA_EVP_SendEvent
+        .BPA_EVP_SendEvent            = BPA_EVP_SendEvent,
+        .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
+        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit                
     };
 
     /* Initialize the FWP before using BPLib functions */
@@ -276,6 +276,34 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
+    /* 
+    ** Initialize ADU configuration data to set all applications to started
+    ** TODO replace with reading in configs from ADU/channel config tables
+    */
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STARTED;
+        BPNode_AppData.AduConfigs[i].InPendTimeout = BPNODE_WAKEUP_PIPE_TIMEOUT;
+    }
+
+    /* Create ADU In child tasks */
+    Status = BPNode_AduInCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
+    /* Create ADU Out child tasks */
+    Status = BPNode_AduOutCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
                     BPNODE_MAJOR_VERSION,
                     BPNODE_MINOR_VERSION,
@@ -288,4 +316,28 @@ CFE_Status_t BPNode_AppInit(void)
                         VersionString);
 
     return CFE_SUCCESS;
+}
+
+/* Exit app */
+void BPNode_AppExit(void)
+{
+    uint8 i;
+
+    CFE_EVS_SendEvent(BPNODE_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+                        "App terminating, error = %d", BPNode_AppData.RunStatus);
+
+    CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
+
+    /* Signal to ADU child tasks to exit */
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+    }
+
+    /* Performance Log Exit Stamp */
+    BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+
+    CFE_ES_ExitApp(BPNode_AppData.RunStatus);
+
 }

@@ -19,20 +19,27 @@
  */
 
 /**
- * @file
- *   Top-level Framework Proxy (FWP) include header
+ * \file
+ *   This file contains the source code for the FWP PerfLog Proxy.
  */
-#ifndef FWP_H
-#define FWP_H
+
+/*
+** Include Files
+*/
+
+#include "cfe.h"
+#include "fwp_perflogp.h"
 
 
 /*
-** Include
+** Function Definitions
 */
+void BPA_PERFLOGP_Entry(uint32_t PerfLogID)
+{
+    CFE_ES_PerfLogEntry(PerfLogID);
+}
 
-#include "fwp_timep.h"
-#include "fwp_tablep.h"
-#include "fwp_evp.h"
-#include "fwp_perflogp.h"
-
-#endif
+void BPA_PERFLOGP_Exit(uint32_t PerfLogID)
+{
+    CFE_ES_PerfLogExit(PerfLogID);
+}

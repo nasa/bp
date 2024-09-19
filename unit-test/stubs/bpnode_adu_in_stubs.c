@@ -21,57 +21,61 @@
 /**
  * @file
  *
- * Auto-Generated stub implementations for functions defined in bpnode_app header
+ * Auto-Generated stub implementations for functions defined in bpnode_adu_in header
  */
 
-#include "bpnode_app.h"
+#include "bpnode_adu_in.h"
 #include "utgenstub.h"
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AppExit()
+ * Generated stub function for BPNode_AduInCreateTasks()
  * ----------------------------------------------------
  */
-void BPNode_AppExit(void)
+int32 BPNode_AduInCreateTasks(void)
 {
-    UT_GenStub_Execute(BPNode_AppExit, Basic, NULL);
+    UT_GenStub_SetupReturnBuffer(BPNode_AduInCreateTasks, int32);
+
+    UT_GenStub_Execute(BPNode_AduInCreateTasks, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_AduInCreateTasks, int32);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AppInit()
+ * Generated stub function for BPNode_AduIn_AppMain()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AppInit(void)
+void BPNode_AduIn_AppMain(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AppInit, CFE_Status_t);
 
-    UT_GenStub_Execute(BPNode_AppInit, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_AppInit, CFE_Status_t);
+    UT_GenStub_Execute(BPNode_AduIn_AppMain, Basic, NULL);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AppMain()
+ * Generated stub function for BPNode_AduIn_TaskExit()
  * ----------------------------------------------------
  */
-void BPNode_AppMain(void)
+void BPNode_AduIn_TaskExit(uint8 ChanId)
 {
+    UT_GenStub_AddParam(BPNode_AduIn_TaskExit, uint8, ChanId);
 
-    UT_GenStub_Execute(BPNode_AppMain, Basic, NULL);
+    UT_GenStub_Execute(BPNode_AduIn_TaskExit, Basic, NULL);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_WakeupProcess()
+ * Generated stub function for BPNode_AduIn_TaskInit()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_WakeupProcess(void)
+int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_WakeupProcess, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPNode_AduIn_TaskInit, int32);
 
-    UT_GenStub_Execute(BPNode_WakeupProcess, Basic, NULL);
+    UT_GenStub_AddParam(BPNode_AduIn_TaskInit, uint8 *, ChanId);
 
-    return UT_GenStub_GetReturnValue(BPNode_WakeupProcess, CFE_Status_t);
+    UT_GenStub_Execute(BPNode_AduIn_TaskInit, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_AduIn_TaskInit, int32);
 }

@@ -29,9 +29,7 @@
 
 BPNode_ADUProxyTable_t ADUProxyTable = {
     .ADUP_Set ={
-        {.SendToMID = 0x1801, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}},
-        {.SendToMID = 0x1802, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}},
-        {.SendToMID = 0x1803, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}},
+        {.SendToMID = 0x1801, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}}
     }
 };
 
