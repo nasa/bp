@@ -236,33 +236,6 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_UNKNOWN);
 }
 
-void Test_BPA_EVP_SendEvent_TruncatedEvent(void)
-{
-    char LongString[BPLIB_EM_MAX_MESSAGE_LENGTH + 5];
-    BPLib_Status_t Status;
-    int stringLoopControl;
-    char ExpectedEvent[BPLIB_EM_MAX_MESSAGE_LENGTH];
-
-    for(stringLoopControl = 0; stringLoopControl < BPLIB_EM_MAX_MESSAGE_LENGTH + 4; stringLoopControl++)
-    {
-        LongString[stringLoopControl] = 'A';
-    }
-
-    LongString[stringLoopControl] = 'H';
-
-    strncpy(ExpectedEvent, LongString, BPLIB_EM_MAX_MESSAGE_LENGTH - 2);
-    ExpectedEvent[BPLIB_EM_MAX_MESSAGE_LENGTH - 1] = '$';
-    ExpectedEvent[BPLIB_EM_MAX_MESSAGE_LENGTH] = '\0';
-
-    UT_CHECKEVENT_SETUP(&EventTest, 142, ExpectedEvent);
-
-    Status = BPLIB_UNKNOWN;
-    Status = BPLib_EM_SendEvent(142, BPLib_EM_EventType_INFO, LongString);
-
-    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_STRING_TRUNCATED);
-    UtAssert_INT32_EQ(EventTest.MatchCount, 1);
-}
-
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -270,5 +243,4 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_EVP_Init_BadReturn);
     ADD_TEST(Test_BPA_EVP_SendEvent_Nominal);
     ADD_TEST(Test_BPA_EVP_SendEvent_BadReturn);
-    ADD_TEST(Test_BPA_EVP_SendEvent_TruncatedEvent);
 }

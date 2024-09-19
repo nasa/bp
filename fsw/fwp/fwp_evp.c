@@ -73,7 +73,7 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
     Truncated = false;
 
     // Copy the max message length amount of characters to the final event string
-    strncpy(EventStr, Spec, BPLIB_EM_MAX_MESSAGE_LENGTH);
+    strncpy(EventStr, Spec, (size_t) BPLIB_EM_MAX_MESSAGE_LENGTH);
 
     /* Verify that the max message length for EM is more than a truncation character and >= the pre-defined
        max length of an EVS message according to CFE */
@@ -83,6 +83,7 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
         /* Put the truncation character at the end of the string,
            leaving a space for the null character */
         EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH - 2u] = BPLIB_EM_MSG_TRUNCATED;
+        EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH - 1u] = '\0';
 
         // Indicate that truncation occured
         Truncated = true;
