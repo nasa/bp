@@ -19,6 +19,7 @@ add_cfe_coverage_stubs("bpnode_internal"
   stubs/fwp_timep_stubs.c
   stubs/fwp_tablep_stubs.c
   stubs/fwp_adup_stubs.c
+  stubs/fwp_perflogp_stubs.c
 )
 
 # Link with the cfe core stubs and unit test assert libs

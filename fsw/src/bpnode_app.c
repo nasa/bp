@@ -57,7 +57,7 @@ void BPNode_AppMain(void)
     CFE_SB_Buffer_t *BufPtr;
 
     /* Create the first Performance Log entry */
-    CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
+    BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
     /*
     ** Perform application-specific initialization
@@ -74,14 +74,14 @@ void BPNode_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.RunStatus) == true)
     {
         /* Performance Log Exit Stamp */
-        CFE_ES_PerfLogExit(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 
         /* Pend on receipt of wakeup message */
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.WakeupPipe, 
                                                 BPNODE_WAKEUP_PIPE_TIMEOUT);
 
         /* Performance Log Entry Stamp */
-        CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status == CFE_SUCCESS || Status == CFE_SB_TIME_OUT || Status == CFE_SB_NO_MESSAGE)
         {
@@ -164,7 +164,9 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
+        .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
+        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit                
     };
 
     /* Zero out the global data structure */
@@ -289,7 +291,7 @@ CFE_Status_t BPNode_AppInit(void)
         BPNODE_MINOR_VERSION,
         BPNODE_REVISION);
 
-    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNODE",
+    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
                         BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
 
     CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNode Initialized: %s",
@@ -316,7 +318,7 @@ void BPNode_AppExit(void)
     }
 
     /* Performance Log Exit Stamp */
-    CFE_ES_PerfLogExit(BPNODE_PERF_ID);
+    BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 
     CFE_ES_ExitApp(BPNode_AppData.RunStatus);
 
