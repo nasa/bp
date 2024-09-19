@@ -57,7 +57,7 @@ void Test_BPNode_NoopCmd_Nominal(void)
      *  Use NULL for the ExpectedFormat to ignore the event message format string.
      */
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_NOOP_INF_EID, "No-op command. Version %d.%d.%d.");
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_NOOP_INF_EID, "No-op command. %s");
 
     UtAssert_INT32_EQ(BPNode_NoopCmd(&TestMsg), CFE_SUCCESS);
 

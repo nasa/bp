@@ -19,20 +19,35 @@
  */
 
 /**
- * @file
- *   Top-level Framework Proxy (FWP) include header
+ * \file
+ *  Unit tests for fwp_perflogp.c
  */
-#ifndef FWP_H
-#define FWP_H
-
 
 /*
-** Include
+** Include Files
 */
 
-#include "fwp_timep.h"
-#include "fwp_tablep.h"
-#include "fwp_adup.h"
 #include "fwp_perflogp.h"
+#include "bpnode_test_utils.h"
 
-#endif
+/* Test BPA_PERFLOGP_Entry */
+void Test_BPA_PERFLOGP_Entry_Nominal(void)
+{
+    uint32_t PerfLogID = 10;
+    UtAssert_VOIDCALL(BPA_PERFLOGP_Entry(PerfLogID));
+}
+
+/* Test BPA_PERFLOGP_Exit */
+void Test_BPA_PERFLOGP_Exit_Nominal(void)
+{
+    uint32_t PerfLogID = 10;
+    UtAssert_VOIDCALL(BPA_PERFLOGP_Exit(PerfLogID));    
+}
+
+
+/* Register the test cases to execute with the unit test tool */
+void UtTest_Setup(void)
+{
+    ADD_TEST(Test_BPA_PERFLOGP_Entry_Nominal);
+    ADD_TEST(Test_BPA_PERFLOGP_Exit_Nominal);
+}

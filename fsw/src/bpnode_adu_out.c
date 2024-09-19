@@ -75,10 +75,10 @@ int32 BPNode_AduOutCreateTasks(void)
         }
 
         /* Verify initialization by trying to take the init semaphore */
-        CFE_ES_PerfLogExit(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
         Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[i].InitSemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
-        CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
         {
@@ -129,12 +129,12 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
     BPNode_AppData.AduOutData[*ChanId].PerfId = BPNODE_ADU_OUT_PERF_ID_BASE + *ChanId;
 
     /* Start performance log */
-    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[*ChanId].PerfId);
+    BPLib_PL_PerfLogEntry(BPNode_AppData.AduOutData[*ChanId].PerfId);
 
     /* Notify main task that child task is running */
-    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[*ChanId].PerfId);
+    BPLib_PL_PerfLogExit(BPNode_AppData.AduOutData[*ChanId].PerfId);
     Status = OS_BinSemGive(BPNode_AppData.AduOutData[*ChanId].InitSemId);
-    CFE_ES_PerfLogEntry(BPNode_AppData.AduOutData[*ChanId].PerfId);
+    BPLib_PL_PerfLogEntry(BPNode_AppData.AduOutData[*ChanId].PerfId);
 
     if (Status != OS_SUCCESS)
     {
@@ -224,7 +224,7 @@ void BPNode_AduOut_TaskExit(uint8 ChanId)
                          ChanId, BPNode_AppData.AduOutData[ChanId].RunStatus);
 
     /* Exit the perf log */
-    CFE_ES_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
+    BPLib_PL_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();
