@@ -337,6 +337,44 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
+/* Test app initialization after failure to create ADU in child tasks */
+void Test_BPNode_AppInit_FailedAduInTasks(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_AduInCreateTasks), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
+}
+
+/* Test app initialization after failure to create ADU out child tasks */
+void Test_BPNode_AppInit_FailedAduOutTasks(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_AduOutCreateTasks), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
+}
+
+/* Test app exit in nominal case */
+void Test_BPNode_AppExit_Nominal(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8 i;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_EXIT_CRIT_EID, 
+                                "App terminating, error = %d");
+
+    BPNode_AppExit();
+
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+        UtAssert_UINT32_EQ(BPNode_AppData.AduInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+    }
+
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
 /* Test app initialization in nominal case */
 void Test_BPNode_AppInit_FailedTimeInit(void)
 {
@@ -376,5 +414,9 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
     ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
     ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
+    ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
+    
+    ADD_TEST(Test_BPNode_AppExit_Nominal);
 }

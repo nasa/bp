@@ -19,20 +19,50 @@
  */
 
 /**
- * @file
- *   Define BPNode Performance IDs
+ * \file
+ *   This file contains the source code for the FWP ADU Proxy.
  */
 
-#ifndef BPNODE_PERFIDS_H
-#define BPNODE_PERFIDS_H
-
 /*
-** Macro Definitions
+** Include Files
 */
 
-#define BPNODE_PERF_ID (99)
+#include "cfe.h"
+#include "fwp_adup.h"
+#include "bpnode_app.h"
 
-#define BPNODE_ADU_IN_PERF_ID_BASE (110)
-#define BPNODE_ADU_OUT_PERF_ID_BASE (120)
 
-#endif /* BPNODE_PERFIDS_H */
+/*
+** Function Definitions
+*/
+
+/* Ingest an ADU */
+BPLib_Status_t BPA_ADUP_In(void *AduPtr)
+{
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived++;
+    return BPLIB_SUCCESS;
+}
+
+/* Send out an ADU */
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
+{
+    return BPLIB_SUCCESS;
+}
+
+/* Add a new application's configurations */
+void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
+{
+    return;
+}
+
+/* Start an application */
+void BPA_ADUP_StartApplication(uint8_t ChanId)
+{
+    return;
+}
+
+/* Stop an application */
+void BPA_ADUP_StopApplication(uint8_t ChanId)
+{
+    return;
+}
