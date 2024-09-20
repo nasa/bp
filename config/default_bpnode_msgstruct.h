@@ -35,6 +35,8 @@
 #include "bpnode_msgdefs.h"
 #include "cfe_msg_hdr.h"
 
+#include "bplib_nc_payloads.h"
+
 /*
 ** Command type Definitions
 */
@@ -53,6 +55,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAllApplicationsCmd_Payload_t Payload;
 } BPNode_AddAllApplicationsCmd_t;
 
 /**
@@ -61,6 +64,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_StartAllApplicationsCmd_Payload_t Payload;
 } BPNode_StartAllApplicationsCmd_t;
 
 /**
@@ -69,6 +73,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_VerifyBundleStorageCmd_Payload_t Payload;
 } BPNode_VerifyBundleStorageCmd_t;
 
 /**
@@ -77,6 +82,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_InitBundleStorageCmd_Payload_t Payload;
 } BPNode_InitBundleStorageCmd_t;
 
 /**
@@ -85,6 +91,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_VerifyBundleMetadataCmd_Payload_t Payload;
 } BPNode_VerifyBundleMetadataCmd_t;
 
 /**
@@ -93,6 +100,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RebuildBundleMetadataCmd_Payload_t Payload;
 } BPNode_RebuildBundleMetadataCmd_t;
 
 /**
@@ -101,6 +109,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ClearVolatileCmd_Payload_t Payload;
 } BPNode_ClearVolatileCmd_t;
 
 /**
@@ -109,6 +118,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ReloadSavedDataCmd_Payload_t Payload;
 } BPNode_ReloadSavedDataCmd_t;
 
 /**
@@ -117,6 +127,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetAllCountersCmd_Payload_t Payload;
 } BPNode_ResetAllCountersCmd_t;
 
 /**
@@ -125,6 +136,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetCounterCmd_Payload_t Payload;
 } BPNode_ResetCounterCmd_t;
 
 /**
@@ -133,6 +145,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetSourceCountersCmd_Payload_t Payload;
 } BPNode_ResetSourceCountersCmd_t;
 
 /**
@@ -141,6 +154,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetBundleCountersCmd_Payload_t Payload;
 } BPNode_ResetBundleCountersCmd_t;
 
 /**
@@ -149,6 +163,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetErrorCountersCmd_Payload_t Payload;
 } BPNode_ResetErrorCountersCmd_t;
 
 /**
@@ -157,6 +172,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddApplicationCmd_Payload_t Payload;
 } BPNode_AddApplicationCmd_t;
 
 /**
@@ -165,6 +181,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveApplicationCmd_Payload_t Payload;
 } BPNode_RemoveApplicationCmd_t;
 
 /**
@@ -173,6 +190,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SetRegistrationStateCmd_Payload_t Payload;
 } BPNode_SetRegistrationStateCmd_t;
 
 /**
@@ -181,6 +199,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_StartApplicationCmd_Payload_t Payload;
 } BPNode_StartApplicationCmd_t;
 
 /**
@@ -189,6 +208,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_StopApplicationCmd_Payload_t Payload;
 } BPNode_StopApplicationCmd_t;
 
 /**
@@ -197,6 +217,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthSourcesCmd_Payload_t Payload;
 } BPNode_AddAuthSourcesCmd_t;
 
 /**
@@ -205,6 +226,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthSourcesCmd_Payload_t Payload;
 } BPNode_RemoveAuthSourcesCmd_t;
 
 /**
@@ -213,6 +235,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthCustodySourcesCmd_Payload_t Payload;
 } BPNode_AddAuthCustodySourcesCmd_t;
 
 /**
@@ -221,6 +244,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthCustodySourcesCmd_Payload_t Payload;
 } BPNode_RemoveAuthCustodySourcesCmd_t;
 
 /**
@@ -229,6 +253,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthCustodiansCmd_Payload_t Payload;
 } BPNode_AddAuthCustodiansCmd_t;
 
 /**
@@ -237,6 +262,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthCustodiansCmd_Payload_t Payload;
 } BPNode_RemoveAuthCustodiansCmd_t;
 
 /**
@@ -245,6 +271,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthReportToEidCmd_Payload_t Payload;
 } BPNode_AddAuthReportToEidCmd_t;
 
 /**
@@ -253,6 +280,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthReportToEidCmd_Payload_t Payload;
 } BPNode_RemoveAuthReportToEidCmd_t;
 
 /**
@@ -261,6 +289,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddLatencyCmd_Payload_t Payload;
 } BPNode_AddLatencyCmd_t;
 
 /**
@@ -269,6 +298,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveLatencyCmd_Payload_t Payload;
 } BPNode_RemoveLatencyCmd_t;
 
 /**
@@ -277,6 +307,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactSetupCmd_Payload_t Payload;
 } BPNode_ContactSetupCmd_t;
 
 /**
@@ -285,6 +316,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactStartCmd_Payload_t Payload;
 } BPNode_ContactStartCmd_t;
 
 /**
@@ -293,6 +325,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactStopCmd_Payload_t Payload;
 } BPNode_ContactStopCmd_t;
 
 /**
@@ -301,6 +334,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactTeardownCmd_Payload_t Payload;
 } BPNode_ContactTeardownCmd_t;
 
 /**
@@ -309,6 +343,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddMibArrayKeyCmd_Payload_t Payload;
 } BPNode_AddMibArrayKeyCmd_t;
 
 /**
@@ -317,6 +352,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveMibArrayKeyCmd_Payload_t Payload;
 } BPNode_RemoveMibArrayKeyCmd_t;
 
 /**
@@ -325,6 +361,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SetMibItemCmd_Payload_t Payload;
 } BPNode_SetMibItemCmd_t;
 
 /**
@@ -333,6 +370,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddStorageAllocationCmd_Payload_t Payload;
 } BPNode_AddStorageAllocationCmd_t;
 
 /**
@@ -341,6 +379,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveStorageAllocationCmd_Payload_t Payload;
 } BPNode_RemoveStorageAllocationCmd_t;
 
 /**
@@ -349,6 +388,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_PerformSelfTestCmd_Payload_t Payload;
 } BPNode_PerformSelfTestCmd_t;
 
 /**
@@ -357,6 +397,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SendNodeMibConfigHkCmd_Payload_t Payload;
 } BPNode_SendNodeMibConfigHkCmd_t;
 
 /**
@@ -365,6 +406,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SendSourceMibConfigHkCmd_Payload_t Payload;
 } BPNode_SendSourceMibConfigHkCmd_t;
 
 /**
@@ -373,6 +415,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SendNodeMibCountersHkCmd_Payload_t Payload;
 } BPNode_SendNodeMibCountersHkCmd_t;
 
 /**
@@ -381,6 +424,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SendSourceMibCountersHkCmd_Payload_t Payload;
 } BPNode_SendSourceMibCountersHkCmd_t;
 
 /**
@@ -389,6 +433,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SendStorageHkCmd_Payload_t Payload;
 } BPNode_SendStorageHkCmd_t;
 
 /**
@@ -397,6 +442,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SendChannelContactStatHkCmd_Payload_t Payload;
 } BPNode_SendChannelContactStatHkCmd_t;
 
 
