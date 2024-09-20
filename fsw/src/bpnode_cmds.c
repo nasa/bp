@@ -44,11 +44,22 @@
 ** Function Definitions
 */
 
+/* BPLib to cFE translate function */
+CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status)
+{
+    CFE_Status_t cFE_Status;
+
+    return cFE_Status;
+}
+
 /* Noop command */
-CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
+CFE_Status_t BPNode_NoopCmd()
 {
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+    BPLib_Status_t BPLib_Status;
+
+    BPLib_Status = BPLib_NC_NoopCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -63,12 +74,16 @@ CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
     BPLib_EM_SendEvent(BPNODE_NOOP_INF_EID, BPLib_EM_EventType_INFORMATION, 
                         "No-op command. %s", VersionString);
 
-    return CFE_SUCCESS;
+    return BPLib_to_cFE(BPLib_Status);;
 }
 
 /* Add all applications command */
 CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *Msg)
 {
+    /*
+    BPLib_NC_<func>(Msg);
+    */
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,

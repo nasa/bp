@@ -39,6 +39,8 @@
 ** Exported Functions
 */
 
+CFE_Status_t BPLib_to_cFE(BPLib_Status_t BP_Status)
+
 /**
  * \brief Noop command
  *
@@ -48,12 +50,12 @@
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
+ *  \param[in] None
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg);
+CFE_Status_t BPNode_NoopCmd();
 
 /**
  * \brief Add All Applications command
