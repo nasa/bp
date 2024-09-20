@@ -57,7 +57,7 @@ void Test_BPNode_AppMain_Nominal(void)
 void Test_BPNode_AppMain_FailedInit(void)
 {
     /* Failure of BPNode_AppInit()*/
-    UT_SetDeferredRetcode(UT_KEY(CFE_EVS_Register), 1, CFE_EVS_INVALID_PARAMETER);
+    UT_SetDeferredRetcode(UT_KEY(BPLib_EM_Init), 1, CFE_EVS_INVALID_PARAMETER);
 
     BPNode_AppMain();
 
@@ -80,7 +80,7 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 /* Test app main loop after wakeup pipe read error */
 void Test_BPNode_AppMain_WakeupErr(void)
 {
-    UT_CheckEvent_t  EventTest;
+    UT_CheckEvent_t EventTest;
 
     /* Wakeup pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -145,7 +145,7 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test wakeup process after failing Time maintenance activities */
@@ -164,7 +164,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -186,8 +186,8 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Test wakeup process after receiving null buffer */
@@ -204,7 +204,7 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test wakeup process after command receive error */
@@ -217,27 +217,26 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
  
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test app initialization in nominal case */
 void Test_BPNode_AppInit_Nominal(void)
 {
     UT_CheckEvent_t EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, "BPNode Initialized: %s");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(EventTest.MatchCount, 1);
 }
 
-/* Test app initialization after EVS registration failure */
+/* Test app initialization after event management initialization failure */
 void Test_BPNode_AppInit_FailedEvs(void)
 {
-    /* Failure to register with event services */
-    UT_SetDeferredRetcode(UT_KEY(CFE_EVS_Register), 1, CFE_EVS_INVALID_PARAMETER);
+    /* Failure to register with event management */
+    UT_SetDeferredRetcode(UT_KEY(BPLib_EM_Init), 1, CFE_EVS_INVALID_PARAMETER);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_EVS_INVALID_PARAMETER);
 
@@ -256,7 +255,7 @@ void Test_BPNode_AppInit_FailedCmdPipeCreate(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -271,7 +270,7 @@ void Test_BPNode_AppInit_FailedWakeupPipeCreate(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
     
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -286,7 +285,7 @@ void Test_BPNode_AppInit_FailedCommandSub(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -301,7 +300,7 @@ void Test_BPNode_AppInit_FailedWakeupSub(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -317,7 +316,7 @@ void Test_BPNode_AppInit_FailedTblInit(void)
 
     UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
@@ -327,9 +326,8 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_FWP_INIT_ERR_EID, "BPNode: Failure initializing function callbacks, RC = 0x%08lX");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CALLBACK_INIT_ERROR);
     
@@ -382,11 +380,11 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
 
     UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_Init), 1, BPLIB_TIME_READ_ERROR);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_INIT_ERR_EID, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_INIT_ERR_EID, "Error initializing BPLib Time Management, RC = %d");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
     
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 

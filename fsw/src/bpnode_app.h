@@ -48,6 +48,8 @@
 #include "fwp_adup.h"
 
 
+#include "bplib.h"
+
 /*
 ** Type Definitions
 */

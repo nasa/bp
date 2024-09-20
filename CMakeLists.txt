@@ -11,6 +11,7 @@ set(APP_SRC_FILES
   # FWP files
   fsw/fwp/fwp_timep.c
   fsw/fwp/fwp_tablep.c
+  fsw/fwp/fwp_evp.c
   fsw/fwp/fwp_adup.c
   fsw/fwp/fwp_perflogp.c
 )
