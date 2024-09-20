@@ -49,6 +49,16 @@ CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status)
 {
     CFE_Status_t cFE_Status;
 
+    switch(BPLib_Status)
+    {
+        case BPLIB_SUCCESS:
+            cFE_Status = CFE_SUCCESS;
+            break;
+        default:
+            cFE_Status = CFE_STATUS_NOT_IMPLEMENTED;
+            break;
+    }
+
     return cFE_Status;
 }
 
