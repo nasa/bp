@@ -124,7 +124,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
 
     /* === INFO event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION, "INFO event message test");
+    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_INFORMATION, "INFO event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
@@ -133,7 +133,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
 
     /* === ERROR event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(01, CFE_EVS_EventType_ERROR, "ERROR event message test");
+    Status = BPA_EVP_SendEvent(01, BPLib_EM_EventType_ERROR, "ERROR event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
@@ -142,7 +142,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
 
     /* === DEBUG event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(0x42, CFE_EVS_EventType_DEBUG, "DEBUG event message test");
+    Status = BPA_EVP_SendEvent(0x42, BPLib_EM_EventType_DEBUG, "DEBUG event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
@@ -151,7 +151,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
 
     /* === CRITICAL event message test === */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent((unsigned long) 123, CFE_EVS_EventType_CRITICAL, "CRITICAL event message test");
+    Status = BPA_EVP_SendEvent((unsigned long) 123, BPLib_EM_EventType_CRITICAL, "CRITICAL event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
@@ -172,7 +172,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION,
+    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_INFORMATION,
                                 "Bad return INFO event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
@@ -186,7 +186,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_ERROR,
+    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_ERROR,
                                 "Bad return ERROR event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
@@ -200,7 +200,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_DEBUG,
+    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_DEBUG,
                         "Bad return DEBUG event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
@@ -214,7 +214,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
 
     /* Call function under test */
     Status = BPLIB_UNKNOWN;
-    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_INFORMATION,
+    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_INFORMATION,
                                 "Bad return INFO event message test");
 
     /* Verify that the EVS function that is being proxied, was called */
@@ -228,7 +228,7 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
 
     /* Call function under test */
     Status = BPLIB_SUCCESS;
-    Status = BPA_EVP_SendEvent(42, CFE_EVS_EventType_ERROR,
+    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_ERROR,
                                 "Bad return ERROR event message test");
 
     /* Verify that the EVS function that is being proxied, was called */

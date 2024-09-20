@@ -52,7 +52,7 @@ int32 BPNode_AduOutCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_SEM_ERR_EID, CFE_EVS_EventType_ERROR,
+            CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
                         "Failed to create the ADU Out #%d task init semaphore. Error = %d.", 
                         i, Status);
             return Status;
@@ -68,7 +68,7 @@ int32 BPNode_AduOutCreateTasks(void)
 
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_OUT_CREATE_ERR_EID, CFE_EVS_EventType_ERROR,
+            CFE_EVS_SendEvent(BPNODE_ADU_OUT_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Failed to create the ADU Out #%d child task. Error = %d.", 
                             i, Status);
             return Status;
@@ -82,7 +82,7 @@ int32 BPNode_AduOutCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_OUT_RUN_ERR_EID, CFE_EVS_EventType_ERROR,
+            CFE_EVS_SendEvent(BPNODE_ADU_OUT_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
                             "ADU Out #%d task not running. Init Sem Error = %d.", 
                             i, Status);
             return Status;
@@ -104,7 +104,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_OUT_NO_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(BPNODE_ADU_OUT_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU Out #?]: Failed to get task ID. Error = %d", Status);
         return Status;        
     }
@@ -120,7 +120,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 
     if (*ChanId == BPNODE_MAX_NUM_CHANNELS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_OUT_INV_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(BPNODE_ADU_OUT_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU Out #?]: Task ID does not match any known task IDs. ID = %d", 
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
@@ -138,7 +138,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 
     if (Status != OS_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_SEM_TK_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU Out #%d]: Failed to give init semaphore. Error = %d", 
                           *ChanId, Status);
         return Status;
@@ -146,7 +146,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 
     BPNode_AppData.AduOutData[*ChanId].RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_INF_EID, CFE_EVS_EventType_INFORMATION,
+    CFE_EVS_SendEvent(BPNODE_ADU_OUT_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
                       "[ADU Out #%d]: Child Task Initialized.", *ChanId);
 
     return CFE_SUCCESS;
@@ -166,7 +166,7 @@ void BPNode_AduOut_AppMain(void)
         /* Channel ID can't be determined, shut down immediately */
         if (ChanId == BPNODE_MAX_NUM_CHANNELS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_OUT_UNK_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+            CFE_EVS_SendEvent(BPNODE_ADU_OUT_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "Terminating Unknown ADU Out Task.");
 
             /* In case event services is not working, add a message to the system log */
@@ -206,7 +206,7 @@ void BPNode_AduOut_AppMain(void)
 /* Exit child task */
 void BPNode_AduOut_TaskExit(uint8 ChanId)
 {
-    CFE_EVS_SendEvent(BPNODE_ADU_OUT_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+    CFE_EVS_SendEvent(BPNODE_ADU_OUT_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "[ADU Out #%d]: Terminating Task. RunStatus = %d.",
                       ChanId, BPNode_AppData.AduOutData[ChanId].RunStatus);
 

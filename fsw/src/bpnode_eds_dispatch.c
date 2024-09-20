@@ -119,14 +119,14 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
         /* Invalid message ID */
         if (Status == CFE_STATUS_UNKNOWN_MSG_ID)
         {
-            BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid command packet,MID = 0x%x", 
                               (uint16) CFE_SB_MsgIdToValue(MsgId));
         }
         /* Invalid message length */
         else if (Status == CFE_STATUS_WRONG_MSG_LENGTH)
         {
-            BPLib_EM_SendEvent(BPNODE_CMD_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CMD_LEN_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u",
                               (uint16) CFE_SB_MsgIdToValue(MsgId), 
                               (uint8) MsgFc, (uint16) MsgSize);
@@ -134,7 +134,7 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
         /* Invalid command code */
         else
         {
-            BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid ground command code: CC = %d", (uint8) MsgFc);
         }
     }
