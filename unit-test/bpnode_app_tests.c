@@ -224,7 +224,7 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 void Test_BPNode_AppInit_Nominal(void)
 {
     UT_CheckEvent_t EventTest;
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, "BPNODE Initialized: %s");
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, "BPNode Initialized: %s");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     
@@ -331,7 +331,7 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CALLBACK_INIT_ERROR);
     
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
