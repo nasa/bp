@@ -67,9 +67,9 @@ CFE_Status_t BPNode_NoopCmd()
 {
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
-    BPLib_Status_t BPLib_Status;
+    BPLib_Status_t Status;
 
-    BPLib_Status = BPLib_NC_NoopCmd();
+    Status = BPLib_NC_NoopCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -84,22 +84,17 @@ CFE_Status_t BPNode_NoopCmd()
     BPLib_EM_SendEvent(BPNODE_NOOP_INF_EID, BPLib_EM_EventType_INFORMATION, 
                         "No-op command. %s", VersionString);
 
-    return BPLib_to_cFE(BPLib_Status);;
+    return BPLib_to_cFE(Status);;
 }
 
 /* Add all applications command */
-CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *Msg)
+CFE_Status_t BPNode_AddAllApplicationsCmd()
 {
-    /*
-    BPLib_NC_<func>(Msg);
-    */
+    BPLib_Status_t Status;
 
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    Status = BPLib_NC_AddAllApplicationsCmd();
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add all applications command not implemented");
-
-    return CFE_SUCCESS;
+    return BPLib_to_cFE(Status);
 }
 
 /* Start all applications command */

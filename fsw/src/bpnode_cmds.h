@@ -39,7 +39,7 @@
 ** Exported Functions
 */
 
-CFE_Status_t BPLib_to_cFE(BPLib_Status_t BP_Status)
+CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status);
 
 /**
  * \brief Noop command
