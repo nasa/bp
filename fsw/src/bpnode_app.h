@@ -42,13 +42,20 @@
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
 #include "bpnode_tbl.h"
+#include "bpnode_eventids.h"
+#include "bpnode_adu_in.h"
+#include "bpnode_adu_out.h"
+#include "fwp_adup.h"
+
+
+#include "bplib.h"
 
 /*
 ** Type Definitions
 */
 
 /** 
-** \brief Global Data
+** \brief Table Data
 */
 typedef struct
 {
@@ -58,8 +65,11 @@ typedef struct
     uint32                      TableSize;
     void*                       TablePtr;
     CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
-}BPNode_TblNameParams_t;
+} BPNode_TblNameParams_t;
 
+/** 
+** \brief Global Data
+*/
 typedef struct
 {
     uint32 RunStatus;                       /**< \brief Run status for main processing loop */
@@ -70,6 +80,10 @@ typedef struct
     BPNode_TblNameParams_t  *TblNameParamsArr;
 
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
+
+    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
+    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
+    BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
 
 } BPNode_AppData_t;
 
@@ -128,5 +142,16 @@ CFE_Status_t BPNode_AppInit(void);
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
 CFE_Status_t BPNode_WakeupProcess(void);
+
+/**
+ * \brief Exit app
+ *
+ *  \par Description
+ *       This function cleans up the main and child tasks and shuts them down
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ */
+void BPNode_AppExit(void);
 
 #endif /* BPNODE_APP_H */

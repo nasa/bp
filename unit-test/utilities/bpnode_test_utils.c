@@ -33,6 +33,7 @@
 #include "cfe_evs.h"
 
 #include "bpnode_test_utils.h"
+#include "bplib.h"
 
 #include "utassert.h"
 #include "uttest.h"
@@ -40,14 +41,14 @@
 
 /* An example hook function to check for a specific event */
 static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
-                                va_list va)
+                                      va_list va)
 {
     UT_CheckEvent_t *State = UserObj;
     uint16           EventId;
     const char *     Spec;
 
     /*
-     * The CFE_EVS_SendEvent stub passes the EventID as the
+     * The BPLib_EM_SendEvent stub passes the EventID as the
      * first context argument.
      */
     if (Context->ArgCount > 0)
@@ -86,12 +87,26 @@ static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCou
                     {
                         ++State->MatchCount;
                     }
+                    else // Print mismatched expected vs. actual event format strings.
+                    {
+                        UtPrintf("CheckEvent: Mismatched event format string.");
+                        UtPrintf("CheckEvent: Expected - [%s]", State->ExpectedFormat);
+                        UtPrintf("CheckEvent: Actual - [%s]", Spec);
+                    }
+                }
+                else
+                {
+                    UtPrintf(" <!> Spec is NULL");
                 }
             }
             else
             {
                 ++State->MatchCount;
             }
+        }
+        else
+        {
+            UtPrintf(" <!> Expected event ID of %d, received %d", State->ExpectedEvent, EventId);
         }
     }
 
@@ -100,7 +115,7 @@ static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCou
 
 /*
  * Helper function to set up for event checking
- * This attaches the hook function to CFE_EVS_SendEvent
+ * This attaches the hook function to BPLib_EM_SendEvent
  */
 void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
                               const char *ExpectedFormat)
@@ -116,6 +131,7 @@ void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const 
     memset(Evt, 0, sizeof(*Evt));
     Evt->ExpectedEvent  = ExpectedEvent;
     Evt->ExpectedFormat = ExpectedFormat;
+    UT_SetVaHookFunction(UT_KEY(BPLib_EM_SendEvent), UT_CheckEvent_Hook, Evt);
     UT_SetVaHookFunction(UT_KEY(CFE_EVS_SendEvent), UT_CheckEvent_Hook, Evt);
 }
 

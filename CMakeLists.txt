@@ -6,10 +6,15 @@ set(APP_SRC_FILES
   fsw/src/bpnode_cmds.c
   fsw/src/bpnode_utils.c
   fsw/src/bpnode_cla_bundle_io.c
+  fsw/src/bpnode_adu_out.c
+  fsw/src/bpnode_adu_in.c
 
   # FWP files
   fsw/fwp/fwp_timep.c
   fsw/fwp/fwp_tablep.c
+  fsw/fwp/fwp_evp.c
+  fsw/fwp/fwp_adup.c
+  fsw/fwp/fwp_perflogp.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)

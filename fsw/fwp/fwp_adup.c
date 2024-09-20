@@ -19,20 +19,50 @@
  */
 
 /**
- * @file
- *   Top-level Framework Proxy (FWP) include header
+ * \file
+ *   This file contains the source code for the FWP ADU Proxy.
  */
-#ifndef FWP_H
-#define FWP_H
+
+/*
+** Include Files
+*/
+
+#include "cfe.h"
+#include "fwp_adup.h"
+#include "bpnode_app.h"
 
 
 /*
-** Include
+** Function Definitions
 */
 
-#include "fwp_timep.h"
-#include "fwp_tablep.h"
-#include "fwp_evp.h"
-#include "fwp_perflogp.h"
+/* Ingest an ADU */
+BPLib_Status_t BPA_ADUP_In(void *AduPtr)
+{
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived++;
+    return BPLIB_SUCCESS;
+}
 
-#endif
+/* Send out an ADU */
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
+{
+    return BPLIB_SUCCESS;
+}
+
+/* Add a new application's configurations */
+void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
+{
+    return;
+}
+
+/* Start an application */
+void BPA_ADUP_StartApplication(uint8_t ChanId)
+{
+    return;
+}
+
+/* Stop an application */
+void BPA_ADUP_StopApplication(uint8_t ChanId)
+{
+    return;
+}

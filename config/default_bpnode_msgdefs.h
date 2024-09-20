@@ -32,6 +32,8 @@
 #include "common_types.h"
 #include "bpnode_fcncodes.h"
 
+#include "bplib.h"
+
 /*
 ** Type Definitions
 */
@@ -59,8 +61,14 @@ typedef struct BPNode_SourceMibConfigHkTlm_Payload
  */
 typedef struct BPNode_NodeMibCountersHkTlm_Payload
 {
-    uint16 AcceptedDirectiveCount;
-    uint16 RejectedDirectiveCount;
+    uint16 AcceptedDirectiveCount;  /**< \brief Accepted Directive Count */
+    uint16 RejectedDirectiveCount;  /**< \brief Rejected Directive Count */
+    uint16 AduCountDelivered;       /**< \brief ADU Delivered Count */
+    uint16 AduCountReceived;        /**< \brief ADU Received Count */
+
+    uint32 TimeBootEra;             /**< \brief Boot Era for Monotonic Time */
+    int64  MonotonicTime;           /**< \brief Monotonic Time Counter */
+    int64  CorrelationFactor;       /**< \brief Time Correlation Factor */
 } BPNode_NodeMibCountersHkTlm_Payload_t;
 
 /**

@@ -34,7 +34,7 @@
 #define BPNODE_TBLDEFS_H
 
 #include "common_types.h"
-#include "bpnode_mission_cfg.h"
+#include "bpnode_platform_cfg.h"
 
 /************************************************************************
  * Macro Definitions
@@ -45,8 +45,7 @@
 #define BPNODE_MAX_NUM_LATENCY_SRC      10
 #define BPNODE_MAX_NUM_STORE_SET        10
 #define BPNODE_MAX_NUM_CANONICAL_BLOCK  10
-#define BPNODE_MAX_NUM_ADUPROXY         10
-#define BPNODE_MAX_NUM_CHANNELS         10
+#define BPNODE_MAX_NUM_CONTACTS         10
 #define BPNODE_MAX_NUM_MIB_PS           10
 #define BPNODE_MAX_MUN_CRS              10
 
@@ -66,7 +65,7 @@ typedef struct
 
 typedef struct
 {
-    BPNode_ADUProxySet_t ADUP_Set[BPNODE_MAX_NUM_ADUPROXY];
+    BPNode_ADUProxySet_t ADUP_Set[BPNODE_MAX_NUM_CHANNELS];
 }BPNode_ADUProxyTable_t;
 
 /*
