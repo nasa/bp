@@ -98,8 +98,10 @@ CFE_Status_t BPNode_AddAllApplicationsCmd()
 }
 
 /* Start all applications command */
-CFE_Status_t BPNode_StartAllApplicationsCmd(const BPNode_StartAllApplicationsCmd_t *Msg)
+CFE_Status_t BPNode_StartAllApplicationsCmd()
 {
+    BPLib_NC_StartAllApplicationsCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -111,6 +113,8 @@ CFE_Status_t BPNode_StartAllApplicationsCmd(const BPNode_StartAllApplicationsCmd
 /* Verify bundle storage command */
 CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t *Msg)
 {
+    BPLib_NC_VerifyBundleStorageCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -122,6 +126,8 @@ CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t
 /* Initialize bundle storage command */
 CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Msg)
 {
+    BPLib_NC_InitBundleStorageCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -133,6 +139,8 @@ CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Ms
 /* Verify bundle metadata (7.2) command */
 CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd_t *Msg)
 {
+    BPLib_NC_VerifyBundleMetadataCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -144,6 +152,8 @@ CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd
 /* Rebuild bundle metadata command */
 CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataCmd_t *Msg)
 {
+    BPLib_NC_RebuildBundleMetadataCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -155,6 +165,8 @@ CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataC
 /* Clear volatile command */
 CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg)
 {
+    BPLib_NC_ClearVolatileCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -166,6 +178,8 @@ CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg)
 /* Reload saved data (7.2) command */
 CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
 {
+    BPLib_NC_ReloadSavedDataCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -177,6 +191,8 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
 /* Reset all counters command */
 CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 {
+    BPLib_NC_ResetAllCountersCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
@@ -191,6 +207,8 @@ CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 /* Reset counter command */
 CFE_Status_t BPNode_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 {
+    BPLib_NC_ResetCounterCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -202,6 +220,8 @@ CFE_Status_t BPNode_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 /* Reset source counters command */
 CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
 {
+    BPLib_NC_ResetSourceCountersCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -213,6 +233,8 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
 /* Reset bundle counters command */
 CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t *Msg)
 {
+    BPLib_NC_ResetBundleCountersCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -224,6 +246,8 @@ CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t
 /* Reset error counters command */
 CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *Msg)
 {
+    BPLib_NC_ResetErrorCountersCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -235,6 +259,8 @@ CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *
 /* Add application command */
 CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
+    BPLib_NC_AddApplicationCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -246,6 +272,8 @@ CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 /* Remove application command */
 CFE_Status_t BPNode_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
 {
+    BPLib_NC_RemoveApplicationCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -257,6 +285,8 @@ CFE_Status_t BPNode_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Ms
 /* Set registration state command */
 CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
 {
+    BPLib_NC_SetRegistrationStateCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -268,6 +298,8 @@ CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd
 /* Start application command */
 CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
+    BPLib_NC_StartApplicationCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -279,6 +311,8 @@ CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 /* Stop application command */
 CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
+    BPLib_NC_StopApplicationCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -290,6 +324,8 @@ CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 /* Add authorized sources command */
 CFE_Status_t BPNode_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 {
+    BPLib_NC_AddAuthSourcesCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -301,6 +337,8 @@ CFE_Status_t BPNode_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 /* Remove authorized sources command */
 CFE_Status_t BPNode_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg)
 {
+    BPLib_NC_RemoveAuthSourcesCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -312,6 +350,8 @@ CFE_Status_t BPNode_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Ms
 /* Add authorized custody sources command */
 CFE_Status_t BPNode_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg)
 {
+    BPLib_NC_AddAuthCustodySourcesCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -323,6 +363,8 @@ CFE_Status_t BPNode_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesC
 /* Remove authorized custody sources command */
 CFE_Status_t BPNode_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg)
 {
+    BPLib_NC_RemoveAuthCustodySourcesCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -334,6 +376,8 @@ CFE_Status_t BPNode_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySo
 /* Add authorized custodians command */
 CFE_Status_t BPNode_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg)
 {
+    BPLib_NC_AddAuthCustodiansCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -345,6 +389,8 @@ CFE_Status_t BPNode_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Ms
 /* Remove authorized custodians command */
 CFE_Status_t BPNode_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg)
 {
+    BPLib_RemoveAuthCustodiansCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -356,6 +402,8 @@ CFE_Status_t BPNode_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd
 /* Add authorized report-to eid command */
 CFE_Status_t BPNode_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg)
 {
+    BPLib_NC_AddAuthReportToEidCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -367,6 +415,8 @@ CFE_Status_t BPNode_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *
 /* Remove authorized report-to eid command */
 CFE_Status_t BPNode_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg)
 {
+    BPLib_NC_RemoveAuthReportToEidCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -378,6 +428,8 @@ CFE_Status_t BPNode_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidC
 /* Add latency command */
 CFE_Status_t BPNode_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 {
+    BPLib_NC_AddLatencyCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -389,6 +441,8 @@ CFE_Status_t BPNode_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 /* Remove latency command */
 CFE_Status_t BPNode_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 {
+    BPLib_NC_RemoveLatencyCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -400,6 +454,8 @@ CFE_Status_t BPNode_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 /* Contact setup command */
 CFE_Status_t BPNode_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 {
+    BPLib_NC_ContactSetupCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -411,6 +467,8 @@ CFE_Status_t BPNode_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 /* Contact start command */
 CFE_Status_t BPNode_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 {
+    BPLib_NC_ContactStartCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -422,6 +480,8 @@ CFE_Status_t BPNode_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 /* Contact stop command */
 CFE_Status_t BPNode_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 {
+    BPLib_NC_ContactStopCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -433,6 +493,8 @@ CFE_Status_t BPNode_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 /* Contact teardown command */
 CFE_Status_t BPNode_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 {
+    BPLib_NC_ContactTeardownCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -444,6 +506,8 @@ CFE_Status_t BPNode_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 /* Add mib array key command */
 CFE_Status_t BPNode_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 {
+    BPLib_NC_AddMibArrayKeyCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -455,6 +519,8 @@ CFE_Status_t BPNode_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 /* Remove mib array key command */
 CFE_Status_t BPNode_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg)
 {
+    BPLib_NC_RemoveMibArrayKeyCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -466,6 +532,8 @@ CFE_Status_t BPNode_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Ms
 /* Set mib item command */
 CFE_Status_t BPNode_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 {
+    BPLib_NC_SetMibItemCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -477,6 +545,8 @@ CFE_Status_t BPNode_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 /* Add storage allocation command */
 CFE_Status_t BPNode_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
 {
+    BPLib_NC_AddStorageAllocationCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -488,6 +558,8 @@ CFE_Status_t BPNode_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd
 /* Remove storage allocation command */
 CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg)
 {
+    BPLib_NC_RemoveStorageAllocationCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -499,6 +571,8 @@ CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
 /* Perform self test (7.2) command */
 CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg)
 {
+    BPLib_NC_PerformSelfTestCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -510,6 +584,8 @@ CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg)
 /* Send node mib config hk command */
 CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t *Msg)
 {
+    BPLib_NC_SendNodeMibConfigHkCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -521,6 +597,8 @@ CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t
 /* Send per-source mib config hk command */
 CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkCmd_t *Msg)
 {
+    BPLib_NC_SendSourceMibConfigHkCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -533,6 +611,8 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
 CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
     BPLib_TIME_MonotonicTime_t MonotonicTime;
+
+    BPLib_SendNodeMibCountersHkCmd();
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
 
@@ -549,6 +629,8 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkC
 /* Send per-source mib counter hk command */
 CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCountersHkCmd_t *Msg)
 {
+    BPLib_NC_SendSourceMibCountersHkCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -560,6 +642,8 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
 /* Send storage hk command */
 CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 {
+    BPLib_NC_SendStorageHkCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
@@ -571,6 +655,8 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 /* Send channel/contact status hk command */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
 {
+    BPLib_NC_SendChannelContactStatHkCmd();
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
