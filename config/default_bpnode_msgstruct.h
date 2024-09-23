@@ -63,7 +63,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_StartAllApplicationsCmd_Payload_t Payload;
 } BPNode_StartAllApplicationsCmd_t;
 
 /**
@@ -126,7 +125,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_ResetAllCountersCmd_Payload_t Payload;
 } BPNode_ResetAllCountersCmd_t;
 
 /**
@@ -396,7 +394,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_SendNodeMibConfigHkCmd_Payload_t Payload;
 } BPNode_SendNodeMibConfigHkCmd_t;
 
 /**
@@ -414,7 +411,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_SendNodeMibCountersHkCmd_Payload_t Payload;
 } BPNode_SendNodeMibCountersHkCmd_t;
 
 /**
