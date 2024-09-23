@@ -49,8 +49,6 @@ CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status);
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] None
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
@@ -65,8 +63,6 @@ CFE_Status_t BPNode_NoopCmd();
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
@@ -80,8 +76,6 @@ CFE_Status_t BPNode_AddAllApplicationsCmd();
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- *
- *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
@@ -192,8 +186,6 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- *
- *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
@@ -673,8 +665,6 @@ CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg);
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
@@ -704,8 +694,6 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- *
- *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
