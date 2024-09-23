@@ -46,9 +46,14 @@
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
 #include "fwp_adup.h"
+#include "bpnode_cla_in.h"
+#include "bpnode_cla_out.h"
 
 
 #include "bplib.h"
+
+
+#define BPNODE_CLA_PSP_DRIVER_NAME          "unsock_intf"       /*IODriver unsock_intf driver name*/
 
 /*
 ** Type Definitions
@@ -84,6 +89,9 @@ typedef struct
     BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
+    
+    BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
+    BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */        
 
 } BPNode_AppData_t;
 

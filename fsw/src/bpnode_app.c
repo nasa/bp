@@ -38,7 +38,6 @@
 #include "bplib.h"
 #include "fwp.h"
 #include "fwp_tablep.h"
-#include "bpnode_cla_bundle_io.h"
 
 /*
 ** Global Data
@@ -304,15 +303,25 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
     
-    /* Create the CLA task(s) */
-    Status = BPNODE_CLA_Init();
+
+    /* Create CLA In child tasks */
+    Status = BPNode_ClaInCreateTasks();
+
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_CLA_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Failure initializing CLA tasks");
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
+    /* Create CLA Out child tasks */
+    Status = BPNode_ClaOutCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
         return Status;
     }    
-
+    
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
                     BPNODE_MAJOR_VERSION,
                     BPNODE_MINOR_VERSION,

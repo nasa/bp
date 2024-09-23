@@ -45,7 +45,6 @@
 #define BPNODE_MAX_NUM_LATENCY_SRC      10
 #define BPNODE_MAX_NUM_STORE_SET        10
 #define BPNODE_MAX_NUM_CANONICAL_BLOCK  10
-#define BPNODE_MAX_NUM_CONTACTS         10
 #define BPNODE_MAX_NUM_MIB_PS           10
 #define BPNODE_MAX_MUN_CRS              10
 
