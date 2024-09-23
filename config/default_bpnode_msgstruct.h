@@ -71,7 +71,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_VerifyBundleStorageCmd_Payload_t Payload;
 } BPNode_VerifyBundleStorageCmd_t;
 
 /**
@@ -80,7 +79,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_InitBundleStorageCmd_Payload_t Payload;
 } BPNode_InitBundleStorageCmd_t;
 
 /**
@@ -89,7 +87,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_VerifyBundleMetadataCmd_Payload_t Payload;
 } BPNode_VerifyBundleMetadataCmd_t;
 
 /**
@@ -98,7 +95,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_RebuildBundleMetadataCmd_Payload_t Payload;
 } BPNode_RebuildBundleMetadataCmd_t;
 
 /**
@@ -107,7 +103,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_ClearVolatileCmd_Payload_t Payload;
 } BPNode_ClearVolatileCmd_t;
 
 /**
@@ -116,7 +111,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_ReloadSavedDataCmd_Payload_t Payload;
 } BPNode_ReloadSavedDataCmd_t;
 
 /**
@@ -151,7 +145,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_ResetBundleCountersCmd_Payload_t Payload;
 } BPNode_ResetBundleCountersCmd_t;
 
 /**
@@ -160,7 +153,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_ResetErrorCountersCmd_Payload_t Payload;
 } BPNode_ResetErrorCountersCmd_t;
 
 /**
@@ -385,7 +377,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_PerformSelfTestCmd_Payload_t Payload;
 } BPNode_PerformSelfTestCmd_t;
 
 /**
@@ -402,7 +393,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_SendSourceMibConfigHkCmd_Payload_t Payload;
 } BPNode_SendSourceMibConfigHkCmd_t;
 
 /**
@@ -419,7 +409,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_SendSourceMibCountersHkCmd_Payload_t Payload;
 } BPNode_SendSourceMibCountersHkCmd_t;
 
 /**
@@ -428,7 +417,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_SendStorageHkCmd_Payload_t Payload;
 } BPNode_SendStorageHkCmd_t;
 
 /**
@@ -437,7 +425,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
-    BPLib_SendChannelContactStatHkCmd_Payload_t Payload;
 } BPNode_SendChannelContactStatHkCmd_t;
 
 
@@ -487,7 +474,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPNode_StorageHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_StorageHkTlm_t;
 
 /**
@@ -496,7 +482,6 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPNode_ChannelContactStatHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_ChannelContactStatHkTlm_t;
 
 #endif /* BPNODE_MSGSTRUCT_H */

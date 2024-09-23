@@ -91,12 +91,10 @@ CFE_Status_t BPNode_StartAllApplicationsCmd();
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t *Msg);
+CFE_Status_t BPNode_VerifyBundleStorageCmd();
 
 /**
  * \brief Initialize Bundle Storage command
@@ -107,12 +105,10 @@ CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Msg);
+CFE_Status_t BPNode_InitBundleStorageCmd();
 
 /**
  * \brief Verify Bundle Metadata (7.2) command
@@ -123,12 +119,10 @@ CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Ms
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd_t *Msg);
+CFE_Status_t BPNode_VerifyBundleMetadataCmd();
 
 /**
  * \brief Rebuild Bundle Metadata command
@@ -139,12 +133,10 @@ CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataCmd_t *Msg);
+CFE_Status_t BPNode_RebuildBundleMetadataCmd();
 
 /**
  * \brief Clear Volatile command
@@ -155,12 +147,10 @@ CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataC
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg);
+CFE_Status_t BPNode_ClearVolatileCmd();
 
 /**
  * \brief Reload Saved Data (7.2) command
@@ -171,12 +161,10 @@ CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg);
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg);
+CFE_Status_t BPNode_ReloadSavedDataCmd();
 
 /**
  * \brief Reset All Counters command
@@ -233,12 +221,10 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t *Msg);
+CFE_Status_t BPNode_ResetBundleCountersCmd();
 
 /**
  * \brief Reset Error Counters command
@@ -249,12 +235,10 @@ CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *Msg);
+CFE_Status_t BPNode_ResetErrorCountersCmd();
 
 /**
  * \brief Add Application command
@@ -649,12 +633,10 @@ CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg);
+CFE_Status_t BPNode_PerformSelfTestCmd();
 
 /**
  * \brief Send Node MIB Config HK command
@@ -679,12 +661,10 @@ CFE_Status_t BPNode_SendNodeMibConfigHkCmd();
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkCmd_t *Msg);
+CFE_Status_t BPNode_SendSourceMibConfigHkCmd();
 
 /**
  * \brief Send Node MIB Counter HK command
@@ -709,12 +689,10 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd();
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCountersHkCmd_t *Msg);
+CFE_Status_t BPNode_SendSourceMibCountersHkCmd();
 
 /**
  * \brief Send Storage HK command
@@ -725,12 +703,10 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg);
+CFE_Status_t BPNode_SendStorageHkCmd();
 
 /**
  * \brief Send Channel/Contact Status HK command
@@ -741,11 +717,9 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg);
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] Msg Pointer to Software Bus buffer
- *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg);
+CFE_Status_t BPNode_SendChannelContactStatHkCmd();
 
 #endif /* BPNODE_CMDS_H */

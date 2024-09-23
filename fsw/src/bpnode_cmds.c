@@ -112,11 +112,11 @@ CFE_Status_t BPNode_StartAllApplicationsCmd()
 }
 
 /* Verify bundle storage command */
-CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t *Msg)
+CFE_Status_t BPNode_VerifyBundleStorageCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_VerifyBundleStorageCmd(Msg->Payload);
+    Status = BPLib_NC_VerifyBundleStorageCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -127,11 +127,11 @@ CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t
 }
 
 /* Initialize bundle storage command */
-CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Msg)
+CFE_Status_t BPNode_InitBundleStorageCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_InitBundleStorageCmd(Msg->Payload);
+    Status = BPLib_NC_InitBundleStorageCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -142,11 +142,11 @@ CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Ms
 }
 
 /* Verify bundle metadata (7.2) command */
-CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd_t *Msg)
+CFE_Status_t BPNode_VerifyBundleMetadataCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_VerifyBundleMetadataCmd(Msg->Payload);
+    Status = BPLib_NC_VerifyBundleMetadataCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -157,11 +157,11 @@ CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd
 }
 
 /* Rebuild bundle metadata command */
-CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataCmd_t *Msg)
+CFE_Status_t BPNode_RebuildBundleMetadataCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RebuildBundleMetadataCmd(Msg->Payload);
+    Status = BPLib_NC_RebuildBundleMetadataCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -172,11 +172,11 @@ CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataC
 }
 
 /* Clear volatile command */
-CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg)
+CFE_Status_t BPNode_ClearVolatileCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ClearVolatileCmd(Msg->Payload);
+    Status = BPLib_NC_ClearVolatileCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -187,11 +187,11 @@ CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg)
 }
 
 /* Reload saved data (7.2) command */
-CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
+CFE_Status_t BPNode_ReloadSavedDataCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ReloadSavedDataCmd(Msg->Payload);
+    Status = BPLib_NC_ReloadSavedDataCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -250,11 +250,11 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
 }
 
 /* Reset bundle counters command */
-CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t *Msg)
+CFE_Status_t BPNode_ResetBundleCountersCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetBundleCountersCmd(Msg->Payload);
+    Status = BPLib_NC_ResetBundleCountersCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -265,11 +265,11 @@ CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t
 }
 
 /* Reset error counters command */
-CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *Msg)
+CFE_Status_t BPNode_ResetErrorCountersCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetErrorCountersCmd(Msg->Payload);
+    Status = BPLib_NC_ResetErrorCountersCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -640,11 +640,11 @@ CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
 }
 
 /* Perform self test (7.2) command */
-CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg)
+CFE_Status_t BPNode_PerformSelfTestCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_PerformSelfTestCmd(Msg->Payload);
+    Status = BPLib_NC_PerformSelfTestCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -670,11 +670,11 @@ CFE_Status_t BPNode_SendNodeMibConfigHkCmd()
 }
 
 /* Send per-source mib config hk command */
-CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkCmd_t *Msg)
+CFE_Status_t BPNode_SendSourceMibConfigHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendSourceMibConfigHkCmd(Msg->Payload);
+    Status = BPLib_NC_SendSourceMibConfigHkCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -705,11 +705,11 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd()
 }
 
 /* Send per-source mib counter hk command */
-CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCountersHkCmd_t *Msg)
+CFE_Status_t BPNode_SendSourceMibCountersHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendSourceMibCountersHkCmd(Msg->Payload);
+    Status = BPLib_NC_SendSourceMibCountersHkCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -720,11 +720,11 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCounter
 }
 
 /* Send storage hk command */
-CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
+CFE_Status_t BPNode_SendStorageHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendStorageHkCmd(Msg->Payload);
+    Status = BPLib_NC_SendStorageHkCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -735,11 +735,11 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 }
 
 /* Send channel/contact status hk command */
-CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
+CFE_Status_t BPNode_SendChannelContactStatHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendChannelContactStatHkCmd(Msg->Payload);
+    Status = BPLib_NC_SendChannelContactStatHkCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
