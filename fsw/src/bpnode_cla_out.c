@@ -113,7 +113,7 @@ int32 BPNode_ClaOutCreateTasks(void)
         CFE_ES_PerfLogExit(BPNODE_PERF_ID);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].InitSemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
-        CFE_ES_PerfLogEntry(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
         {
@@ -164,12 +164,12 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     BPNode_AppData.ClaOutData[*ContId].PerfId = BPNODE_CLA_OUT_PERF_ID_BASE + *ContId;
 
     /* Start performance log */
-    CFE_ES_PerfLogEntry(BPNode_AppData.ClaOutData[*ContId].PerfId);
+    BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[*ContId].PerfId);
 
     /* Notify main task that child task is running */
     CFE_ES_PerfLogExit(BPNode_AppData.ClaOutData[*ContId].PerfId);
     Status = OS_BinSemGive(BPNode_AppData.ClaOutData[*ContId].InitSemId);
-    CFE_ES_PerfLogEntry(BPNode_AppData.ClaOutData[*ContId].PerfId);
+    BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[*ContId].PerfId);
 
     if (Status != OS_SUCCESS)
     {
