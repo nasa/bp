@@ -24,9 +24,9 @@
  */
 
 
-/*
-** Include Files
-*/
+/* ======== */
+/* Includes */
+/* ======== */
 
 #include "bpnode_app.h"
 #include "bpnode_cmds.h"
@@ -39,10 +39,9 @@
 
 #include "bplib.h"
 
-
-/*
-** Function Definitions
-*/
+/* ==================== */
+/* Function Definitions */
+/* ==================== */
 
 /* BPLib to cFE translate function */
 CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status)
@@ -203,7 +202,7 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
 }
 
 /* Reset all counters command */
-CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
+CFE_Status_t BPNode_ResetAllCountersCmd()
 {
     BPLib_Status_t Status;
 
@@ -656,7 +655,7 @@ CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg)
 }
 
 /* Send node mib config hk command */
-CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t *Msg)
+CFE_Status_t BPNode_SendNodeMibConfigHkCmd()
 {
     BPLib_Status_t Status;
 
@@ -686,7 +685,7 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
 }
 
 /* Send Node MIB Counters housekeeping command */
-CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
+CFE_Status_t BPNode_SendNodeMibCountersHkCmd()
 {
     BPLib_Status_t Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;

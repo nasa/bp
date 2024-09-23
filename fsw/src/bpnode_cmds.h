@@ -26,18 +26,17 @@
 #ifndef BPNODE_CMDS_H
 #define BPNODE_CMDS_H
 
-
-/*
-** Include Files
-*/
+/* ======== */
+/* Includes */
+/* ======== */
 
 #include "cfe_error.h"
 #include "bpnode_msg.h"
 
 
-/*
-** Exported Functions
-*/
+/* =================== */
+/* Function Prototypes */
+/* =================== */
 
 CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status);
 
@@ -71,7 +70,7 @@ CFE_Status_t BPNode_NoopCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *Msg);
+CFE_Status_t BPNode_AddAllApplicationsCmd();
 
 /**
  * \brief Start All Applications command
@@ -87,7 +86,7 @@ CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_StartAllApplicationsCmd(const BPNode_StartAllApplicationsCmd_t *Msg);
+CFE_Status_t BPNode_StartAllApplicationsCmd();
 
 /**
  * \brief Verify Bundle Storage command
@@ -199,7 +198,7 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg);
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg);
+CFE_Status_t BPNode_ResetAllCountersCmd();
 
 /**
  * \brief Reset Counter command
@@ -679,7 +678,7 @@ CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg);
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t *Msg);
+CFE_Status_t BPNode_SendNodeMibConfigHkCmd();
 
 /**
  * \brief Send Per-Source MIB Config HK command
@@ -711,7 +710,7 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg);
+CFE_Status_t BPNode_SendNodeMibCountersHkCmd();
 
 /**
  * \brief Send Per-Source MIB Counter HK command
@@ -760,7 +759,5 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg);
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg);
-
-
 
 #endif /* BPNODE_CMDS_H */
