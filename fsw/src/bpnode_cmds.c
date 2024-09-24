@@ -91,6 +91,8 @@ CFE_Status_t BPNode_AddAllApplicationsCmd()
 {
     BPLib_Status_t Status;
 
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
     Status = BPLib_NC_AddAllApplicationsCmd();
 
     return BPLib_to_cFE(Status);
@@ -101,12 +103,9 @@ CFE_Status_t BPNode_StartAllApplicationsCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_StartAllApplicationsCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Start all applications command not implemented");
+    Status = BPLib_NC_StartAllApplicationsCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -116,12 +115,9 @@ CFE_Status_t BPNode_VerifyBundleStorageCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_VerifyBundleStorageCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Verify bundle storage command not implemented");
+    Status = BPLib_NC_VerifyBundleStorageCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -131,12 +127,9 @@ CFE_Status_t BPNode_InitBundleStorageCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_InitBundleStorageCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Initialize bundle storage command not implemented");
+    Status = BPLib_NC_InitBundleStorageCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -146,12 +139,9 @@ CFE_Status_t BPNode_VerifyBundleMetadataCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_VerifyBundleMetadataCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Verify bundle metadata (7.2) command not implemented");
+    Status = BPLib_NC_VerifyBundleMetadataCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -161,12 +151,9 @@ CFE_Status_t BPNode_RebuildBundleMetadataCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RebuildBundleMetadataCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Rebuild bundle metadata command not implemented");
+    Status = BPLib_NC_RebuildBundleMetadataCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -176,12 +163,9 @@ CFE_Status_t BPNode_ClearVolatileCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ClearVolatileCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Clear volatile command not implemented");
+    Status = BPLib_NC_ClearVolatileCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -191,12 +175,9 @@ CFE_Status_t BPNode_ReloadSavedDataCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ReloadSavedDataCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Reload saved data (7.2) command not implemented");
+    Status = BPLib_NC_ReloadSavedDataCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -206,15 +187,9 @@ CFE_Status_t BPNode_ResetAllCountersCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetAllCountersCmd();
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
-    
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION, 
-                    "Reset all counters command");
+    Status = BPLib_NC_ResetAllCountersCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -224,12 +199,9 @@ CFE_Status_t BPNode_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetCounterCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Reset counter command not implemented");
+    Status = BPLib_NC_ResetCounterCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -239,12 +211,9 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetSourceCountersCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Reset source counters command not implemented");
+    Status = BPLib_NC_ResetSourceCountersCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -254,12 +223,9 @@ CFE_Status_t BPNode_ResetBundleCountersCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetBundleCountersCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Reset bundle counters command not implemented");
+    Status = BPLib_NC_ResetBundleCountersCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -269,12 +235,9 @@ CFE_Status_t BPNode_ResetErrorCountersCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetErrorCountersCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Reset error counters command not implemented");
+    Status = BPLib_NC_ResetErrorCountersCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -284,12 +247,9 @@ CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddApplicationCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add application command not implemented");
+    Status = BPLib_NC_AddApplicationCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -299,12 +259,9 @@ CFE_Status_t BPNode_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Ms
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveApplicationCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove application command not implemented");
+    Status = BPLib_NC_RemoveApplicationCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -314,12 +271,9 @@ CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SetRegistrationStateCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Set registration state command not implemented");
+    Status = BPLib_NC_SetRegistrationStateCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -329,12 +283,9 @@ CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_StartApplicationCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Start application command not implemented");
+    Status = BPLib_NC_StartApplicationCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -344,12 +295,9 @@ CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_StopApplicationCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Stop application command not implemented");
+    Status = BPLib_NC_StopApplicationCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -359,12 +307,9 @@ CFE_Status_t BPNode_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthSourcesCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add authorized sources command not implemented");
+    Status = BPLib_NC_AddAuthSourcesCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -374,12 +319,9 @@ CFE_Status_t BPNode_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Ms
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthSourcesCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove authorized sources command not implemented");
+    Status = BPLib_NC_RemoveAuthSourcesCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -389,12 +331,9 @@ CFE_Status_t BPNode_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesC
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthCustodySourcesCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add authorized custody sources command not implemented");
+    Status = BPLib_NC_AddAuthCustodySourcesCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -404,12 +343,9 @@ CFE_Status_t BPNode_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySo
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthCustodySourcesCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove authorized custody sources command not implemented");
+    Status = BPLib_NC_RemoveAuthCustodySourcesCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -419,12 +355,9 @@ CFE_Status_t BPNode_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Ms
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthCustodiansCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add authorized custodians command not implemented");
+    Status = BPLib_NC_AddAuthCustodiansCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -434,12 +367,9 @@ CFE_Status_t BPNode_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthCustodiansCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove authorized custodians command not implemented");
+    Status = BPLib_NC_RemoveAuthCustodiansCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -449,12 +379,9 @@ CFE_Status_t BPNode_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthReportToEidCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add authorized report-to eid command not implemented");
+    Status = BPLib_NC_AddAuthReportToEidCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -464,12 +391,9 @@ CFE_Status_t BPNode_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidC
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthReportToEidCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove authorized report-to eid command not implemented");
+    Status = BPLib_NC_RemoveAuthReportToEidCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -479,12 +403,9 @@ CFE_Status_t BPNode_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddLatencyCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add latency command not implemented");
+    Status = BPLib_NC_AddLatencyCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -494,12 +415,9 @@ CFE_Status_t BPNode_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveLatencyCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove latency command not implemented");
+    Status = BPLib_NC_RemoveLatencyCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -509,12 +427,9 @@ CFE_Status_t BPNode_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactSetupCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Contact setup command not implemented");
+    Status = BPLib_NC_ContactSetupCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -524,12 +439,9 @@ CFE_Status_t BPNode_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactStartCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Contact start command not implemented");
+    Status = BPLib_NC_ContactStartCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -539,12 +451,9 @@ CFE_Status_t BPNode_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactStopCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Contact stop command not implemented");
+    Status = BPLib_NC_ContactStopCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -554,12 +463,9 @@ CFE_Status_t BPNode_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactTeardownCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Contact teardown command not implemented");
+    Status = BPLib_NC_ContactTeardownCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -569,12 +475,9 @@ CFE_Status_t BPNode_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddMibArrayKeyCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add mib array key command not implemented");
+    Status = BPLib_NC_AddMibArrayKeyCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -584,12 +487,9 @@ CFE_Status_t BPNode_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Ms
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveMibArrayKeyCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove mib array key command not implemented");
+    Status = BPLib_NC_RemoveMibArrayKeyCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -599,12 +499,9 @@ CFE_Status_t BPNode_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SetMibItemCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Set mib item command not implemented");
+    Status = BPLib_NC_SetMibItemCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -614,12 +511,9 @@ CFE_Status_t BPNode_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddStorageAllocationCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add storage allocation command not implemented");
+    Status = BPLib_NC_AddStorageAllocationCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -629,12 +523,9 @@ CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveStorageAllocationCmd(Msg->Payload);
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Remove storage allocation command not implemented");
+    Status = BPLib_NC_RemoveStorageAllocationCmd(Msg->Payload);
 
     return BPLib_to_cFE(Status);
 }
@@ -644,12 +535,9 @@ CFE_Status_t BPNode_PerformSelfTestCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_PerformSelfTestCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Perform self test (7.2) command not implemented");
+    Status = BPLib_NC_PerformSelfTestCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -659,12 +547,9 @@ CFE_Status_t BPNode_SendNodeMibConfigHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendNodeMibConfigHkCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send node mib config hk command not implemented");
+    Status = BPLib_NC_SendNodeMibConfigHkCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -674,12 +559,9 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendSourceMibConfigHkCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send per-source mib config hk command not implemented");
+    Status = BPLib_NC_SendSourceMibConfigHkCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -690,8 +572,6 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd()
     BPLib_Status_t Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
-    Status = BPLib_NC_SendNodeMibCountersHkCmd();
-
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
@@ -701,6 +581,8 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd()
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 
+    Status = BPLib_NC_SendNodeMibCountersHkCmd();
+
     return BPLib_to_cFE(Status);
 }
 
@@ -709,12 +591,9 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendSourceMibCountersHkCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send per-source mib counter hk command not implemented");
+    Status = BPLib_NC_SendSourceMibCountersHkCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -724,12 +603,9 @@ CFE_Status_t BPNode_SendStorageHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendStorageHkCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send storage hk command not implemented");
+    Status = BPLib_NC_SendStorageHkCmd();
 
     return BPLib_to_cFE(Status);
 }
@@ -739,12 +615,9 @@ CFE_Status_t BPNode_SendChannelContactStatHkCmd()
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendChannelContactStatHkCmd();
-
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send channel/contact status hk command not implemented");
+    Status = BPLib_NC_SendChannelContactStatHkCmd();
 
     return BPLib_to_cFE(Status);
 }

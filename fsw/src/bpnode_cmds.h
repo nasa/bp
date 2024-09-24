@@ -52,7 +52,7 @@ CFE_Status_t BPLib_to_cFE(BPLib_Status_t BPLib_Status);
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_NoopCmd();
+CFE_Status_t BPNode_NoopCmd(void);
 
 /**
  * \brief Add All Applications command
@@ -66,7 +66,7 @@ CFE_Status_t BPNode_NoopCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_AddAllApplicationsCmd();
+CFE_Status_t BPNode_AddAllApplicationsCmd(void);
 
 /**
  * \brief Start All Applications command
@@ -80,7 +80,7 @@ CFE_Status_t BPNode_AddAllApplicationsCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_StartAllApplicationsCmd();
+CFE_Status_t BPNode_StartAllApplicationsCmd(void);
 
 /**
  * \brief Verify Bundle Storage command
@@ -94,7 +94,7 @@ CFE_Status_t BPNode_StartAllApplicationsCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_VerifyBundleStorageCmd();
+CFE_Status_t BPNode_VerifyBundleStorageCmd(void);
 
 /**
  * \brief Initialize Bundle Storage command
@@ -108,7 +108,7 @@ CFE_Status_t BPNode_VerifyBundleStorageCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_InitBundleStorageCmd();
+CFE_Status_t BPNode_InitBundleStorageCmd(void);
 
 /**
  * \brief Verify Bundle Metadata (7.2) command
@@ -122,7 +122,7 @@ CFE_Status_t BPNode_InitBundleStorageCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_VerifyBundleMetadataCmd();
+CFE_Status_t BPNode_VerifyBundleMetadataCmd(void);
 
 /**
  * \brief Rebuild Bundle Metadata command
@@ -136,7 +136,7 @@ CFE_Status_t BPNode_VerifyBundleMetadataCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_RebuildBundleMetadataCmd();
+CFE_Status_t BPNode_RebuildBundleMetadataCmd(void);
 
 /**
  * \brief Clear Volatile command
@@ -150,7 +150,7 @@ CFE_Status_t BPNode_RebuildBundleMetadataCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ClearVolatileCmd();
+CFE_Status_t BPNode_ClearVolatileCmd(void);
 
 /**
  * \brief Reload Saved Data (7.2) command
@@ -164,7 +164,7 @@ CFE_Status_t BPNode_ClearVolatileCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ReloadSavedDataCmd();
+CFE_Status_t BPNode_ReloadSavedDataCmd(void);
 
 /**
  * \brief Reset All Counters command
@@ -178,7 +178,7 @@ CFE_Status_t BPNode_ReloadSavedDataCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ResetAllCountersCmd();
+CFE_Status_t BPNode_ResetAllCountersCmd(void);
 
 /**
  * \brief Reset Counter command
@@ -224,7 +224,7 @@ CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ResetBundleCountersCmd();
+CFE_Status_t BPNode_ResetBundleCountersCmd(void);
 
 /**
  * \brief Reset Error Counters command
@@ -238,7 +238,7 @@ CFE_Status_t BPNode_ResetBundleCountersCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_ResetErrorCountersCmd();
+CFE_Status_t BPNode_ResetErrorCountersCmd(void);
 
 /**
  * \brief Add Application command
@@ -636,7 +636,7 @@ CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_PerformSelfTestCmd();
+CFE_Status_t BPNode_PerformSelfTestCmd(void);
 
 /**
  * \brief Send Node MIB Config HK command
@@ -650,7 +650,7 @@ CFE_Status_t BPNode_PerformSelfTestCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendNodeMibConfigHkCmd();
+CFE_Status_t BPNode_SendNodeMibConfigHkCmd(void);
 
 /**
  * \brief Send Per-Source MIB Config HK command
@@ -664,7 +664,7 @@ CFE_Status_t BPNode_SendNodeMibConfigHkCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendSourceMibConfigHkCmd();
+CFE_Status_t BPNode_SendSourceMibConfigHkCmd(void);
 
 /**
  * \brief Send Node MIB Counter HK command
@@ -678,7 +678,7 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendNodeMibCountersHkCmd();
+CFE_Status_t BPNode_SendNodeMibCountersHkCmd(void);
 
 /**
  * \brief Send Per-Source MIB Counter HK command
@@ -692,7 +692,7 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendSourceMibCountersHkCmd();
+CFE_Status_t BPNode_SendSourceMibCountersHkCmd(void);
 
 /**
  * \brief Send Storage HK command
@@ -706,7 +706,7 @@ CFE_Status_t BPNode_SendSourceMibCountersHkCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendStorageHkCmd();
+CFE_Status_t BPNode_SendStorageHkCmd(void);
 
 /**
  * \brief Send Channel/Contact Status HK command
@@ -720,6 +720,6 @@ CFE_Status_t BPNode_SendStorageHkCmd();
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_SendChannelContactStatHkCmd();
+CFE_Status_t BPNode_SendChannelContactStatHkCmd(void);
 
 #endif /* BPNODE_CMDS_H */
