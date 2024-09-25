@@ -53,7 +53,7 @@ int32 BPNode_ClaInCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
                         "Failed to create the CLA In #%d task init semaphore. Error = %d.", 
                         i, Status);
             return Status;
@@ -63,7 +63,7 @@ int32 BPNode_ClaInCreateTasks(void)
         PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, &BPNode_AppData.ClaInData[i].PspLocation.PspModuleId);
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IOD_FINDNAME_IN_EID, CFE_EVS_EventType_ERROR, "IODriver Error: CFE_PSP_IODriver_FindByName status %d",
+            BPLib_EM_SendEvent(BPNODE_CLA_IOD_FINDNAME_IN_EID, BPLib_EM_EventType_ERROR, "IODriver Error: CFE_PSP_IODriver_FindByName status %d",
                               (unsigned int)PspStatus);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
@@ -75,7 +75,7 @@ int32 BPNode_ClaInCreateTasks(void)
                                              CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_INPUT_ONLY));
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IOD_COMMAND_DIR_IN_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CLA_IOD_COMMAND_DIR_IN_EID, BPLib_EM_EventType_ERROR,
                               "IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (input) status %d",
                               (unsigned int)PspStatus);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -85,7 +85,7 @@ int32 BPNode_ClaInCreateTasks(void)
             CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[i].PspLocation, CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IOD_COMMAND_RUN_IN_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CLA_IOD_COMMAND_RUN_IN_EID, BPLib_EM_EventType_ERROR,
                               "IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (input) status %d",
                               (unsigned int)PspStatus);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -101,21 +101,21 @@ int32 BPNode_ClaInCreateTasks(void)
 
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Failed to create the CLA In #%d child task. Error = %d.", 
                             i, Status);
             return Status;
         }
 
         /* Verify initialization by trying to take the init semaphore */
-        CFE_ES_PerfLogExit(BPNODE_PERF_ID);
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].InitSemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
                             "CLA In #%d task not running. Init Sem Error = %d.", 
                             i, Status);
             return Status;
@@ -137,7 +137,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_CLA_IN_NO_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[CLA In #?]: Failed to get task ID. Error = %d", Status);
         return Status;        
     }
@@ -153,7 +153,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 
     if (*ContId == BPLIB_MAX_NUM_CONTACTS)
     {
-        CFE_EVS_SendEvent(BPNODE_CLA_IN_INV_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[CLA In #?]: Task ID does not match any known task IDs. ID = %d", 
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
@@ -165,13 +165,13 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
 
     /* Notify main task that child task is running */
-    CFE_ES_PerfLogExit(BPNode_AppData.ClaInData[*ContId].PerfId);
+    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[*ContId].PerfId);
     Status = OS_BinSemGive(BPNode_AppData.ClaInData[*ContId].InitSemId);
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
 
     if (Status != OS_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[CLA In #%d]: Failed to give init semaphore. Error = %d", 
                           *ContId, Status);
         return Status;
@@ -179,14 +179,14 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 
     BPNode_AppData.ClaInData[*ContId].RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_EVS_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, CFE_EVS_EventType_INFORMATION,
+    BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
                       "[CLA In #%d]: Child Task Initialized.", *ContId);
 
     return CFE_SUCCESS;
 }
 
 /* BPNode_CLA_ProcessBundleInput() -- Receive bundles from network CL and Forward ingress bundles to CLA  */
-CFE_Status_t BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId)
+int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
     int32                               Status;
@@ -224,7 +224,7 @@ CFE_Status_t BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8
             }
             else
             {
-                CFE_EVS_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, CFE_EVS_EventType_ERROR,
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
                                   "Error %s - Failed (%d) to process bundle", "CLA_Ingress", (int)Status);
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
@@ -248,7 +248,7 @@ void BPNode_ClaIn_AppMain(void)
         /* Contact ID can't be determined, shut down immediately */
         if (ContId == BPLIB_MAX_NUM_CONTACTS)
         {
-            CFE_EVS_SendEvent(BPNODE_CLA_IN_UNK_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "Terminating Unknown CLA In Task.");
 
             /* In case event services is not working, add a message to the system log */
@@ -273,7 +273,7 @@ void BPNode_ClaIn_AppMain(void)
             Status = BPNode_CLA_ProcessBundleInput(&BPNode_AppData.ClaInData[ContId], ContId);
             if (Status != CFE_SUCCESS)
             {
-                OS_TaskDelay(250);
+                OS_TaskDelay(BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC);
             }
         }
         else 
@@ -291,7 +291,7 @@ void BPNode_ClaIn_AppMain(void)
 /* Exit child task */
 void BPNode_ClaIn_TaskExit(uint8 ContId)
 {
-    CFE_EVS_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+    BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "[CLA In #%d]: Terminating Task. RunStatus = %d.",
                       ContId, BPNode_AppData.ClaInData[ContId].RunStatus);
 
@@ -300,7 +300,7 @@ void BPNode_ClaIn_TaskExit(uint8 ContId)
                          ContId, BPNode_AppData.ClaInData[ContId].RunStatus);
 
     /* Exit the perf log */
-    CFE_ES_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

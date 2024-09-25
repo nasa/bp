@@ -40,13 +40,14 @@
 ** Macro Definitions
 */
 
-#define BPNODE_CLA_IN_INIT_SEM_BASE_NAME    "BPN_CLA_IN_INIT"   /**< \brief Initialization semaphore base name */
-#define BPNODE_CLA_IN_BASE_NAME             "BPNODE.CLA_IN"     /**< \brief Task base name */
-#define BPNODE_CLA_IN_SLEEP_MSEC            (1000u)             /**< \brief Sleep time */
-#define BPNODE_CLA_PIPE_DEPTH               (32u)               /**< \brief CLA pipe depth */
-#define BPNODE_CLA_IN_PIPE_BASE_NAME        "BPNODE_CLA_PIPE"   /**< \brief CLA pipe base name */
-#define BPNODE_CLA_PSP_INPUT_SUBCHANNEL     (1u)                /**< \brief IODriver unsock_intf input subchannel*/
-#define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE    (3072u)             /**< \brief IODriver buffer size*/
+#define BPNODE_CLA_IN_INIT_SEM_BASE_NAME                "BPN_CLA_IN_INIT"   /**< \brief Initialization semaphore base name */
+#define BPNODE_CLA_IN_BASE_NAME                         "BPNODE.CLA_IN"     /**< \brief Task base name */
+#define BPNODE_CLA_IN_SLEEP_MSEC                        (1000u)             /**< \brief Sleep time */
+#define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC            (250u)              /**< \brief Bundle processing Sleep time */
+#define BPNODE_CLA_PIPE_DEPTH                           (32u)               /**< \brief CLA pipe depth */
+#define BPNODE_CLA_IN_PIPE_BASE_NAME                    "BPNODE_CLA_PIPE"   /**< \brief CLA pipe base name */
+#define BPNODE_CLA_PSP_INPUT_SUBCHANNEL                 (1u)                /**< \brief IODriver unsock_intf input subchannel*/
+#define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE                (3072u)             /**< \brief IODriver buffer size*/
 
 /*
 ** Type Definitions
@@ -150,7 +151,7 @@ void BPNode_ClaIn_TaskExit(uint8 ContId);
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId);
+int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId);
 
 #endif /* BPNODE_CLA_IN_H */
 

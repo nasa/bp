@@ -33,10 +33,10 @@
  * Generated stub function for BPNode_CLA_ProcessBundleOutput()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress,
+int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress,
                                             uint8 ContId) 
 {
-  UT_GenStub_SetupReturnBuffer(BPNode_CLA_ProcessBundleOutput, CFE_Status_t);
+  UT_GenStub_SetupReturnBuffer(BPNode_CLA_ProcessBundleOutput, int32);
 
   UT_GenStub_AddParam(BPNode_CLA_ProcessBundleOutput, BPNode_ClaOutData_t *,
                       CLAEgress);
@@ -45,7 +45,7 @@ CFE_Status_t BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress,
   UT_GenStub_Execute(BPNode_CLA_ProcessBundleOutput, Basic, NULL);
 
   return UT_GenStub_GetReturnValue(BPNode_CLA_ProcessBundleOutput,
-                                   CFE_Status_t);
+                                   int32);
 }
 
 /*

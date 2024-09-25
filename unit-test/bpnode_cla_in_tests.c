@@ -40,7 +40,7 @@ void Test_BPNode_ClaInCreateTasks_Nominal(void)
 {
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPLIB_MAX_NUM_CONTACTS);
@@ -59,7 +59,7 @@ void Test_BPNode_ClaInCreateTasks_InitSemErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
@@ -78,7 +78,7 @@ void Test_BPNode_ClaInCreateTasks_TaskCrErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
@@ -97,7 +97,7 @@ void Test_BPNode_ClaInCreateTasks_TakeSemErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
@@ -108,7 +108,7 @@ void Test_BPNode_ClaInCreateTasks_IODFindByNameErr(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_FindByName), 1, CFE_PSP_ERROR);
     UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
 }
 
@@ -117,7 +117,7 @@ void Test_BPNode_ClaInCreateTasks_IODCommandDirErr(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
     UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
 }
 
@@ -126,7 +126,7 @@ void Test_BPNode_ClaInCreateTasks_IODCommandRunningErr(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 2, CFE_PSP_ERROR);
     UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
 }
 
@@ -151,7 +151,7 @@ void Test_BPNode_ClaIn_TaskInit_Nominal(void)
     UtAssert_UINT8_EQ(ContId, ExpContId);
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ExpContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
     UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
@@ -174,7 +174,7 @@ void Test_BPNode_ClaIn_TaskInit_GetIdErr(void)
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
     UtAssert_UINT8_EQ(ContId, ExpContId);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
     UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
@@ -200,7 +200,7 @@ void Test_BPNode_ClaIn_TaskInit_MatchIdErr(void)
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
     UtAssert_UINT8_EQ(ContId, ExpContId);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
     UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
@@ -227,7 +227,7 @@ void Test_BPNode_ClaIn_TaskInit_PipeErr(void)
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 0);
     UtAssert_UINT8_EQ(ContId, ExpContId);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
     UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
@@ -254,7 +254,7 @@ void Test_BPNode_ClaIn_TaskInit_SubErr(void)
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 0);
     UtAssert_UINT8_EQ(ContId, ExpContId);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 0);
     UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
@@ -281,7 +281,7 @@ void Test_BPNode_ClaIn_TaskInit_GiveSemErr(void)
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
     UtAssert_UINT8_EQ(ContId, ExpContId);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
     UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
@@ -310,7 +310,7 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
@@ -335,7 +335,7 @@ void Test_BPNode_ClaIn_AppMain_NullBuf(void)
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 1);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
@@ -356,7 +356,7 @@ void Test_BPNode_ClaIn_AppMain_InitErr(void)
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_ERROR);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 1);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
@@ -375,7 +375,7 @@ void Test_BPNode_ClaIn_AppMain_ContIdErr(void)
     BPNode_ClaIn_AppMain();
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 0);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
@@ -398,7 +398,7 @@ void Test_BPNode_ClaIn_AppMain_AppStopped(void)
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 1);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
@@ -422,7 +422,7 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 1);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
@@ -439,7 +439,7 @@ void Test_BPNode_ClaIn_TaskExit_Nominal(void)
     UtAssert_VOIDCALL(BPNode_ClaIn_TaskExit(ContId));
     
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 1);
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }

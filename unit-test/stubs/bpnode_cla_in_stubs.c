@@ -33,10 +33,10 @@
  * Generated stub function for BPNode_CLA_ProcessBundleInput()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress,
+int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress,
                                            uint8 ContId) 
 {
-  UT_GenStub_SetupReturnBuffer(BPNode_CLA_ProcessBundleInput, CFE_Status_t);
+  UT_GenStub_SetupReturnBuffer(BPNode_CLA_ProcessBundleInput, int32);
 
   UT_GenStub_AddParam(BPNode_CLA_ProcessBundleInput, BPNode_ClaInData_t *,
                       CLAIngress);
@@ -44,7 +44,7 @@ CFE_Status_t BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress,
 
   UT_GenStub_Execute(BPNode_CLA_ProcessBundleInput, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPNode_CLA_ProcessBundleInput, CFE_Status_t);
+  return UT_GenStub_GetReturnValue(BPNode_CLA_ProcessBundleInput, int32);
 }
 
 /*

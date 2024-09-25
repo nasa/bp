@@ -41,11 +41,12 @@
 ** Macro Definitions
 */
 
-#define BPNODE_CLA_OUT_INIT_SEM_BASE_NAME   "BPN_CLA_OUT_INIT"  /**< \brief Initialization semaphore base name */
-#define BPNODE_CLA_OUT_BASE_NAME            "BPNODE.CLA_OUT"    /**< \brief Task base name */
-#define BPNODE_CLA_OUT_SLEEP_MSEC           (1000u)             /**< \brief Sleep time */
-#define BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL    (0u)                /**< \briefIODriver Output subchannel*/
-#define BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE   (3072u)             /**< \brief IODriver output buffer size*/
+#define BPNODE_CLA_OUT_INIT_SEM_BASE_NAME               "BPN_CLA_OUT_INIT"  /**< \brief Initialization semaphore base name */
+#define BPNODE_CLA_OUT_BASE_NAME                        "BPNODE.CLA_OUT"    /**< \brief Task base name */
+#define BPNODE_CLA_OUT_SLEEP_MSEC                       (1000u)             /**< \brief Sleep time */
+#define BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC           (250u)             /**< \brief Bundle processing Sleep time */
+#define BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL                (0u)                /**< \briefIODriver Output subchannel*/
+#define BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE               (3072u)             /**< \brief IODriver output buffer size*/
 
 /*
 ** Type Definitions
@@ -148,7 +149,7 @@ void BPNode_ClaOut_TaskExit(uint8 ContId);
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-CFE_Status_t BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContId);
+int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContId);
 
 #endif /* BPNODE_CLA_OUT_H */
 
