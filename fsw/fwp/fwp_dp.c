@@ -43,7 +43,7 @@
 /* ==================== */
 
 /* Noop command */
-BPLib_Status_t BPA_DP_NoopCmd()
+BPLib_Status_t BPA_DP_NoopCmd(void)
 {
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
@@ -68,7 +68,7 @@ BPLib_Status_t BPA_DP_NoopCmd()
 }
 
 /* Add all applications command */
-BPLib_Status_t BPA_DP_AddAllApplicationsCmd()
+BPLib_Status_t BPA_DP_AddAllApplicationsCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -80,7 +80,7 @@ BPLib_Status_t BPA_DP_AddAllApplicationsCmd()
 }
 
 /* Start all applications command */
-BPLib_Status_t BPA_DP_StartAllApplicationsCmd()
+BPLib_Status_t BPA_DP_StartAllApplicationsCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -92,7 +92,7 @@ BPLib_Status_t BPA_DP_StartAllApplicationsCmd()
 }
 
 /* Verify bundle storage command */
-BPLib_Status_t BPA_DP_VerifyBundleStorageCmd()
+BPLib_Status_t BPA_DP_VerifyBundleStorageCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -104,7 +104,7 @@ BPLib_Status_t BPA_DP_VerifyBundleStorageCmd()
 }
 
 /* Initialize bundle storage command */
-BPLib_Status_t BPA_DP_InitBundleStorageCmd()
+BPLib_Status_t BPA_DP_InitBundleStorageCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -116,7 +116,7 @@ BPLib_Status_t BPA_DP_InitBundleStorageCmd()
 }
 
 /* Verify bundle metadata (7.2) command */
-BPLib_Status_t BPA_DP_VerifyBundleMetadataCmd()
+BPLib_Status_t BPA_DP_VerifyBundleMetadataCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -128,7 +128,7 @@ BPLib_Status_t BPA_DP_VerifyBundleMetadataCmd()
 }
 
 /* Rebuild bundle metadata command */
-BPLib_Status_t BPA_DP_RebuildBundleMetadataCmd()
+BPLib_Status_t BPA_DP_RebuildBundleMetadataCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -140,7 +140,7 @@ BPLib_Status_t BPA_DP_RebuildBundleMetadataCmd()
 }
 
 /* Clear volatile command */
-BPLib_Status_t BPA_DP_ClearVolatileCmd()
+BPLib_Status_t BPA_DP_ClearVolatileCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -152,7 +152,7 @@ BPLib_Status_t BPA_DP_ClearVolatileCmd()
 }
 
 /* Reload saved data (7.2) command */
-BPLib_Status_t BPA_DP_ReloadSavedDataCmd()
+BPLib_Status_t BPA_DP_ReloadSavedDataCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -164,7 +164,7 @@ BPLib_Status_t BPA_DP_ReloadSavedDataCmd()
 }
 
 /* Reset all counters command */
-BPLib_Status_t BPA_DP_ResetAllCountersCmd()
+BPLib_Status_t BPA_DP_ResetAllCountersCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -200,7 +200,7 @@ BPLib_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd
 }
 
 /* Reset bundle counters command */
-BPLib_Status_t BPA_DP_ResetBundleCountersCmd()
+BPLib_Status_t BPA_DP_ResetBundleCountersCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -212,7 +212,7 @@ BPLib_Status_t BPA_DP_ResetBundleCountersCmd()
 }
 
 /* Reset error counters command */
-BPLib_Status_t BPA_DP_ResetErrorCountersCmd()
+BPLib_Status_t BPA_DP_ResetErrorCountersCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -512,7 +512,7 @@ BPLib_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAlloc
 }
 
 /* Perform self test (7.2) command */
-BPLib_Status_t BPA_DP_PerformSelfTestCmd()
+BPLib_Status_t BPA_DP_PerformSelfTestCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -524,7 +524,7 @@ BPLib_Status_t BPA_DP_PerformSelfTestCmd()
 }
 
 /* Send node mib config hk command */
-BPLib_Status_t BPA_DP_SendNodeMibConfigHkCmd()
+BPLib_Status_t BPA_DP_SendNodeMibConfigHkCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -536,7 +536,7 @@ BPLib_Status_t BPA_DP_SendNodeMibConfigHkCmd()
 }
 
 /* Send per-source mib config hk command */
-BPLib_Status_t BPA_DP_SendSourceMibConfigHkCmd()
+BPLib_Status_t BPA_DP_SendSourceMibConfigHkCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -548,7 +548,7 @@ BPLib_Status_t BPA_DP_SendSourceMibConfigHkCmd()
 }
 
 /* Send Node MIB Counters housekeeping command */
-BPLib_Status_t BPA_DP_SendNodeMibCountersHkCmd()
+BPLib_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
 {
     BPLib_Status_t Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
@@ -568,7 +568,7 @@ BPLib_Status_t BPA_DP_SendNodeMibCountersHkCmd()
 }
 
 /* Send per-source mib counter hk command */
-BPLib_Status_t BPA_DP_SendSourceMibCountersHkCmd()
+BPLib_Status_t BPA_DP_SendSourceMibCountersHkCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -580,7 +580,7 @@ BPLib_Status_t BPA_DP_SendSourceMibCountersHkCmd()
 }
 
 /* Send storage hk command */
-BPLib_Status_t BPA_DP_SendStorageHkCmd()
+BPLib_Status_t BPA_DP_SendStorageHkCmd(void)
 {
     BPLib_Status_t Status;
 
@@ -592,7 +592,7 @@ BPLib_Status_t BPA_DP_SendStorageHkCmd()
 }
 
 /* Send channel/contact status hk command */
-BPLib_Status_t BPA_DP_SendChannelContactStatHkCmd()
+BPLib_Status_t BPA_DP_SendChannelContactStatHkCmd(void)
 {
     BPLib_Status_t Status;
 
