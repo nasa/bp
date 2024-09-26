@@ -29,7 +29,6 @@
 /* ======== */
 
 #include "bpnode_app.h"
-#include "bpnode_cmds.h"
 #include "bpnode_msgids.h"
 #include "bpnode_eventids.h"
 #include "bpnode_version.h"
@@ -38,6 +37,7 @@
 #include "bpnode_msg.h"
 
 #include "bplib.h"
+#include "fwp_dp.h"
 
 /* ==================== */
 /* Function Definitions */

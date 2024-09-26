@@ -28,7 +28,6 @@
 */
 
 #include "bpnode_app.h"
-#include "bpnode_cmds.h"
 #include "bpnode_utils.h"
 #include "bpnode_eventids.h"
 #include "bpnode_dispatch.h"
@@ -38,6 +37,7 @@
 #include "bplib.h"
 #include "fwp.h"
 #include "fwp_tablep.h"
+#include "fwp_dp.h"
 
 /*
 ** Global Data

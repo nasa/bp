@@ -29,13 +29,14 @@
 
 #include "bpnode_app.h"
 #include "bpnode_dispatch.h"
-#include "bpnode_cmds.h"
 #include "bpnode_eventids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
 
 #include "bpnode_eds_dispatcher.h"
 #include "bpnode_eds_dictionary.h"
+
+#include "fwp_dp.h"
 
 /**
  * If there are mismatched names in the build, check bpnode/eds/bpnode.xml

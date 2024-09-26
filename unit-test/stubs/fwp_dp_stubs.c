@@ -21,10 +21,10 @@
 /**
  * @file
  *
- * Auto-Generated stub implementations for functions defined in bpnode_cmds header
+ * Auto-Generated stub implementations for functions defined in fwp_dp header
  */
 
-#include "bpnode_cmds.h"
+#include "fwp_dp.h"
 #include "utgenstub.h"
 
 /*

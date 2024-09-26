@@ -30,7 +30,8 @@
 #include "bpnode_test_utils.h"
 #include "bpnode_app.h"
 #include "bpnode_dispatch.h"
-#include "bpnode_cmds.h"
+
+#include "fwp_dp.h"
 
 /*
 ** Function Definitions

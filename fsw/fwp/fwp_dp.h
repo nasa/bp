@@ -23,8 +23,8 @@
  *   This file contains the prototypes for the BPNode command-handling functions
  */
 
-#ifndef BPNODE_CMDS_H
-#define BPNODE_CMDS_H
+#ifndef FWP_DP_H
+#define FWP_DP_H
 
 /* ======== */
 /* Includes */
@@ -722,4 +722,4 @@ CFE_Status_t BPNode_SendStorageHkCmd(void);
  */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(void);
 
-#endif /* BPNODE_CMDS_H */
+#endif /* FWP_DP_H */

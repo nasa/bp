@@ -2,8 +2,7 @@ project(CFS_BPNODE C)
 
 set(APP_SRC_FILES
   # App files
-  fsw/src/bpnode_app.c
-  fsw/src/bpnode_cmds.c
+  fsw/src/bpnode_app.c`
   fsw/src/bpnode_utils.c
   fsw/src/bpnode_adu_out.c
   fsw/src/bpnode_adu_in.c
@@ -14,6 +13,7 @@ set(APP_SRC_FILES
   fsw/fwp/fwp_evp.c
   fsw/fwp/fwp_adup.c
   fsw/fwp/fwp_perflogp.c
+  fsw/fwp/fwp_dp.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)
