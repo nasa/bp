@@ -258,6 +258,8 @@ CFE_Status_t BPNode_AppInit(void)
         BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Subscribing to wakeup messages, RC = 0x%08lX",
                             (unsigned long)Status);
+        
+        return Status;
     }
 
     /* Call Table Proxy Init Function Here to load default tables*/
@@ -297,7 +299,7 @@ CFE_Status_t BPNode_AppInit(void)
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);
 
-            CFE_EVS_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+            BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                         "Automatically added app configurations for ChanId=%d", i);
         }
     }    

@@ -224,7 +224,7 @@ CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-        CFE_EVS_SendEvent(BPNODE_ADD_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+        BPLib_EM_SendEvent(BPNODE_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                         "Successful add-application directive for ChanId=%d",
                         Msg->ChanId);
     }
@@ -271,7 +271,7 @@ CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-        CFE_EVS_SendEvent(BPNODE_STRT_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+        BPLib_EM_SendEvent(BPNODE_STRT_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                         "Successful start-application directive for ChanId=%d",
                         Msg->ChanId);
     }
@@ -297,7 +297,7 @@ CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-        CFE_EVS_SendEvent(BPNODE_STOP_APP_INF_EID, CFE_EVS_EventType_INFORMATION,
+        BPLib_EM_SendEvent(BPNODE_STOP_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                         "Successful stop-application directive for ChanId=%d",
                         Msg->ChanId);
     }

@@ -315,7 +315,7 @@ void Test_BPNode_AddApplicationCmd_Failure(void)
     UtAssert_INT32_EQ(BPNode_AddApplicationCmd(&TestMsg), CFE_SUCCESS);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
                             ExpRejectedCount);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test Remove Application command nominal case */
@@ -383,7 +383,7 @@ void Test_BPNode_StartApplicationCmd_Failure(void)
     UtAssert_INT32_EQ(BPNode_StartApplicationCmd(&TestMsg), CFE_SUCCESS);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
                             ExpRejectedCount);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 
@@ -420,7 +420,7 @@ void Test_BPNode_StopApplicationCmd_Failure(void)
     UtAssert_INT32_EQ(BPNode_StopApplicationCmd(&TestMsg), CFE_SUCCESS);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
                             ExpRejectedCount);
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test Add Authorized Sources command nominal case */

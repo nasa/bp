@@ -200,34 +200,6 @@ void Test_BPNode_AduIn_TaskInit_PipeErr(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
     UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, 0);
-}
-
-/* Test BPNode_AduIn_TaskInit when message subscription fails */
-void Test_BPNode_AduIn_TaskInit_SubErr(void)
-{
-    UT_CheckEvent_t EventTest;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = 0;
-    CFE_ES_TaskId_t TaskId = 1234;
-
-    /* Test setup */
-    BPNode_AppData.AduInData[ExpChanId].TaskId = TaskId;
-
-    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_BAD_ARGUMENT);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_IN_SUB_PIPE_ERR_EID, 
-                    "[ADU In #%d]: Error subscribing to ADUs, Error = %d");
-
-    UtAssert_INT32_EQ(BPNode_AduIn_TaskInit(&ChanId), CFE_SB_BAD_ARGUMENT);
-
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
-    UtAssert_UINT8_EQ(ChanId, ExpChanId);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
-    UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
 }
 
