@@ -92,7 +92,7 @@ void BPNode_AppMain(void)
         /* Exit upon pipe read error */
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
                               "SB Pipe Read Error, App Will Exit");
 
             BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_ERROR;
@@ -115,15 +115,15 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
     if (BpStatus != BPLIB_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TIME_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error doing time maintenance activities, RC = %d", BpStatus);
+        BPLib_EM_SendEvent(BPNODE_TIME_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
     /* Call Table Proxy to update tables*/
     Status = BPA_TABLEP_TableUpdate();
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                     "Error Updating Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
         return Status;
     }
@@ -165,99 +165,110 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
         .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
+        .BPA_EVP_Init                 = BPA_EVP_Init,
+        .BPA_EVP_SendEvent            = BPA_EVP_SendEvent,
         .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
         .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit                
     };
 
+    /* Initialize the FWP before using BPLib functions */
+    BpStatus = BPLib_FWP_Init(Callbacks);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
+                                (unsigned long) BpStatus);
+
+        /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
+        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
+                            (unsigned long) BpStatus);
+
+        return BpStatus;
+    }
+
     /* Zero out the global data structure */
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
-    BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
-
     /* Register with Event Services */
-    Status = CFE_EVS_Register(NULL, 0, CFE_EVS_EventFilter_BINARY);
-    if (Status != CFE_SUCCESS)
+    BpStatus = BPLib_EM_Init();
+    if (BpStatus != CFE_SUCCESS)
     {
-        CFE_ES_WriteToSysLog("BPNode: Error Registering Events, RC = 0x%08lX\n", 
-                                                                (unsigned long)Status);
-        return Status;
+        CFE_ES_WriteToSysLog("BPNode: Error Registering Events, RC = 0x%08lX\n",
+                                (unsigned long)BpStatus);
+
+        return BpStatus;
     }
+
+    BpStatus = BPLib_TIME_Init();
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_TIME_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing BPLib Time Management, RC = %d", BpStatus);
+        
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
     /* Initialize housekeeping packet (clear user data area) */
     CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), 
-                CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
-                sizeof(BPNode_AppData.NodeMibCountersHkTlm));
+                    CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
+                    sizeof(BPNode_AppData.NodeMibCountersHkTlm));
 
     /* Create command pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH, 
-                                            "BPNODE_CMD_PIPE");
+                                "BPNODE_CMD_PIPE");
+
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_CR_CMD_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                "Error creating SB Command Pipe, RC = 0x%08lX", (unsigned long)Status);
+        BPLib_EM_SendEvent(BPNODE_CR_CMD_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error creating SB Command Pipe, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
     }
 
     /* Create wakeup pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.WakeupPipe, BPNODE_WAKEUP_PIPE_DEPTH, 
-                                            "BPNODE_WAKEUP_PIPE");
+                                "BPNODE_WAKEUP_PIPE");
+
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_CR_WKP_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error creating SB Wakeup Pipe, RC = 0x%08lX", (unsigned long)Status);
+        BPLib_EM_SendEvent(BPNODE_CR_WKP_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error creating SB Wakeup Pipe, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
     }
 
     /* Subscribe to ground command packets */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CMD_MID), 
-                                                        BPNode_AppData.CommandPipe);
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CMD_MID),
+                                BPNode_AppData.CommandPipe);
+
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_SUB_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error Subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
+        BPLib_EM_SendEvent(BPNODE_SUB_CMD_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
+
         return Status;
     }
 
     /* Subscribe to wakeup messages on the wakeup pipe */
     Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID), 
-                                                        BPNode_AppData.WakeupPipe);
+                                BPNode_AppData.WakeupPipe);
+
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_SUB_WKP_ERR_EID, CFE_EVS_EventType_ERROR,
-            "Error Subscribing to wakeup messages, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
+        BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Subscribing to wakeup messages, RC = 0x%08lX",
+                            (unsigned long)Status);
     }
 
     /* Call Table Proxy Init Function Here to load default tables*/
-    Status = BPA_TABLEP_TableInit();
-    if (Status != CFE_SUCCESS)
+    BpStatus = BPA_TABLEP_TableInit();
+    if (BpStatus != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
-                    "Error Getting Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
-    }
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            (unsigned long)BpStatus);
 
-    /* Initialize the Framework Proxy callback function pointers */
-    Status = BPLib_FWP_Init(Callbacks);
-
-    if (Status != BPLIB_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error initializing function callbacks in BPLib");
-
-        return Status;
-    }
-
-    /* Initialize Time Management */
-    BpStatus = BPLib_TIME_Init();
-
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        CFE_EVS_SendEvent(BPNODE_TIME_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
-                            "Error initializing BPLib Time Management, RC = %d", BpStatus);
-        
-        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+        return BpStatus;
     }
 
     /* Create ADU In child tasks */
@@ -291,15 +302,19 @@ CFE_Status_t BPNode_AppInit(void)
         }
     }    
 
+    /* App has initialized properly */
+
+    BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
+
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
-        BPNODE_MAJOR_VERSION,
-        BPNODE_MINOR_VERSION,
-        BPNODE_REVISION);
+                    BPNODE_MAJOR_VERSION,
+                    BPNODE_MINOR_VERSION,
+                    BPNODE_REVISION);
 
     CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
-                        BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
+                                BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
 
-    CFE_EVS_SendEvent(BPNODE_INIT_INF_EID, CFE_EVS_EventType_INFORMATION, "BPNode Initialized: %s",
+    BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION, "BPNode Initialized: %s",
                         VersionString);
 
     return CFE_SUCCESS;
@@ -310,7 +325,7 @@ void BPNode_AppExit(void)
 {
     uint8 i;
 
-    CFE_EVS_SendEvent(BPNODE_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+    BPLib_EM_SendEvent(BPNODE_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "App terminating, error = %d", BPNode_AppData.RunStatus);
 
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);

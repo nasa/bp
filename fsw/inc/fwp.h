@@ -33,6 +33,7 @@
 #include "fwp_timep.h"
 #include "fwp_tablep.h"
 #include "fwp_adup.h"
+#include "fwp_evp.h"
 #include "fwp_perflogp.h"
 
 #endif

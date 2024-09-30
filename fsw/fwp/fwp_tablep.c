@@ -230,7 +230,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                 BPNode_AppData.TblNameParamsArr[i].TableSize, CFE_TBL_OPT_DEFAULT, BPNode_AppData.TblNameParamsArr[i].TblValidationFuncPtr);
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_TBL_REG_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_TBL_REG_ERR_EID, BPLib_EM_EventType_ERROR,
                     "Error Registering Table: %s, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
         }
@@ -238,7 +238,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
         Status = CFE_TBL_Load(BPNode_AppData.TblNameParamsArr[i].TableHandle, CFE_TBL_SRC_FILE, BPNode_AppData.TblNameParamsArr[i].TableFileName);
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_TBL_LD_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_TBL_LD_ERR_EID, BPLib_EM_EventType_ERROR,
                         "Error Loading Table : %s, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
         }
@@ -247,7 +247,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TblNameParamsArr[i].TableHandle);  
         if (Status != CFE_TBL_INFO_UPDATED)
         {
-            CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                         "Error Getting Table: %s Address, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
         }   
@@ -289,7 +289,7 @@ CFE_Status_t BPA_TABLEP_TableUpdate(void)
 
         if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
         {
-            CFE_EVS_SendEvent(BPNODE_TBL_MNG_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_TBL_MNG_ERR_EID, BPLib_EM_EventType_ERROR,
                                 "Error managing the table: %s on wakeup, Status=0x%08X", BPNode_AppData.TblNameParamsArr[i].TableName, Status);
             return Status;
         }

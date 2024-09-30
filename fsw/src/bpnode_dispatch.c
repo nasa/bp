@@ -56,7 +56,7 @@ bool BPNode_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
         CFE_MSG_GetMsgId(MsgPtr, &MsgId);
         CFE_MSG_GetFcnCode(MsgPtr, &FcnCode);
 
-        CFE_EVS_SendEvent(BPNODE_CMD_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_CMD_LEN_ERR_EID, BPLib_EM_EventType_ERROR,
                           "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u",
                           (uint16) CFE_SB_MsgIdToValue(MsgId), (uint8) FcnCode, 
                           (uint16) ActualLength, (uint16) ExpectedLength);
@@ -398,7 +398,7 @@ void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         default:
             BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
 
-            CFE_EVS_SendEvent(BPNODE_CC_ERR_EID, CFE_EVS_EventType_ERROR, 
+            BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, BPLib_EM_EventType_ERROR, 
                             "Invalid ground command code: CC = %d", CommandCode);
             break;
     }
@@ -420,7 +420,7 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
         default:
             BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
 
-            CFE_EVS_SendEvent(BPNODE_MID_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid command packet,MID = 0x%x", 
                               (uint16) CFE_SB_MsgIdToValue(MsgId));
             break;

@@ -95,7 +95,7 @@ typedef struct
 
 /*
 ** Helper function to set up for event checking
-** This attaches the hook function to CFE_EVS_SendEvent
+** This attaches the hook function to BPLib_EM_SendEvent
 */
 void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
                               const char *ExpectedFormat);

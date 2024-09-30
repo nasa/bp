@@ -200,6 +200,7 @@ void Test_BPNode_ResetAllCountersCmd_Nominal(void)
     UT_CheckEvent_t              EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
+    memset(&BPNode_AppData.NodeMibCountersHkTlm.Payload, 1, sizeof(BPNode_NodeMibCountersHkTlm_Payload_t));
 
     /**
      * The correct event message is "Reset all counters command" because
@@ -211,6 +212,10 @@ void Test_BPNode_ResetAllCountersCmd_Nominal(void)
 
     /* Confirm that the event was generated */
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived, 0);
 }
 
 /* Test Reset Counter command nominal case */

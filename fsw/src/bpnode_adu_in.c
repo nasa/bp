@@ -52,7 +52,7 @@ int32 BPNode_AduInCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_IN_INIT_SEM_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
                         "Failed to create the ADU In #%d task init semaphore. Error = %d.", 
                         i, Status);
             return Status;
@@ -68,7 +68,7 @@ int32 BPNode_AduInCreateTasks(void)
 
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_IN_CREATE_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Failed to create the ADU In #%d child task. Error = %d.", 
                             i, Status);
             return Status;
@@ -82,7 +82,7 @@ int32 BPNode_AduInCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_IN_RUN_ERR_EID, CFE_EVS_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
                             "ADU In #%d task not running. Init Sem Error = %d.", 
                             i, Status);
             return Status;
@@ -105,7 +105,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_IN_NO_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_IN_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU In #?]: Failed to get task ID. Error = %d", Status);
         return Status;        
     }
@@ -121,7 +121,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 
     if (*ChanId == BPNODE_MAX_NUM_CHANNELS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_IN_INV_ID_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_IN_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU In #?]: Task ID does not match any known task IDs. ID = %d", 
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
@@ -138,7 +138,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
                                     BPNODE_ADU_PIPE_DEPTH, NameBuff);
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_IN_CR_PIPE_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_IN_CR_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
                         "[ADU In #%d]: Error creating SB ADU Pipe, Error = %d", 
                         *ChanId, Status);
         return Status;
@@ -151,7 +151,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 
     if (Status != OS_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_ADU_IN_INIT_SEM_TK_ERR_EID, CFE_EVS_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_IN_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU In #%d]: Failed to give init semaphore. Error = %d", 
                           *ChanId, Status);
         return Status;
@@ -159,7 +159,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 
     BPNode_AppData.AduInData[*ChanId].RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_EVS_SendEvent(BPNODE_ADU_IN_INIT_INF_EID, CFE_EVS_EventType_INFORMATION,
+    BPLib_EM_SendEvent(BPNODE_ADU_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
                       "[ADU In #%d]: Child Task Initialized.", *ChanId);
 
     return CFE_SUCCESS;
@@ -180,7 +180,7 @@ void BPNode_AduIn_AppMain(void)
         /* Channel ID can't be determined, shut down immediately */
         if (ChanId == BPNODE_MAX_NUM_CHANNELS)
         {
-            CFE_EVS_SendEvent(BPNODE_ADU_IN_UNK_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "Terminating Unknown ADU In Task.");
 
             /* In case event services is not working, add a message to the system log */
@@ -252,7 +252,7 @@ void BPNode_AduIn_AppMain(void)
 /* Exit child task */
 void BPNode_AduIn_TaskExit(uint8 ChanId)
 {
-    CFE_EVS_SendEvent(BPNODE_ADU_IN_EXIT_CRIT_EID, CFE_EVS_EventType_CRITICAL,
+    BPLib_EM_SendEvent(BPNODE_ADU_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "[ADU In #%d]: Terminating Task. RunStatus = %d.",
                       ChanId, BPNode_AppData.AduInData[ChanId].RunStatus);
 
