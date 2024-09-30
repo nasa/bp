@@ -39,7 +39,8 @@
 /* Ingest an ADU */
 BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 {
-    CFE_SB_Buffer_t *Buf = (CFE_SB_Buffer_t *) AduPtr;
+    BPLib_Status_t  Status = BPLIB_SUCCESS;
+    CFE_SB_Buffer_t *Buf   = (CFE_SB_Buffer_t *) AduPtr;
     CFE_MSG_Size_t   Size;
 
     CFE_MSG_GetSize(&Buf->Msg, &Size);
@@ -59,12 +60,14 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
     }
     else 
     {
+        Status = BPLIB_ERROR;
+
         BPLib_EM_SendEvent(BPNODE_ADU_TOO_BIG_ERR_EID, BPLib_EM_EventType_ERROR,
                     "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d",
                     ChanId, Size, BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize);
     }
     
-    return BPLIB_SUCCESS;
+    return Status;
 }
 
 /* Send out an ADU */

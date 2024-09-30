@@ -347,6 +347,40 @@ void Test_BPNode_AduIn_AppMain_AppStopped(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
+/* Test BPNode_AduIn_AppMain when the app was just stopped and the pipe needs to be cleared */
+void Test_BPNode_AduIn_AppMain_ClearPipe(void)
+{
+    CFE_SB_Buffer_t  Buf;
+    CFE_SB_Buffer_t *BufPtr = &Buf;
+    uint8 ChanId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    /* Clear one message from pipe */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); 
+    UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+    UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+
+    BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
+    BPNode_AppData.AduInData[ChanId].ClearPipe = true;
+
+    BPNode_AduIn_AppMain();
+
+    UtAssert_UINT32_EQ(BPNode_AppData.AduInData[ChanId].RunStatus,
+                                                        CFE_ES_RunStatus_APP_RUN);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
+    UtAssert_STUB_COUNT(OS_TaskDelay, 1);
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
+    UtAssert_STUB_COUNT(BPA_ADUP_In, 0);
+    UtAssert_BOOL_FALSE(BPNode_AppData.AduInData[ChanId].ClearPipe);
+}
+
 /* Test BPNode_AduIn_TaskExit in nominal shutdown */
 void Test_BPNode_AduIn_TaskExit_Nominal(void)
 {
@@ -382,6 +416,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduIn_AppMain_InitErr);
     ADD_TEST(Test_BPNode_AduIn_AppMain_ChanIdErr);
     ADD_TEST(Test_BPNode_AduIn_AppMain_AppStopped);
+    ADD_TEST(Test_BPNode_AduIn_AppMain_ClearPipe);
 
     ADD_TEST(Test_BPNode_AduIn_TaskExit_Nominal);
 }

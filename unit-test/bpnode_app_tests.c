@@ -368,7 +368,6 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 /* Test app initialization after failure to create ADU in child tasks */
 void Test_BPNode_AppInit_FailedAduInTasks(void)
 {
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPNode_AduInCreateTasks), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
@@ -377,10 +376,42 @@ void Test_BPNode_AppInit_FailedAduInTasks(void)
 /* Test app initialization after failure to create ADU out child tasks */
 void Test_BPNode_AppInit_FailedAduOutTasks(void)
 {
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPNode_AduOutCreateTasks), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
+}
+
+/* Test adding one application automatically at startup */
+void Test_BPNode_AppInit_AutoAddApp(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    /* Set channel 0 to be added automatically */
+    TestChanTbl.ChannelSet[0].AddAutomatically = true;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_AUTO_ADD_APP_INF_EID, 
+                                "Automatically added app configurations for ChanId=%d");
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
+    UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
+}
+
+/* Test adding one application automatically at startup failed */
+void Test_BPNode_AppInit_AutoAddAppFail(void)
+{
+    /* Set channel 0 to be added automatically */
+    TestChanTbl.ChannelSet[0].AddAutomatically = true;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+    UT_SetDeferredRetcode(UT_KEY(BPA_ADUP_StartApplication), 1, BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_ERROR);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
+    UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
 }
 
 /* Test app exit in nominal case */
@@ -408,7 +439,6 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_Init), 1, BPLIB_TIME_READ_ERROR);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_INIT_ERR_EID, "Error initializing BPLib Time Management, RC = %d");
 
@@ -445,6 +475,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
-    
+    ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
+    ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
+
     ADD_TEST(Test_BPNode_AppExit_Nominal);
 }

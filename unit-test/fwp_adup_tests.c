@@ -53,6 +53,27 @@ void Test_BPA_ADUP_In_Nominal(void)
     UtAssert_UINT16_EQ(BPNode_AppData.AduInData[ChanId].AduCountReceived, ExpAduCountRecv);
 }
 
+/* Test BPA_ADUP_In when the payload is too big*/
+void Test_BPA_ADUP_In_SizeErr(void)
+{
+    UT_CheckEvent_t EventTest;
+    CFE_SB_Buffer_t Buf;
+    uint8_t ChanId = 0;
+    uint16 ExpAduCountRecv = 0;
+    CFE_MSG_Size_t Size = 100;
+
+    /* Set global data */
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 10;
+
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_TOO_BIG_ERR_EID, 
+            "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_ERROR);
+    UtAssert_UINT16_EQ(BPNode_AppData.AduInData[ChanId].AduCountReceived, ExpAduCountRecv);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
 /* Test BPA_ADUP_Out */
 void Test_BPA_ADUP_Out_Nominal(void)
 {
@@ -69,22 +90,131 @@ void Test_BPA_ADUP_AddApplication_Nominal(void)
 {
     uint8_t ChanId = 0;
 
+    /* Set test data */
+
+    TestAduTbl.Entries[ChanId].NumRecvFrmMsgIds = 1;
+    TestAduTbl.Entries[ChanId].RecvFrmMsgIds[0] = CFE_SB_ValueToMsgId(0x1801);
+    TestAduTbl.Entries[ChanId].SendToMsgId = CFE_SB_ValueToMsgId(0x0800);
+
+    TestChanTbl.ChannelSet[ChanId].AddAutomatically = true;
+    TestChanTbl.ChannelSet[ChanId].AduUnwrapping = false;
+    TestChanTbl.ChannelSet[ChanId].AduWrapping = true;
+    TestChanTbl.ChannelSet[ChanId].MaxBundlePayloadSize = 1234;
+
     BPNode_AppData.AduTblPtr = &TestAduTbl;
     BPNode_AppData.ChanTblPtr = &TestChanTbl;
 
     BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
     UtAssert_INT32_EQ(BPA_ADUP_AddApplication(ChanId), BPLIB_SUCCESS);
+
+    /* Verify ADU configs were set properly */
+    UtAssert_INT32_EQ(BPNode_AppData.AduConfigs[ChanId].AppState, BPA_ADUP_APP_ADDED);
+    UtAssert_INT32_EQ(CFE_SB_MsgIdToValue(BPNode_AppData.AduOutData[ChanId].SendToMsgId), 
+                      CFE_SB_MsgIdToValue(TestAduTbl.Entries[ChanId].SendToMsgId));
+    UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds, 
+                            TestAduTbl.Entries[ChanId].NumRecvFrmMsgIds);       
+    UtAssert_INT32_EQ(CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[0]), 
+                      CFE_SB_MsgIdToValue(TestAduTbl.Entries[ChanId].RecvFrmMsgIds[0]));       
+    UtAssert_INT32_EQ(BPNode_AppData.AduConfigs[ChanId].AddAutomatically, 
+                            TestChanTbl.ChannelSet[ChanId].AddAutomatically);
+    UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].AduUnwrapping, 
+                            TestChanTbl.ChannelSet[ChanId].AduUnwrapping);       
+    UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize, 
+                            TestChanTbl.ChannelSet[ChanId].MaxBundlePayloadSize);       
+    UtAssert_INT32_EQ(BPNode_AppData.AduOutData[ChanId].AduWrapping, 
+                            TestChanTbl.ChannelSet[ChanId].AduWrapping);       
+
 }
 
-/* Test BPA_ADUP_StartApplication */
+/* Test BPA_ADUP_AddApplication when the channel ID is invalid */
+void Test_BPA_ADUP_AddApplication_BadId(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = BPNODE_MAX_NUM_CHANNELS;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_ADD_CHAN_ERR_EID, 
+                     "Error with add-application directive, invalid ChanId=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_AddApplication(ChanId), BPLIB_ERROR);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test BPA_ADUP_AddApplication when the app state is neither stopped or added */
+void Test_BPA_ADUP_AddApplication_BadState(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_ADD_STAT_ERR_EID, 
+            "Error with add-application directive, invalid AppState=%d for ChanId=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_AddApplication(ChanId), BPLIB_ERROR);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test BPA_ADUP_StartApplication in nominal case */
 void Test_BPA_ADUP_StartApplication_Nominal(void)
 {
     uint8_t ChanId = 0;
 
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = 1;
     BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;
 
     UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+    UtAssert_INT32_EQ(BPNode_AppData.AduConfigs[ChanId].AppState, BPA_ADUP_APP_STARTED);
+}
+
+/* Test BPA_ADUP_StartApplication when the channel ID is invalid */
+void Test_BPA_ADUP_StartApplication_BadId(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = BPNODE_MAX_NUM_CHANNELS;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_STRT_CHAN_ERR_EID, 
+                     "Error with start-application directive, invalid ChanId=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_ERROR);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test BPA_ADUP_StartApplication when the app state is not added */
+void Test_BPA_ADUP_StartApplication_BadState(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_STRT_STAT_ERR_EID, 
+            "Error with start-application directive, invalid AppState=%d for ChanId=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_ERROR);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test BPA_ADUP_StartApplication when subscribing fails */
+void Test_BPA_ADUP_StartApplication_SubErr(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = 1;
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;
+
+    /* Set CFE_SB_Subscribe to fail */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_Subscribe), CFE_SB_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_SUB_ERR_EID, 
+                    "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x");
+
+    UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_ERROR);
+    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(BPNode_AppData.AduConfigs[ChanId].AppState, BPA_ADUP_APP_ADDED);
 }
 
 /* Test BPA_ADUP_StopApplication */
@@ -92,17 +222,82 @@ void Test_BPA_ADUP_StopApplication_Nominal(void)
 {
     uint8_t ChanId = 0;
 
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = 1;
     BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     UtAssert_INT32_EQ(BPA_ADUP_StopApplication(ChanId), BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(CFE_SB_Unsubscribe, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+    UtAssert_INT32_EQ(BPNode_AppData.AduConfigs[ChanId].AppState, BPA_ADUP_APP_STOPPED);
+}
+
+/* Test BPA_ADUP_StopApplication when the channel ID is invalid */
+void Test_BPA_ADUP_StopApplication_BadId(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = BPNODE_MAX_NUM_CHANNELS;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_STOP_CHAN_ERR_EID, 
+                     "Error with stop-application directive, invalid ChanId=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_StopApplication(ChanId), BPLIB_ERROR);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test BPA_ADUP_StopApplication when the app state is not started */
+void Test_BPA_ADUP_StopApplication_BadState(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_STOP_STAT_ERR_EID, 
+            "Error with stop-application directive, invalid AppState=%d for ChanId=%d");
+
+    UtAssert_INT32_EQ(BPA_ADUP_StopApplication(ChanId), BPLIB_ERROR);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test BPA_ADUP_StopApplication when subscribing fails */
+void Test_BPA_ADUP_StopApplication_SubErr(void)
+{
+    UT_CheckEvent_t EventTest;
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = 1;
+    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+
+    /* Set CFE_SB_Unsubscribe to fail */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_Unsubscribe), CFE_SB_BAD_ARGUMENT);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_UNSUB_ERR_EID, 
+                    "Error unsubscribing from ADU on channel #%d, Error = %d, MsgId = 0x%x");
+
+    UtAssert_INT32_EQ(BPA_ADUP_StopApplication(ChanId), BPLIB_ERROR);
+    UtAssert_STUB_COUNT(CFE_SB_Unsubscribe, 1);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(BPNode_AppData.AduConfigs[ChanId].AppState, BPA_ADUP_APP_STARTED);
 }
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPA_ADUP_In_Nominal);
+    ADD_TEST(Test_BPA_ADUP_In_SizeErr);
+
     ADD_TEST(Test_BPA_ADUP_Out_Nominal);
+    
     ADD_TEST(Test_BPA_ADUP_AddApplication_Nominal);
+    ADD_TEST(Test_BPA_ADUP_AddApplication_BadId);
+    ADD_TEST(Test_BPA_ADUP_AddApplication_BadState);
+    
     ADD_TEST(Test_BPA_ADUP_StartApplication_Nominal);
+    ADD_TEST(Test_BPA_ADUP_StartApplication_BadId);
+    ADD_TEST(Test_BPA_ADUP_StartApplication_BadState);
+    ADD_TEST(Test_BPA_ADUP_StartApplication_SubErr);
+
     ADD_TEST(Test_BPA_ADUP_StopApplication_Nominal);
+    ADD_TEST(Test_BPA_ADUP_StopApplication_BadId);
+    ADD_TEST(Test_BPA_ADUP_StopApplication_BadState);
+    ADD_TEST(Test_BPA_ADUP_StopApplication_SubErr);
 }

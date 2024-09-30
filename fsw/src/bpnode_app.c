@@ -291,7 +291,7 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /* Add all applications set to be loaded at startup */
+    /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
         if (BPNode_AppData.ChanTblPtr->ChannelSet[i].AddAutomatically == true)
@@ -299,8 +299,19 @@ CFE_Status_t BPNode_AppInit(void)
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);
 
-            BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
-                        "Automatically added app configurations for ChanId=%d", i);
+            BpStatus = BPA_ADUP_StartApplication(i);
+
+            if (BpStatus != BPLIB_SUCCESS)
+            {
+                /* Error event message handled by ADU Proxy */
+                return BpStatus;
+            }
+            else 
+            {
+                BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
+                            "Automatically added app configurations for ChanId=%d", i);
+            }
+
         }
     }    
 
