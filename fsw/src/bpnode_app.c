@@ -38,6 +38,7 @@
 #include "bplib.h"
 #include "fwp.h"
 #include "fwp_tablep.h"
+#include "fwp_tlmp.h"
 
 /*
 ** Global Data
@@ -160,15 +161,21 @@ CFE_Status_t BPNode_AppInit(void)
     uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
-        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
-        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
-        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
-        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
-        .BPA_EVP_Init                 = BPA_EVP_Init,
-        .BPA_EVP_SendEvent            = BPA_EVP_SendEvent,
-        .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
-        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit                
+        .BPA_TIMEP_GetHostClockState            = BPA_TIMEP_GetHostClockState,
+        .BPA_TIMEP_GetHostEpoch                 = BPA_TIMEP_GetHostEpoch,
+        .BPA_TIMEP_GetHostTime                  = BPA_TIMEP_GetHostTime,
+        .BPA_TIMEP_GetMonotonicTime             = BPA_TIMEP_GetMonotonicTime,
+        .BPA_TABLEP_SingleTableUpdate           = BPA_TABLEP_SingleTableUpdate,
+        .BPA_EVP_Init                           = BPA_EVP_Init,
+        .BPA_EVP_SendEvent                      = BPA_EVP_SendEvent,
+        .BPA_PERFLOGP_Entry                     = BPA_PERFLOGP_Entry,
+        .BPA_PERFLOGP_Exit                      = BPA_PERFLOGP_Exit,  
+        .BPA_TLMP_SendNodeMibConfigPkt          = BPA_TLMP_SendNodeMibConfigPkt,
+        .BPA_TLMP_SendPerSourceMibConfigPkt     = BPA_TLMP_SendPerSourceMibConfigPkt,
+        .BPA_TLMP_SendNodeMibCounterPkt         = BPA_TLMP_SendNodeMibCounterPkt,
+        .BPA_TLMP_SendPerSourceMibCounterPkt    = BPA_TLMP_SendPerSourceMibCounterPkt,
+        .BPA_TLMP_SendChannelContactPkt         = BPA_TLMP_SendChannelContactPkt,
+        .BPA_TLMP_SendStoragePkt                = BPA_TLMP_SendStoragePkt                
     };
 
     /* Initialize the FWP before using BPLib functions */
@@ -270,6 +277,17 @@ CFE_Status_t BPNode_AppInit(void)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            (unsigned long)BpStatus);
+
+        return BpStatus;
+    }
+    
+    /* Call Telemetry Proxy Init Function to Create Message Pipe and subscribe TLM messages */
+    BpStatus = BPA_TLMP_Init();
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNode_TLMP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Initialize Telemetry Proxy, RC = 0x%08lX",
                             (unsigned long)BpStatus);
 
         return BpStatus;

@@ -46,6 +46,7 @@
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
 #include "fwp_adup.h"
+#include "fwp_tlmp.h"
 
 
 #include "bplib.h"
@@ -84,6 +85,8 @@ typedef struct
     BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
+    
+    BPNode_TLM_ConfigData_t TlmConfigData; /**< \brief Global data for Telemetry Proxy */
 
 } BPNode_AppData_t;
 

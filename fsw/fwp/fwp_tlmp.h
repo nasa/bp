@@ -1,0 +1,57 @@
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
+ *
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+/**
+** @file
+**   FWP's Telemetry Proxy (TLMP) header definitions
+*/
+
+#ifndef FWP_TLMP_H
+#define FWP_TLMP_H
+
+#include "cfe.h"
+#include "cfe_config.h"
+#include "bplib.h"
+#include "bpnode_msgstruct.h"
+
+#define BPNODE_TLM_PIPE_DEPTH   (32u)              /**< \brief Telemetry pipe depth */
+#define BPNODE_TLM_PIPE_NAME    "BPNODE_TLM_PIPE"  /**< \brief TLM pipe name */
+
+typedef struct
+{
+    CFE_SB_PipeId_t tlmPipe;
+    BPNode_NodeMibConfigHkTlm_t NodeMibConfigHkPkt;
+    BPNode_SourceMibConfigHkTlm_t SrcMibConfigHkPkt;
+    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkPkt;
+    BPNode_SourceMibCountersHkTlm_t SrcMibCountersHkPkt;
+    BPNode_StorageHkTlm_t StorageHkPkt;
+    BPNode_ChannelContactStatHkTlm_t ChannelContactHkPkt;
+}BPNode_TLM_ConfigData_t;
+
+BPLib_Status_t BPA_TLMP_Init(void);
+BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload);
+BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload);
+BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload);
+BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload);
+BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload);
+BPLib_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload);
+
+#endif /* FWP_TLMP_H */
+
