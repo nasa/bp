@@ -27,13 +27,9 @@
 ** Include Files
 */
 
-#include "bplib.h"
-#include "bpnode_test_utils.h"
-#include "bpnode_app.h"
-#include "bpnode_dispatch.h"
-
 #include "fwp_dp.h"
 #include "bplib_eventids.h"
+#include "bpnode_test_utils.h"
 
 /* ======= */
 /* Globals */
