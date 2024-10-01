@@ -32,6 +32,14 @@
 
 #include "cfe_error.h"
 #include "bpnode_msg.h"
+#include "bpnode_msgids.h"
+#include "bpnode_version.h"
+#include "bpnode_tbl.h"
+#include "bpnode_utils.h"
+#include "bpnode_msg.h"
+
+#include "bplib.h"
+#include "bplib_eventids.h"
 
 
 /* =================== */
@@ -48,9 +56,9 @@
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_NoopCmd(void);
+CFE_Status_t BPA_DP_NoopCmd(void);
 
 /**
  * \brief Add All Applications command
@@ -62,9 +70,9 @@ BPLib_Status_t BPA_DP_NoopCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddAllApplicationsCmd(void);
+CFE_Status_t BPA_DP_AddAllApplicationsCmd(void);
 
 /**
  * \brief Start All Applications command
@@ -76,9 +84,9 @@ BPLib_Status_t BPA_DP_AddAllApplicationsCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_StartAllApplicationsCmd(void);
+CFE_Status_t BPA_DP_StartAllApplicationsCmd(void);
 
 /**
  * \brief Verify Bundle Storage command
@@ -90,9 +98,9 @@ BPLib_Status_t BPA_DP_StartAllApplicationsCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_VerifyBundleStorageCmd(void);
+CFE_Status_t BPA_DP_VerifyBundleStorageCmd(void);
 
 /**
  * \brief Initialize Bundle Storage command
@@ -104,9 +112,9 @@ BPLib_Status_t BPA_DP_VerifyBundleStorageCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_InitBundleStorageCmd(void);
+CFE_Status_t BPA_DP_InitBundleStorageCmd(void);
 
 /**
  * \brief Verify Bundle Metadata (7.2) command
@@ -118,9 +126,9 @@ BPLib_Status_t BPA_DP_InitBundleStorageCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_VerifyBundleMetadataCmd(void);
+CFE_Status_t BPA_DP_VerifyBundleMetadataCmd(void);
 
 /**
  * \brief Rebuild Bundle Metadata command
@@ -132,9 +140,9 @@ BPLib_Status_t BPA_DP_VerifyBundleMetadataCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RebuildBundleMetadataCmd(void);
+CFE_Status_t BPA_DP_RebuildBundleMetadataCmd(void);
 
 /**
  * \brief Clear Volatile command
@@ -146,9 +154,9 @@ BPLib_Status_t BPA_DP_RebuildBundleMetadataCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ClearVolatileCmd(void);
+CFE_Status_t BPA_DP_ClearVolatileCmd(void);
 
 /**
  * \brief Reload Saved Data (7.2) command
@@ -160,9 +168,9 @@ BPLib_Status_t BPA_DP_ClearVolatileCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ReloadSavedDataCmd(void);
+CFE_Status_t BPA_DP_ReloadSavedDataCmd(void);
 
 /**
  * \brief Reset All Counters command
@@ -174,9 +182,9 @@ BPLib_Status_t BPA_DP_ReloadSavedDataCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ResetAllCountersCmd(void);
+CFE_Status_t BPA_DP_ResetAllCountersCmd(void);
 
 /**
  * \brief Reset Counter command
@@ -190,9 +198,9 @@ BPLib_Status_t BPA_DP_ResetAllCountersCmd(void);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg);
+CFE_Status_t BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg);
 
 /**
  * \brief Reset Source Counters command
@@ -206,9 +214,9 @@ BPLib_Status_t BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg);
+CFE_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg);
 
 /**
  * \brief Reset Bundle Counters command
@@ -220,9 +228,9 @@ BPLib_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ResetBundleCountersCmd(void);
+CFE_Status_t BPA_DP_ResetBundleCountersCmd(void);
 
 /**
  * \brief Reset Error Counters command
@@ -234,9 +242,9 @@ BPLib_Status_t BPA_DP_ResetBundleCountersCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ResetErrorCountersCmd(void);
+CFE_Status_t BPA_DP_ResetErrorCountersCmd(void);
 
 /**
  * \brief Add Application command
@@ -250,9 +258,9 @@ BPLib_Status_t BPA_DP_ResetErrorCountersCmd(void);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg);
+CFE_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg);
 
 /**
  * \brief Remove Application command
@@ -266,9 +274,9 @@ BPLib_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg);
 
 /**
  * \brief Set Registration State command
@@ -282,9 +290,9 @@ BPLib_Status_t BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg);
+CFE_Status_t BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg);
 
 /**
  * \brief Start Application command
@@ -298,9 +306,9 @@ BPLib_Status_t BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateC
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg);
+CFE_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg);
 
 /**
  * \brief Stop Application command
@@ -314,9 +322,9 @@ BPLib_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Ms
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg);
+CFE_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg);
 
 /**
  * \brief Add Authorized Sources command
@@ -330,9 +338,9 @@ BPLib_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg);
+CFE_Status_t BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg);
 
 /**
  * \brief Remove Authorized Sources command
@@ -346,9 +354,9 @@ BPLib_Status_t BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg);
 
 /**
  * \brief Add Authorized Custody Sources command
@@ -362,9 +370,9 @@ BPLib_Status_t BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg);
+CFE_Status_t BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg);
 
 /**
  * \brief Remove Authorized Custody Sources command
@@ -378,9 +386,9 @@ BPLib_Status_t BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySource
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg);
 
 /**
  * \brief Add Authorized Custodians command
@@ -394,9 +402,9 @@ BPLib_Status_t BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustody
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg);
+CFE_Status_t BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg);
 
 /**
  * \brief Remove Authorized Custodians command
@@ -410,9 +418,9 @@ BPLib_Status_t BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg);
 
 /**
  * \brief Add Authorized Report-to EID command
@@ -426,9 +434,9 @@ BPLib_Status_t BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansC
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg);
+CFE_Status_t BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg);
 
 /**
  * \brief Remove Authorized Report-to EID command
@@ -442,9 +450,9 @@ BPLib_Status_t BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg);
 
 /**
  * \brief Add Latency command
@@ -458,9 +466,9 @@ BPLib_Status_t BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEi
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg);
+CFE_Status_t BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg);
 
 /**
  * \brief Remove Latency command
@@ -474,9 +482,9 @@ BPLib_Status_t BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg);
 
 /**
  * \brief Contact Setup command
@@ -490,9 +498,9 @@ BPLib_Status_t BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg);
+CFE_Status_t BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg);
 
 /**
  * \brief Contact Start command
@@ -506,9 +514,9 @@ BPLib_Status_t BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg);
+CFE_Status_t BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg);
 
 /**
  * \brief Contact Stop command
@@ -522,9 +530,9 @@ BPLib_Status_t BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg);
+CFE_Status_t BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg);
 
 /**
  * \brief Contact Teardown command
@@ -538,9 +546,9 @@ BPLib_Status_t BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg);
+CFE_Status_t BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg);
 
 /**
  * \brief Add MIB Array Key command
@@ -554,9 +562,9 @@ BPLib_Status_t BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg);
+CFE_Status_t BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg);
 
 /**
  * \brief Remove MIB Array Key command
@@ -570,9 +578,9 @@ BPLib_Status_t BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg);
 
 /**
  * \brief Set MIB Item command
@@ -586,9 +594,9 @@ BPLib_Status_t BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg);
+CFE_Status_t BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg);
 
 /**
  * \brief Add Storage Allocation command
@@ -602,9 +610,9 @@ BPLib_Status_t BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg);
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg);
+CFE_Status_t BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg);
 
 /**
  * \brief Remove Storage Allocation command
@@ -618,9 +626,9 @@ BPLib_Status_t BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationC
  *  \param[in] Msg Pointer to Software Bus buffer
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg);
+CFE_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg);
 
 /**
  * \brief Perform Self Test (7.2) command
@@ -632,9 +640,9 @@ BPLib_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAlloc
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_PerformSelfTestCmd(void);
+CFE_Status_t BPA_DP_PerformSelfTestCmd(void);
 
 /**
  * \brief Send Node MIB Config HK command
@@ -646,9 +654,9 @@ BPLib_Status_t BPA_DP_PerformSelfTestCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SendNodeMibConfigHkCmd(void);
+CFE_Status_t BPA_DP_SendNodeMibConfigHkCmd(void);
 
 /**
  * \brief Send Per-Source MIB Config HK command
@@ -660,9 +668,9 @@ BPLib_Status_t BPA_DP_SendNodeMibConfigHkCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SendSourceMibConfigHkCmd(void);
+CFE_Status_t BPA_DP_SendSourceMibConfigHkCmd(void);
 
 /**
  * \brief Send Node MIB Counter HK command
@@ -674,9 +682,9 @@ BPLib_Status_t BPA_DP_SendSourceMibConfigHkCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SendNodeMibCountersHkCmd(void);
+CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void);
 
 /**
  * \brief Send Per-Source MIB Counter HK command
@@ -688,9 +696,9 @@ BPLib_Status_t BPA_DP_SendNodeMibCountersHkCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SendSourceMibCountersHkCmd(void);
+CFE_Status_t BPA_DP_SendSourceMibCountersHkCmd(void);
 
 /**
  * \brief Send Storage HK command
@@ -702,9 +710,9 @@ BPLib_Status_t BPA_DP_SendSourceMibCountersHkCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SendStorageHkCmd(void);
+CFE_Status_t BPA_DP_SendStorageHkCmd(void);
 
 /**
  * \brief Send Channel/Contact Status HK command
@@ -716,8 +724,8 @@ BPLib_Status_t BPA_DP_SendStorageHkCmd(void);
  *       None
  *
  *  \return Execution status
- *  \retval #BPLIB_SUCCESS \copybrief BPLIB_SUCCESS
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-BPLib_Status_t BPA_DP_SendChannelContactStatHkCmd(void);
+CFE_Status_t BPA_DP_SendChannelContactStatHkCmd(void);
 
 #endif /* FWP_DP_H */
