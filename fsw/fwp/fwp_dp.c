@@ -961,6 +961,8 @@ CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
 
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 

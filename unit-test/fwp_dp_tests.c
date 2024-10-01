@@ -28,14 +28,7 @@
 /* ============= */
 
 #include "fwp_dp.h"
-#include "bplib_eventids.h"
 #include "bpnode_test_utils.h"
-
-/* ======= */
-/* Globals */
-/* ======= */
-
-UT_CheckEvent_t EventTest;
 
 /* ==================== */
 /* Function Definitions */
@@ -44,18 +37,6 @@ UT_CheckEvent_t EventTest;
 /* Test noop command in nominal case */
 void TEST_BPA_DP_NoopCmd_Nominal(void)
 {
-    /* Test dispatch of noop */
-
-    /**
-     *  The UT_CHECKEVENT_SETUP ExpectedFormat string must match the
-     *  event message format string with format specifiers.
-     *
-     *  For example, the No-op test ExpectedFormat string must match the No-op
-     *  command event message format string, including the "%d" format specifiers.
-     *
-     *  Use NULL for the ExpectedFormat to ignore the event message format string.
-     */
-
     UtAssert_INT32_EQ(BPA_DP_NoopCmd(), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_NC_NoopCmd , 1);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
