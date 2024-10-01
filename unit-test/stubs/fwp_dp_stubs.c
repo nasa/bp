@@ -29,720 +29,682 @@
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddAllApplicationsCmd()
+ * Generated stub function for BPA_DP_AddAllApplicationsCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddAllApplicationsCmd(const BPNode_AddAllApplicationsCmd_t *Msg)
+CFE_Status_t BPA_DP_AddAllApplicationsCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddAllApplicationsCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddAllApplicationsCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddAllApplicationsCmd, const BPNode_AddAllApplicationsCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_AddAllApplicationsCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_AddAllApplicationsCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_AddAllApplicationsCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddAllApplicationsCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddApplicationCmd()
+ * Generated stub function for BPA_DP_AddApplicationCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
+CFE_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddApplicationCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddApplicationCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddApplicationCmd, const BPNode_AddApplicationCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddApplicationCmd, const BPNode_AddApplicationCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddApplicationCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddApplicationCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddApplicationCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddApplicationCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddAuthCustodiansCmd()
+ * Generated stub function for BPA_DP_AddAuthCustodiansCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg)
+CFE_Status_t BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddAuthCustodiansCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddAuthCustodiansCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddAuthCustodiansCmd, const BPNode_AddAuthCustodiansCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddAuthCustodiansCmd, const BPNode_AddAuthCustodiansCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddAuthCustodiansCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddAuthCustodiansCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddAuthCustodiansCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddAuthCustodiansCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddAuthCustodySourcesCmd()
+ * Generated stub function for BPA_DP_AddAuthCustodySourcesCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg)
+CFE_Status_t BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddAuthCustodySourcesCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddAuthCustodySourcesCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddAuthCustodySourcesCmd, const BPNode_AddAuthCustodySourcesCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddAuthCustodySourcesCmd, const BPNode_AddAuthCustodySourcesCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddAuthCustodySourcesCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddAuthCustodySourcesCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddAuthCustodySourcesCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddAuthCustodySourcesCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddAuthReportToEidCmd()
+ * Generated stub function for BPA_DP_AddAuthReportToEidCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg)
+CFE_Status_t BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddAuthReportToEidCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddAuthReportToEidCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddAuthReportToEidCmd, const BPNode_AddAuthReportToEidCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddAuthReportToEidCmd, const BPNode_AddAuthReportToEidCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddAuthReportToEidCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddAuthReportToEidCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddAuthReportToEidCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddAuthReportToEidCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddAuthSourcesCmd()
+ * Generated stub function for BPA_DP_AddAuthSourcesCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
+CFE_Status_t BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddAuthSourcesCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddAuthSourcesCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddAuthSourcesCmd, const BPNode_AddAuthSourcesCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddAuthSourcesCmd, const BPNode_AddAuthSourcesCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddAuthSourcesCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddAuthSourcesCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddAuthSourcesCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddAuthSourcesCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddLatencyCmd()
+ * Generated stub function for BPA_DP_AddLatencyCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
+CFE_Status_t BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddLatencyCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddLatencyCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddLatencyCmd, const BPNode_AddLatencyCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddLatencyCmd, const BPNode_AddLatencyCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddLatencyCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddLatencyCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddLatencyCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddLatencyCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddMibArrayKeyCmd()
+ * Generated stub function for BPA_DP_AddMibArrayKeyCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
+CFE_Status_t BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddMibArrayKeyCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddMibArrayKeyCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddMibArrayKeyCmd, const BPNode_AddMibArrayKeyCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddMibArrayKeyCmd, const BPNode_AddMibArrayKeyCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddMibArrayKeyCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddMibArrayKeyCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddMibArrayKeyCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddMibArrayKeyCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_AddStorageAllocationCmd()
+ * Generated stub function for BPA_DP_AddStorageAllocationCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
+CFE_Status_t BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_AddStorageAllocationCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_AddStorageAllocationCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_AddStorageAllocationCmd, const BPNode_AddStorageAllocationCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_AddStorageAllocationCmd, const BPNode_AddStorageAllocationCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_AddStorageAllocationCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_AddStorageAllocationCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_AddStorageAllocationCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_AddStorageAllocationCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ClearVolatileCmd()
+ * Generated stub function for BPA_DP_ClearVolatileCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ClearVolatileCmd(const BPNode_ClearVolatileCmd_t *Msg)
+CFE_Status_t BPA_DP_ClearVolatileCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ClearVolatileCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ClearVolatileCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ClearVolatileCmd, const BPNode_ClearVolatileCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_ClearVolatileCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_ClearVolatileCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_ClearVolatileCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ClearVolatileCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ContactSetupCmd()
+ * Generated stub function for BPA_DP_ContactSetupCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
+CFE_Status_t BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ContactSetupCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ContactSetupCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ContactSetupCmd, const BPNode_ContactSetupCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_ContactSetupCmd, const BPNode_ContactSetupCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ContactSetupCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_ContactSetupCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ContactSetupCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ContactSetupCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ContactStartCmd()
+ * Generated stub function for BPA_DP_ContactStartCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
+CFE_Status_t BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ContactStartCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ContactStartCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ContactStartCmd, const BPNode_ContactStartCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_ContactStartCmd, const BPNode_ContactStartCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ContactStartCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_ContactStartCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ContactStartCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ContactStartCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ContactStopCmd()
+ * Generated stub function for BPA_DP_ContactStopCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
+CFE_Status_t BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ContactStopCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ContactStopCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ContactStopCmd, const BPNode_ContactStopCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_ContactStopCmd, const BPNode_ContactStopCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ContactStopCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_ContactStopCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ContactStopCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ContactStopCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ContactTeardownCmd()
+ * Generated stub function for BPA_DP_ContactTeardownCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
+CFE_Status_t BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ContactTeardownCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ContactTeardownCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ContactTeardownCmd, const BPNode_ContactTeardownCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_ContactTeardownCmd, const BPNode_ContactTeardownCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ContactTeardownCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_ContactTeardownCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ContactTeardownCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ContactTeardownCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_InitBundleStorageCmd()
+ * Generated stub function for BPA_DP_InitBundleStorageCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_InitBundleStorageCmd(const BPNode_InitBundleStorageCmd_t *Msg)
+CFE_Status_t BPA_DP_InitBundleStorageCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_InitBundleStorageCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_InitBundleStorageCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_InitBundleStorageCmd, const BPNode_InitBundleStorageCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_InitBundleStorageCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_InitBundleStorageCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_InitBundleStorageCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_InitBundleStorageCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_NoopCmd()
+ * Generated stub function for BPA_DP_NoopCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_NoopCmd(const BPNode_NoopCmd_t *Msg)
+CFE_Status_t BPA_DP_NoopCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_NoopCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_NoopCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_NoopCmd, const BPNode_NoopCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_NoopCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_NoopCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_NoopCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_NoopCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_PerformSelfTestCmd()
+ * Generated stub function for BPA_DP_PerformSelfTestCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_PerformSelfTestCmd(const BPNode_PerformSelfTestCmd_t *Msg)
+CFE_Status_t BPA_DP_PerformSelfTestCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_PerformSelfTestCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_PerformSelfTestCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_PerformSelfTestCmd, const BPNode_PerformSelfTestCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_PerformSelfTestCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_PerformSelfTestCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_PerformSelfTestCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_PerformSelfTestCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RebuildBundleMetadataCmd()
+ * Generated stub function for BPA_DP_RebuildBundleMetadataCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RebuildBundleMetadataCmd(const BPNode_RebuildBundleMetadataCmd_t *Msg)
+CFE_Status_t BPA_DP_RebuildBundleMetadataCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RebuildBundleMetadataCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RebuildBundleMetadataCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RebuildBundleMetadataCmd, const BPNode_RebuildBundleMetadataCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_RebuildBundleMetadataCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_RebuildBundleMetadataCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_RebuildBundleMetadataCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RebuildBundleMetadataCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ReloadSavedDataCmd()
+ * Generated stub function for BPA_DP_ReloadSavedDataCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
+CFE_Status_t BPA_DP_ReloadSavedDataCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ReloadSavedDataCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ReloadSavedDataCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ReloadSavedDataCmd, const BPNode_ReloadSavedDataCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_ReloadSavedDataCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_ReloadSavedDataCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_ReloadSavedDataCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ReloadSavedDataCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveApplicationCmd()
+ * Generated stub function for BPA_DP_RemoveApplicationCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveApplicationCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveApplicationCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveApplicationCmd, const BPNode_RemoveApplicationCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveApplicationCmd, const BPNode_RemoveApplicationCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveApplicationCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveApplicationCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveApplicationCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveApplicationCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveAuthCustodiansCmd()
+ * Generated stub function for BPA_DP_RemoveAuthCustodiansCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveAuthCustodiansCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveAuthCustodiansCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveAuthCustodiansCmd, const BPNode_RemoveAuthCustodiansCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveAuthCustodiansCmd, const BPNode_RemoveAuthCustodiansCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveAuthCustodiansCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveAuthCustodiansCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveAuthCustodiansCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveAuthCustodiansCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveAuthCustodySourcesCmd()
+ * Generated stub function for BPA_DP_RemoveAuthCustodySourcesCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveAuthCustodySourcesCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveAuthCustodySourcesCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveAuthCustodySourcesCmd, const BPNode_RemoveAuthCustodySourcesCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveAuthCustodySourcesCmd, const BPNode_RemoveAuthCustodySourcesCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveAuthCustodySourcesCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveAuthCustodySourcesCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveAuthCustodySourcesCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveAuthCustodySourcesCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveAuthReportToEidCmd()
+ * Generated stub function for BPA_DP_RemoveAuthReportToEidCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveAuthReportToEidCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveAuthReportToEidCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveAuthReportToEidCmd, const BPNode_RemoveAuthReportToEidCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveAuthReportToEidCmd, const BPNode_RemoveAuthReportToEidCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveAuthReportToEidCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveAuthReportToEidCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveAuthReportToEidCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveAuthReportToEidCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveAuthSourcesCmd()
+ * Generated stub function for BPA_DP_RemoveAuthSourcesCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveAuthSourcesCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveAuthSourcesCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveAuthSourcesCmd, const BPNode_RemoveAuthSourcesCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveAuthSourcesCmd, const BPNode_RemoveAuthSourcesCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveAuthSourcesCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveAuthSourcesCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveAuthSourcesCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveAuthSourcesCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveLatencyCmd()
+ * Generated stub function for BPA_DP_RemoveLatencyCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveLatencyCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveLatencyCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveLatencyCmd, const BPNode_RemoveLatencyCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveLatencyCmd, const BPNode_RemoveLatencyCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveLatencyCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveLatencyCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveLatencyCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveLatencyCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveMibArrayKeyCmd()
+ * Generated stub function for BPA_DP_RemoveMibArrayKeyCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveMibArrayKeyCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveMibArrayKeyCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveMibArrayKeyCmd, const BPNode_RemoveMibArrayKeyCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveMibArrayKeyCmd, const BPNode_RemoveMibArrayKeyCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveMibArrayKeyCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveMibArrayKeyCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveMibArrayKeyCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveMibArrayKeyCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_RemoveStorageAllocationCmd()
+ * Generated stub function for BPA_DP_RemoveStorageAllocationCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg)
+CFE_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_RemoveStorageAllocationCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_RemoveStorageAllocationCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_RemoveStorageAllocationCmd, const BPNode_RemoveStorageAllocationCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_RemoveStorageAllocationCmd, const BPNode_RemoveStorageAllocationCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_RemoveStorageAllocationCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_RemoveStorageAllocationCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_RemoveStorageAllocationCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_RemoveStorageAllocationCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ResetAllCountersCmd()
+ * Generated stub function for BPA_DP_ResetAllCountersCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
+CFE_Status_t BPA_DP_ResetAllCountersCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ResetAllCountersCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ResetAllCountersCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ResetAllCountersCmd, const BPNode_ResetAllCountersCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_ResetAllCountersCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_ResetAllCountersCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_ResetAllCountersCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ResetAllCountersCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ResetBundleCountersCmd()
+ * Generated stub function for BPA_DP_ResetBundleCountersCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ResetBundleCountersCmd(const BPNode_ResetBundleCountersCmd_t *Msg)
+CFE_Status_t BPA_DP_ResetBundleCountersCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ResetBundleCountersCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ResetBundleCountersCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ResetBundleCountersCmd, const BPNode_ResetBundleCountersCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_ResetBundleCountersCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_ResetBundleCountersCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_ResetBundleCountersCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ResetBundleCountersCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ResetCounterCmd()
+ * Generated stub function for BPA_DP_ResetCounterCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
+CFE_Status_t BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ResetCounterCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ResetCounterCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ResetCounterCmd, const BPNode_ResetCounterCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_ResetCounterCmd, const BPNode_ResetCounterCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ResetCounterCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_ResetCounterCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ResetCounterCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ResetCounterCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ResetErrorCountersCmd()
+ * Generated stub function for BPA_DP_ResetErrorCountersCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *Msg)
+CFE_Status_t BPA_DP_ResetErrorCountersCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ResetErrorCountersCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ResetErrorCountersCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ResetErrorCountersCmd, const BPNode_ResetErrorCountersCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_ResetErrorCountersCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_ResetErrorCountersCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_ResetErrorCountersCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ResetErrorCountersCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ResetSourceCountersCmd()
+ * Generated stub function for BPA_DP_ResetSourceCountersCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
+CFE_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ResetSourceCountersCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_ResetSourceCountersCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ResetSourceCountersCmd, const BPNode_ResetSourceCountersCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_ResetSourceCountersCmd, const BPNode_ResetSourceCountersCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_ResetSourceCountersCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_ResetSourceCountersCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ResetSourceCountersCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_ResetSourceCountersCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendChannelContactStatHkCmd()
+ * Generated stub function for BPA_DP_SendChannelContactStatHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
+CFE_Status_t BPA_DP_SendChannelContactStatHkCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendChannelContactStatHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SendChannelContactStatHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendChannelContactStatHkCmd, const BPNode_SendChannelContactStatHkCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_SendChannelContactStatHkCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_SendChannelContactStatHkCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_SendChannelContactStatHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SendChannelContactStatHkCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendNodeMibConfigHkCmd()
+ * Generated stub function for BPA_DP_SendNodeMibConfigHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendNodeMibConfigHkCmd(const BPNode_SendNodeMibConfigHkCmd_t *Msg)
+CFE_Status_t BPA_DP_SendNodeMibConfigHkCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendNodeMibConfigHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SendNodeMibConfigHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendNodeMibConfigHkCmd, const BPNode_SendNodeMibConfigHkCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_SendNodeMibConfigHkCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_SendNodeMibConfigHkCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_SendNodeMibConfigHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SendNodeMibConfigHkCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendNodeMibCountersHkCmd()
+ * Generated stub function for BPA_DP_SendNodeMibCountersHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
+CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendNodeMibCountersHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SendNodeMibCountersHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendNodeMibCountersHkCmd, const BPNode_SendNodeMibCountersHkCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_SendNodeMibCountersHkCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_SendNodeMibCountersHkCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_SendNodeMibCountersHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SendNodeMibCountersHkCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendSourceMibConfigHkCmd()
+ * Generated stub function for BPA_DP_SendSourceMibConfigHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkCmd_t *Msg)
+CFE_Status_t BPA_DP_SendSourceMibConfigHkCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendSourceMibConfigHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SendSourceMibConfigHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendSourceMibConfigHkCmd, const BPNode_SendSourceMibConfigHkCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_SendSourceMibConfigHkCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_SendSourceMibConfigHkCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_SendSourceMibConfigHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SendSourceMibConfigHkCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendSourceMibCountersHkCmd()
+ * Generated stub function for BPA_DP_SendSourceMibCountersHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendSourceMibCountersHkCmd(const BPNode_SendSourceMibCountersHkCmd_t *Msg)
+CFE_Status_t BPA_DP_SendSourceMibCountersHkCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendSourceMibCountersHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SendSourceMibCountersHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendSourceMibCountersHkCmd, const BPNode_SendSourceMibCountersHkCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_SendSourceMibCountersHkCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_SendSourceMibCountersHkCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_SendSourceMibCountersHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SendSourceMibCountersHkCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SendStorageHkCmd()
+ * Generated stub function for BPA_DP_SendStorageHkCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
+CFE_Status_t BPA_DP_SendStorageHkCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SendStorageHkCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SendStorageHkCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SendStorageHkCmd, const BPNode_SendStorageHkCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_SendStorageHkCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_SendStorageHkCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_SendStorageHkCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SendStorageHkCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SetMibItemCmd()
+ * Generated stub function for BPA_DP_SetMibItemCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
+CFE_Status_t BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SetMibItemCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SetMibItemCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SetMibItemCmd, const BPNode_SetMibItemCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_SetMibItemCmd, const BPNode_SetMibItemCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_SetMibItemCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_SetMibItemCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_SetMibItemCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SetMibItemCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_SetRegistrationStateCmd()
+ * Generated stub function for BPA_DP_SetRegistrationStateCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
+CFE_Status_t BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_SetRegistrationStateCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_SetRegistrationStateCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_SetRegistrationStateCmd, const BPNode_SetRegistrationStateCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_SetRegistrationStateCmd, const BPNode_SetRegistrationStateCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_SetRegistrationStateCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_SetRegistrationStateCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_SetRegistrationStateCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_SetRegistrationStateCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_StartAllApplicationsCmd()
+ * Generated stub function for BPA_DP_StartAllApplicationsCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_StartAllApplicationsCmd(const BPNode_StartAllApplicationsCmd_t *Msg)
+CFE_Status_t BPA_DP_StartAllApplicationsCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_StartAllApplicationsCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_StartAllApplicationsCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_StartAllApplicationsCmd, const BPNode_StartAllApplicationsCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_StartAllApplicationsCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_StartAllApplicationsCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_StartAllApplicationsCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_StartAllApplicationsCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_StartApplicationCmd()
+ * Generated stub function for BPA_DP_StartApplicationCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
+CFE_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_StartApplicationCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_StartApplicationCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_StartApplicationCmd, const BPNode_StartApplicationCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_StartApplicationCmd, const BPNode_StartApplicationCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_StartApplicationCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_StartApplicationCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_StartApplicationCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_StartApplicationCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_StopApplicationCmd()
+ * Generated stub function for BPA_DP_StopApplicationCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
+CFE_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_StopApplicationCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_StopApplicationCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_StopApplicationCmd, const BPNode_StopApplicationCmd_t *, Msg);
+    UT_GenStub_AddParam(BPA_DP_StopApplicationCmd, const BPNode_StopApplicationCmd_t *, Msg);
 
-    UT_GenStub_Execute(BPNode_StopApplicationCmd, Basic, NULL);
+    UT_GenStub_Execute(BPA_DP_StopApplicationCmd, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_StopApplicationCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_StopApplicationCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_VerifyBundleMetadataCmd()
+ * Generated stub function for BPA_DP_VerifyBundleMetadataCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_VerifyBundleMetadataCmd(const BPNode_VerifyBundleMetadataCmd_t *Msg)
+CFE_Status_t BPA_DP_VerifyBundleMetadataCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_VerifyBundleMetadataCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_VerifyBundleMetadataCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_VerifyBundleMetadataCmd, const BPNode_VerifyBundleMetadataCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_VerifyBundleMetadataCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_VerifyBundleMetadataCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_VerifyBundleMetadataCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_VerifyBundleMetadataCmd, CFE_Status_t);
 }
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_VerifyBundleStorageCmd()
+ * Generated stub function for BPA_DP_VerifyBundleStorageCmd()
  * ----------------------------------------------------
  */
-CFE_Status_t BPNode_VerifyBundleStorageCmd(const BPNode_VerifyBundleStorageCmd_t *Msg)
+CFE_Status_t BPA_DP_VerifyBundleStorageCmd(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_VerifyBundleStorageCmd, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_DP_VerifyBundleStorageCmd, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_VerifyBundleStorageCmd, const BPNode_VerifyBundleStorageCmd_t *, Msg);
+    UT_GenStub_Execute(BPA_DP_VerifyBundleStorageCmd, Basic, NULL);
 
-    UT_GenStub_Execute(BPNode_VerifyBundleStorageCmd, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_VerifyBundleStorageCmd, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_DP_VerifyBundleStorageCmd, CFE_Status_t);
 }
