@@ -75,4 +75,9 @@
  */
 #define BPNODE_SEM_WAIT_MSEC    (5000u)
 
+/**
+ * \brief Maximum number of CLA/CL contacts allowed at once
+ */
+#define BPNODE_MAX_NUM_CONTACTS         10
+
 #endif /* BPNODE_PLATFORM_CFG_H */

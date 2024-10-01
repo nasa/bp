@@ -79,7 +79,8 @@ typedef struct
 
     BPNode_TblNameParams_t  *TblNameParamsArr;
 
-    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
+    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;         /**< \brief Node MIB Counters housekeeping packet */
+    BPNode_ChannelContactStatHkTlm_t ChannelContactStatHkTlm;   /**< \brief Channel/contact status housekeeping packet */
 
     BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */

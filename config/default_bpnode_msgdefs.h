@@ -90,12 +90,37 @@ typedef struct BPNode_StorageHkTlm_Payload
 } BPNode_StorageHkTlm_Payload_t;
 
 /**
+ * \brief Channel status data
+ */
+typedef struct BPNode_ChannelStats
+{
+    uint32 LocalServiceNum;         /**< \brief Service number for local application */
+    uint8  State;                   /**< \brief Channel state (ADDED, STARTED, or STOPPED) */
+    uint8  RegistrationState;       /**< \brief Active, PassiveDeferred, or PassiveAbandon */
+    uint16 Spare;                   /**< \brief Padding */
+    uint32 OutputQueueId;           /**< \brief PI output queue ID */
+
+} BPNode_ChannelStats_t;
+
+/**
+ * \brief Contact status data
+ */
+typedef struct BPNode_ContactStats
+{
+    uint32 Spare;       /* TODO */
+} BPNode_ContactStats_t;
+
+/**
  * \brief Channel/contact status housekeeping payload
  */
 typedef struct BPNode_ChannelContactStatHkTlm_Payload
 {
-    /* TODO */
-    uint32 Spare;
+    BPNode_ChannelStats_t ChannelStats[BPNODE_MAX_NUM_CHANNELS];
+    BPNode_ContactStats_t ContactStats[BPNODE_MAX_NUM_CONTACTS];
+
+    uint32 TimeBootEra;             /**< \brief Boot Era for Monotonic Time */
+    int64  MonotonicTime;           /**< \brief Monotonic Time Counter */
+    int64  CorrelationFactor;       /**< \brief Time Correlation Factor */
 } BPNode_ChannelContactStatHkTlm_Payload_t;
 
 

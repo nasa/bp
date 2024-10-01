@@ -31,18 +31,18 @@
 BPA_ADUP_Config_t ADUProxyTable[BPNODE_MAX_NUM_CHANNELS] = {
     {
         .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(0x0800),     /* CFE_ES_HK, currently does nothing*/
-        .NumRecvFrmMsgIds = 1,
+        .NumRecvFrmMsgIds = 3,
         .RecvFrmMsgIds = {  
-            CFE_SB_MSGID_WRAP_VALUE(0x0880),                /* TO_LAB_HK */ 
+            CFE_SB_MSGID_WRAP_VALUE(0x080A),                /* CFE_SB_STATS */ 
+            CFE_SB_MSGID_WRAP_VALUE(0x080D),                /* CFE_SB_ALLSUBS */
+            CFE_SB_MSGID_WRAP_VALUE(0x080E),                /* CFE_SB_ONESUB */
         }
     },
     {
         .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(0x1801),     /* CFE_EVS_CMD, currently does nothing*/
-        .NumRecvFrmMsgIds = 3,
+        .NumRecvFrmMsgIds = 1,
         .RecvFrmMsgIds = {
-            CFE_SB_MSGID_WRAP_VALUE(0x0801),                /* CFE_EVS_HK */ 
-            CFE_SB_MSGID_WRAP_VALUE(0x0804),                /* CFE_TBL_HK */
-            CFE_SB_MSGID_WRAP_VALUE(0x0884),                /* CI_LAB_HK */
+            CFE_SB_MSGID_WRAP_VALUE(0x0806),                /* CFE_TIME_DIAG_HK */ 
         }
     }
 };

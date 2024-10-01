@@ -606,10 +606,30 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 /* Send channel/contact status hk command */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    // TODO delete me??
+    // BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send channel/contact status hk command not implemented");
+    // BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
+    //                 "Send channel/contact status hk command not implemented");
 
-    return CFE_SUCCESS;
+    BPLib_TIME_MonotonicTime_t MonotonicTime;
+    uint8 i;
+
+    /* Get ADU status from all child tasks */
+    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduConfigs[i].AppState;
+    }
+
+    /* Get DTN time data */
+    BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
+
+    return CFE_SUCCESS;    
 }
