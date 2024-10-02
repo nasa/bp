@@ -835,16 +835,10 @@ void Test_BPNode_SendStorageHkCmd_Nominal(void)
 void Test_BPNode_SendChannelContactStatHkCmd_Nominal(void)
 {
     BPNode_SendChannelContactStatHkCmd_t TestMsg;
-    UT_CheckEvent_t              EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_RESET_INF_EID, "Send channel/contact status hk command not implemented");
-
     UtAssert_INT32_EQ(BPNode_SendChannelContactStatHkCmd(&TestMsg), CFE_SUCCESS);
-
-    /* Confirm that the event was generated */
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
 /* Register the test cases to execute with the unit test tool */
