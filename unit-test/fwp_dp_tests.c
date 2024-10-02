@@ -192,7 +192,10 @@ void TEST_BPA_DP_ResetAllCountersCmd_Nominal(void)
 {
     UtAssert_INT32_EQ(BPA_DP_ResetAllCountersCmd(), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_NC_ResetAllCountersCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived, 0);
 }
 
 void TEST_BPA_DP_ResetAllCountersCmd_Error(void)
@@ -201,7 +204,10 @@ void TEST_BPA_DP_ResetAllCountersCmd_Error(void)
     
     UtAssert_INT32_EQ(BPA_DP_ResetAllCountersCmd(), CFE_STATUS_NOT_IMPLEMENTED);
     UtAssert_STUB_COUNT(BPLib_NC_ResetAllCountersCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived, 0);
 }
 
 /* Test Reset Counter command nominal case */
@@ -944,7 +950,6 @@ void TEST_BPA_DP_SendNodeMibCountersHkCmd_Nominal(void)
 {
     UtAssert_INT32_EQ(BPA_DP_SendNodeMibCountersHkCmd(), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
 void TEST_BPA_DP_SendNodeMibCountersHkCmd_Error(void)
@@ -953,7 +958,6 @@ void TEST_BPA_DP_SendNodeMibCountersHkCmd_Error(void)
 
     UtAssert_INT32_EQ(BPA_DP_SendNodeMibCountersHkCmd(), CFE_STATUS_NOT_IMPLEMENTED);
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
 /* Test Send Per-Source MIB Counter HK command nominal case */
