@@ -438,7 +438,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPNode_NodeMibConfigHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+    BPLib_NodeMibConfigHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_NodeMibConfigHkTlm_t;
 
 /**
@@ -447,7 +447,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPNode_SourceMibConfigHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+    BPLib_SourceMibConfigHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_SourceMibConfigHkTlm_t;
 
 /**
@@ -456,7 +456,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPNode_NodeMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+    BPLib_NodeMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_NodeMibCountersHkTlm_t;
 
 /**
@@ -465,7 +465,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPNode_SourceMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
+    BPLib_SourceMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_SourceMibCountersHkTlm_t;
 
 /**
@@ -474,6 +474,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPLib_StorageHkTlm_Payload_t Payload;
 } BPNode_StorageHkTlm_t;
 
 /**
@@ -482,6 +483,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPLib_ChannelContactStatHkTlm_Payload_t Payload;
 } BPNode_ChannelContactStatHkTlm_t;
 
 #endif /* BPNODE_MSGSTRUCT_H */
