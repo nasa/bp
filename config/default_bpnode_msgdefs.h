@@ -66,6 +66,8 @@ typedef struct BPNode_NodeMibCountersHkTlm_Payload
     uint16 AduCountDelivered;       /**< \brief ADU Delivered Count */
     uint16 AduCountReceived;        /**< \brief ADU Received Count */
 
+    uint32 Spare;                   /* Temporary padding */
+
     uint32 TimeBootEra;             /**< \brief Boot Era for Monotonic Time */
     int64  MonotonicTime;           /**< \brief Monotonic Time Counter */
     int64  CorrelationFactor;       /**< \brief Time Correlation Factor */

@@ -606,12 +606,6 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 /* Send channel/contact status hk command */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
 {
-    // TODO delete me??
-    // BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-    // BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-    //                 "Send channel/contact status hk command not implemented");
-
     BPLib_TIME_MonotonicTime_t MonotonicTime;
     uint8 i;
 
