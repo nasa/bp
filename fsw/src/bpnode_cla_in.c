@@ -63,8 +63,8 @@ int32 BPNode_ClaInCreateTasks(void)
         PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, &BPNode_AppData.ClaInData[i].PspLocation.PspModuleId);
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_IOD_FINDNAME_IN_EID, BPLib_EM_EventType_ERROR, "IODriver Error: CFE_PSP_IODriver_FindByName status %d",
-                              (unsigned int)PspStatus);
+            BPLib_EM_SendEvent(BPNODE_CLA_IOD_FINDNAME_IN_EID, BPLib_EM_EventType_ERROR, "[CLA In #%d]IODriver Error: CFE_PSP_IODriver_FindByName status %d",
+                              i, (unsigned int)PspStatus);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
 
@@ -76,8 +76,8 @@ int32 BPNode_ClaInCreateTasks(void)
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IOD_COMMAND_DIR_IN_EID, BPLib_EM_EventType_ERROR,
-                              "IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (input) status %d",
-                              (unsigned int)PspStatus);
+                              "[CLA In #%d]IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (input) status %d",
+                              i, (unsigned int)PspStatus);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
 
@@ -86,8 +86,8 @@ int32 BPNode_ClaInCreateTasks(void)
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IOD_COMMAND_RUN_IN_EID, BPLib_EM_EventType_ERROR,
-                              "IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (input) status %d",
-                              (unsigned int)PspStatus);
+                              "[CLA In #%d]IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (input) status %d",
+                              i, (unsigned int)PspStatus);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }   
         
