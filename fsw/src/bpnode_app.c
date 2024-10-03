@@ -353,6 +353,13 @@ void BPNode_AppExit(void)
         BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
 
+    /* Signal to CLA child tasks to exit */
+    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    {
+        BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+    }
+    
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 

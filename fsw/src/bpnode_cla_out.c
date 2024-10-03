@@ -206,8 +206,8 @@ int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContI
         }
         else if (Status != BPLIB_CLA_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR, "Error %s - Failed (%d) to load bundle",
-                              "CLA_Egress", (int)Status);
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR, "[CLA Out #%d] Error %s - Failed (%d) to load bundle",
+                              "CLA_Egress", ContId, (int)Status);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
     }

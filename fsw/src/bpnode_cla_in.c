@@ -225,7 +225,7 @@ int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId
             else
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                  "Error %s - Failed (%d) to process bundle", "CLA_Ingress", (int)Status);
+                                  "[CLA IN #%d] Error %s - Failed (%d) to process bundle", "CLA_Ingress", ContId, (int)Status);
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
         }
