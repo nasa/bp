@@ -36,6 +36,37 @@
 ** Function Definitions
 */
 
+/* Validate ADU Proxy table data */
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
+{
+    BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
+    uint8_t i, j;
+
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+    {
+        /*
+        ** Validate array length and that message IDs are all valid
+        */
+       
+        if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].SendToMsgId) ||
+            TblDataPtr->Entries[i].NumRecvFrmMsgIds > BPNODE_MAX_CHAN_SUBSCRIPTION)
+        {
+            return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
+        }
+
+        for (j = 0; j < TblDataPtr->Entries[i].NumRecvFrmMsgIds; j++)
+        {
+            if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].RecvFrmMsgIds[j]))
+            {
+                return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
+            }
+        }  
+
+    }
+
+    return CFE_SUCCESS;
+}
+
 /* Ingest an ADU */
 BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 {

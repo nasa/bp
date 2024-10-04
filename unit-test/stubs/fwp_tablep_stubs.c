@@ -77,21 +77,6 @@ CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle) {
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ADUPTblValidateFunc()
- * ----------------------------------------------------
- */
-CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData) {
-  UT_GenStub_SetupReturnBuffer(BPNode_ADUPTblValidateFunc, CFE_Status_t);
-
-  UT_GenStub_AddParam(BPNode_ADUPTblValidateFunc, void *, TblData);
-
-  UT_GenStub_Execute(BPNode_ADUPTblValidateFunc, Basic, NULL);
-
-  return UT_GenStub_GetReturnValue(BPNode_ADUPTblValidateFunc, CFE_Status_t);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPNode_CRSTblValidateFunc()
  * ----------------------------------------------------
  */

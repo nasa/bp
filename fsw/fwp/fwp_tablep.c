@@ -19,7 +19,7 @@
  */
 
 
-/*
+/**
 ** \file
 **   This file contains the source code for the FWP Table Proxy.
 */
@@ -35,38 +35,6 @@
 /*
 ** Function Definitions
 */
-
-
-/* Validate ADU Proxy table data */
-CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData)
-{
-    BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
-    uint8_t i, j;
-
-    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
-    {
-        /*
-        ** Validate array length and that message IDs are all valid
-        */
-       
-        if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].SendToMsgId) ||
-            TblDataPtr->Entries[i].NumRecvFrmMsgIds > BPNODE_MAX_CHAN_SUBSCRIPTION)
-        {
-            return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-        }
-
-        for (j = 0; j < TblDataPtr->Entries[i].NumRecvFrmMsgIds; j++)
-        {
-            if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].RecvFrmMsgIds[j]))
-            {
-                return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-            }
-        }  
-
-    }
-
-    return CFE_SUCCESS;
-}
 
 /* Validate Contacts table data */
 CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData)
@@ -186,8 +154,8 @@ CFE_Status_t BPNode_StorageTblValidateFunc(void *TblData)
 
 BPNode_TblNameParams_t TblNameParamsArr0[] = 
 {
-    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ADUPTblValidateFunc},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PI_ValidateConfigs},
+    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_ADUP_ValidateConfigTbl},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CRSTblValidateFunc},
     {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodianAuthTblValidateFunc},

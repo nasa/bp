@@ -110,3 +110,18 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
 
     return UT_GenStub_GetReturnValue(BPA_ADUP_StopApplication, BPLib_Status_t);
 }
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_ValidateConfigTbl()
+ * ----------------------------------------------------
+ */
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData) {
+  UT_GenStub_SetupReturnBuffer(BPA_ADUP_ValidateConfigTbl, CFE_Status_t);
+
+  UT_GenStub_AddParam(BPA_ADUP_ValidateConfigTbl, void *, TblData);
+
+  UT_GenStub_Execute(BPA_ADUP_ValidateConfigTbl, Basic, NULL);
+
+  return UT_GenStub_GetReturnValue(BPA_ADUP_ValidateConfigTbl, CFE_Status_t);
+}
