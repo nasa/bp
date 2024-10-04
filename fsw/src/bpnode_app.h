@@ -84,7 +84,7 @@ typedef struct
 
     BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
-    BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
+    BPA_ADUP_State_t    AduState[BPNODE_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
 
     BPA_ADUP_Table_t            *AduTblPtr;
     BPNode_ChannelTable_t       *ChanTblPtr;

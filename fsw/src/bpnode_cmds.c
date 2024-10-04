@@ -621,7 +621,7 @@ CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactS
     /* Get ADU status from all child tasks */
     for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
-        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduConfigs[i].AppState;
+        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduState[i].AppState;
     }
 
     /* Get DTN time data */

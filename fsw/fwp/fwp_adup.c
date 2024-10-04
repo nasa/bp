@@ -101,11 +101,11 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     }
 
     /* App state must be either stopped or added */
-    if (BPNode_AppData.AduConfigs[ChanId].AppState == BPA_ADUP_APP_STARTED)
+    if (BPNode_AppData.AduState[ChanId].AppState == BPA_ADUP_APP_STARTED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
             "Error with add-application directive, invalid AppState=%d for ChanId=%d", 
-            BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
+            BPNode_AppData.AduState[ChanId].AppState, ChanId);
         return BPLIB_ERROR;
     }
 
@@ -125,7 +125,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     ** Set channel configurations
     */
 
-    BPNode_AppData.AduConfigs[ChanId].AddAutomatically = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AddAutomatically;
+    BPNode_AppData.AduState[ChanId].AddAutomatically = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AddAutomatically;
 
     BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AduUnwrapping;
     BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].MaxBundlePayloadSize;
@@ -133,7 +133,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AduWrapping;
     
     /* Set app state to added */
-    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_ADDED;
+    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_ADDED;
 
     return BPLIB_SUCCESS;
 }
@@ -153,11 +153,11 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
     }
 
     /* App state must be added */
-    if (BPNode_AppData.AduConfigs[ChanId].AppState != BPA_ADUP_APP_ADDED)
+    if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_ADDED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_STRT_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
             "Error with start-application directive, invalid AppState=%d for ChanId=%d", 
-            BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
+            BPNode_AppData.AduState[ChanId].AppState, ChanId);
         return BPLIB_ERROR;
     }
 
@@ -177,7 +177,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
     } 
 
     /* Set app state to started */
-    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     return BPLIB_SUCCESS;
 }
@@ -197,11 +197,11 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     }
 
     /* App state must be started */
-    if (BPNode_AppData.AduConfigs[ChanId].AppState != BPA_ADUP_APP_STARTED)
+    if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_STARTED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_STOP_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
             "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
-            BPNode_AppData.AduConfigs[ChanId].AppState, ChanId);
+            BPNode_AppData.AduState[ChanId].AppState, ChanId);
         return BPLIB_ERROR;
     }
 
@@ -222,7 +222,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     } 
 
     /* Set app state to stopped */
-    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
+    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
     /* Notify ADU In task to clear pipe */
     BPNode_AppData.AduInData[ChanId].ClearPipe = true;

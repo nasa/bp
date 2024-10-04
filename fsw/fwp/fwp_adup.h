@@ -60,13 +60,13 @@ typedef enum
 } BPA_ADUP_ApplicationState_t;
 
 /** 
-** \brief General configurations needed for ADU ingest/output
+** \brief State configurations needed for ADU ingest/output
 */
 typedef struct 
 {
     bool   AddAutomatically;
     BPA_ADUP_ApplicationState_t AppState;
-} BPA_ADUP_Configs_t;
+} BPA_ADUP_State_t;
 
 /** 
 ** \brief ADU Proxy Config Table Entry
