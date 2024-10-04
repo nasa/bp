@@ -38,82 +38,20 @@
 
 BPLib_Status_t BPA_TLMP_Init(void)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;
-    
-    /* Initialize Software Bus HK Telemetry Pipe */
-    Status = CFE_SB_CreatePipe(&BPNode_AppData.TlmConfigData.tlmPipe, BPNODE_TLM_PIPE_DEPTH, BPNODE_TLM_PIPE_NAME);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error creating SB TLM Pipe, Error = %d", Status);
-        return Status;
-    }
-        
-    /* Subscribe to BP Send MIB Per Node Configs Housekeeping Requests */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_CONFIG_HK_TLM_MID), BPNode_AppData.TlmConfigData.tlmPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_NODE_CONFIG_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error subscribe to SB TLM Node MIB Config, Error = %d", Status);
-        return Status;
-    }
+    BPLib_Status_t Status = CFE_SUCCESS;            
     /* Initialize Messages*/
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_CONFIG_HK_TLM_MID), sizeof(BPNode_NodeMibConfigHkTlm_t));
-    
-    /* Subscribe to BP Send MIB Per Source Configs Housekeeping Requests */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_CONFIG_HK_TLM_MID), BPNode_AppData.TlmConfigData.tlmPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_SRC_CONFIG_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error subscribe to SB TLM Source MIB Config, Error = %d", Status);
-        return Status;
-    }
-    /* Initialize Messages*/
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_CONFIG_HK_TLM_MID), sizeof(BPNode_SourceMibConfigHkTlm_t));
-
-    /* Subscribe to BP Send MIB Per Node Counters Housekeeping Requests */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), BPNode_AppData.TlmConfigData.tlmPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_NODE_COUNTER_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error subscribe to SB TLM Node MIB Counters, Error = %d", Status);
-        return Status;
-    }
-    /* Initialize Messages*/
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), sizeof(BPNode_NodeMibCountersHkTlm_t));
-
-    /* Subscribe to BP Send MIB Per Source Counters Housekeeping Requests */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_COUNTERS_HK_TLM_MID), BPNode_AppData.TlmConfigData.tlmPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_SRC_COUNTER_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error subscribe to SB TLM Source MIB Counters, Error = %d", Status);
-        return Status;
-    }
-    /* Initialize Messages*/
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_COUNTERS_HK_TLM_MID), sizeof(BPNode_SourceMibCountersHkTlm_t));
-
-    /* Subscribe to BP Send Storage Housekeeping Requests */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_STORAGE_HK_TLM_MID), BPNode_AppData.TlmConfigData.tlmPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_STORAGE_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error subscribe to SB TLM Storage, Error = %d", Status);
-        return Status;
-    }
-    /* Initialize Messages*/
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.StorageHkPkt.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_STORAGE_HK_TLM_MID), sizeof(BPNode_StorageHkTlm_t));
-
-    /* Subscribe to BP Send Channel Contact Housekeeping Requests */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), BPNode_AppData.TlmConfigData.tlmPipe);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_CHANNEL_CONTACT_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error subscribe to SB TLM Channel Contact, Error = %d", Status);
-        return Status;
-    }
-    /* Initialize Messages*/
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.ChannelContactHkPkt.TelemetryHeader), CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), sizeof(BPNode_ChannelContactStatHkTlm_t));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkPkt.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_CONFIG_HK_TLM_MID), sizeof(BPNode_NodeMibConfigHkTlm_t));    
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.SrcMibConfigHkPkt.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_CONFIG_HK_TLM_MID), sizeof(BPNode_SourceMibConfigHkTlm_t));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkPkt.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), sizeof(BPNode_NodeMibCountersHkTlm_t));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.SrcMibCountersHkPkt.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_COUNTERS_HK_TLM_MID), sizeof(BPNode_SourceMibCountersHkTlm_t));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.StorageHkPkt.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(BPNODE_STORAGE_HK_TLM_MID), sizeof(BPNode_StorageHkTlm_t));
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.ChannelContactHkPkt.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), sizeof(BPNode_ChannelContactStatHkTlm_t));
     
     return Status;    
 }
@@ -124,18 +62,13 @@ BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t*
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-    BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.Payload = *NodeMIBConfigTlmPayload;
-    BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
-    BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
-    BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    BPNode_AppData.NodeMibConfigHkPkt.Payload = *NodeMIBConfigTlmPayload;
+    BPNode_AppData.NodeMibConfigHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.NodeMibConfigHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.NodeMibConfigHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.NodeMibConfigHkPkt.TelemetryHeader), true);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_TRANS_NODE_CONFIG_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error SB Transmit Node MIB Config Tlm packet, Error = %d", Status);
-    }    
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkPkt.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkPkt.TelemetryHeader), true);
     return Status;
 }
 
@@ -145,17 +78,12 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Pay
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-    BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.Payload = *SrcMIBConfigTlmPayload;
-    BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
-    BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
-    BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.SrcMibConfigHkPkt.TelemetryHeader), true);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_TRANS_SRC_CONFIG_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error SB Transmit Source MIB Config Tlm packet, Error = %d", Status);
-    }
+    BPNode_AppData.SrcMibConfigHkPkt.Payload = *SrcMIBConfigTlmPayload;
+    BPNode_AppData.SrcMibConfigHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.SrcMibConfigHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.SrcMibConfigHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.SrcMibConfigHkPkt.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.SrcMibConfigHkPkt.TelemetryHeader), true);
     return Status;
 }
 
@@ -165,18 +93,13 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-    BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.Payload = *NodeMIBCounterTlmPayload;    
-    BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
-    BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
-    BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    BPNode_AppData.NodeMibCountersHkPkt.Payload = *NodeMIBCounterTlmPayload;    
+    BPNode_AppData.NodeMibCountersHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.NodeMibCountersHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.NodeMibCountersHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.NodeMibCountersHkPkt.TelemetryHeader), true);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_TRANS_NODE_COUNTERS_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error SB Transmit Node MIB Counters Tlm packet, Error = %d", Status);
-    }
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkPkt.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkPkt.TelemetryHeader), true);
     return Status;
 }
 
@@ -186,17 +109,12 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-    BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.Payload = *SrcMIBCounterTlmPayload;
-    BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
-    BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
-    BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.SrcMibCountersHkPkt.TelemetryHeader), true);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_TRANS_SRC_COUNTERS_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error SB Transmit Source MIB Counters Tlm packet, Error = %d", Status);
-    }
+    BPNode_AppData.SrcMibCountersHkPkt.Payload = *SrcMIBCounterTlmPayload;
+    BPNode_AppData.SrcMibCountersHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.SrcMibCountersHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.SrcMibCountersHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.SrcMibCountersHkPkt.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.SrcMibCountersHkPkt.TelemetryHeader), true);
     return Status;
 }
 
@@ -206,17 +124,12 @@ BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payl
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-    BPNode_AppData.TlmConfigData.ChannelContactHkPkt.Payload = *ChannelContactTlmPayload;
-    BPNode_AppData.TlmConfigData.ChannelContactHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
-    BPNode_AppData.TlmConfigData.ChannelContactHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
-    BPNode_AppData.TlmConfigData.ChannelContactHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.ChannelContactHkPkt.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.ChannelContactHkPkt.TelemetryHeader), true);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_TRANS_CHANNEL_CONTACT_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error SB Transmit Channel Contact Tlm packet, Error = %d", Status);
-    }
+    BPNode_AppData.ChannelContactHkPkt.Payload = *ChannelContactTlmPayload;
+    BPNode_AppData.ChannelContactHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.ChannelContactHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.ChannelContactHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactHkPkt.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactHkPkt.TelemetryHeader), true);
     return Status;
 }
 
@@ -226,16 +139,11 @@ BPLib_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayl
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-    BPNode_AppData.TlmConfigData.StorageHkPkt.Payload = *StorTlmPayload;
-    BPNode_AppData.TlmConfigData.StorageHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
-    BPNode_AppData.TlmConfigData.StorageHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
-    BPNode_AppData.TlmConfigData.StorageHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.StorageHkPkt.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.TlmConfigData.StorageHkPkt.TelemetryHeader), true);
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TLM_SB_TRANS_STORAGE_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Error SB Transmit Storage Tlm packet, Error = %d", Status);
-    }
+    BPNode_AppData.StorageHkPkt.Payload = *StorTlmPayload;
+    BPNode_AppData.StorageHkPkt.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.StorageHkPkt.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.StorageHkPkt.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.StorageHkPkt.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.StorageHkPkt.TelemetryHeader), true);
     return Status;
 }

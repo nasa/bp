@@ -97,95 +97,6 @@ void Test_BPA_TLMP_SendStoragePkt_Nominal(void)
     UtAssert_INT32_EQ((int32) BPA_TLMP_SendStoragePkt(&StorTlmPayload), (int32) CFE_SUCCESS);            
 }
 
-void Test_BPA_TLMP_Init_CreatePipeFail(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_CreatePipe), 1, CFE_SB_PIPE_CR_ERR);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_Init_SubscribeFail1(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_NO_MESSAGE);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_Init_SubscribeFail2(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 2, CFE_SB_NO_MESSAGE);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_Init_SubscribeFail3(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 3, CFE_SB_NO_MESSAGE);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_Init_SubscribeFail4(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 4, CFE_SB_NO_MESSAGE);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_Init_SubscribeFail5(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 5, CFE_SB_NO_MESSAGE);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_Init_SubscribeFail6(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 6, CFE_SB_NO_MESSAGE);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_SendNodeMibConfigPkt_TransmitFail(void)
-{
-    BPLib_NodeMibConfigHkTlm_Payload_t NodeMIBConfigTlmPayload;
-    memset(&NodeMIBConfigTlmPayload, 0, sizeof(BPLib_NodeMibConfigHkTlm_Payload_t));
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_TransmitMsg), 1, CFE_SB_BUFFER_INVALID);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_SendNodeMibConfigPkt(&NodeMIBConfigTlmPayload), (int32) CFE_SUCCESS);
-}
-
-void Test_BPA_TLMP_SendPerSourceMibConfigPkt_TransmitFail(void)
-{
-    BPLib_SourceMibConfigHkTlm_Payload_t SrcMIBConfigTlmPayload;
-    memset(&SrcMIBConfigTlmPayload, 0, sizeof(BPLib_SourceMibConfigHkTlm_Payload_t));
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_TransmitMsg), 1, CFE_SB_BUFFER_INVALID);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_SendPerSourceMibConfigPkt(&SrcMIBConfigTlmPayload), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_SendNodeMibCounterPkt_TransmitFail(void)
-{
-    BPLib_NodeMibCountersHkTlm_Payload_t NodeMIBCounterTlmPayload;
-    memset(&NodeMIBCounterTlmPayload, 0, sizeof(BPLib_NodeMibCountersHkTlm_Payload_t));
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_TransmitMsg), 1, CFE_SB_BUFFER_INVALID);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_SendNodeMibCounterPkt(&NodeMIBCounterTlmPayload), (int32) CFE_SUCCESS);       
-}
-
-void Test_BPA_TLMP_SendPerSourceMibCounterPkt_TransmitFail(void)
-{
-    BPLib_SourceMibCountersHkTlm_Payload_t SrcMIBCounterTlmPayload;
-    memset(&SrcMIBCounterTlmPayload, 0, sizeof(BPLib_SourceMibCountersHkTlm_Payload_t));
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_TransmitMsg), 1, CFE_SB_BUFFER_INVALID);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_SendPerSourceMibCounterPkt(&SrcMIBCounterTlmPayload), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPA_TLMP_SendChannelContactPkt_TransmitFail(void)
-{
-    BPLib_ChannelContactStatHkTlm_Payload_t ChannelContactTlmPayload;
-    memset(&ChannelContactTlmPayload, 0, sizeof(BPLib_ChannelContactStatHkTlm_Payload_t));
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_TransmitMsg), 1, CFE_SB_BUFFER_INVALID);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_SendChannelContactPkt(&ChannelContactTlmPayload), (int32) CFE_SUCCESS);        
-}
-
-void Test_BPA_TLMP_SendStoragePkt_TransmitFail(void)
-{
-    BPLib_StorageHkTlm_Payload_t StorTlmPayload;
-    memset(&StorTlmPayload, 0, sizeof(BPLib_StorageHkTlm_Payload_t));
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_TransmitMsg), 1, CFE_SB_BUFFER_INVALID);
-    UtAssert_INT32_NEQ((int32) BPA_TLMP_SendStoragePkt(&StorTlmPayload), (int32) CFE_SUCCESS);            
-}
 
 /*
  * Register the test cases to execute with the unit test tool
@@ -199,17 +110,4 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TLMP_SendPerSourceMibCounterPkt_Nominal);
     ADD_TEST(Test_BPA_TLMP_SendChannelContactPkt_Nominal);
     ADD_TEST(Test_BPA_TLMP_SendStoragePkt_Nominal);    
-    ADD_TEST(Test_BPA_TLMP_Init_CreatePipeFail);
-    ADD_TEST(Test_BPA_TLMP_Init_SubscribeFail1);  
-    ADD_TEST(Test_BPA_TLMP_Init_SubscribeFail2);  
-    ADD_TEST(Test_BPA_TLMP_Init_SubscribeFail3);  
-    ADD_TEST(Test_BPA_TLMP_Init_SubscribeFail4);  
-    ADD_TEST(Test_BPA_TLMP_Init_SubscribeFail5);  
-    ADD_TEST(Test_BPA_TLMP_Init_SubscribeFail6);  
-    ADD_TEST(Test_BPA_TLMP_SendNodeMibConfigPkt_TransmitFail);
-    ADD_TEST(Test_BPA_TLMP_SendPerSourceMibConfigPkt_TransmitFail);
-    ADD_TEST(Test_BPA_TLMP_SendNodeMibCounterPkt_TransmitFail);
-    ADD_TEST(Test_BPA_TLMP_SendPerSourceMibCounterPkt_TransmitFail);
-    ADD_TEST(Test_BPA_TLMP_SendChannelContactPkt_TransmitFail);
-    ADD_TEST(Test_BPA_TLMP_SendStoragePkt_TransmitFail);
 }

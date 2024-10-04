@@ -31,19 +31,6 @@
 #include "bplib.h"
 #include "bpnode_msgstruct.h"
 
-#define BPNODE_TLM_PIPE_DEPTH   (32u)              /**< \brief Telemetry pipe depth */
-#define BPNODE_TLM_PIPE_NAME    "BPNODE_TLM_PIPE"  /**< \brief TLM pipe name */
-
-typedef struct
-{
-    CFE_SB_PipeId_t tlmPipe;
-    BPNode_NodeMibConfigHkTlm_t NodeMibConfigHkPkt;
-    BPNode_SourceMibConfigHkTlm_t SrcMibConfigHkPkt;
-    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkPkt;
-    BPNode_SourceMibCountersHkTlm_t SrcMibCountersHkPkt;
-    BPNode_StorageHkTlm_t StorageHkPkt;
-    BPNode_ChannelContactStatHkTlm_t ChannelContactHkPkt;
-}BPNode_TLM_ConfigData_t;
 
 /**
  * \brief FWP Telemetry Proxy Initialization

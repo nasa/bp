@@ -86,7 +86,13 @@ typedef struct
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
     
-    BPNode_TLM_ConfigData_t TlmConfigData; /**< \brief Global data for Telemetry Proxy */
+    /* Telemetry HK Packet structures*/
+    BPNode_NodeMibConfigHkTlm_t         NodeMibConfigHkPkt;
+    BPNode_SourceMibConfigHkTlm_t       SrcMibConfigHkPkt;
+    BPNode_NodeMibCountersHkTlm_t       NodeMibCountersHkPkt;
+    BPNode_SourceMibCountersHkTlm_t     SrcMibCountersHkPkt;
+    BPNode_StorageHkTlm_t               StorageHkPkt;
+    BPNode_ChannelContactStatHkTlm_t    ChannelContactHkPkt;    
 
 } BPNode_AppData_t;
 
