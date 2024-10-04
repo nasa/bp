@@ -92,6 +92,23 @@ typedef struct
 */
 
 /**
+ * \brief FWP ADU Proxy Validate Config Table
+ *
+ *  \par Description
+ *       Validates the ADU Proxy Configuration Table
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] TblData ADU Proxy Configuration Table pointer
+ * 
+ *  \return Execution status, see \ref CFEReturnCodes
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ *  \retval BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE Invalid table parameter
+ */
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
+
+/**
  * \brief FWP ADU Proxy In
  *
  *  \par Description

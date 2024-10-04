@@ -35,6 +35,66 @@
 ** Function Definitions
 */
 
+/* Test nominal table validation */
+void Test_BPA_ADUP_ValidateConfigTbl_Nominal(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    TestTblData.Entries[0].NumRecvFrmMsgIds = 1;
+        
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_IsValidMsgId), true);
+
+    UtAssert_INT32_EQ((int32) BPA_ADUP_ValidateConfigTbl(&TestTblData), (int32) CFE_SUCCESS);     
+}
+
+/* Test that the ADU table validation fails when a NumRecvFrmMsgIds value is out of range */
+void Test_BPA_ADUP_ValidateConfigTbl_InvNumRecv(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_IsValidMsgId), true);
+
+    /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
+    TestTblData.Entries[0].NumRecvFrmMsgIds = BPNODE_MAX_CHAN_SUBSCRIPTION + 1;
+
+    UtAssert_INT32_EQ(BPA_ADUP_ValidateConfigTbl(&TestTblData), 
+                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
+}
+
+/* Test that the ADU table validation fails when a SendToMsgId is not a valid message ID */
+void Test_BPA_ADUP_ValidateConfigTbl_InvSendTo(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));    
+
+    /* Set the first check to fail */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, false);
+
+    UtAssert_INT32_EQ(BPA_ADUP_ValidateConfigTbl(&TestTblData), 
+                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
+}
+
+/* Test that the ADU table validation fails when a RecvFrmMsgIds is not a valid message ID */
+void Test_BPA_ADUP_ValidateConfigTbl_InvRecvFrm(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    TestTblData.Entries[0].NumRecvFrmMsgIds = 1;
+
+    /* Set the first check to succeed and second check to fail */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, true);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, false);
+
+    UtAssert_INT32_EQ(BPA_ADUP_ValidateConfigTbl(&TestTblData), 
+                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
+}
 
 /* Test BPA_ADUP_In */
 void Test_BPA_ADUP_In_Nominal(void)
@@ -282,6 +342,11 @@ void Test_BPA_ADUP_StopApplication_SubErr(void)
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
+    ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_Nominal);
+    ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvNumRecv);
+    ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvRecvFrm);
+    ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvSendTo);
+
     ADD_TEST(Test_BPA_ADUP_In_Nominal);
     ADD_TEST(Test_BPA_ADUP_In_SizeErr);
 
