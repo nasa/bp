@@ -54,7 +54,7 @@
 BPNode_TblNameParams_t TblNameParamsArr_test[] = 
 {
     {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, NULL},
-    {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPNode_ChannelTable_t),       NULL, NULL},
+    {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),       NULL, NULL},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, NULL},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, NULL},
     {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, NULL},
@@ -176,26 +176,6 @@ void Test_BPNode_ADUPTblValidateFunc_InvRecvFrm(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_IsValidMsgId), 1, false);
 
     UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
-                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
-}
-
-void Test_BPNode_ChannelConfigTblValidateFunc_Nominal(void)
-{
-    BPNode_ChannelTable_t TestTblData;
-    memset(&TestTblData, 0, sizeof(TestTblData));
-    TestTblData.ChannelSet[0].HopLimit = 10;
-    UtAssert_INT32_EQ((int32) BPNode_ChannelConfigTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
-}
-
-void Test_BPNode_ChannelConfigTblValidateFunc_Invalid(void)
-{
-    BPNode_ChannelTable_t TestTblData;
-    memset(&TestTblData, 0, sizeof(TestTblData));
-
-    /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.ChannelSet[0].HopLimit = 0;
-
-    UtAssert_INT32_EQ(BPNode_ChannelConfigTblValidateFunc(&TestTblData), 
                                                 BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
 }
 
@@ -407,9 +387,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ADUPTblValidateFunc_InvNumRecv);
     ADD_TEST(Test_BPNode_ADUPTblValidateFunc_InvRecvFrm);
     ADD_TEST(Test_BPNode_ADUPTblValidateFunc_InvSendTo);
-
-    ADD_TEST(Test_BPNode_ChannelConfigTblValidateFunc_Nominal);
-    ADD_TEST(Test_BPNode_ChannelConfigTblValidateFunc_Invalid);
 
     ADD_TEST(Test_BPNode_ContactsTblValidateFunc_Nominal);
     ADD_TEST(Test_BPNode_ContactsTblValidateFunc_Invalid);

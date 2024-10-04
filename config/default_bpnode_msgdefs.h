@@ -118,7 +118,7 @@ typedef struct BPNode_ContactStats
  */
 typedef struct BPNode_ChannelContactStatHkTlm_Payload
 {
-    BPNode_ChannelStats_t ChannelStats[BPNODE_MAX_NUM_CHANNELS];
+    BPNode_ChannelStats_t ChannelStats[BPLIB_MAX_NUM_CHANNELS];
     BPNode_ContactStats_t ContactStats[BPNODE_MAX_NUM_CONTACTS];
 
     uint32 TimeBootEra;             /**< \brief Boot Era for Monotonic Time */

@@ -44,7 +44,7 @@ int32 BPNode_AduOutCreateTasks(void)
     uint16 TaskPriority;
     
     /* Create all of the ADU Out task(s) */
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         /* Create init semaphore so main task knows when child initialized */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_OUT_INIT_SEM_BASE_NAME, i);
@@ -110,7 +110,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
     }
 
     /* Map this task's ID to a channel ID */
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         if (TaskId == BPNode_AppData.AduOutData[i].TaskId)
         {
@@ -118,7 +118,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
         }
     }
 
-    if (*ChanId == BPNODE_MAX_NUM_CHANNELS)
+    if (*ChanId == BPLIB_MAX_NUM_CHANNELS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_OUT_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU Out #?]: Task ID does not match any known task IDs. ID = %d", 
@@ -156,7 +156,7 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 void BPNode_AduOut_AppMain(void)
 {
     int32 Status;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS; /* Set to garbage value */
+    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -164,7 +164,7 @@ void BPNode_AduOut_AppMain(void)
     if (Status != CFE_SUCCESS)
     {
         /* Channel ID can't be determined, shut down immediately */
-        if (ChanId == BPNODE_MAX_NUM_CHANNELS)
+        if (ChanId == BPLIB_MAX_NUM_CHANNELS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_OUT_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "Terminating Unknown ADU Out Task.");

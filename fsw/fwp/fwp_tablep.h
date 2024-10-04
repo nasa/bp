@@ -47,7 +47,6 @@ CFE_Status_t BPA_TABLEP_TableInit(void);
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
 CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
 CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_ChannelConfigTblValidateFunc(void *TblData);
 CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData);
 CFE_Status_t BPNode_CRSTblValidateFunc(void *TblData);
 CFE_Status_t BPNode_CustodianAuthTblValidateFunc(void *TblData);

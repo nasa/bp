@@ -93,7 +93,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     uint8_t i;
 
     /* Check for channel ID validity */
-    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_ADD_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
             "Error with add-application directive, invalid ChanId=%d", ChanId);
@@ -125,12 +125,12 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     ** Set channel configurations
     */
 
-    BPNode_AppData.AduState[ChanId].AddAutomatically = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AddAutomatically;
+    BPNode_AppData.AduState[ChanId].AddAutomatically = BPNode_AppData.ChanTblPtr->Configs[ChanId].AddAutomatically;
 
-    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AduUnwrapping;
-    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].MaxBundlePayloadSize;
+    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPNode_AppData.ChanTblPtr->Configs[ChanId].AduUnwrapping;
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_AppData.ChanTblPtr->Configs[ChanId].MaxBundlePayloadSize;
 
-    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_AppData.ChanTblPtr->ChannelSet[ChanId].AduWrapping;
+    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_AppData.ChanTblPtr->Configs[ChanId].AduWrapping;
     
     /* Set app state to added */
     BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_ADDED;
@@ -145,7 +145,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
     uint8_t i;
 
     /* Check for channel ID validity */
-    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_STRT_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
             "Error with start-application directive, invalid ChanId=%d", ChanId);
@@ -189,7 +189,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     uint8_t i;
 
     /* Check for channel ID validity */
-    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_STOP_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
             "Error with stop-application directive, invalid ChanId=%d", ChanId);

@@ -164,7 +164,7 @@ CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
 
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.AduInData[i].AduCountReceived = 0;
         BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
@@ -571,7 +571,7 @@ CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkC
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
 
     /* Get ADU counts for all ADU child tasks */
-    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
@@ -619,7 +619,7 @@ CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactS
     uint8 i;
 
     /* Get ADU status from all child tasks */
-    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduState[i].AppState;
     }

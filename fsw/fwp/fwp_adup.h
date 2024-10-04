@@ -83,7 +83,7 @@ typedef struct
 */
 typedef struct
 {
-    BPA_ADUP_Config_t Entries[BPNODE_MAX_NUM_CHANNELS];
+    BPA_ADUP_Config_t Entries[BPLIB_MAX_NUM_CHANNELS];
 } BPA_ADUP_Table_t;
 
 

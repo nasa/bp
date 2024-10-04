@@ -82,12 +82,12 @@ typedef struct
     BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;         /**< \brief Node MIB Counters housekeeping packet */
     BPNode_ChannelContactStatHkTlm_t ChannelContactStatHkTlm;   /**< \brief Channel/contact status housekeeping packet */
 
-    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
-    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
-    BPA_ADUP_State_t    AduState[BPNODE_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
+    BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
+    BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
+    BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
 
     BPA_ADUP_Table_t            *AduTblPtr;
-    BPNode_ChannelTable_t       *ChanTblPtr;
+    BPLib_PI_ChannelTable_t       *ChanTblPtr;
     BPNode_ContactsTable_t      *ContactsTblPtr;
     BPNode_CRSTable_t           *CrsTblPtr;
     BPNode_CustodianTable_t     *CustodianTblPtr;
