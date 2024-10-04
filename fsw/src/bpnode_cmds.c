@@ -157,11 +157,20 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
 /* Reset all counters command */
 CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 {
+    uint8 i;
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
-    
+
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.AduInData[i].AduCountReceived = 0;
+        BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
+
+    }
+
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION, 
                     "Reset all counters command");
 
