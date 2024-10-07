@@ -32,13 +32,9 @@
  * Generated stub function for BPA_TLMP_Init()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_TLMP_Init(void) 
-{
-  UT_GenStub_SetupReturnBuffer(BPA_TLMP_Init, BPLib_Status_t);
-
-  UT_GenStub_Execute(BPA_TLMP_Init, Basic, NULL);
-
-  return UT_GenStub_GetReturnValue(BPA_TLMP_Init, BPLib_Status_t);
+void BPA_TLMP_Init(void) 
+{ 
+    UT_GenStub_Execute(BPA_TLMP_Init, Basic, NULL); 
 }
 
 /*
@@ -46,10 +42,10 @@ BPLib_Status_t BPA_TLMP_Init(void)
  * Generated stub function for BPA_TLMP_SendChannelContactPkt()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_TLMP_SendChannelContactPkt(
+CFE_Status_t BPA_TLMP_SendChannelContactPkt(
     BPLib_ChannelContactStatHkTlm_Payload_t *ChannelContactTlmPayload) 
 {
-  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendChannelContactPkt, BPLib_Status_t);
+  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendChannelContactPkt, CFE_Status_t);
 
   UT_GenStub_AddParam(BPA_TLMP_SendChannelContactPkt,
                       BPLib_ChannelContactStatHkTlm_Payload_t *,
@@ -58,7 +54,7 @@ BPLib_Status_t BPA_TLMP_SendChannelContactPkt(
   UT_GenStub_Execute(BPA_TLMP_SendChannelContactPkt, Basic, NULL);
 
   return UT_GenStub_GetReturnValue(BPA_TLMP_SendChannelContactPkt,
-                                   BPLib_Status_t);
+                                   CFE_Status_t);
 }
 
 /*
@@ -66,10 +62,10 @@ BPLib_Status_t BPA_TLMP_SendChannelContactPkt(
  * Generated stub function for BPA_TLMP_SendNodeMibConfigPkt()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(
+CFE_Status_t BPA_TLMP_SendNodeMibConfigPkt(
     BPLib_NodeMibConfigHkTlm_Payload_t *NodeMIBConfigTlmPayload) 
 {
-  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendNodeMibConfigPkt, BPLib_Status_t);
+  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendNodeMibConfigPkt, CFE_Status_t);
 
   UT_GenStub_AddParam(BPA_TLMP_SendNodeMibConfigPkt,
                       BPLib_NodeMibConfigHkTlm_Payload_t *,
@@ -78,7 +74,7 @@ BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(
   UT_GenStub_Execute(BPA_TLMP_SendNodeMibConfigPkt, Basic, NULL);
 
   return UT_GenStub_GetReturnValue(BPA_TLMP_SendNodeMibConfigPkt,
-                                   BPLib_Status_t);
+                                   CFE_Status_t);
 }
 
 /*
@@ -86,10 +82,10 @@ BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(
  * Generated stub function for BPA_TLMP_SendNodeMibCounterPkt()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(
+CFE_Status_t BPA_TLMP_SendNodeMibCounterPkt(
     BPLib_NodeMibCountersHkTlm_Payload_t *NodeMIBCounterTlmPayload) 
 {
-  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendNodeMibCounterPkt, BPLib_Status_t);
+  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendNodeMibCounterPkt, CFE_Status_t);
 
   UT_GenStub_AddParam(BPA_TLMP_SendNodeMibCounterPkt,
                       BPLib_NodeMibCountersHkTlm_Payload_t *,
@@ -98,7 +94,7 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(
   UT_GenStub_Execute(BPA_TLMP_SendNodeMibCounterPkt, Basic, NULL);
 
   return UT_GenStub_GetReturnValue(BPA_TLMP_SendNodeMibCounterPkt,
-                                   BPLib_Status_t);
+                                   CFE_Status_t);
 }
 
 /*
@@ -106,11 +102,11 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(
  * Generated stub function for BPA_TLMP_SendPerSourceMibConfigPkt()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(
+CFE_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(
     BPLib_SourceMibConfigHkTlm_Payload_t *SrcMIBConfigTlmPayload) 
 {
   UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendPerSourceMibConfigPkt,
-                               BPLib_Status_t);
+                               CFE_Status_t);
 
   UT_GenStub_AddParam(BPA_TLMP_SendPerSourceMibConfigPkt,
                       BPLib_SourceMibConfigHkTlm_Payload_t *,
@@ -119,7 +115,7 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(
   UT_GenStub_Execute(BPA_TLMP_SendPerSourceMibConfigPkt, Basic, NULL);
 
   return UT_GenStub_GetReturnValue(BPA_TLMP_SendPerSourceMibConfigPkt,
-                                   BPLib_Status_t);
+                                   CFE_Status_t);
 }
 
 /*
@@ -127,11 +123,11 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(
  * Generated stub function for BPA_TLMP_SendPerSourceMibCounterPkt()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(
+CFE_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(
     BPLib_SourceMibCountersHkTlm_Payload_t *SrcMIBCounterTlmPayload) 
 {
   UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendPerSourceMibCounterPkt,
-                               BPLib_Status_t);
+                               CFE_Status_t);
 
   UT_GenStub_AddParam(BPA_TLMP_SendPerSourceMibCounterPkt,
                       BPLib_SourceMibCountersHkTlm_Payload_t *,
@@ -140,7 +136,7 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(
   UT_GenStub_Execute(BPA_TLMP_SendPerSourceMibCounterPkt, Basic, NULL);
 
   return UT_GenStub_GetReturnValue(BPA_TLMP_SendPerSourceMibCounterPkt,
-                                   BPLib_Status_t);
+                                   CFE_Status_t);
 }
 
 /*
@@ -148,15 +144,15 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(
  * Generated stub function for BPA_TLMP_SendStoragePkt()
  * ----------------------------------------------------
  */
-BPLib_Status_t
+CFE_Status_t
 BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t *StorTlmPayload) 
 {
-  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendStoragePkt, BPLib_Status_t);
+  UT_GenStub_SetupReturnBuffer(BPA_TLMP_SendStoragePkt, CFE_Status_t);
 
   UT_GenStub_AddParam(BPA_TLMP_SendStoragePkt, BPLib_StorageHkTlm_Payload_t *,
                       StorTlmPayload);
 
   UT_GenStub_Execute(BPA_TLMP_SendStoragePkt, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPA_TLMP_SendStoragePkt, BPLib_Status_t);
+  return UT_GenStub_GetReturnValue(BPA_TLMP_SendStoragePkt, CFE_Status_t);
 }

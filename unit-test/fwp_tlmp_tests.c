@@ -52,7 +52,7 @@
 */
 void Test_BPA_TLMP_Init_Nominal(void)
 {
-    UtAssert_INT32_EQ((int32) BPA_TLMP_Init(), (int32) CFE_SUCCESS);    
+    UtAssert_VOIDCALL(BPA_TLMP_Init());
 }
 
 void Test_BPA_TLMP_SendNodeMibConfigPkt_Nominal(void)

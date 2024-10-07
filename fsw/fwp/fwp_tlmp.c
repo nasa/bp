@@ -21,7 +21,7 @@
 
 /*
 ** \file
-**   This file contains the source code for the FWP Table Proxy.
+**   This file contains the source code for the FWP Telemetry Proxy.
 */
 
 /*
@@ -36,9 +36,8 @@
 */
 
 
-BPLib_Status_t BPA_TLMP_Init(void)
+void BPA_TLMP_Init(void)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;            
     /* Initialize Messages*/
     CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkPkt.TelemetryHeader), 
             CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_CONFIG_HK_TLM_MID), sizeof(BPNode_NodeMibConfigHkTlm_t));    
@@ -53,12 +52,11 @@ BPLib_Status_t BPA_TLMP_Init(void)
     CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.ChannelContactHkPkt.TelemetryHeader), 
             CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), sizeof(BPNode_ChannelContactStatHkTlm_t));
     
-    return Status;    
 }
 
-BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload)
+CFE_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;
+    CFE_Status_t Status = CFE_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -72,9 +70,9 @@ BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t*
     return Status;
 }
 
-BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload)
+CFE_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;
+    CFE_Status_t Status = CFE_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -87,9 +85,9 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Pay
     return Status;
 }
 
-BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload)
+CFE_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;    
+    CFE_Status_t Status = CFE_SUCCESS;    
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -103,9 +101,9 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload
     return Status;
 }
 
-BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload )
+CFE_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload )
 {
-    BPLib_Status_t Status = CFE_SUCCESS;
+    CFE_Status_t Status = CFE_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -118,9 +116,9 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_
     return Status;
 }
 
-BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload)
+CFE_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;
+    CFE_Status_t Status = CFE_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -133,9 +131,9 @@ BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payl
     return Status;
 }
 
-BPLib_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload)
+CFE_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload)
 {
-    BPLib_Status_t Status = CFE_SUCCESS;
+    CFE_Status_t Status = CFE_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);

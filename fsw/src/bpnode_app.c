@@ -37,8 +37,6 @@
 
 #include "bplib.h"
 #include "fwp.h"
-#include "fwp_tablep.h"
-#include "fwp_tlmp.h"
 
 /*
 ** Global Data
@@ -217,11 +215,6 @@ CFE_Status_t BPNode_AppInit(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    /* Initialize housekeeping packet (clear user data area) */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), 
-                    CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
-                    sizeof(BPNode_AppData.NodeMibCountersHkTlm));
-
     /* Create command pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH, 
                                 "BPNODE_CMD_PIPE");
@@ -282,16 +275,8 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
     
-    /* Call Telemetry Proxy Init Function to Create Message Pipe and subscribe TLM messages */
-    BpStatus = BPA_TLMP_Init();
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNode_TLMP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Initialize Telemetry Proxy, RC = 0x%08lX",
-                            (unsigned long)BpStatus);
-
-        return BpStatus;
-    }
+    /* Call Telemetry Proxy Init Function */
+    BPA_TLMP_Init();
 
     /* 
     ** Initialize ADU configuration data to set all applications to started

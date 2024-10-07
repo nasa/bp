@@ -76,6 +76,4 @@
 #define BPNODE_TIME_INIT_ERR_EID                50
 #define BPNODE_TIME_WKP_ERR_EID                 51
 
-#define BPNode_TLMP_INIT_ERR_EID                100
-
 #endif /* BPNODE_EVENTS_H */

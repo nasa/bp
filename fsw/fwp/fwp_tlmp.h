@@ -45,7 +45,7 @@
  *
  *  \return None
  */
-BPLib_Status_t BPA_TLMP_Init(void);
+void BPA_TLMP_Init(void);
 
 /**
  * \brief FWP Telemetry Proxy Send Node MIB Configuration HK packet
@@ -59,9 +59,9 @@ BPLib_Status_t BPA_TLMP_Init(void);
  *  \param[in] Node MIB Configurations payload data 
  *
  *  \return execution status
- *  \retval BPLIB_SUCCESS Output was successful
+ *  \retval CFE_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload);
+CFE_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload);
 
 /**
  * \brief FWP Telemetry Proxy Send Per Source MIB Configuration HK packet
@@ -75,9 +75,9 @@ BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t*
  *  \param[in] Per Source MIB Configurations payload data 
  *
  *  \return execution status
- *  \retval BPLIB_SUCCESS Output was successful
+ *  \retval CFE_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload);
+CFE_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload);
 
 /**
  * \brief FWP Telemetry Proxy Send Node MIB Counters HK packet
@@ -91,9 +91,9 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Pay
  *  \param[in] Per Node MIB Counters payload data 
  *
  *  \return execution status
- *  \retval BPLIB_SUCCESS Output was successful
+ *  \retval CFE_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload);
+CFE_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload);
 
 /**
  * \brief FWP Telemetry Proxy Send Per Source MIB Counters HK packet
@@ -107,9 +107,9 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload
  *  \param[in] Per Source MIB Counters payload data 
  *
  *  \return execution status
- *  \retval BPLIB_SUCCESS Output was successful
+ *  \retval CFE_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload);
+CFE_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload);
 
 /**
  * \brief FWP Telemetry Proxy Send Channel/Contact status HK packet
@@ -123,9 +123,9 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_
  *  \param[in] Channel contact status payload data 
  *
  *  \return execution status
- *  \retval BPLIB_SUCCESS Output was successful
+ *  \retval CFE_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload);
+CFE_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload);
 
 /**
  * \brief FWP Telemetry Proxy Send Storage status HK packet
@@ -139,9 +139,9 @@ BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payl
  *  \param[in] Storage status payload data 
  *
  *  \return execution status
- *  \retval BPLIB_SUCCESS Output was successful
+ *  \retval CFE_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload);
+CFE_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload);
 
 #endif /* FWP_TLMP_H */
 

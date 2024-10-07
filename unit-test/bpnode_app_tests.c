@@ -353,12 +353,6 @@ void Test_BPNode_AppInit_FailedAduOutTasks(void)
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
 }
 
-/* Test app initialization after failure to initialize Telemetry Proxy */
-void Test_BPNode_AppInit_FailedTlmpInit(void)
-{
-    UT_SetDefaultReturnValue(UT_KEY(BPA_TLMP_Init), CFE_SB_INTERNAL_ERR);
-    UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
-}
 
 /* Test app exit in nominal case */
 void Test_BPNode_AppExit_Nominal(void)
@@ -422,6 +416,5 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
-    ADD_TEST(Test_BPNode_AppInit_FailedTlmpInit);
     ADD_TEST(Test_BPNode_AppExit_Nominal);
 }
