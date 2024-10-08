@@ -80,19 +80,17 @@ typedef struct
 
     BPNode_TblNameParams_t  *TblNameParamsArr;
 
-    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;     /**< \brief Node MIB Counters housekeeping packet */
-
     BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
     
     /* Telemetry HK Packet structures*/
-    BPNode_NodeMibConfigHkTlm_t         NodeMibConfigHkPkt;
-    BPNode_SourceMibConfigHkTlm_t       SrcMibConfigHkPkt;
-    BPNode_NodeMibCountersHkTlm_t       NodeMibCountersHkPkt;
-    BPNode_SourceMibCountersHkTlm_t     SrcMibCountersHkPkt;
-    BPNode_StorageHkTlm_t               StorageHkPkt;
-    BPNode_ChannelContactStatHkTlm_t    ChannelContactHkPkt;    
+    BPNode_NodeMibConfigHkTlm_t         NodeMibConfigHkTlm;     /**< \brief Node MIB Config housekeeping packet */
+    BPNode_SourceMibConfigHkTlm_t       SourceMibConfigHkTlm;   /**< \brief Per Source MIB Config housekeeping packet */
+    BPNode_NodeMibCountersHkTlm_t       NodeMibCountersHkTlm;   /**< \brief Node MIB Counters housekeeping packet */
+    BPNode_SourceMibCountersHkTlm_t     SourceMibCountersHkTlm; /**< \brief Per Source MIB Counters housekeeping packet */
+    BPNode_StorageHkTlm_t               StorageHkTlm;           /**< \brief Storage housekeeping packet */
+    BPNode_ChannelContactStatHkTlm_t    ChannelContactStatHkTlm;/**< \brief Channel Contact housekeeping packet */
 
 } BPNode_AppData_t;
 
