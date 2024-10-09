@@ -965,7 +965,7 @@ CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
 
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
-    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
+    CFE_SB_TransmitMsg((CFE_MSG_Message_t*) &(BPNode_AppData.NodeMibCountersHkTlm), true);
 
     Status = BPLib_NC_SendNodeMibCountersHkCmd();
 
