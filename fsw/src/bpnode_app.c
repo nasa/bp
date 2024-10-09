@@ -295,7 +295,26 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
+    
 
+    /* Create CLA In child tasks */
+    Status = BPNode_ClaInCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
+    /* Create CLA Out child tasks */
+    Status = BPNode_ClaOutCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }    
+    
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
     {
@@ -355,6 +374,13 @@ void BPNode_AppExit(void)
         BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
 
+    /* Signal to CLA child tasks to exit */
+    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    {
+        BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+    }
+    
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 

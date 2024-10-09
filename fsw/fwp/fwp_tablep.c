@@ -28,6 +28,7 @@
 ** Include
 */
 
+#include "bplib.h"
 #include "fwp_tablep.h"
 #include "fwp_adup.h"
 #include "bpnode_utils.h"
@@ -56,7 +57,7 @@ CFE_Status_t BPNode_ChannelConfigTblValidateFunc(void *TblData)
 CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData)
 {
     CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_ContactsTable_t *TblDataPtr = (BPNode_ContactsTable_t *)TblData;
+    BPLib_ContactsTable_t *TblDataPtr = (BPLib_ContactsTable_t *)TblData;
 
     /* Validate data values are within allowed range */
     if (TblDataPtr[0].ContactSet->PortNum <= 0)
@@ -172,7 +173,7 @@ BPNode_TblNameParams_t TblNameParamsArr0[] =
 {
     {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_ADUP_ValidateConfigTbl},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPNode_ChannelTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ChannelConfigTblValidateFunc},
-    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
+    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_ContactsTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CRSTblValidateFunc},
     {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodianAuthTblValidateFunc},
     {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPNode_CustodyTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodyAuthTblValidateFunc},

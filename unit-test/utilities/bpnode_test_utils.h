@@ -53,7 +53,7 @@
 
 extern BPA_ADUP_Table_t            TestAduTbl;
 extern BPNode_ChannelTable_t       TestChanTbl;
-extern BPNode_ContactsTable_t      TestContactsTbl;
+extern BPLib_ContactsTable_t       TestContactsTbl;
 extern BPNode_CRSTable_t           TestCrsTbl;
 extern BPNode_CustodianTable_t     TestCustodianTbl;
 extern BPNode_CustodyTable_t       TestCustodyTbl;
