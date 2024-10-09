@@ -54,7 +54,7 @@
 
 BPNode_TblNameParams_t TblNameParamsArr_test[] = 
 {
-    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPNode_ADUProxyTable_t),      NULL, NULL},
+    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, NULL},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPNode_ChannelTable_t),       NULL, NULL},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_ContactsTable_t),       NULL, NULL},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, NULL},
@@ -122,26 +122,6 @@ void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Modified), CFE_SUCCESS);
     UtAssert_INT32_EQ((int32) BPA_TABLEP_SingleTableUpdate(1), (int32) CFE_SUCCESS);    
-}
-
-void Test_BPNode_ADUPTblValidateFunc_Nominal(void)
-{
-    BPNode_ADUProxyTable_t TestTblData;
-    memset(&TestTblData, 0, sizeof(TestTblData));
-    TestTblData.ADUP_Set[0].NumRecvFrmMIDs = 1;
-    UtAssert_INT32_EQ((int32) BPNode_ADUPTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
-}
-
-void Test_BPNode_ADUPTblValidateFunc_Invalid(void)
-{
-    BPNode_ADUProxyTable_t TestTblData;
-    memset(&TestTblData, 0, sizeof(TestTblData));
-
-    /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
-    TestTblData.ADUP_Set[0].NumRecvFrmMIDs = 0;
-
-    UtAssert_INT32_EQ(BPNode_ADUPTblValidateFunc(&TestTblData), 
-                                                BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
 }
 
 void Test_BPNode_ChannelConfigTblValidateFunc_Nominal(void)
@@ -367,9 +347,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Fail);
     
     ADD_TEST(Test_BPA_TABLEP_SingleTableUpdate_Nominal);
-    
-    ADD_TEST(Test_BPNode_ADUPTblValidateFunc_Nominal);
-    ADD_TEST(Test_BPNode_ADUPTblValidateFunc_Invalid);
 
     ADD_TEST(Test_BPNode_ChannelConfigTblValidateFunc_Nominal);
     ADD_TEST(Test_BPNode_ChannelConfigTblValidateFunc_Invalid);

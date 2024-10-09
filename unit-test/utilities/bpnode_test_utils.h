@@ -48,6 +48,23 @@
 #include "bpnode_tbl.h"
 
 /*
+** Global Data
+*/
+
+extern BPA_ADUP_Table_t            TestAduTbl;
+extern BPNode_ChannelTable_t       TestChanTbl;
+extern BPLib_ContactsTable_t       TestContactsTbl;
+extern BPNode_CRSTable_t           TestCrsTbl;
+extern BPNode_CustodianTable_t     TestCustodianTbl;
+extern BPNode_CustodyTable_t       TestCustodyTbl;
+extern BPNode_MIBConfigPNTable_t   TestMibPnTbl;
+extern BPNode_MIBConfigPSTable_t   TestMibPsTbl;
+extern BPNode_ReportToTable_t      TestReportTbl;
+extern BPNode_SrcAuthTable_t       TestAuthTbl;
+extern BPNode_SrcLatencyTable_t    TestLatencyTbl;
+extern BPNode_StorageTable_t       TestStorTbl;
+
+/*
 ** Macro Definitions 
 */
 

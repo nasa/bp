@@ -39,10 +39,11 @@
 
 #define BPNODE_ADU_OUT_INIT_SEM_BASE_NAME "BPN_ADU_OUT_INIT" /**< \brief Initialization semaphore base name */
 
-#define BPNODE_ADU_OUT_BASE_NAME "BPNODE.ADU_OUT"   /**< \brief Task base name */
+#define BPNODE_ADU_OUT_BASE_NAME    "BPNODE.ADU_OUT"    /**< \brief Task base name */
 
-#define BPNODE_ADU_OUT_SLEEP_MSEC (1000u)           /**< \brief Sleep time */
+#define BPNODE_ADU_OUT_SLEEP_MSEC   (1000u)             /**< \brief Sleep time */
 
+#define BPNODE_ADU_IN_PI_Q_TIMEOUT  (1000u)             /**< \brief PI queue timeout */
 
 /*
 ** Type Definitions
@@ -57,6 +58,9 @@ typedef struct
     osal_id_t       InitSemId;
     uint32          PerfId;
     uint32          RunStatus;
+    bool            AduWrapping;
+    CFE_SB_MsgId_t  SendToMsgId;
+    uint16          AduCountDelivered;
 } BPNode_AduOutData_t;
 
 

@@ -186,9 +186,15 @@ void BPNode_AduOut_AppMain(void)
     /* ADU Out task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        if (BPNode_AppData.AduConfigs[ChanId].AppState == BPA_ADUP_APP_STARTED)
+        if (BPNode_AppData.AduState[ChanId].AppState == BPA_ADUP_APP_STARTED)
         {
-            /* TODO pull bundle from PI out queue and send out */
+            /* 
+            ** TODO 
+            ** Pend on bundle from PI out queue
+            ** If a bundle was received:
+            **      BPA_ADUP_Out((void *) Buf, ChanId);
+            */
+
             (void) OS_TaskDelay(BPNODE_ADU_OUT_SLEEP_MSEC);
         }
         else 

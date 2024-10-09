@@ -33,7 +33,16 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "cfe.h"
 #include "bplib.h"
+#include "bpnode_platform_cfg.h"
+
+
+/*
+** Macro Definitions
+*/
+
+#define BPNODE_MAX_CHAN_SUBSCRIPTION     10     /**< \brief Max number of message IDs one channel can subscribe to */
 
 
 /*
@@ -46,23 +55,58 @@
 typedef enum 
 {
     BPA_ADUP_APP_STOPPED = 0,
-    BPA_ADUP_APP_STARTED = 1
+    BPA_ADUP_APP_ADDED   = 1,
+    BPA_ADUP_APP_STARTED = 2
 } BPA_ADUP_ApplicationState_t;
 
 /** 
-** \brief Configurations needed to ADU ingest/output
+** \brief State configurations needed for ADU ingest/output
 */
 typedef struct 
 {
-    bool     Packetize;
-    uint32_t InPendTimeout;
-    uint32_t OutPendTimeout;
+    bool   AddAutomatically;
     BPA_ADUP_ApplicationState_t AppState;
-} BPA_ADUP_Configs_t;
+} BPA_ADUP_State_t;
+
+/** 
+** \brief ADU Proxy Config Table Entry
+*/
+typedef struct
+{
+    CFE_SB_MsgId_t SendToMsgId;
+    uint32         NumRecvFrmMsgIds;
+    CFE_SB_MsgId_t RecvFrmMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
+} BPA_ADUP_Config_t ;
+
+/** 
+** \brief ADU Proxy Config Table
+*/
+typedef struct
+{
+    BPA_ADUP_Config_t Entries[BPNODE_MAX_NUM_CHANNELS];
+} BPA_ADUP_Table_t;
+
 
 /*
 ** Exported Functions
 */
+
+/**
+ * \brief FWP ADU Proxy Validate Config Table
+ *
+ *  \par Description
+ *       Validates the ADU Proxy Configuration Table
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] TblData ADU Proxy Configuration Table pointer
+ * 
+ *  \return Execution status, see \ref CFEReturnCodes
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ *  \retval BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE Invalid table parameter
+ */
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
 
 /**
  * \brief FWP ADU Proxy In
@@ -74,11 +118,12 @@ typedef struct
  *       - The pointer type is void to allow implementations with different pointer types
  * 
  *  \param[in] AduPtr Pointer to the ADU
+ *  \param[in] ChanId Channel ID
  * 
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Ingest was successful
  */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr);
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Out
@@ -90,24 +135,28 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr);
  *       - The pointer type is void to allow implementations with different pointer types
  * 
  *  \param[in] AduPtr Pointer to the ADU
+ *  \param[in] ChanId Channel ID
  * 
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr);
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Add Application
  *
  *  \par Description
- *       Adds new application configurations
+ *       Adds new application configurations from ADU Proxy and Channel Config Tables
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
  * 
- *  \param[in] AppConfigs Pointer to the new application configurations
+ *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
  */
-void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs);
+BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Start Application
@@ -119,8 +168,11 @@ void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs);
  *       None
  * 
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
  */
-void BPA_ADUP_StartApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Stop Application
@@ -132,7 +184,10 @@ void BPA_ADUP_StartApplication(uint8_t ChanId);
  *       None
  * 
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
  */
-void BPA_ADUP_StopApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
 
 #endif /* FWP_ADUP_H */

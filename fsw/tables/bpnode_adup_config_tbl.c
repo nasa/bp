@@ -23,13 +23,27 @@
 **   This file contains the source code for the ADU Proxy Config Table
 */
 
+#include "cfe.h"
+#include "fwp_adup.h"
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "bpnode_tbl.h"
 
 
-BPNode_ADUProxyTable_t ADUProxyTable = {
-    .ADUP_Set ={
-        {.SendToMID = 0x1801, .NumRecvFrmMIDs = 3, .RecvFrmMIDs = {0x1801,0x1802,0x1803}}
+BPA_ADUP_Config_t ADUProxyTable[BPNODE_MAX_NUM_CHANNELS] = {
+    {
+        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(0x0800),     /* CFE_ES_HK, currently does nothing*/
+        .NumRecvFrmMsgIds = 3,
+        .RecvFrmMsgIds = {  
+            CFE_SB_MSGID_WRAP_VALUE(0x080A),                /* CFE_SB_STATS */ 
+            CFE_SB_MSGID_WRAP_VALUE(0x080D),                /* CFE_SB_ALLSUBS */
+            CFE_SB_MSGID_WRAP_VALUE(0x080E),                /* CFE_SB_ONESUB */
+        }
+    },
+    {
+        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(0x1801),     /* CFE_EVS_CMD, currently does nothing*/
+        .NumRecvFrmMsgIds = 1,
+        .RecvFrmMsgIds = {
+            CFE_SB_MSGID_WRAP_VALUE(0x0806),                /* CFE_TIME_DIAG_HK */ 
+        }
     }
 };
 
