@@ -39,6 +39,25 @@
 #include "uttest.h"
 #include "utstubs.h"
 
+/*
+** Global Data
+*/
+
+/* Test table data */
+BPA_ADUP_Table_t            TestAduTbl;
+BPNode_ChannelTable_t       TestChanTbl;
+BPNode_ContactsTable_t      TestContactsTbl;
+BPNode_CRSTable_t           TestCrsTbl;
+BPNode_CustodianTable_t     TestCustodianTbl;
+BPNode_CustodyTable_t       TestCustodyTbl;
+BPNode_MIBConfigPNTable_t   TestMibPnTbl;
+BPNode_MIBConfigPSTable_t   TestMibPsTbl;
+BPNode_ReportToTable_t      TestReportTbl;
+BPNode_SrcAuthTable_t       TestAuthTbl;
+BPNode_SrcLatencyTable_t    TestLatencyTbl;
+BPNode_StorageTable_t       TestStorTbl;
+
+
 /* An example hook function to check for a specific event */
 static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
                                       va_list va)
@@ -141,6 +160,19 @@ void BPNode_UT_Setup(void)
     UT_ResetState(0);
 
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData_t));
+
+    memset(&TestAduTbl, 0, sizeof(BPA_ADUP_Table_t));
+    memset(&TestChanTbl, 0, sizeof(BPNode_ChannelTable_t));
+    memset(&TestContactsTbl, 0, sizeof(BPNode_ContactsTable_t));
+    memset(&TestCrsTbl, 0, sizeof(BPNode_CRSTable_t));
+    memset(&TestCustodianTbl, 0, sizeof(BPNode_CustodianTable_t));
+    memset(&TestCustodyTbl, 0, sizeof(BPNode_CustodyTable_t));
+    memset(&TestMibPnTbl, 0, sizeof(BPNode_MIBConfigPNTable_t));
+    memset(&TestMibPsTbl, 0, sizeof(BPNode_MIBConfigPSTable_t));
+    memset(&TestReportTbl, 0, sizeof(BPNode_ReportToTable_t));
+    memset(&TestAuthTbl, 0, sizeof(BPNode_SrcAuthTable_t));
+    memset(&TestLatencyTbl, 0, sizeof(BPNode_SrcLatencyTable_t));
+    memset(&TestStorTbl, 0, sizeof(BPNode_StorageTable_t));
 }
 
 /* Teardown function after every test */
