@@ -210,7 +210,7 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
 
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STARTED;
+    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     BPNode_AduOut_AppMain();
 
@@ -270,7 +270,7 @@ void Test_BPNode_AduOut_AppMain_AppStopped(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
 
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduConfigs[ChanId].AppState = BPA_ADUP_APP_STOPPED;
+    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
     BPNode_AduOut_AppMain();
 

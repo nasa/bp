@@ -294,29 +294,40 @@ void TEST_BPA_DP_ResetErrorCountersCmd_Error(void)
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
-/* Test Add Application command nominal case */
+/* Test add-application command nominal case */
 void TEST_BPA_DP_AddApplicationCmd_Nominal(void)
 {
     BPNode_AddApplicationCmd_t TestMsg;
+    UT_CheckEvent_t            EventTest;
+    uint16                     ExpAcceptedCount = 1;
 
-    TestMsg.Payload.ExampleParameter = 13;
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADD_APP_INF_EID, 
+                            "Successful add-application directive for ChanId=%d");
 
     UtAssert_INT32_EQ(BPA_DP_AddApplicationCmd(&TestMsg), CFE_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_NC_AddApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
+                            ExpAcceptedCount);
+
+    /* Confirm that the event was generated */
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
+/* Test add-application command failure case */
 void TEST_BPA_DP_AddApplicationCmd_Error(void)
 {
     BPNode_AddApplicationCmd_t TestMsg;
+    uint16                     ExpRejectedCount = 1;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_UNIMPLEMENTED);
+    memset(&TestMsg, 0, sizeof(TestMsg));
 
-    TestMsg.Payload.ExampleParameter = 13;
+    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_AddApplication), BPLIB_ERROR);
 
-    UtAssert_INT32_EQ(BPA_DP_AddApplicationCmd(&TestMsg), CFE_STATUS_NOT_IMPLEMENTED);
-    UtAssert_STUB_COUNT(BPLib_NC_AddApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_INT32_EQ(BPA_DP_AddApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test Remove Application command nominal case */
@@ -369,54 +380,76 @@ void TEST_BPA_DP_SetRegistrationStateCmd_Error(void)
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
-/* Test Start Application command nominal case */
+/* Test start-application command nominal case */
 void TEST_BPA_DP_StartApplicationCmd_Nominal(void)
 {
     BPNode_StartApplicationCmd_t TestMsg;
+    UT_CheckEvent_t              EventTest;
+    uint16                       ExpAcceptedCount = 1;
 
-    TestMsg.Payload.ExampleParameter = 1;
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_STRT_APP_INF_EID, 
+                            "Successful start-application directive for ChanId=%d");
 
     UtAssert_INT32_EQ(BPA_DP_StartApplicationCmd(&TestMsg), CFE_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_NC_StartApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
+                            ExpAcceptedCount);
+
+    /* Confirm that the event was generated */
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
+/* Test start-application command failure case */
 void TEST_BPA_DP_StartApplicationCmd_Error(void)
 {
     BPNode_StartApplicationCmd_t TestMsg;
+    uint16                       ExpRejectedCount = 1;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_UNIMPLEMENTED);
+    memset(&TestMsg, 0, sizeof(TestMsg));
 
-    TestMsg.Payload.ExampleParameter = 1;
+    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_StartApplication), BPLIB_ERROR);
 
-    UtAssert_INT32_EQ(BPA_DP_StartApplicationCmd(&TestMsg), CFE_STATUS_NOT_IMPLEMENTED);
-    UtAssert_STUB_COUNT(BPLib_NC_StartApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_INT32_EQ(BPA_DP_StartApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
-/* Test Stop Application command nominal case */
+/* Test stop-application command nominal case */
 void TEST_BPA_DP_StopApplicationCmd_Nominal(void)
 {
     BPNode_StopApplicationCmd_t TestMsg;
+    UT_CheckEvent_t             EventTest;
+    uint16                      ExpAcceptedCount = 1;
 
-    TestMsg.Payload.ExampleParameter = 3;
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_STOP_APP_INF_EID, 
+                            "Successful stop-application directive for ChanId=%d");
 
     UtAssert_INT32_EQ(BPA_DP_StopApplicationCmd(&TestMsg), CFE_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_NC_StopApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
+                            ExpAcceptedCount);
+
+    /* Confirm that the event was generated */
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
+/* Test stop-application command failure case */
 void TEST_BPA_DP_StopApplicationCmd_Error(void)
 {
     BPNode_StopApplicationCmd_t TestMsg;
+    uint16                      ExpRejectedCount = 1;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_UNIMPLEMENTED);
+    memset(&TestMsg, 0, sizeof(TestMsg));
 
-    TestMsg.Payload.ExampleParameter = 3;
+    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_StopApplication), BPLIB_ERROR);
 
-    UtAssert_INT32_EQ(BPA_DP_StopApplicationCmd(&TestMsg), CFE_STATUS_NOT_IMPLEMENTED);
-    UtAssert_STUB_COUNT(BPLib_NC_StopApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_INT32_EQ(BPA_DP_StopApplicationCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test Add Authorized Sources command nominal case */
@@ -997,8 +1030,12 @@ void TEST_BPA_DP_SendStorageHkCmd_Error(void)
 /* Test Send Channel/Contact Status HK command nominal case */
 void TEST_BPA_DP_SendChannelContactStatHkCmd_Nominal(void)
 {
-    UtAssert_INT32_EQ(BPA_DP_SendChannelContactStatHkCmd(), CFE_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHkCmd , 1);
+    BPNode_SendChannelContactStatHkCmd_t TestMsg;
+
+    memset(&TestMsg, 0, sizeof(TestMsg));
+
+    UtAssert_INT32_EQ(BPA_DP_SendChannelContactStatHkCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHkCmd, 1);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
@@ -1016,92 +1053,136 @@ void UtTest_Setup(void)
 {
     ADD_TEST(TEST_BPA_DP_NoopCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_NoopCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddAllApplicationsCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddAllApplicationsCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_StartAllApplicationsCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_StartAllApplicationsCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_VerifyBundleStorageCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_VerifyBundleStorageCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_InitBundleStorageCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_InitBundleStorageCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_VerifyBundleMetadataCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_VerifyBundleMetadataCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RebuildBundleMetadataCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RebuildBundleMetadataCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ClearVolatileCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ClearVolatileCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ReloadSavedDataCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ReloadSavedDataCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ResetAllCountersCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ResetAllCountersCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ResetCounterCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ResetCounterCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ResetSourceCountersCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ResetSourceCountersCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ResetBundleCountersCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ResetBundleCountersCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ResetErrorCountersCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ResetErrorCountersCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddApplicationCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddApplicationCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveApplicationCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveApplicationCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SetRegistrationStateCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SetRegistrationStateCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_StartApplicationCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_StartApplicationCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_StopApplicationCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_StopApplicationCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddAuthSourcesCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddAuthSourcesCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveAuthSourcesCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveAuthSourcesCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddAuthCustodySourcesCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddAuthCustodySourcesCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveAuthCustodySourcesCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveAuthCustodySourcesCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddAuthCustodiansCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddAuthCustodiansCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveAuthCustodiansCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveAuthCustodiansCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddAuthReportToEidCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddAuthReportToEidCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveAuthReportToEidCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveAuthReportToEidCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddLatencyCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddLatencyCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveLatencyCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveLatencyCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ContactSetupCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ContactSetupCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ContactStartCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ContactStartCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ContactStopCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ContactStopCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_ContactTeardownCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_ContactTeardownCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddMibArrayKeyCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddMibArrayKeyCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveMibArrayKeyCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveMibArrayKeyCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SetMibItemCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SetMibItemCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_AddStorageAllocationCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_AddStorageAllocationCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_RemoveStorageAllocationCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_RemoveStorageAllocationCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_PerformSelfTestCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_PerformSelfTestCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SendNodeMibConfigHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendNodeMibConfigHkCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SendNodeMibCountersHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendNodeMibCountersHkCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SendSourceMibConfigHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendSourceMibConfigHkCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SendSourceMibCountersHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendSourceMibCountersHkCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SendStorageHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendStorageHkCmd_Error);
+
     ADD_TEST(TEST_BPA_DP_SendChannelContactStatHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendChannelContactStatHkCmd_Error);
 }

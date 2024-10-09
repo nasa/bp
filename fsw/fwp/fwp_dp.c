@@ -249,11 +249,18 @@ CFE_Status_t BPA_DP_ReloadSavedDataCmd(void)
 CFE_Status_t BPA_DP_ResetAllCountersCmd(void)
 {
     int32 Status;
+    uint8 i;
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.AduInData[i].AduCountReceived = 0;
+        BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
+    }
 
     Status = BPLib_NC_ResetAllCountersCmd();
 
@@ -363,9 +370,16 @@ CFE_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
     int32 Status;
 
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
     Status = BPLib_NC_AddApplicationCmd(Msg->Payload);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+    }
 
     switch (Status)
     {
@@ -433,6 +447,15 @@ CFE_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 
     Status = BPLib_NC_StartApplicationCmd(Msg->Payload);
 
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+    }
+
     switch (Status)
     {
         case BPLIB_SUCCESS:
@@ -454,6 +477,15 @@ CFE_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
     Status = BPLib_NC_StopApplicationCmd(Msg->Payload);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+    }
 
     switch (Status)
     {
@@ -957,7 +989,19 @@ CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
 {
     int32 Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
+    uint8 i;
 
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+
+    /* Get ADU counts for all ADU child tasks */
+    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
+    }
+
+    /* Get DTN time data */
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
@@ -965,7 +1009,7 @@ CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
 
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
-    CFE_SB_TransmitMsg((CFE_MSG_Message_t*) &(BPNode_AppData.NodeMibCountersHkTlm), true);
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 
     Status = BPLib_NC_SendNodeMibCountersHkCmd();
 
@@ -1029,9 +1073,25 @@ CFE_Status_t BPA_DP_SendStorageHkCmd(void)
 /* Send channel/contact status hk command */
 CFE_Status_t BPA_DP_SendChannelContactStatHkCmd(void)
 {
+    BPLib_TIME_MonotonicTime_t MonotonicTime;
+    uint8 i;
     int32 Status;
 
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    /* Get ADU status from all child tasks */
+    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduState[i].AppState;
+    }
+
+    /* Get DTN time data */
+    BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
 
     Status = BPLib_NC_SendChannelContactStatHkCmd();
 

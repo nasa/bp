@@ -31,6 +31,7 @@
 
 #include "common_types.h"
 #include "bpnode_fcncodes.h"
+#include "bpnode_platform_cfg.h"
 
 #include "bplib.h"
 

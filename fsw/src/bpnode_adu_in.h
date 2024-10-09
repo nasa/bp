@@ -31,6 +31,7 @@
 */
 
 #include "cfe.h"
+#include "fwp.h"
 
 
 /*
@@ -39,13 +40,15 @@
 
 #define BPNODE_ADU_IN_INIT_SEM_BASE_NAME "BPN_ADU_IN_INIT" /**< \brief Initialization semaphore base name */
 
-#define BPNODE_ADU_IN_BASE_NAME "BPNODE.ADU_IN" /**< \brief Task base name */
+#define BPNODE_ADU_IN_BASE_NAME      "BPNODE.ADU_IN"    /**< \brief Task base name */
 
-#define BPNODE_ADU_IN_SLEEP_MSEC (1000u)        /**< \brief Sleep time */
+#define BPNODE_ADU_IN_SLEEP_MSEC     (1000u)            /**< \brief Sleep time */
 
-#define BPNODE_ADU_PIPE_DEPTH (32u)             /**< \brief ADU pipe depth */
+#define BPNODE_ADU_PIPE_DEPTH        (32u)              /**< \brief ADU pipe depth */
 
 #define BPNODE_ADU_IN_PIPE_BASE_NAME "BPNODE_ADU_PIPE"  /**< \brief ADU pipe base name */
+
+#define BPNODE_ADU_IN_SB_TIMEOUT     (1000u)            /**< \brief SB timeout */
 
 
 /*
@@ -62,6 +65,12 @@ typedef struct
     uint32          PerfId;
     uint32          RunStatus;
     CFE_SB_PipeId_t AduPipe;
+    bool            ClearPipe;
+    bool            AduUnwrapping;
+    uint32          MaxBundlePayloadSize;
+    uint32          NumRecvFromMsgIds;
+    CFE_SB_MsgId_t  RecvFromMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
+    uint16          AduCountReceived;
 } BPNode_AduInData_t;
 
 
