@@ -1030,11 +1030,7 @@ void TEST_BPA_DP_SendStorageHkCmd_Error(void)
 /* Test Send Channel/Contact Status HK command nominal case */
 void TEST_BPA_DP_SendChannelContactStatHkCmd_Nominal(void)
 {
-    BPNode_SendChannelContactStatHkCmd_t TestMsg;
-
-    memset(&TestMsg, 0, sizeof(TestMsg));
-
-    UtAssert_INT32_EQ(BPA_DP_SendChannelContactStatHkCmd(&TestMsg), CFE_SUCCESS);
+    UtAssert_INT32_EQ(BPA_DP_SendChannelContactStatHkCmd(), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHkCmd, 1);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
