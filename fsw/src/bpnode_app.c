@@ -192,9 +192,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Zero out the global data structure */
-    memset(&BPNode_AppData, 0, sizeof(BPNode_AppData));
-
-    BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
+    CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
     /* Register with Event Services */
     BpStatus = BPLib_EM_Init();
@@ -260,7 +258,7 @@ CFE_Status_t BPNode_AppInit(void)
         BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Subscribing to wakeup messages, RC = 0x%08lX",
                             (unsigned long)Status);
-
+        
         return Status;
     }
 
@@ -277,16 +275,6 @@ CFE_Status_t BPNode_AppInit(void)
     
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
-
-    /* 
-    ** Initialize ADU configuration data to set all applications to started
-    ** TODO replace with reading in configs from ADU/channel config tables
-    */
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
-    {
-        BPNode_AppData.AduConfigs[i].AppState = BPA_ADUP_APP_STARTED;
-        BPNode_AppData.AduConfigs[i].InPendTimeout = BPNODE_WAKEUP_PIPE_TIMEOUT;
-    }
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
@@ -305,6 +293,53 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
+    
+
+    /* Create CLA In child tasks */
+    Status = BPNode_ClaInCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
+
+    /* Create CLA Out child tasks */
+    Status = BPNode_ClaOutCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }    
+    
+    /* Add and start all applications set to be loaded at startup */
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        if (BPNode_AppData.ChanTblPtr->ChannelSet[i].AddAutomatically == true)
+        {
+            /* Ignore return value, no failure conditions are possible here */
+            (void) BPA_ADUP_AddApplication(i);
+
+            BpStatus = BPA_ADUP_StartApplication(i);
+
+            if (BpStatus != BPLIB_SUCCESS)
+            {
+                /* Error event message handled by ADU Proxy */
+                return BpStatus;
+            }
+            else 
+            {
+                BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
+                            "Automatically added app configurations for ChanId=%d", i);
+            }
+
+        }
+    }    
+
+    /* App has initialized properly */
+
+    BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
                     BPNODE_MAJOR_VERSION,
@@ -337,6 +372,13 @@ void BPNode_AppExit(void)
         BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
 
+    /* Signal to CLA child tasks to exit */
+    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    {
+        BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+    }
+    
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 

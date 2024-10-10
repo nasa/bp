@@ -32,11 +32,15 @@
  * Generated stub function for BPA_ADUP_AddApplication()
  * ----------------------------------------------------
  */
-void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
+BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 {
-    UT_GenStub_AddParam(BPA_ADUP_AddApplication, BPA_ADUP_Configs_t *, AppConfigs);
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_AddApplication, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_AddApplication, uint8_t, ChanId);
 
     UT_GenStub_Execute(BPA_ADUP_AddApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_AddApplication, BPLib_Status_t);
 }
 
 /*
@@ -44,11 +48,13 @@ void BPA_ADUP_AddApplication(BPA_ADUP_Configs_t *AppConfigs)
  * Generated stub function for BPA_ADUP_In()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr)
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 {
     UT_GenStub_SetupReturnBuffer(BPA_ADUP_In, BPLib_Status_t);
 
     UT_GenStub_AddParam(BPA_ADUP_In, void *, AduPtr);
+
+    UT_GenStub_AddParam(BPA_ADUP_In, uint8_t, ChanId);
 
     UT_GenStub_Execute(BPA_ADUP_In, Basic, NULL);
 
@@ -60,11 +66,13 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr)
  * Generated stub function for BPA_ADUP_Out()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
+BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
 {
     UT_GenStub_SetupReturnBuffer(BPA_ADUP_Out, BPLib_Status_t);
 
     UT_GenStub_AddParam(BPA_ADUP_Out, void *, AduPtr);
+
+    UT_GenStub_AddParam(BPA_ADUP_Out, uint8_t, ChanId);
 
     UT_GenStub_Execute(BPA_ADUP_Out, Basic, NULL);
 
@@ -76,11 +84,15 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr)
  * Generated stub function for BPA_ADUP_StartApplication()
  * ----------------------------------------------------
  */
-void BPA_ADUP_StartApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
 {
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_StartApplication, BPLib_Status_t);
+
     UT_GenStub_AddParam(BPA_ADUP_StartApplication, uint8_t, ChanId);
 
     UT_GenStub_Execute(BPA_ADUP_StartApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_StartApplication, BPLib_Status_t);
 }
 
 /*
@@ -88,9 +100,28 @@ void BPA_ADUP_StartApplication(uint8_t ChanId)
  * Generated stub function for BPA_ADUP_StopApplication()
  * ----------------------------------------------------
  */
-void BPA_ADUP_StopApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
 {
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_StopApplication, BPLib_Status_t);
+
     UT_GenStub_AddParam(BPA_ADUP_StopApplication, uint8_t, ChanId);
 
     UT_GenStub_Execute(BPA_ADUP_StopApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_StopApplication, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_ValidateConfigTbl()
+ * ----------------------------------------------------
+ */
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData) {
+  UT_GenStub_SetupReturnBuffer(BPA_ADUP_ValidateConfigTbl, CFE_Status_t);
+
+  UT_GenStub_AddParam(BPA_ADUP_ValidateConfigTbl, void *, TblData);
+
+  UT_GenStub_Execute(BPA_ADUP_ValidateConfigTbl, Basic, NULL);
+
+  return UT_GenStub_GetReturnValue(BPA_ADUP_ValidateConfigTbl, CFE_Status_t);
 }

@@ -45,11 +45,16 @@
 #include "bpnode_eventids.h"
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
-#include "fwp_adup.h"
+//#include "fwp_adup.h"
+#include "bpnode_cla_in.h"
+#include "bpnode_cla_out.h"
 #include "fwp.h"
 
 
 #include "bplib.h"
+
+
+#define BPNODE_CLA_PSP_DRIVER_NAME          "unsock_intf"       /*IODriver unsock_intf driver name*/
 
 /*
 ** Type Definitions
@@ -60,8 +65,8 @@
 */
 typedef struct
 {
-    char                        TableName[256];
-    char                        TableFileName[256];
+    char                        TableName[OS_MAX_API_NAME];
+    char                        TableFileName[OS_MAX_PATH_LEN];
     CFE_TBL_Handle_t            TableHandle;
     uint32                      TableSize;
     void*                       TablePtr;
@@ -79,10 +84,6 @@ typedef struct
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
     BPNode_TblNameParams_t  *TblNameParamsArr;
-
-    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
-    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
-    BPA_ADUP_Configs_t  AduConfigs[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global ADU Proxy configurations */
     
     /* Telemetry HK Packet structures*/
     BPNode_NodeMibConfigHkTlm_t         NodeMibConfigHkTlm;     /**< \brief Node MIB Config housekeeping packet */
@@ -92,6 +93,24 @@ typedef struct
     BPNode_StorageHkTlm_t               StorageHkTlm;           /**< \brief Storage housekeeping packet */
     BPNode_ChannelContactStatHkTlm_t    ChannelContactStatHkTlm;/**< \brief Channel Contact housekeeping packet */
 
+    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
+    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
+    BPA_ADUP_State_t    AduState[BPNODE_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
+    BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
+    BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */        
+
+    BPA_ADUP_Table_t            *AduTblPtr;
+    BPNode_ChannelTable_t       *ChanTblPtr;
+    BPLib_ContactsTable_t       *ContactsTblPtr;
+    BPNode_CRSTable_t           *CrsTblPtr;
+    BPNode_CustodianTable_t     *CustodianTblPtr;
+    BPNode_CustodyTable_t       *CustodyTblPtr;
+    BPNode_MIBConfigPNTable_t   *MibPnTblPtr;
+    BPNode_MIBConfigPSTable_t   *MibPsTblPtr;
+    BPNode_ReportToTable_t      *ReportTblPtr;
+    BPNode_SrcAuthTable_t       *AuthTblPtr;
+    BPNode_SrcLatencyTable_t    *LatTblPtr;
+    BPNode_StorageTable_t       *StorTblPtr;    
 } BPNode_AppData_t;
 
 

@@ -31,6 +31,24 @@
 #include "bpnode_test_utils.h"
 #include "fwp_tablep.h"
 
+/* Handler to set table pointers to test tables */
+void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey, 
+                                                const UT_StubContext_t *Context)
+{
+    BPNode_AppData.AduTblPtr = &TestAduTbl;
+    BPNode_AppData.ChanTblPtr = &TestChanTbl;
+    BPNode_AppData.ContactsTblPtr = &TestContactsTbl;
+    BPNode_AppData.CrsTblPtr = &TestCrsTbl;
+    BPNode_AppData.CustodianTblPtr = &TestCustodianTbl;
+    BPNode_AppData.CustodyTblPtr = &TestCustodyTbl;
+    BPNode_AppData.MibPnTblPtr = &TestMibPnTbl;
+    BPNode_AppData.MibPsTblPtr = &TestMibPsTbl;
+    BPNode_AppData.ReportTblPtr = &TestReportTbl;
+    BPNode_AppData.AuthTblPtr = &TestAuthTbl;
+    BPNode_AppData.LatTblPtr = &TestLatencyTbl;
+    BPNode_AppData.StorTblPtr = &TestStorTbl;
+}
+
 
 /*
 ** Function Definitions
@@ -39,6 +57,8 @@
 /* Test app main loop in nominal case */
 void Test_BPNode_AppMain_Nominal(void)
 {
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+
     /*
      * BPNode_AppMain does not return a value,
      * but it has several internal decision points
@@ -67,6 +87,8 @@ void Test_BPNode_AppMain_FailedInit(void)
 /* Test app main loop after receiving a wakeup (but no command) */
 void Test_BPNode_AppMain_WakeupRecvd(void)
 {
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+
     /* Receive wakeup message but no command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
@@ -81,6 +103,8 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 void Test_BPNode_AppMain_WakeupErr(void)
 {
     UT_CheckEvent_t EventTest;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
     /* Wakeup pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -97,6 +121,8 @@ void Test_BPNode_AppMain_WakeupErr(void)
 void Test_BPNode_AppMain_CommandErr(void)
 {
     UT_CheckEvent_t  EventTest;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
     /* Command pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -115,6 +141,8 @@ void Test_BPNode_AppMain_CommandRecvd(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -224,7 +252,9 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 void Test_BPNode_AppInit_Nominal(void)
 {
     UT_CheckEvent_t EventTest;
+
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, "BPNode Initialized: %s");
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     
@@ -338,7 +368,6 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
 /* Test app initialization after failure to create ADU in child tasks */
 void Test_BPNode_AppInit_FailedAduInTasks(void)
 {
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPNode_AduInCreateTasks), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
@@ -347,12 +376,43 @@ void Test_BPNode_AppInit_FailedAduInTasks(void)
 /* Test app initialization after failure to create ADU out child tasks */
 void Test_BPNode_AppInit_FailedAduOutTasks(void)
 {
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPNode_AduOutCreateTasks), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_CHILD_TASK_CREATE);
 }
 
+/* Test adding one application automatically at startup */
+void Test_BPNode_AppInit_AutoAddApp(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    /* Set channel 0 to be added automatically */
+    TestChanTbl.ChannelSet[0].AddAutomatically = true;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_AUTO_ADD_APP_INF_EID, 
+                                "Automatically added app configurations for ChanId=%d");
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
+    UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
+}
+
+/* Test adding one application automatically at startup failed */
+void Test_BPNode_AppInit_AutoAddAppFail(void)
+{
+    /* Set channel 0 to be added automatically */
+    TestChanTbl.ChannelSet[0].AddAutomatically = true;
+
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+    UT_SetDeferredRetcode(UT_KEY(BPA_ADUP_StartApplication), 1, BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_ERROR);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+    UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
+    UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
+}
 
 /* Test app exit in nominal case */
 void Test_BPNode_AppExit_Nominal(void)
@@ -379,7 +439,6 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
 {
     UT_CheckEvent_t EventTest;
 
-    UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), 1, CFE_TBL_INFO_UPDATED);
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_Init), 1, BPLIB_TIME_READ_ERROR);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_TIME_INIT_ERR_EID, "Error initializing BPLib Time Management, RC = %d");
 
@@ -387,6 +446,28 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
     
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+}
+
+/* Test app initialization in nominal case */
+void Test_BPNode_AppInit_FailedClaIn(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
+
+    UT_SetDeferredRetcode(UT_KEY(BPNode_ClaInCreateTasks), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
+}
+
+/* Test app initialization in nominal case */
+void Test_BPNode_AppInit_FailedClaOut(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
+
+    UT_SetDeferredRetcode(UT_KEY(BPNode_ClaOutCreateTasks), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
 }
 
 /* Register the test cases to execute with the unit test tool */
@@ -416,5 +497,9 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
+    ADD_TEST(Test_BPNode_AppInit_FailedClaOut);    
+    ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
+    ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
     ADD_TEST(Test_BPNode_AppExit_Nominal);
 }

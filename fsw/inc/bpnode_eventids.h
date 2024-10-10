@@ -59,8 +59,7 @@
 #define BPNODE_ADU_IN_NO_ID_ERR_EID             28
 #define BPNODE_ADU_IN_INV_ID_ERR_EID            29
 #define BPNODE_ADU_IN_CR_PIPE_ERR_EID           30
-#define BPNODE_ADU_IN_SUB_PIPE_ERR_EID          31
-#define BPNODE_ADU_IN_UNK_EXIT_CRIT_EID         32
+#define BPNODE_ADU_IN_UNK_EXIT_CRIT_EID         31
 
 #define BPNODE_ADU_OUT_INIT_SEM_ERR_EID         40
 #define BPNODE_ADU_OUT_EXIT_SEM_ERR_EID         41
@@ -75,5 +74,53 @@
 
 #define BPNODE_TIME_INIT_ERR_EID                50
 #define BPNODE_TIME_WKP_ERR_EID                 51
+
+#define BPNODE_ADU_SUB_ERR_EID                  52
+#define BPNODE_ADU_UNSUB_ERR_EID                53
+#define BPNODE_ADU_ADD_CHAN_ERR_EID             54
+#define BPNODE_ADU_ADD_STAT_ERR_EID             55
+#define BPNODE_ADU_STRT_CHAN_ERR_EID            56
+#define BPNODE_ADU_STRT_STAT_ERR_EID            57
+#define BPNODE_ADU_STOP_CHAN_ERR_EID            58
+#define BPNODE_ADU_STOP_STAT_ERR_EID            58
+#define BPNODE_ADU_TOO_BIG_ERR_EID              59
+
+#define BPNODE_ADD_APP_INF_EID                  60
+#define BPNODE_STRT_APP_INF_EID                 61
+#define BPNODE_STOP_APP_INF_EID                 62
+#define BPNODE_AUTO_ADD_APP_INF_EID             63
+
+#define BPNODE_CLA_IN_INIT_SEM_ERR_EID          121
+#define BPNODE_CLA_IN_EXIT_SEM_ERR_EID          122
+#define BPNODE_CLA_IN_CREATE_ERR_EID            123
+#define BPNODE_CLA_IN_RUN_ERR_EID               124
+#define BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID       125
+#define BPNODE_CLA_IN_INIT_INF_EID              126
+#define BPNODE_CLA_IN_EXIT_CRIT_EID             127
+#define BPNODE_CLA_IN_NO_ID_ERR_EID             128
+#define BPNODE_CLA_IN_INV_ID_ERR_EID            129
+#define BPNODE_CLA_IN_CR_PIPE_ERR_EID           130
+#define BPNODE_CLA_IN_SUB_PIPE_ERR_EID          131
+#define BPNODE_CLA_IN_UNK_EXIT_CRIT_EID         132
+#define BPNODE_CLA_IN_LIB_PROC_ERR_EID          133
+
+#define BPNODE_CLA_OUT_INIT_SEM_ERR_EID         140
+#define BPNODE_CLA_OUT_EXIT_SEM_ERR_EID         141
+#define BPNODE_CLA_OUT_CREATE_ERR_EID           142
+#define BPNODE_CLA_OUT_RUN_ERR_EID              143
+#define BPNODE_CLA_OUT_INIT_SEM_TK_ERR_EID      144
+#define BPNODE_CLA_OUT_INIT_INF_EID             145
+#define BPNODE_CLA_OUT_EXIT_CRIT_EID            146
+#define BPNODE_CLA_OUT_NO_ID_ERR_EID            147
+#define BPNODE_CLA_OUT_INV_ID_ERR_EID           148
+#define BPNODE_CLA_OUT_UNK_EXIT_CRIT_EID        149
+#define BPNODE_CLA_OUT_LIB_LOAD_ERR_EID         150
+
+#define BPNODE_CLA_IOD_FINDNAME_IN_EID          180
+#define BPNODE_CLA_IOD_COMMAND_DIR_IN_EID       181
+#define BPNODE_CLA_IOD_COMMAND_RUN_IN_EID       182
+#define BPNODE_CLA_IOD_FINDNAME_OUT_EID         185
+#define BPNODE_CLA_IOD_COMMAND_DIR_OUT_EID      186
+#define BPNODE_CLA_IOD_COMMAND_RUN_OUT_EID      187
 
 #endif /* BPNODE_EVENTS_H */

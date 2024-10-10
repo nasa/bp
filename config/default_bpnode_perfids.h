@@ -35,4 +35,7 @@
 #define BPNODE_ADU_IN_PERF_ID_BASE (110)
 #define BPNODE_ADU_OUT_PERF_ID_BASE (120)
 
+#define BPNODE_CLA_IN_PERF_ID_BASE          (180)
+#define BPNODE_CLA_OUT_PERF_ID_BASE         (190)
+
 #endif /* BPNODE_PERFIDS_H */

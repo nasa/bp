@@ -7,6 +7,8 @@ set(APP_SRC_FILES
   fsw/src/bpnode_utils.c
   fsw/src/bpnode_adu_out.c
   fsw/src/bpnode_adu_in.c
+  fsw/src/bpnode_cla_in.c
+  fsw/src/bpnode_cla_out.c
 
   # FWP files
   fsw/fwp/fwp_timep.c

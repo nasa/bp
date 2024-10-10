@@ -19,7 +19,7 @@
  */
 
 
-/*
+/**
 ** \file
 **   This file contains the source code for the FWP Table Proxy.
 */
@@ -28,29 +28,14 @@
 ** Include
 */
 
+#include "bplib.h"
 #include "fwp_tablep.h"
+#include "fwp_adup.h"
 #include "bpnode_utils.h"
 
 /*
 ** Function Definitions
 */
-
-
-/* Validate ADU Proxy table data */
-CFE_Status_t BPNode_ADUPTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_ADUProxyTable_t *TblDataPtr = (BPNode_ADUProxyTable_t *)TblData;
-
-    /* Validate data values are within allowed range */
-    if (TblDataPtr[0].ADUP_Set->NumRecvFrmMIDs <= 0)
-    {
-        /* element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-    }
-
-    return ReturnCode;
-}
 
 /* Validate Channel Config table data */
 CFE_Status_t BPNode_ChannelConfigTblValidateFunc(void *TblData)
@@ -72,7 +57,7 @@ CFE_Status_t BPNode_ChannelConfigTblValidateFunc(void *TblData)
 CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData)
 {
     CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_ContactsTable_t *TblDataPtr = (BPNode_ContactsTable_t *)TblData;
+    BPLib_ContactsTable_t *TblDataPtr = (BPLib_ContactsTable_t *)TblData;
 
     /* Validate data values are within allowed range */
     if (TblDataPtr[0].ContactSet->PortNum <= 0)
@@ -186,9 +171,9 @@ CFE_Status_t BPNode_StorageTblValidateFunc(void *TblData)
 
 BPNode_TblNameParams_t TblNameParamsArr0[] = 
 {
-    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPNode_ADUProxyTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ADUPTblValidateFunc},
+    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_ADUP_ValidateConfigTbl},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPNode_ChannelTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ChannelConfigTblValidateFunc},
-    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
+    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_ContactsTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CRSTblValidateFunc},
     {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodianAuthTblValidateFunc},
     {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPNode_CustodyTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodyAuthTblValidateFunc},
@@ -238,8 +223,22 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
         
         /* Set Table Handle to Node Configuration Here*/
 
-    }    
-    
+    }
+
+    /* Set shortcut pointers for easier usability of table data */
+    BPNode_AppData.AduTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr;
+    BPNode_AppData.ChanTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
+    BPNode_AppData.ContactsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CON_TBL_IDX].TablePtr;
+    BPNode_AppData.CrsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CRS_TBL_IDX].TablePtr;
+    BPNode_AppData.CustodianTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CSTDN_TBL_IDX].TablePtr;
+    BPNode_AppData.CustodyTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CSTDY_TBL_IDX].TablePtr;
+    BPNode_AppData.MibPnTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_MIBN_TBL_IDX].TablePtr;
+    BPNode_AppData.MibPsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_MIBS_TBL_IDX].TablePtr;
+    BPNode_AppData.ReportTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_REP_TBL_IDX].TablePtr;
+    BPNode_AppData.AuthTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_AUTH_TBL_IDX].TablePtr;
+    BPNode_AppData.LatTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_LATE_TBL_IDX].TablePtr;
+    BPNode_AppData.StorTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_STOR_TBL_IDX].TablePtr;
+
     return CFE_SUCCESS;  
 }
 
@@ -267,6 +266,21 @@ CFE_Status_t BPA_TABLEP_TableUpdate(void)
         /* Set Table Handle to Node Configuration Here*/
         
     }
+
+    /* Set shortcut pointers for easier usability of table data */
+    BPNode_AppData.AduTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr;
+    BPNode_AppData.ChanTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
+    BPNode_AppData.ContactsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CON_TBL_IDX].TablePtr;
+    BPNode_AppData.CrsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CRS_TBL_IDX].TablePtr;
+    BPNode_AppData.CustodianTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CSTDN_TBL_IDX].TablePtr;
+    BPNode_AppData.CustodyTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CSTDY_TBL_IDX].TablePtr;
+    BPNode_AppData.MibPnTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_MIBN_TBL_IDX].TablePtr;
+    BPNode_AppData.MibPsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_MIBS_TBL_IDX].TablePtr;
+    BPNode_AppData.ReportTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_REP_TBL_IDX].TablePtr;
+    BPNode_AppData.AuthTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_AUTH_TBL_IDX].TablePtr;
+    BPNode_AppData.LatTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_LATE_TBL_IDX].TablePtr;
+    BPNode_AppData.StorTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_STOR_TBL_IDX].TablePtr;
+
     
     return CFE_SUCCESS;
 }

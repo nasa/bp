@@ -157,7 +157,9 @@ typedef struct
  */
 typedef struct
 {
-    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    CFE_MSG_CommandHeader_t CommandHeader;  /**< \brief Command header */
+    uint8                   ChanId;         /**< \brief Channel ID */
+    uint8                   Spare[3];       /**< \brief Spare bytes */
 } BPNode_AddApplicationCmd_t;
 
 /**
@@ -181,7 +183,9 @@ typedef struct
  */
 typedef struct
 {
-    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    CFE_MSG_CommandHeader_t CommandHeader;  /**< \brief Command header */
+    uint8                   ChanId;         /**< \brief Channel ID */
+    uint8                   Spare[3];       /**< \brief Spare bytes */
 } BPNode_StartApplicationCmd_t;
 
 /**
@@ -189,7 +193,9 @@ typedef struct
  */
 typedef struct
 {
-    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    CFE_MSG_CommandHeader_t CommandHeader;  /**< \brief Command header */
+    uint8                   ChanId;         /**< \brief Channel ID */
+    uint8                   Spare[3];       /**< \brief Spare bytes */
 } BPNode_StopApplicationCmd_t;
 
 /**

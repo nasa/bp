@@ -157,11 +157,20 @@ CFE_Status_t BPNode_ReloadSavedDataCmd(const BPNode_ReloadSavedDataCmd_t *Msg)
 /* Reset all counters command */
 CFE_Status_t BPNode_ResetAllCountersCmd(const BPNode_ResetAllCountersCmd_t *Msg)
 {
+    uint8 i;
+
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
-    
+
+    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.AduInData[i].AduCountReceived = 0;
+        BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
+
+    }
+
     BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION, 
                     "Reset all counters command");
 
@@ -215,10 +224,24 @@ CFE_Status_t BPNode_ResetErrorCountersCmd(const BPNode_ResetErrorCountersCmd_t *
 /* Add application command */
 CFE_Status_t BPNode_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_Status_t Status;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Add application command not implemented");
+    /* Add application configurations */
+    Status = BPA_ADUP_AddApplication(Msg->ChanId);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        BPLib_EM_SendEvent(BPNODE_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
+                        "Successful add-application directive for ChanId=%d",
+                        Msg->ChanId);
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        /* Error events reported in ADU proxy */
+    }
 
     return CFE_SUCCESS;
 }
@@ -248,10 +271,25 @@ CFE_Status_t BPNode_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd
 /* Start application command */
 CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_Status_t Status;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Start application command not implemented");
+    /* Start application */
+    Status = BPA_ADUP_StartApplication(Msg->ChanId);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        BPLib_EM_SendEvent(BPNODE_STRT_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
+                        "Successful start-application directive for ChanId=%d",
+                        Msg->ChanId);
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        /* Error events reported in ADU proxy */
+    }
+
 
     return CFE_SUCCESS;
 }
@@ -259,10 +297,24 @@ CFE_Status_t BPNode_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 /* Stop application command */
 CFE_Status_t BPNode_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_Status_t Status;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Stop application command not implemented");
+    /* Stop application */
+    Status = BPA_ADUP_StopApplication(Msg->ChanId);
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        BPLib_EM_SendEvent(BPNODE_STOP_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
+                        "Successful stop-application directive for ChanId=%d",
+                        Msg->ChanId);
+    }
+    else
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        /* Error events reported in ADU proxy */
+    }
 
     return CFE_SUCCESS;
 }
@@ -513,7 +565,19 @@ CFE_Status_t BPNode_SendSourceMibConfigHkCmd(const BPNode_SendSourceMibConfigHkC
 CFE_Status_t BPNode_SendNodeMibCountersHkCmd(const BPNode_SendNodeMibCountersHkCmd_t *Msg)
 {
     BPLib_TIME_MonotonicTime_t MonotonicTime;
+    uint8 i;
 
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
+    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+
+    /* Get ADU counts for all ADU child tasks */
+    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
+    }
+
+    /* Get DTN time data */
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
@@ -551,10 +615,24 @@ CFE_Status_t BPNode_SendStorageHkCmd(const BPNode_SendStorageHkCmd_t *Msg)
 /* Send channel/contact status hk command */
 CFE_Status_t BPNode_SendChannelContactStatHkCmd(const BPNode_SendChannelContactStatHkCmd_t *Msg)
 {
-    BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+    BPLib_TIME_MonotonicTime_t MonotonicTime;
+    uint8 i;
 
-    BPLib_EM_SendEvent(BPNODE_RESET_INF_EID, BPLib_EM_EventType_INFORMATION,
-                    "Send channel/contact status hk command not implemented");
+    /* Get ADU status from all child tasks */
+    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    {
+        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
+    }
 
-    return CFE_SUCCESS;
+    /* Get DTN time data */
+    BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
+    BPNode_AppData.ChannelContactStatHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
+
+    return CFE_SUCCESS;    
 }
