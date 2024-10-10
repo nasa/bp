@@ -92,23 +92,6 @@ CFE_Status_t BPNode_CRSTblValidateFunc(void *TblData) {
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ChannelConfigTblValidateFunc()
- * ----------------------------------------------------
- */
-CFE_Status_t BPNode_ChannelConfigTblValidateFunc(void *TblData) {
-  UT_GenStub_SetupReturnBuffer(BPNode_ChannelConfigTblValidateFunc,
-                               CFE_Status_t);
-
-  UT_GenStub_AddParam(BPNode_ChannelConfigTblValidateFunc, void *, TblData);
-
-  UT_GenStub_Execute(BPNode_ChannelConfigTblValidateFunc, Basic, NULL);
-
-  return UT_GenStub_GetReturnValue(BPNode_ChannelConfigTblValidateFunc,
-                                   CFE_Status_t);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPNode_ContactsTblValidateFunc()
  * ----------------------------------------------------
  */

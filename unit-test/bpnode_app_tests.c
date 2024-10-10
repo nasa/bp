@@ -387,7 +387,7 @@ void Test_BPNode_AppInit_AutoAddApp(void)
     UT_CheckEvent_t EventTest;
 
     /* Set channel 0 to be added automatically */
-    TestChanTbl.ChannelSet[0].AddAutomatically = true;
+    TestChanTbl.Configs[0].AddAutomatically = true;
 
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_AUTO_ADD_APP_INF_EID, 
@@ -403,7 +403,7 @@ void Test_BPNode_AppInit_AutoAddApp(void)
 void Test_BPNode_AppInit_AutoAddAppFail(void)
 {
     /* Set channel 0 to be added automatically */
-    TestChanTbl.ChannelSet[0].AddAutomatically = true;
+    TestChanTbl.Configs[0].AddAutomatically = true;
 
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
     UT_SetDeferredRetcode(UT_KEY(BPA_ADUP_StartApplication), 1, BPLIB_ERROR);
@@ -425,7 +425,7 @@ void Test_BPNode_AppExit_Nominal(void)
 
     BPNode_AppExit();
 
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
         UtAssert_UINT32_EQ(BPNode_AppData.AduInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
