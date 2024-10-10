@@ -65,37 +65,6 @@ typedef struct
 } BPNode_CRSTable_t;
 
 /*
-** Contacts Table
-*/
-typedef enum 
-{
-    UDPType,
-    TCPType,
-    EPPType,
-    LTPType,
-}CLAType_t;
-
-typedef struct
-{
-    uint32      ContactID;
-    char        DestEIDs[BPLIB_MAX_EID_LENGTH];
-    uint32      CLAType;  
-    char        CLAddr[BPLIB_MAX_EID_LENGTH];
-    int32       PortNum;
-    uint32      DestLTPEngineID;
-    uint32      SendBytePerCycle;
-    uint32      ReceiveBytePerCycle;
-    uint32      RetransmitTimeout;
-    uint32      CSTimeTrigger;
-    uint32      CSSizeTrigger;
-} BPNode_ContactsSet_t;
-
-typedef struct
-{
-    BPNode_ContactsSet_t ContactSet[BPNODE_MAX_NUM_CONTACTS];
-} BPNode_ContactsTable_t;
-
-/*
 ** Custodian Authorization Policy Table
 */
 typedef struct

@@ -448,6 +448,28 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
 
+/* Test app initialization in nominal case */
+void Test_BPNode_AppInit_FailedClaIn(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
+
+    UT_SetDeferredRetcode(UT_KEY(BPNode_ClaInCreateTasks), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
+}
+
+/* Test app initialization in nominal case */
+void Test_BPNode_AppInit_FailedClaOut(void)
+{
+    UT_CheckEvent_t EventTest;
+
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_INIT_INF_EID, NULL);
+
+    UT_SetDeferredRetcode(UT_KEY(BPNode_ClaOutCreateTasks), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -475,8 +497,9 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
+    ADD_TEST(Test_BPNode_AppInit_FailedClaOut);    
     ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
     ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
-
     ADD_TEST(Test_BPNode_AppExit_Nominal);
 }

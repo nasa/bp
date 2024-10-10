@@ -28,6 +28,7 @@
 ** Include
 */
 
+#include "bplib.h"
 #include "fwp_tablep.h"
 #include "fwp_adup.h"
 #include "bpnode_utils.h"
@@ -40,7 +41,7 @@
 CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData)
 {
     CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_ContactsTable_t *TblDataPtr = (BPNode_ContactsTable_t *)TblData;
+    BPLib_ContactsTable_t *TblDataPtr = (BPLib_ContactsTable_t *)TblData;
 
     /* Validate data values are within allowed range */
     if (TblDataPtr[0].ContactSet->PortNum <= 0)

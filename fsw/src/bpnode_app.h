@@ -45,10 +45,15 @@
 #include "bpnode_eventids.h"
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
+#include "bpnode_cla_in.h"
+#include "bpnode_cla_out.h"
 #include "fwp.h"
 
 
 #include "bplib.h"
+
+
+#define BPNODE_CLA_PSP_DRIVER_NAME          "unsock_intf"       /*IODriver unsock_intf driver name*/
 
 /*
 ** Type Definitions
@@ -86,9 +91,13 @@ typedef struct
     BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
 
+    BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
+    BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */        
+
     BPA_ADUP_Table_t            *AduTblPtr;
-    BPLib_PI_ChannelTable_t       *ChanTblPtr;
-    BPNode_ContactsTable_t      *ContactsTblPtr;
+    BPLib_PI_ChannelTable_t     *ChanTblPtr;
+    BPLib_ContactsTable_t       *ContactsTblPtr;
+
     BPNode_CRSTable_t           *CrsTblPtr;
     BPNode_CustodianTable_t     *CustodianTblPtr;
     BPNode_CustodyTable_t       *CustodyTblPtr;
@@ -97,8 +106,7 @@ typedef struct
     BPNode_ReportToTable_t      *ReportTblPtr;
     BPNode_SrcAuthTable_t       *AuthTblPtr;
     BPNode_SrcLatencyTable_t    *LatTblPtr;
-    BPNode_StorageTable_t       *StorTblPtr;
-    
+    BPNode_StorageTable_t       *StorTblPtr;    
 } BPNode_AppData_t;
 
 

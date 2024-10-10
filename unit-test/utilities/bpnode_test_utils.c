@@ -45,8 +45,13 @@
 
 /* Test table data */
 BPA_ADUP_Table_t            TestAduTbl;
+<<<<<<< HEAD
 BPLib_PI_ChannelTable_t       TestChanTbl;
 BPNode_ContactsTable_t      TestContactsTbl;
+=======
+BPNode_ChannelTable_t       TestChanTbl;
+BPLib_ContactsTable_t       TestContactsTbl;
+>>>>>>> main
 BPNode_CRSTable_t           TestCrsTbl;
 BPNode_CustodianTable_t     TestCustodianTbl;
 BPNode_CustodyTable_t       TestCustodyTbl;
@@ -163,7 +168,7 @@ void BPNode_UT_Setup(void)
 
     memset(&TestAduTbl, 0, sizeof(BPA_ADUP_Table_t));
     memset(&TestChanTbl, 0, sizeof(BPLib_PI_ChannelTable_t));
-    memset(&TestContactsTbl, 0, sizeof(BPNode_ContactsTable_t));
+    memset(&TestContactsTbl, 0, sizeof(BPLib_ContactsTable_t));
     memset(&TestCrsTbl, 0, sizeof(BPNode_CRSTable_t));
     memset(&TestCustodianTbl, 0, sizeof(BPNode_CustodianTable_t));
     memset(&TestCustodyTbl, 0, sizeof(BPNode_CustodyTable_t));

@@ -65,6 +65,28 @@
 #define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_ADU_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
 
 /**
+ * \brief CLA In Task stack size 
+ */
+#define BPNODE_CLA_IN_STACK_SIZE  (32768u)   
+
+/**
+ * \brief CLA Out Task stack size 
+ */
+#define BPNODE_CLA_OUT_STACK_SIZE (32768u)
+
+/**
+ * \brief CLA In Task priority base 
+ *          The Contact ID is added to the base value to get the final task priority
+ */
+#define BPNODE_CLA_IN_PRIORITY_BASE  (100u)
+
+/**
+ * \brief CLA Out Task priority base 
+ *          The Contact ID is added to the base value to get the final task priority
+ */
+#define BPNODE_CLA_OUT_PRIORITY_BASE (BPNODE_CLA_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CONTACTS)
+
+/**
  * \brief Number of milliseconds to wait when trying to take a semaphore
  */
 #define BPNODE_SEM_WAIT_MSEC    (5000u)
