@@ -45,13 +45,8 @@
 
 /* Test table data */
 BPA_ADUP_Table_t            TestAduTbl;
-<<<<<<< HEAD
-BPLib_PI_ChannelTable_t       TestChanTbl;
-BPNode_ContactsTable_t      TestContactsTbl;
-=======
-BPNode_ChannelTable_t       TestChanTbl;
+BPLib_PI_ChannelTable_t     TestChanTbl;
 BPLib_ContactsTable_t       TestContactsTbl;
->>>>>>> main
 BPNode_CRSTable_t           TestCrsTbl;
 BPNode_CustodianTable_t     TestCustodianTbl;
 BPNode_CustodyTable_t       TestCustodyTbl;

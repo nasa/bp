@@ -157,7 +157,7 @@ BPNode_TblNameParams_t TblNameParamsArr0[] =
 {
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PI_ValidateConfigs},
     {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_ADUP_ValidateConfigTbl},
-    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPNode_ContactsTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
+    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_ContactsTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CRSTblValidateFunc},
     {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodianAuthTblValidateFunc},
     {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPNode_CustodyTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodyAuthTblValidateFunc},

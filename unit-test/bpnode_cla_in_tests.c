@@ -211,7 +211,7 @@ void Test_BPNode_ClaIn_TaskInit_MatchIdErr(void)
 void Test_BPNode_ClaIn_TaskInit_PipeErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ContId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ContId = BPNODE_MAX_NUM_CONTACTS;
     uint8 ExpContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
@@ -238,7 +238,7 @@ void Test_BPNode_ClaIn_TaskInit_PipeErr(void)
 void Test_BPNode_ClaIn_TaskInit_SubErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ContId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ContId = BPNODE_MAX_NUM_CONTACTS;
     uint8 ExpContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
@@ -265,7 +265,7 @@ void Test_BPNode_ClaIn_TaskInit_SubErr(void)
 void Test_BPNode_ClaIn_TaskInit_GiveSemErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ContId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ContId = BPNODE_MAX_NUM_CONTACTS;
     uint8 ExpContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
