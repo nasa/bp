@@ -35,7 +35,7 @@
 /* ==================== */
 
 /* Noop command */
-CFE_Status_t BPA_DP_NoopCmd(void)
+void BPA_DP_NoopCmd(void)
 {
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
@@ -70,7 +70,7 @@ CFE_Status_t BPA_DP_NoopCmd(void)
 }
 
 /* Add all applications command */
-CFE_Status_t BPA_DP_AddAllApplicationsCmd(void)
+void BPA_DP_AddAllApplicationsCmd(void)
 {
     int32 Status;
 
@@ -92,7 +92,7 @@ CFE_Status_t BPA_DP_AddAllApplicationsCmd(void)
 }
 
 /* Start all applications command */
-CFE_Status_t BPA_DP_StartAllApplicationsCmd(void)
+void BPA_DP_StartAllApplicationsCmd(void)
 {
     int32 Status;
 
@@ -114,7 +114,7 @@ CFE_Status_t BPA_DP_StartAllApplicationsCmd(void)
 }
 
 /* Verify bundle storage command */
-CFE_Status_t BPA_DP_VerifyBundleStorageCmd(void)
+void BPA_DP_VerifyBundleStorageCmd(void)
 {
     int32 Status;
 
@@ -136,7 +136,7 @@ CFE_Status_t BPA_DP_VerifyBundleStorageCmd(void)
 }
 
 /* Initialize bundle storage command */
-CFE_Status_t BPA_DP_InitBundleStorageCmd(void)
+void BPA_DP_InitBundleStorageCmd(void)
 {
     int32 Status;
 
@@ -158,7 +158,7 @@ CFE_Status_t BPA_DP_InitBundleStorageCmd(void)
 }
 
 /* Verify bundle metadata (7.2) command */
-CFE_Status_t BPA_DP_VerifyBundleMetadataCmd(void)
+void BPA_DP_VerifyBundleMetadataCmd(void)
 {
     int32 Status;
 
@@ -180,7 +180,7 @@ CFE_Status_t BPA_DP_VerifyBundleMetadataCmd(void)
 }
 
 /* Rebuild bundle metadata command */
-CFE_Status_t BPA_DP_RebuildBundleMetadataCmd(void)
+void BPA_DP_RebuildBundleMetadataCmd(void)
 {
     int32 Status;
 
@@ -202,7 +202,7 @@ CFE_Status_t BPA_DP_RebuildBundleMetadataCmd(void)
 }
 
 /* Clear volatile command */
-CFE_Status_t BPA_DP_ClearVolatileCmd(void)
+void BPA_DP_ClearVolatileCmd(void)
 {
     int32 Status;
 
@@ -224,7 +224,7 @@ CFE_Status_t BPA_DP_ClearVolatileCmd(void)
 }
 
 /* Reload saved data (7.2) command */
-CFE_Status_t BPA_DP_ReloadSavedDataCmd(void)
+void BPA_DP_ReloadSavedDataCmd(void)
 {
     int32 Status;
 
@@ -246,7 +246,7 @@ CFE_Status_t BPA_DP_ReloadSavedDataCmd(void)
 }
 
 /* Reset all counters command */
-CFE_Status_t BPA_DP_ResetAllCountersCmd(void)
+void BPA_DP_ResetAllCountersCmd(void)
 {
     int32 Status;
     uint8 i;
@@ -278,7 +278,7 @@ CFE_Status_t BPA_DP_ResetAllCountersCmd(void)
 }
 
 /* Reset counter command */
-CFE_Status_t BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
+void BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 {
     int32 Status;
 
@@ -300,7 +300,7 @@ CFE_Status_t BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 }
 
 /* Reset source counters command */
-CFE_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
+void BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
 {
     int32 Status;
 
@@ -322,7 +322,7 @@ CFE_Status_t BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t
 }
 
 /* Reset bundle counters command */
-CFE_Status_t BPA_DP_ResetBundleCountersCmd(void)
+void BPA_DP_ResetBundleCountersCmd(void)
 {
     int32 Status;
 
@@ -344,7 +344,7 @@ CFE_Status_t BPA_DP_ResetBundleCountersCmd(void)
 }
 
 /* Reset error counters command */
-CFE_Status_t BPA_DP_ResetErrorCountersCmd(void)
+void BPA_DP_ResetErrorCountersCmd(void)
 {
     int32 Status;
 
@@ -366,7 +366,7 @@ CFE_Status_t BPA_DP_ResetErrorCountersCmd(void)
 }
 
 /* Add application command */
-CFE_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
+void BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
     int32 Status;
 
@@ -395,7 +395,7 @@ CFE_Status_t BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 }
 
 /* Remove application command */
-CFE_Status_t BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
+void BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
 {
     int32 Status;
 
@@ -417,7 +417,7 @@ CFE_Status_t BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Ms
 }
 
 /* Set registration state command */
-CFE_Status_t BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
+void BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
 {
     int32 Status;
 
@@ -439,7 +439,7 @@ CFE_Status_t BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd
 }
 
 /* Start application command */
-CFE_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
+void BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
     int32 Status;
 
@@ -470,7 +470,7 @@ CFE_Status_t BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 }
 
 /* Stop application command */
-CFE_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
+void BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
     int32 Status;
 
@@ -501,7 +501,7 @@ CFE_Status_t BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 }
 
 /* Add authorized sources command */
-CFE_Status_t BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
+void BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 {
     int32 Status;
 
@@ -523,7 +523,7 @@ CFE_Status_t BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 }
 
 /* Remove authorized sources command */
-CFE_Status_t BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg)
+void BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg)
 {
     int32 Status;
 
@@ -545,7 +545,7 @@ CFE_Status_t BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Ms
 }
 
 /* Add authorized custody sources command */
-CFE_Status_t BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg)
+void BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Msg)
 {
     int32 Status;
 
@@ -567,7 +567,7 @@ CFE_Status_t BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesC
 }
 
 /* Remove authorized custody sources command */
-CFE_Status_t BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg)
+void BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd_t *Msg)
 {
     int32 Status;
 
@@ -589,7 +589,7 @@ CFE_Status_t BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySo
 }
 
 /* Add authorized custodians command */
-CFE_Status_t BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg)
+void BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg)
 {
     int32 Status;
 
@@ -611,7 +611,7 @@ CFE_Status_t BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Ms
 }
 
 /* Remove authorized custodians command */
-CFE_Status_t BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg)
+void BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg)
 {
     int32 Status;
 
@@ -633,7 +633,7 @@ CFE_Status_t BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd
 }
 
 /* Add authorized report-to eid command */
-CFE_Status_t BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg)
+void BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg)
 {
     int32 Status;
 
@@ -655,7 +655,7 @@ CFE_Status_t BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *
 }
 
 /* Remove authorized report-to eid command */
-CFE_Status_t BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg)
+void BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Msg)
 {
     int32 Status;
 
@@ -677,7 +677,7 @@ CFE_Status_t BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidC
 }
 
 /* Add latency command */
-CFE_Status_t BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
+void BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 {
     int32 Status;
 
@@ -699,7 +699,7 @@ CFE_Status_t BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 }
 
 /* Remove latency command */
-CFE_Status_t BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
+void BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 {
     int32 Status;
 
@@ -721,7 +721,7 @@ CFE_Status_t BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 }
 
 /* Contact setup command */
-CFE_Status_t BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
+void BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 {
     int32 Status;
 
@@ -743,7 +743,7 @@ CFE_Status_t BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 }
 
 /* Contact start command */
-CFE_Status_t BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
+void BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 {
     int32 Status;
 
@@ -765,7 +765,7 @@ CFE_Status_t BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 }
 
 /* Contact stop command */
-CFE_Status_t BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
+void BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 {
     int32 Status;
 
@@ -787,7 +787,7 @@ CFE_Status_t BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 }
 
 /* Contact teardown command */
-CFE_Status_t BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
+void BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 {
     int32 Status;
 
@@ -809,7 +809,7 @@ CFE_Status_t BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 }
 
 /* Add mib array key command */
-CFE_Status_t BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
+void BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 {
     int32 Status;
 
@@ -831,7 +831,7 @@ CFE_Status_t BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 }
 
 /* Remove mib array key command */
-CFE_Status_t BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg)
+void BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg)
 {
     int32 Status;
 
@@ -853,7 +853,7 @@ CFE_Status_t BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Ms
 }
 
 /* Set mib item command */
-CFE_Status_t BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
+void BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 {
     int32 Status;
 
@@ -875,7 +875,7 @@ CFE_Status_t BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 }
 
 /* Add storage allocation command */
-CFE_Status_t BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
+void BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
 {
     int32 Status;
 
@@ -897,7 +897,7 @@ CFE_Status_t BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd
 }
 
 /* Remove storage allocation command */
-CFE_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg)
+void BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t *Msg)
 {
     int32 Status;
 
@@ -919,7 +919,7 @@ CFE_Status_t BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocat
 }
 
 /* Perform self test (7.2) command */
-CFE_Status_t BPA_DP_PerformSelfTestCmd(void)
+void BPA_DP_PerformSelfTestCmd(void)
 {
     int32 Status;
 
@@ -941,7 +941,7 @@ CFE_Status_t BPA_DP_PerformSelfTestCmd(void)
 }
 
 /* Send node mib config hk command */
-CFE_Status_t BPA_DP_SendNodeMibConfigHkCmd(void)
+void BPA_DP_SendNodeMibConfigHkCmd(void)
 {
     int32 Status;
 
@@ -963,7 +963,7 @@ CFE_Status_t BPA_DP_SendNodeMibConfigHkCmd(void)
 }
 
 /* Send per-source mib config hk command */
-CFE_Status_t BPA_DP_SendSourceMibConfigHkCmd(void)
+void BPA_DP_SendSourceMibConfigHkCmd(void)
 {
     int32 Status;
 
@@ -985,7 +985,7 @@ CFE_Status_t BPA_DP_SendSourceMibConfigHkCmd(void)
 }
 
 /* Send Node MIB Counters housekeeping command */
-CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
+void BPA_DP_SendNodeMibCountersHkCmd(void)
 {
     int32 Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
@@ -1027,7 +1027,7 @@ CFE_Status_t BPA_DP_SendNodeMibCountersHkCmd(void)
 }
 
 /* Send per-source mib counter hk command */
-CFE_Status_t BPA_DP_SendSourceMibCountersHkCmd(void)
+void BPA_DP_SendSourceMibCountersHkCmd(void)
 {
     int32 Status;
 
@@ -1049,7 +1049,7 @@ CFE_Status_t BPA_DP_SendSourceMibCountersHkCmd(void)
 }
 
 /* Send storage hk command */
-CFE_Status_t BPA_DP_SendStorageHkCmd(void)
+void BPA_DP_SendStorageHkCmd(void)
 {
     int32 Status;
 
@@ -1071,7 +1071,7 @@ CFE_Status_t BPA_DP_SendStorageHkCmd(void)
 }
 
 /* Send channel/contact status hk command */
-CFE_Status_t BPA_DP_SendChannelContactStatHkCmd(void)
+void BPA_DP_SendChannelContactStatHkCmd(void)
 {
     BPLib_TIME_MonotonicTime_t MonotonicTime;
     uint8 i;

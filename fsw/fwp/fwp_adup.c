@@ -37,7 +37,7 @@
 */
 
 /* Validate ADU Proxy table data */
-CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
+BPLib_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
 {
     BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
     uint8_t i, j;
@@ -61,10 +61,9 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
                 return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
             }
         }  
-
     }
 
-    return CFE_SUCCESS;
+    return BPLIB_SUCCESS;
 }
 
 /* Ingest an ADU */
