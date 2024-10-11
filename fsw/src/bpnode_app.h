@@ -93,15 +93,17 @@ typedef struct
     BPNode_StorageHkTlm_t               StorageHkTlm;           /**< \brief Storage housekeeping packet */
     BPNode_ChannelContactStatHkTlm_t    ChannelContactStatHkTlm;/**< \brief Channel Contact housekeeping packet */
 
-    BPNode_AduInData_t  AduInData [BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
-    BPNode_AduOutData_t AduOutData[BPNODE_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
-    BPA_ADUP_State_t    AduState[BPNODE_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
+    BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
+    BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
+    BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
+
     BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
     BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */        
 
     BPA_ADUP_Table_t            *AduTblPtr;
-    BPNode_ChannelTable_t       *ChanTblPtr;
+    BPLib_PI_ChannelTable_t     *ChanTblPtr;
     BPLib_ContactsTable_t       *ContactsTblPtr;
+
     BPNode_CRSTable_t           *CrsTblPtr;
     BPNode_CustodianTable_t     *CustodianTblPtr;
     BPNode_CustodyTable_t       *CustodyTblPtr;

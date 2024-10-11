@@ -601,7 +601,7 @@
         </DimensionList>
       </ArrayDataType>
                             
-      <ContainerDataType name="ChannelSet" shortDescription="Channel Config Table Set structure">
+      <ContainerDataType name="Configs" shortDescription="Channel Config Table Set structure">
         <EntryList>
           <Entry name="ChannelID" type="BASE_TYPES/uint32" />
           <Entry name="Spare" type="BASE_TYPES/uint32" />
@@ -622,7 +622,7 @@
         </EntryList>
       </ContainerDataType>
       
-      <ArrayDataType name="ChannelSetArray" dataTypeRef="ChannelSet">
+      <ArrayDataType name="ConfigsArray" dataTypeRef="Configs">
         <DimensionList>
           <Dimension size="10" />
         </DimensionList>
@@ -630,7 +630,7 @@
 
       <ContainerDataType name="ChannelTable" shortDescription="Channel Table Array">
         <EntryList>
-          <Entry name="ChannelSet" type="ChannelSetArray" />
+          <Entry name="Configs" type="ConfigsArray" />
         </EntryList>
       </ContainerDataType>      
       

@@ -42,13 +42,6 @@
 #include "bpnode_internal_cfg.h"
 #include "bplib.h"
 
-/** 
- * \brief Maximum number of channels that can be running at once
- *          This drives the number of entries in the channel and ADU proxy configuration
- *          tables, as well as the number of ADU In/Out tasks 
- */
-#define BPNODE_MAX_NUM_CHANNELS     (2u)
-
 /**
  * \brief ADU In Task stack size 
  */
@@ -69,7 +62,7 @@
  * \brief ADU Out Task priority base 
  *          The channel ID is added to the base value to get the final task priority
  */
-#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_ADU_IN_PRIORITY_BASE + BPNODE_MAX_NUM_CHANNELS)
+#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_ADU_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
 
 /**
  * \brief CLA In Task stack size 

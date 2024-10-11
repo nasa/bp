@@ -28,7 +28,7 @@
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 
 
-BPA_ADUP_Config_t ADUProxyTable[BPNODE_MAX_NUM_CHANNELS] = {
+BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
     {
         .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(0x0800),     /* CFE_ES_HK, currently does nothing*/
         .NumRecvFrmMsgIds = 3,
