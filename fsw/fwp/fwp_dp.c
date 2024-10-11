@@ -472,20 +472,20 @@ void BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
         switch (Status)
         {
             case BPLIB_ADU_START_CHAN_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_STRT_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPLIB_ADU_START_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error with start-application directive, invalid ChanId=%d",
                                     Msg->Payload.ChanId);
 
                 break;
             case BPLIB_ADU_START_STAT_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_STRT_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPLIB_ADU_START_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error with start-application directive, invalid AppState=%d for ChanId=%d", 
                                     BPNode_AppData.AduState[Msg->Payload.ChanId].AppState,
                                     Msg->Payload.ChanId);
 
                 break;
             case BPLIB_ADU_START_SUB_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_SUB_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPLIB_ADU_START_SUB_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error subscribing to ADU on channel #%d",
                                     Msg->Payload.ChanId);
 
@@ -996,7 +996,7 @@ void BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
 
         BPLib_EM_SendEvent(BPLIB_ADD_STOR_ALLOC_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
                             "Add storage allocation command not implemented, received %d in payload",
-                            Payload.ExampleParameter);
+                            Msg->Payload.ExampleParameter);
     }
     else
     {
