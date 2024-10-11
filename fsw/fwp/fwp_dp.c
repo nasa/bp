@@ -514,20 +514,20 @@ void BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
         switch (Status)
         {
             case BPLIB_ADU_STOP_CHAN_ERR:
-                BPLib_EM_SendEvent(BPNODE_ADU_STOP_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPLIB_ADU_STOP_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error with stop-application directive, invalid ChanId=%d",
                                     Msg->Payload.ChanId);
 
                 break;
             case BPLIB_ADU_STOP_STAT_ERR:
-                BPLib_EM_SendEvent(BPNODE_ADU_STOP_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPLIB_ADU_STOP_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
                                     BPNode_AppData.AduState[Msg->Payload.ChanId].AppState,
                                     Msg->Payload.ChanId);
 
                 break;
             case BPLIB_ADU_STOP_UNSUB_ERR:
-                BPLib_EM_SendEvent(BPNODE_ADU_UNSUB_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPLIB_ADU_UNSUB_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error unsubscribing from ADU on channel #%d", 
                                     Msg->Payload.ChanId);
 
