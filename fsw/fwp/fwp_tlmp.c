@@ -54,9 +54,9 @@ void BPA_TLMP_Init(void)
     
 }
 
-CFE_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload)
+BPLib_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* NodeMIBConfigTlmPayload)
 {
-    CFE_Status_t Status = CFE_SUCCESS;
+    BPLib_Status_t Status = BPLIB_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -66,13 +66,13 @@ CFE_Status_t BPA_TLMP_SendNodeMibConfigPkt(BPLib_NodeMibConfigHkTlm_Payload_t* N
     BPNode_AppData.NodeMibConfigHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkTlm.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkTlm.TelemetryHeader), true);
+    Status = (BPLib_Status_t)CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibConfigHkTlm.TelemetryHeader), true);
     return Status;
 }
 
-CFE_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload)
+BPLib_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Payload_t* SrcMIBConfigTlmPayload)
 {
-    CFE_Status_t Status = CFE_SUCCESS;
+    BPLib_Status_t Status = BPLIB_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -81,13 +81,13 @@ CFE_Status_t BPA_TLMP_SendPerSourceMibConfigPkt(BPLib_SourceMibConfigHkTlm_Paylo
     BPNode_AppData.SourceMibConfigHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
     BPNode_AppData.SourceMibConfigHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.SourceMibConfigHkTlm.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.SourceMibConfigHkTlm.TelemetryHeader), true);
+    Status = (BPLib_Status_t)CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.SourceMibConfigHkTlm.TelemetryHeader), true);
     return Status;
 }
 
-CFE_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload)
+BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t* NodeMIBCounterTlmPayload)
 {
-    CFE_Status_t Status = CFE_SUCCESS;    
+    BPLib_Status_t Status = BPLIB_SUCCESS;    
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -97,13 +97,13 @@ CFE_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload_t
     BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
+    Status = (BPLib_Status_t)CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
     return Status;
 }
 
-CFE_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload )
+BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload )
 {
-    CFE_Status_t Status = CFE_SUCCESS;
+    BPLib_Status_t Status = BPLIB_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -112,13 +112,13 @@ CFE_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Pa
     BPNode_AppData.SourceMibCountersHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
     BPNode_AppData.SourceMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.SourceMibCountersHkTlm.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.SourceMibCountersHkTlm.TelemetryHeader), true);
+    Status = (BPLib_Status_t)CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.SourceMibCountersHkTlm.TelemetryHeader), true);
     return Status;
 }
 
-CFE_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload)
+BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payload_t* ChannelContactTlmPayload)
 {
-    CFE_Status_t Status = CFE_SUCCESS;
+    BPLib_Status_t Status = BPLIB_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -127,13 +127,13 @@ CFE_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payloa
     BPNode_AppData.ChannelContactStatHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
     BPNode_AppData.ChannelContactStatHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
+    Status = (BPLib_Status_t)CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
     return Status;
 }
 
-CFE_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload)
+BPLib_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload)
 {
-    CFE_Status_t Status = CFE_SUCCESS;
+    BPLib_Status_t Status = BPLIB_SUCCESS;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
@@ -142,6 +142,6 @@ CFE_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayloa
     BPNode_AppData.StorageHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
     BPNode_AppData.StorageHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.StorageHkTlm.TelemetryHeader));
-    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.StorageHkTlm.TelemetryHeader), true);
+    Status = (BPLib_Status_t)CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.StorageHkTlm.TelemetryHeader), true);
     return Status;
 }
