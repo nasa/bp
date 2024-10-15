@@ -42,7 +42,7 @@ BPLib_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
     BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
     uint8_t i, j;
 
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         /*
         ** Validate array length and that message IDs are all valid
@@ -123,7 +123,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     uint8_t i;
 
     /* Check for channel ID validity */
-    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
         return BPLIB_ADU_ADD_CHAN_ERR;
     }
@@ -170,7 +170,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
     uint8_t i;
 
     /* Check for channel ID validity */
-    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
         return BPLIB_ADU_START_CHAN_ERR;
     }
@@ -205,7 +205,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     uint8_t i;
 
     /* Check for channel ID validity */
-    if (ChanId >= BPNODE_MAX_NUM_CHANNELS)
+    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
         return BPLIB_ADU_STOP_CHAN_ERR;
     }

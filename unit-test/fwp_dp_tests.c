@@ -331,7 +331,7 @@ void TEST_BPA_DP_AddApplicationCmd_Nominal(void)
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADD_APP_INF_EID, 
+    UT_CHECKEVENT_SETUP(&EventTest, BPLIB_ADD_APP_SUCCESS_EID, 
                             "Successful add-application directive for ChanId=%d");
 
     BPA_DP_AddApplicationCmd(&TestMsg);
@@ -423,7 +423,7 @@ void TEST_BPA_DP_StartApplicationCmd_Nominal(void)
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_STRT_APP_INF_EID, 
+    UT_CHECKEVENT_SETUP(&EventTest, BPLIB_START_APP_SUCCESS_EID, 
                             "Successful start-application directive for ChanId=%d");
 
     BPA_DP_StartApplicationCmd(&TestMsg);
@@ -461,7 +461,7 @@ void TEST_BPA_DP_StopApplicationCmd_Nominal(void)
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_STOP_APP_INF_EID, 
+    UT_CHECKEVENT_SETUP(&EventTest, BPLIB_START_APP_SUCCESS_EID,
                             "Successful stop-application directive for ChanId=%d");
 
     BPA_DP_StopApplicationCmd(&TestMsg);

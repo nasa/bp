@@ -252,7 +252,7 @@ void BPA_DP_ResetAllCountersCmd(void)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
 
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.AduInData[i].AduCountReceived = 0;
         BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
@@ -506,6 +506,10 @@ void BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+
+        BPLib_EM_SendEvent(BPLIB_START_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
+                            "Successful stop-application directive for ChanId=%d",
+                            Msg->Payload.ChanId);
     }
     else
     {
@@ -1127,7 +1131,7 @@ void BPA_DP_SendNodeMibCountersHkCmd(void)
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
 
     /* Get ADU counts for all ADU child tasks */
-    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
@@ -1215,7 +1219,7 @@ void BPA_DP_SendChannelContactStatHkCmd(void)
     BPLib_Status_t Status;
 
     /* Get ADU status from all child tasks */
-    for(i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduState[i].AppState;
     }

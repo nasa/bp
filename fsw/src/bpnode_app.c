@@ -297,7 +297,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Add and start all applications set to be loaded at startup */
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         if (BPNode_AppData.ChanTblPtr->ChannelSet[i].AddAutomatically == true)
         {
@@ -313,8 +313,8 @@ CFE_Status_t BPNode_AppInit(void)
             }
             else 
             {
-                BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
-                            "Automatically added app configurations for ChanId=%d", i);
+                BPLib_EM_SendEvent(BPLIB_ADD_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
+                                    "Automatically added app configurations for ChanId=%d", i);
             }
 
         }
@@ -349,7 +349,7 @@ void BPNode_AppExit(void)
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
 
     /* Signal to ADU child tasks to exit */
-    for (i = 0; i < BPNODE_MAX_NUM_CHANNELS; i++)
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;

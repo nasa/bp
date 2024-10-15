@@ -41,9 +41,9 @@ void Test_BPNode_AduInCreateTasks_Nominal(void)
     UtAssert_INT32_EQ(BPNode_AduInCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPNODE_MAX_NUM_CHANNELS);
-    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPNODE_MAX_NUM_CHANNELS);
-    UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPNODE_MAX_NUM_CHANNELS);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPLIB_MAX_NUM_CHANNELS);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPLIB_MAX_NUM_CHANNELS);
 }
 
 /* Test BPNode_AduInCreateTasks when the init semaphore fails to create */
@@ -107,7 +107,7 @@ void Test_BPNode_AduInCreateTasks_TakeSemErr(void)
 void Test_BPNode_AduIn_TaskInit_Nominal(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
     uint8 ExpChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
@@ -134,8 +134,8 @@ void Test_BPNode_AduIn_TaskInit_Nominal(void)
 void Test_BPNode_AduIn_TaskInit_GetIdErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint8 ExpChanId = BPLIB_MAX_NUM_CHANNELS;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetTaskID), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
@@ -156,8 +156,8 @@ void Test_BPNode_AduIn_TaskInit_GetIdErr(void)
 void Test_BPNode_AduIn_TaskInit_MatchIdErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint8 ExpChanId = BPLIB_MAX_NUM_CHANNELS;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -181,7 +181,7 @@ void Test_BPNode_AduIn_TaskInit_MatchIdErr(void)
 void Test_BPNode_AduIn_TaskInit_PipeErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
     uint8 ExpChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
@@ -207,7 +207,7 @@ void Test_BPNode_AduIn_TaskInit_PipeErr(void)
 void Test_BPNode_AduIn_TaskInit_GiveSemErr(void)
 {
     UT_CheckEvent_t EventTest;
-    uint8 ChanId = BPNODE_MAX_NUM_CHANNELS;
+    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
     uint8 ExpChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
