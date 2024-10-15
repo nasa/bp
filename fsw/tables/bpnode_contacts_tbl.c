@@ -25,13 +25,14 @@
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "bpnode_tbl.h"
+#include "bplib.h"
 
 
-BPNode_ContactsTable_t ContactsTable = 
+BPLib_ContactsTable_t ContactsTable = 
 {
     .ContactSet = {
         {
-            .ContactID              = 1, /*Contact ID, uint32*/ 
+            .ContactID              = 0, /*Contact ID, uint32*/ 
             .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
             .CLAType                = 1, /*CLA Type, uint32 */
             .CLAddr                 = "127.0.0.1", /*CL ip address*/
@@ -42,20 +43,7 @@ BPNode_ContactsTable_t ContactsTable =
             .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
             .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
             .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
-        },
-        {
-            .ContactID              = 2, /*Contact ID, uint32*/ 
-            .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
-            .CLAType                = 1, /*CLA Type, uint32 */
-            .CLAddr                 = "127.0.0.1", /*CL ip address*/
-            .PortNum                = 1001, /*Port Number, int32*/
-            .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
-            .SendBytePerCycle       = 101, /*Maximum bytes to send per wakeup, uint32*/
-            .ReceiveBytePerCycle    = 200, /*Maximum bytes to receive per wakeup, uint32*/
-            .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
-            .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
-            .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
-        },                
+        },            
     }
 };
 

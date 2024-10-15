@@ -40,10 +40,8 @@
  * Macro Definitions
  ************************************************************************/
 #define BPNODE_MAX_AUTH_SOURCES         10
-#define BPNODE_MAX_EID_LENGTH           256
 #define BPNODE_MAX_NUM_LATENCY_SRC      10
 #define BPNODE_MAX_NUM_STORE_SET        10
-#define BPNODE_MAX_NUM_CANONICAL_BLOCK  10
 #define BPNODE_MAX_NUM_MIB_PS           10
 #define BPNODE_MAX_MUN_CRS              10
 
@@ -56,7 +54,7 @@
 */
 typedef struct
 {
-    char        DestEID[BPNODE_MAX_EID_LENGTH];
+    char        DestEID[BPLIB_MAX_EID_LENGTH];
     uint32      TimeTrigger;
     uint32      SizeTrigger;
 } BPNode_CRSSet_t;
@@ -67,42 +65,11 @@ typedef struct
 } BPNode_CRSTable_t;
 
 /*
-** Contacts Table
-*/
-typedef enum 
-{
-    UDPType,
-    TCPType,
-    EPPType,
-    LTPType,
-}CLAType_t;
-
-typedef struct
-{
-    uint32      ContactID;
-    char        DestEIDs[BPNODE_MAX_EID_LENGTH];
-    uint32      CLAType;  
-    char        CLAddr[BPNODE_MAX_EID_LENGTH];
-    int32       PortNum;
-    uint32      DestLTPEngineID;
-    uint32      SendBytePerCycle;
-    uint32      ReceiveBytePerCycle;
-    uint32      RetransmitTimeout;
-    uint32      CSTimeTrigger;
-    uint32      CSSizeTrigger;
-} BPNode_ContactsSet_t;
-
-typedef struct
-{
-    BPNode_ContactsSet_t ContactSet[BPLIB_MAX_NUM_CONTACTS];
-} BPNode_ContactsTable_t;
-
-/*
 ** Custodian Authorization Policy Table
 */
 typedef struct
 {
-    char AuthCustodians[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
+    char AuthCustodians[BPNODE_MAX_AUTH_SOURCES][BPLIB_MAX_EID_LENGTH];
 } BPNode_CustodianTable_t;
 
 /*
@@ -110,65 +77,15 @@ typedef struct
 */
 typedef struct
 {
-    char AuthCustodySrc[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
+    char AuthCustodySrc[BPNODE_MAX_AUTH_SOURCES][BPLIB_MAX_EID_LENGTH];
 } BPNode_CustodyTable_t;
-
-/*
-** Channel Config Table
-*/
-typedef struct
-{
-    uint32      Version;
-    uint32      CrcType;
-    uint64      BundleProcFlags;
-    char        DestEID[BPNODE_MAX_EID_LENGTH];
-    char        SrcEID[BPNODE_MAX_EID_LENGTH];
-    char        ReportToEID[BPNODE_MAX_EID_LENGTH];
-    uint64      LifeTime;
-}BPNode_PriBlkConfig_t;
-
-typedef struct
-{
-    uint32      BlockType;
-    uint32      BlockNum;
-    uint64      BlockProcFlags;
-    uint32      CrcType;
-    uint32      Spare;       
-}BPNode_CanBlkConfig_t;
-
-typedef enum {
-    Active,
-    PassiveDefer,
-    PassiveAbandon,
-} RegistrationState_t;
-
-typedef struct
-{
-    bool                    AddAutomatically;
-    bool                    RequestCustody;
-    bool                    IncludePrevNodeBlk;
-    bool                    IncludeHopCountBlk;
-    bool                    AduWrapping;
-    bool                    AduUnwrapping;
-    uint8                   RegState;
-    uint8                   HopLimit;
-    uint32                  LocalServiceNumber;
-    uint32                  MaxBundlePayloadSize;
-    BPNode_PriBlkConfig_t   PriBlkConfig;
-    BPNode_CanBlkConfig_t   CanBlkConfig[BPNODE_MAX_NUM_CANONICAL_BLOCK];
-} BPNode_ChannelSet_t;
-
-typedef struct
-{
-    BPNode_ChannelSet_t ChannelSet[BPLIB_MAX_NUM_CHANNELS];
-} BPNode_ChannelTable_t;
 
 /*
 ** Report-To Authorization EID Table
 */
 typedef struct
 {
-    char AuthReportToEIDs[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
+    char AuthReportToEIDs[BPNODE_MAX_AUTH_SOURCES][BPLIB_MAX_EID_LENGTH];
 } BPNode_ReportToTable_t;
 
 
@@ -177,7 +94,7 @@ typedef struct
 */
 typedef struct
 {
-    char AuthSrcEIDs[BPNODE_MAX_AUTH_SOURCES][BPNODE_MAX_EID_LENGTH];
+    char AuthSrcEIDs[BPNODE_MAX_AUTH_SOURCES][BPLIB_MAX_EID_LENGTH];
 } BPNode_SrcAuthTable_t;
 
 /*
@@ -192,7 +109,7 @@ typedef enum
 
 typedef struct
 {
-    char    SrcEID[BPNODE_MAX_EID_LENGTH];
+    char    SrcEID[BPLIB_MAX_EID_LENGTH];
     uint32  Latency;
     uint32  Spare;    
 }BPNode_SrcLatencySet_t;
@@ -207,7 +124,7 @@ typedef struct
 */
 typedef struct
 {
-    char SrcEID[BPNODE_MAX_EID_LENGTH];
+    char SrcEID[BPLIB_MAX_EID_LENGTH];
     uint32 StorageSize;
 } BPNode_StorageSet_t;
 
@@ -221,14 +138,14 @@ typedef struct
 */
 typedef struct
 {
-    char        SysNodeName[BPNODE_MAX_EID_LENGTH];
-    char        SysNodeOwner[BPNODE_MAX_EID_LENGTH];
-    char        SysSoftExec[BPNODE_MAX_EID_LENGTH];
-    char        SysSoftExecVer[BPNODE_MAX_EID_LENGTH];
+    char        SysNodeName[BPLIB_MAX_EID_LENGTH];
+    char        SysNodeOwner[BPLIB_MAX_EID_LENGTH];
+    char        SysSoftExec[BPLIB_MAX_EID_LENGTH];
+    char        SysSoftExecVer[BPLIB_MAX_EID_LENGTH];
     uint32      BundleAgentNum;
-    char        BundleAgentVer[BPNODE_MAX_EID_LENGTH];
-    char        BundleAgentOpState[BPNODE_MAX_EID_LENGTH];
-    char        BundleAgentConfig[BPNODE_MAX_EID_LENGTH];
+    char        BundleAgentVer[BPLIB_MAX_EID_LENGTH];
+    char        BundleAgentOpState[BPLIB_MAX_EID_LENGTH];
+    char        BundleAgentConfig[BPLIB_MAX_EID_LENGTH];
     uint32      BundleAgentAvailStorage;
     uint32      BundleAgentCtdbSize;
     uint32      BundleSizeNoFrag;
@@ -256,8 +173,8 @@ typedef struct
 */
 typedef struct
 {
-    char        SrcEID[BPNODE_MAX_EID_LENGTH];
-    char        EIDPattern[BPNODE_MAX_EID_LENGTH];
+    char        SrcEID[BPLIB_MAX_EID_LENGTH];
+    char        EIDPattern[BPLIB_MAX_EID_LENGTH];
     uint32      ParamSetMaxLifetime;
     uint32      ParamSetMaxBSRGenerationRate;
     uint32      ParamSetMaxCBRGenerationRate;

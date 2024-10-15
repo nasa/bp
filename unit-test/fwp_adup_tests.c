@@ -156,10 +156,10 @@ void Test_BPA_ADUP_AddApplication_Nominal(void)
     TestAduTbl.Entries[ChanId].RecvFrmMsgIds[0] = CFE_SB_ValueToMsgId(0x1801);
     TestAduTbl.Entries[ChanId].SendToMsgId = CFE_SB_ValueToMsgId(0x0800);
 
-    TestChanTbl.ChannelSet[ChanId].AddAutomatically = true;
-    TestChanTbl.ChannelSet[ChanId].AduUnwrapping = false;
-    TestChanTbl.ChannelSet[ChanId].AduWrapping = true;
-    TestChanTbl.ChannelSet[ChanId].MaxBundlePayloadSize = 1234;
+    TestChanTbl.Configs[ChanId].AddAutomatically = true;
+    TestChanTbl.Configs[ChanId].AduUnwrapping = false;
+    TestChanTbl.Configs[ChanId].AduWrapping = true;
+    TestChanTbl.Configs[ChanId].MaxBundlePayloadSize = 1234;
 
     BPNode_AppData.AduTblPtr = &TestAduTbl;
     BPNode_AppData.ChanTblPtr = &TestChanTbl;
@@ -177,13 +177,13 @@ void Test_BPA_ADUP_AddApplication_Nominal(void)
     UtAssert_INT32_EQ(CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[0]), 
                       CFE_SB_MsgIdToValue(TestAduTbl.Entries[ChanId].RecvFrmMsgIds[0]));       
     UtAssert_INT32_EQ(BPNode_AppData.AduState[ChanId].AddAutomatically, 
-                            TestChanTbl.ChannelSet[ChanId].AddAutomatically);
+                            TestChanTbl.Configs[ChanId].AddAutomatically);
     UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].AduUnwrapping, 
-                            TestChanTbl.ChannelSet[ChanId].AduUnwrapping);       
+                            TestChanTbl.Configs[ChanId].AduUnwrapping);       
     UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize, 
-                            TestChanTbl.ChannelSet[ChanId].MaxBundlePayloadSize);       
+                            TestChanTbl.Configs[ChanId].MaxBundlePayloadSize);       
     UtAssert_INT32_EQ(BPNode_AppData.AduOutData[ChanId].AduWrapping, 
-                            TestChanTbl.ChannelSet[ChanId].AduWrapping);       
+                            TestChanTbl.Configs[ChanId].AduWrapping);       
 
 }
 

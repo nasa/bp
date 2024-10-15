@@ -27,8 +27,8 @@
 #include "bpnode_tbl.h"
 
 
-BPNode_ChannelTable_t ChannelTable = {
-    .ChannelSet = {
+BPLib_PI_ChannelTable_t ChannelTable = {
+    .Configs = {
         {
             .AddAutomatically       = true,
             .RequestCustody         = false,

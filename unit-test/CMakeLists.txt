@@ -21,6 +21,9 @@ add_cfe_coverage_stubs("bpnode_internal"
   stubs/fwp_adup_stubs.c
   stubs/fwp_perflogp_stubs.c
   stubs/fwp_dp_stubs.c
+  stubs/bpnode_cla_in_stubs.c
+  stubs/bpnode_cla_out_stubs.c
+  ../../../psp/fsw/modules/iodriver/ut-stubs/iodriver_base_stubs.c
 )
 
 # Link with the cfe core stubs and unit test assert libs
