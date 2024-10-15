@@ -94,7 +94,7 @@ typedef struct
 
 typedef struct
 {
-    BPNode_ContactsSet_t ContactSet[BPNODE_MAX_NUM_CONTACTS];
+    BPNode_ContactsSet_t ContactSet[BPLIB_MAX_NUM_CONTACTS];
 } BPNode_ContactsTable_t;
 
 /*
@@ -160,7 +160,7 @@ typedef struct
 
 typedef struct
 {
-    BPNode_ChannelSet_t ChannelSet[BPNODE_MAX_NUM_CHANNELS];
+    BPNode_ChannelSet_t ChannelSet[BPLIB_MAX_NUM_CHANNELS];
 } BPNode_ChannelTable_t;
 
 /*
