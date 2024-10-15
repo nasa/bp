@@ -69,7 +69,7 @@ void TEST_BPA_DP_AddAllApplicationsCmd_Error(void)
     BPA_DP_AddAllApplicationsCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAllApplicationsCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Start All Applications command nominal case */
@@ -88,7 +88,7 @@ void TEST_BPA_DP_StartAllApplicationsCmd_Error(void)
     BPA_DP_StartAllApplicationsCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_StartAllApplicationsCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Verify Bundle Storage command nominal case */
@@ -107,7 +107,7 @@ void TEST_BPA_DP_VerifyBundleStorageCmd_Error(void)
     BPA_DP_VerifyBundleStorageCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_VerifyBundleStorageCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Initialize Bundle Storage command nominal case */
@@ -126,7 +126,7 @@ void TEST_BPA_DP_InitBundleStorageCmd_Error(void)
     BPA_DP_InitBundleStorageCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_InitBundleStorageCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Verify Bundle Metadata (7.2) command nominal case */
@@ -145,7 +145,7 @@ void TEST_BPA_DP_VerifyBundleMetadataCmd_Error(void)
     BPA_DP_VerifyBundleMetadataCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_VerifyBundleMetadataCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Rebuild Bundle Metadata command nominal case */
@@ -164,7 +164,7 @@ void TEST_BPA_DP_RebuildBundleMetadataCmd_Error(void)
     BPA_DP_RebuildBundleMetadataCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_RebuildBundleMetadataCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Clear Volatile command nominal case */
@@ -183,7 +183,7 @@ void TEST_BPA_DP_ClearVolatileCmd_Error(void)
     BPA_DP_ClearVolatileCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_ClearVolatileCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Reload Saved Data (7.2) command nominal case */
@@ -202,7 +202,7 @@ void TEST_BPA_DP_ReloadSavedDataCmd_Error(void)
     BPA_DP_ReloadSavedDataCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_ReloadSavedDataCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Reset All Counters command nominal case */
@@ -254,7 +254,7 @@ void TEST_BPA_DP_ResetCounterCmd_Error(void)
     BPA_DP_ResetCounterCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetCounterCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Reset Source Counters command nominal case */
@@ -281,7 +281,7 @@ void TEST_BPA_DP_ResetSourceCountersCmd_Error(void)
     BPA_DP_ResetSourceCountersCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetSourceCountersCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Reset Bundle Counters command nominal case */
@@ -300,7 +300,7 @@ void TEST_BPA_DP_ResetBundleCountersCmd_Error(void)
     BPA_DP_ResetBundleCountersCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetBundleCountersCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Reset Error Counters command nominal case */
@@ -319,7 +319,7 @@ void TEST_BPA_DP_ResetErrorCountersCmd_Error(void)
     BPA_DP_ResetErrorCountersCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetErrorCountersCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test add-application command nominal case */
@@ -348,16 +348,29 @@ void TEST_BPA_DP_AddApplicationCmd_Error(void)
 {
     BPNode_AddApplicationCmd_t TestMsg;
     uint16                     ExpRejectedCount = 1;
+    uint16                     ExpEventCount    = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_AddApplication), BPLIB_ERROR);
+    /* Return invalid channel ID error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_ADU_ADD_CHAN_ERR);
 
     BPA_DP_AddApplicationCmd(&TestMsg);
 
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+
+    /* Return invalid application state error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_ADU_ADD_STAT_ERR);
+
+    BPA_DP_AddApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 }
 
 /* Test Remove Application command nominal case */
@@ -384,7 +397,7 @@ void TEST_BPA_DP_RemoveApplicationCmd_Error(void)
     BPA_DP_RemoveApplicationCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveApplicationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Set Registration State command nominal case */
@@ -411,7 +424,7 @@ void TEST_BPA_DP_SetRegistrationStateCmd_Error(void)
     BPA_DP_SetRegistrationStateCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_SetRegistrationStateCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test start-application command nominal case */
@@ -440,16 +453,39 @@ void TEST_BPA_DP_StartApplicationCmd_Error(void)
 {
     BPNode_StartApplicationCmd_t TestMsg;
     uint16                       ExpRejectedCount = 1;
+    uint16                       ExpEventCount    = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_StartApplication), BPLIB_ERROR);
+    /* Return invalid channel ID error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ADU_START_CHAN_ERR);
 
     BPA_DP_StartApplicationCmd(&TestMsg);
 
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+
+    /* Return invalid application state error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ADU_START_STAT_ERR);
+
+    BPA_DP_StartApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+
+    /* Return subscribe error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ADU_START_SUB_ERR);
+
+    BPA_DP_StartApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 }
 
 /* Test stop-application command nominal case */
@@ -478,16 +514,39 @@ void TEST_BPA_DP_StopApplicationCmd_Error(void)
 {
     BPNode_StopApplicationCmd_t TestMsg;
     uint16                      ExpRejectedCount = 1;
+    uint16                      ExpEventCount    = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_SetDefaultReturnValue(UT_KEY(BPA_ADUP_StopApplication), BPLIB_ERROR);
+    /* Return invalid channel ID error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ADU_STOP_CHAN_ERR);
 
     BPA_DP_StopApplicationCmd(&TestMsg);
 
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+
+    /* Return invalid application state error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ADU_STOP_STAT_ERR);
+
+    BPA_DP_StopApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+
+    /* Return unsubscribe error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ADU_STOP_UNSUB_ERR);
+
+    BPA_DP_StopApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount++);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 }
 
 /* Test Add Authorized Sources command nominal case */
@@ -514,7 +573,7 @@ void TEST_BPA_DP_AddAuthSourcesCmd_Error(void)
     BPA_DP_AddAuthSourcesCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthSourcesCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove Authorized Sources command nominal case */
@@ -541,7 +600,7 @@ void TEST_BPA_DP_RemoveAuthSourcesCmd_Error(void)
     BPA_DP_RemoveAuthSourcesCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthSourcesCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Add Authorized Custody Sources command nominal case */
@@ -568,7 +627,7 @@ void TEST_BPA_DP_AddAuthCustodySourcesCmd_Error(void)
     BPA_DP_AddAuthCustodySourcesCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthCustodySourcesCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove Authorized Custody Sources command nominal case */
@@ -595,7 +654,7 @@ void TEST_BPA_DP_RemoveAuthCustodySourcesCmd_Error(void)
     BPA_DP_RemoveAuthCustodySourcesCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthCustodySourcesCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Add Authorized Custodians command nominal case */
@@ -622,7 +681,7 @@ void TEST_BPA_DP_AddAuthCustodiansCmd_Error(void)
     BPA_DP_AddAuthCustodiansCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthCustodiansCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove Authorized Custodians command nominal case */
@@ -649,7 +708,7 @@ void TEST_BPA_DP_RemoveAuthCustodiansCmd_Error(void)
     BPA_DP_RemoveAuthCustodiansCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthCustodiansCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Add Authorized Report-to EID command nominal case */
@@ -676,7 +735,7 @@ void TEST_BPA_DP_AddAuthReportToEidCmd_Error(void)
     BPA_DP_AddAuthReportToEidCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthReportToEidCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove Authorized Report-to EID command nominal case */
@@ -703,7 +762,7 @@ void TEST_BPA_DP_RemoveAuthReportToEidCmd_Error(void)
     BPA_DP_RemoveAuthReportToEidCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthReportToEidCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Add Latency command nominal case */
@@ -730,7 +789,7 @@ void TEST_BPA_DP_AddLatencyCmd_Error(void)
     BPA_DP_AddLatencyCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddLatencyCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove Latency command nominal case */
@@ -757,7 +816,7 @@ void TEST_BPA_DP_RemoveLatencyCmd_Error(void)
     BPA_DP_RemoveLatencyCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveLatencyCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Contact Setup command nominal case */
@@ -784,7 +843,7 @@ void TEST_BPA_DP_ContactSetupCmd_Error(void)
     BPA_DP_ContactSetupCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactSetupCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Contact Start command nominal case */
@@ -811,7 +870,7 @@ void TEST_BPA_DP_ContactStartCmd_Error(void)
     BPA_DP_ContactStartCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactStartCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Contact Stop command nominal case */
@@ -838,7 +897,7 @@ void TEST_BPA_DP_ContactStopCmd_Error(void)
     BPA_DP_ContactStopCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactStopCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Contact Teardown command nominal case */
@@ -865,7 +924,7 @@ void TEST_BPA_DP_ContactTeardownCmd_Error(void)
     BPA_DP_ContactTeardownCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactTeardownCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Add MIB Array Key command nominal case */
@@ -892,7 +951,7 @@ void TEST_BPA_DP_AddMibArrayKeyCmd_Error(void)
     BPA_DP_AddMibArrayKeyCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddMibArrayKeyCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove MIB Array Key command nominal case */
@@ -919,7 +978,7 @@ void TEST_BPA_DP_RemoveMibArrayKeyCmd_Error(void)
     BPA_DP_RemoveMibArrayKeyCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveMibArrayKeyCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Set MIB Item command nominal case */
@@ -946,7 +1005,7 @@ void TEST_BPA_DP_SetMibItemCmd_Error(void)
     BPA_DP_SetMibItemCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_SetMibItemCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Add Storage Allocation command nominal case */
@@ -973,7 +1032,7 @@ void TEST_BPA_DP_AddStorageAllocationCmd_Error(void)
     BPA_DP_AddStorageAllocationCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_AddStorageAllocationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Remove Storage Allocation command nominal case */
@@ -1000,7 +1059,7 @@ void TEST_BPA_DP_RemoveStorageAllocationCmd_Error(void)
     BPA_DP_RemoveStorageAllocationCmd(&TestMsg);
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveStorageAllocationCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Perform Self Test (7.2) command nominal case */
@@ -1019,7 +1078,7 @@ void TEST_BPA_DP_PerformSelfTestCmd_Error(void)
     BPA_DP_PerformSelfTestCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_PerformSelfTestCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Send Node MIB Config HK command nominal case */
@@ -1038,7 +1097,7 @@ void TEST_BPA_DP_SendNodeMibConfigHkCmd_Error(void)
     BPA_DP_SendNodeMibConfigHkCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibConfigHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Send Per-Source MIB Config HK command nominal case */
@@ -1057,7 +1116,7 @@ void TEST_BPA_DP_SendSourceMibConfigHkCmd_Error(void)
     BPA_DP_SendSourceMibConfigHkCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibConfigHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test node MIB counter housekeeping packet transmission in nominal case */
@@ -1093,7 +1152,7 @@ void TEST_BPA_DP_SendSourceMibCountersHkCmd_Error(void)
     BPA_DP_SendSourceMibCountersHkCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibCountersHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Send Storage HK command nominal case */
@@ -1112,7 +1171,7 @@ void TEST_BPA_DP_SendStorageHkCmd_Error(void)
     BPA_DP_SendStorageHkCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_SendStorageHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test Send Channel/Contact Status HK command nominal case */
@@ -1131,7 +1190,7 @@ void TEST_BPA_DP_SendChannelContactStatHkCmd_Error(void)
     BPA_DP_SendChannelContactStatHkCmd();
 
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHkCmd , 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Register the test cases to execute with the unit test tool */
