@@ -370,7 +370,17 @@ void TEST_BPA_DP_AddApplicationCmd_Error(void)
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
                             ExpRejectedCount++);
 
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
+
+    /* Return generic, unhandled error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_ERROR);
+
+    BPA_DP_AddApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 }
 
 /* Test Remove Application command nominal case */
@@ -485,7 +495,17 @@ void TEST_BPA_DP_StartApplicationCmd_Error(void)
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
                             ExpRejectedCount++);
 
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
+
+    /* Return generic, unhandled error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ERROR);
+
+    BPA_DP_StartApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 }
 
 /* Test stop-application command nominal case */
@@ -546,7 +566,17 @@ void TEST_BPA_DP_StopApplicationCmd_Error(void)
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
                             ExpRejectedCount++);
 
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
+
+    /* Return generic, unhandled error code */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ERROR);
+
+    BPA_DP_StopApplicationCmd(&TestMsg);
+
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
+                            ExpRejectedCount);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 }
 
 /* Test Add Authorized Sources command nominal case */
