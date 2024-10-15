@@ -39,9 +39,8 @@ void BPA_DP_NoopCmd(void)
 {
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
-    BPLib_Status_t Status;
 
-    Status = BPLib_NC_NoopCmd();
+    BPLib_NC_NoopCmd();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -244,7 +243,6 @@ void BPA_DP_ReloadSavedDataCmd(void)
 /* Reset all counters command */
 void BPA_DP_ResetAllCountersCmd(void)
 {
-    BPLib_Status_t Status;
     uint8 i;
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
