@@ -37,7 +37,6 @@
 
 #include "bplib.h"
 #include "fwp.h"
-#include "fwp_tablep.h"
 
 /*
 ** Global Data
@@ -160,15 +159,21 @@ CFE_Status_t BPNode_AppInit(void)
     uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
-        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
-        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
-        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
-        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
-        .BPA_EVP_Init                 = BPA_EVP_Init,
-        .BPA_EVP_SendEvent            = BPA_EVP_SendEvent,
-        .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
-        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit                
+        .BPA_TIMEP_GetHostClockState            = BPA_TIMEP_GetHostClockState,
+        .BPA_TIMEP_GetHostEpoch                 = BPA_TIMEP_GetHostEpoch,
+        .BPA_TIMEP_GetHostTime                  = BPA_TIMEP_GetHostTime,
+        .BPA_TIMEP_GetMonotonicTime             = BPA_TIMEP_GetMonotonicTime,
+        .BPA_TABLEP_SingleTableUpdate           = BPA_TABLEP_SingleTableUpdate,
+        .BPA_EVP_Init                           = BPA_EVP_Init,
+        .BPA_EVP_SendEvent                      = BPA_EVP_SendEvent,
+        .BPA_PERFLOGP_Entry                     = BPA_PERFLOGP_Entry,
+        .BPA_PERFLOGP_Exit                      = BPA_PERFLOGP_Exit,  
+        .BPA_TLMP_SendNodeMibConfigPkt          = BPA_TLMP_SendNodeMibConfigPkt,
+        .BPA_TLMP_SendPerSourceMibConfigPkt     = BPA_TLMP_SendPerSourceMibConfigPkt,
+        .BPA_TLMP_SendNodeMibCounterPkt         = BPA_TLMP_SendNodeMibCounterPkt,
+        .BPA_TLMP_SendPerSourceMibCounterPkt    = BPA_TLMP_SendPerSourceMibCounterPkt,
+        .BPA_TLMP_SendChannelContactPkt         = BPA_TLMP_SendChannelContactPkt,
+        .BPA_TLMP_SendStoragePkt                = BPA_TLMP_SendStoragePkt                
     };
 
     /* Initialize the FWP before using BPLib functions */
@@ -207,16 +212,6 @@ CFE_Status_t BPNode_AppInit(void)
         
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
-
-    /* Initialize Node MIB Counters housekeeping packet */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), 
-                    CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
-                    sizeof(BPNode_AppData.NodeMibCountersHkTlm));
-
-    /* Initialize Channel/Contact Status housekeeping packet */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), 
-                    CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), 
-                    sizeof(BPNode_AppData.ChannelContactStatHkTlm));                    
 
     /* Create command pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH, 
@@ -277,6 +272,9 @@ CFE_Status_t BPNode_AppInit(void)
 
         return BpStatus;
     }
+    
+    /* Call Telemetry Proxy Init Function */
+    BPA_TLMP_Init();
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();

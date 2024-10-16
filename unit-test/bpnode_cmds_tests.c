@@ -200,7 +200,7 @@ void Test_BPNode_ResetAllCountersCmd_Nominal(void)
     UT_CheckEvent_t              EventTest;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
-    memset(&BPNode_AppData.NodeMibCountersHkTlm.Payload, 1, sizeof(BPNode_NodeMibCountersHkTlm_Payload_t));
+    memset(&BPNode_AppData.NodeMibCountersHkTlm.Payload, 1, sizeof(BPLib_NodeMibCountersHkTlm_Payload_t));
 
     /**
      * The correct event message is "Reset all counters command" because
