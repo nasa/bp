@@ -66,16 +66,10 @@ void BPA_DP_AddAllApplicationsCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_ADD_ALL_APPS_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Add all applications command is unimplemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_ADD_ALL_APPS_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Add all applications command is unimplemented");
     }
 }
 
@@ -89,16 +83,10 @@ void BPA_DP_StartAllApplicationsCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_START_ALL_APPS_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Start all applications command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_START_ALL_APPS_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Start all applications command not implemented");
     }
 }
 
@@ -112,16 +100,10 @@ void BPA_DP_VerifyBundleStorageCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_VERIF_BNDL_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Verify bundle storage command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_VERIF_BNDL_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Verify bundle storage command not implemented");
     }
 }
 
@@ -135,16 +117,10 @@ void BPA_DP_InitBundleStorageCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_INIT_BNDL_STOR_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Initialize bundle storage command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_INIT_BNDL_STOR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Initialize bundle storage command not implemented");
     }
 }
 
@@ -158,16 +134,10 @@ void BPA_DP_VerifyBundleMetadataCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_VERIF_BNDL_META_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Verify bundle metadata (7.2) command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_VERIF_BNDL_META_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Verify bundle metadata (7.2) command not implemented");
     }
 }
 
@@ -181,16 +151,10 @@ void BPA_DP_RebuildBundleMetadataCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_REBUILD_BNDL_META_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Rebuild bundle metadata command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_REBUILD_BNDL_META_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Rebuild bundle metadata command not implemented");
     }
 }
 
@@ -204,16 +168,10 @@ void BPA_DP_ClearVolatileCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_CLR_VOLATILE_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Clear volatile command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-        
-        BPLib_EM_SendEvent(BPLIB_CLR_VOLATILE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Clear volatile command not implemented");
     }
 }
 
@@ -227,16 +185,10 @@ void BPA_DP_ReloadSavedDataCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RELOAD_SVD_DATA_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Reload saved data (7.2) command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RELOAD_SVD_DATA_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Reload saved data (7.2) command not implemented");
     }
 }
 
@@ -272,18 +224,10 @@ void BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_CTR_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Reset counter command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_CTR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Reset counter command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
 }
 
@@ -297,18 +241,10 @@ void BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_SRC_CTRS_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Reset source counters command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_SRC_CTRS_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Reset source counters command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
 }
 
@@ -322,16 +258,10 @@ void BPA_DP_ResetBundleCountersCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_BNDL_CTRS_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Reset bundle counters command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_BNDL_CTRS_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Reset bundle counters command not implemented");
     }
 }
 
@@ -345,16 +275,10 @@ void BPA_DP_ResetErrorCountersCmd(void)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_ERR_CTRS_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Reset error counters command not implemented");
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RESET_ERR_CTRS_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Reset error counters command not implemented");
     }
 }
 
@@ -368,33 +292,10 @@ void BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_ADD_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Successful add-application directive for ChanId=%d",
-                            Msg->Payload.ChanId);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        switch (Status)
-        {
-        case BPLIB_ADU_ADD_CHAN_ERR:
-            BPLib_EM_SendEvent(BPLIB_ADU_ADD_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error with add-application directive, invalid ChanId=%d",
-                                Msg->Payload.ChanId);
-
-            break;
-        case BPLIB_ADU_ADD_STAT_ERR:
-            BPLib_EM_SendEvent(BPLIB_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error with add-application directive, invalid AppState=%d for ChanId=%d", 
-                                BPNode_AppData.AduState[Msg->Payload.ChanId].AppState,
-                                Msg->Payload.ChanId);
-
-            break;
-        default:
-            break;
-        }
     }
 }
 
@@ -408,18 +309,10 @@ void BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RM_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Remove application command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_RM_APP_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Remove application command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
 }
 
@@ -433,18 +326,10 @@ void BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_SET_REGI_STAT_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Set registration state command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_SET_REGI_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Set registration state command not implemented, received %d in payload",
-                            Msg->Payload.ExampleParameter);
     }
 }
 
@@ -458,39 +343,10 @@ void BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_START_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Successful start-application directive for ChanId=%d",
-                            Msg->Payload.ChanId);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        switch (Status)
-        {
-            case BPLIB_ADU_START_CHAN_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_START_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error with start-application directive, invalid ChanId=%d",
-                                    Msg->Payload.ChanId);
-
-                break;
-            case BPLIB_ADU_START_STAT_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_START_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error with start-application directive, invalid AppState=%d for ChanId=%d", 
-                                    BPNode_AppData.AduState[Msg->Payload.ChanId].AppState,
-                                    Msg->Payload.ChanId);
-
-                break;
-            case BPLIB_ADU_START_SUB_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_START_SUB_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error subscribing to ADU on channel #%d",
-                                    Msg->Payload.ChanId);
-
-                break;
-            default:
-                break;
-        }
     }
 }
 
@@ -504,39 +360,10 @@ void BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
     if (Status == BPLIB_SUCCESS)
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-
-        BPLib_EM_SendEvent(BPLIB_START_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
-                            "Successful stop-application directive for ChanId=%d",
-                            Msg->Payload.ChanId);
     }
     else
     {
         BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-
-        switch (Status)
-        {
-            case BPLIB_ADU_STOP_CHAN_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_STOP_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error with stop-application directive, invalid ChanId=%d",
-                                    Msg->Payload.ChanId);
-
-                break;
-            case BPLIB_ADU_STOP_STAT_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_STOP_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
-                                    BPNode_AppData.AduState[Msg->Payload.ChanId].AppState,
-                                    Msg->Payload.ChanId);
-
-                break;
-            case BPLIB_ADU_STOP_UNSUB_ERR:
-                BPLib_EM_SendEvent(BPLIB_ADU_UNSUB_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error unsubscribing from ADU on channel #%d", 
-                                    Msg->Payload.ChanId);
-
-                break;
-            default:
-                break;
-        }
     }
 }
 
