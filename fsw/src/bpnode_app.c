@@ -158,15 +158,23 @@ CFE_Status_t BPNode_AppInit(void)
     uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
-        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
-        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
-        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
+        /* Time Proxy */
         .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
-        .BPA_EVP_Init                 = BPA_EVP_Init,
-        .BPA_EVP_SendEvent            = BPA_EVP_SendEvent,
+        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
+        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
+        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
+        /* Perf Log Proxy */
         .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
-        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit                
+        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit,
+        /* Table Proxy */
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
+        /* Event Proxy */
+        .BPA_EVP_Init = BPA_EVP_Init,
+        .BPA_EVP_SendEvent = BPA_EVP_SendEvent,
+        /* ADU Proxy */
+        .BPA_ADUP_AddApplication = BPA_ADUP_AddApplication,
+        .BPA_ADUP_StartApplication = BPA_ADUP_StartApplication,
+        .BPA_ADUP_StopApplication = BPA_ADUP_StopApplication,
     };
 
     /* Initialize the FWP before using BPLib functions */
