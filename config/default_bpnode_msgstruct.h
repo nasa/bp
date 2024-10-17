@@ -34,6 +34,7 @@
 #include "bpnode_mission_cfg.h"
 #include "bpnode_msgdefs.h"
 #include "cfe_msg_hdr.h"
+#include "bplib.h"
 
 #include "bplib_nc_payloads.h"
 
@@ -474,7 +475,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPLib_StorageHkTlm_Payload_t Payload;
+    BPLib_StorageHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_StorageHkTlm_t;
 
 /**
@@ -483,7 +484,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
-    BPLib_ChannelContactStatHkTlm_Payload_t Payload;
+    BPLib_ChannelContactStatHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_ChannelContactStatHkTlm_t;
 
 #endif /* BPNODE_MSGSTRUCT_H */

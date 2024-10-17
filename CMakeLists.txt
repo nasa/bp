@@ -16,6 +16,7 @@ set(APP_SRC_FILES
   fsw/fwp/fwp_adup.c
   fsw/fwp/fwp_perflogp.c
   fsw/fwp/fwp_dp.c
+  fsw/fwp/fwp_tlmp.c
 )
 
 if (CFE_EDS_ENABLED_BUILD)

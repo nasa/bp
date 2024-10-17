@@ -45,6 +45,7 @@
 #include "bpnode_eventids.h"
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
+//#include "fwp_adup.h"
 #include "bpnode_cla_in.h"
 #include "bpnode_cla_out.h"
 #include "fwp.h"
@@ -83,9 +84,14 @@ typedef struct
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
     BPNode_TblNameParams_t  *TblNameParamsArr;
-
-    BPNode_NodeMibCountersHkTlm_t NodeMibCountersHkTlm;         /**< \brief Node MIB Counters housekeeping packet */
-    BPNode_ChannelContactStatHkTlm_t ChannelContactStatHkTlm;   /**< \brief Channel/contact status housekeeping packet */
+    
+    /* Telemetry HK Packet structures*/
+    BPNode_NodeMibConfigHkTlm_t         NodeMibConfigHkTlm;     /**< \brief Node MIB Config housekeeping packet */
+    BPNode_SourceMibConfigHkTlm_t       SourceMibConfigHkTlm;   /**< \brief Per Source MIB Config housekeeping packet */
+    BPNode_NodeMibCountersHkTlm_t       NodeMibCountersHkTlm;   /**< \brief Node MIB Counters housekeeping packet */
+    BPNode_SourceMibCountersHkTlm_t     SourceMibCountersHkTlm; /**< \brief Per Source MIB Counters housekeeping packet */
+    BPNode_StorageHkTlm_t               StorageHkTlm;           /**< \brief Storage housekeeping packet */
+    BPNode_ChannelContactStatHkTlm_t    ChannelContactStatHkTlm;/**< \brief Channel Contact housekeeping packet */
 
     BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */

@@ -175,6 +175,13 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_ADUP_AddApplication = BPA_ADUP_AddApplication,
         .BPA_ADUP_StartApplication = BPA_ADUP_StartApplication,
         .BPA_ADUP_StopApplication = BPA_ADUP_StopApplication,
+        /* Telemetry Proxy */
+        .BPA_TLMP_SendNodeMibConfigPkt = BPA_TLMP_SendNodeMibConfigPkt,
+        .BPA_TLMP_SendPerSourceMibConfigPkt = BPA_TLMP_SendPerSourceMibConfigPkt,
+        .BPA_TLMP_SendNodeMibCounterPkt = BPA_TLMP_SendNodeMibCounterPkt,
+        .BPA_TLMP_SendPerSourceMibCounterPkt = BPA_TLMP_SendPerSourceMibCounterPkt,
+        .BPA_TLMP_SendChannelContactPkt = BPA_TLMP_SendChannelContactPkt,
+        .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt
     };
 
     /* Initialize the FWP before using BPLib functions */
@@ -213,16 +220,6 @@ CFE_Status_t BPNode_AppInit(void)
         
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
-
-    /* Initialize Node MIB Counters housekeeping packet */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), 
-                    CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), 
-                    sizeof(BPNode_AppData.NodeMibCountersHkTlm));
-
-    /* Initialize Channel/Contact Status housekeeping packet */
-    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), 
-                    CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), 
-                    sizeof(BPNode_AppData.ChannelContactStatHkTlm));                    
 
     /* Create command pipe */
     Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH, 
@@ -283,6 +280,9 @@ CFE_Status_t BPNode_AppInit(void)
 
         return BpStatus;
     }
+    
+    /* Call Telemetry Proxy Init Function */
+    BPA_TLMP_Init();
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
