@@ -332,7 +332,7 @@ CFE_Status_t BPNode_AppInit(void)
             }
             else 
             {
-                BPLib_EM_SendEvent(BPLIB_ADD_APP_SUCCESS_EID, BPLib_EM_EventType_INFORMATION,
+                BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                                     "Automatically added app configurations for ChanId=%d", i);
             }
 
