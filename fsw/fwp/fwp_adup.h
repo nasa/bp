@@ -106,7 +106,7 @@ typedef struct
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  *  \retval BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE Invalid table parameter
  */
-BPLib_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
 
 /**
  * \brief FWP ADU Proxy In
