@@ -741,7 +741,6 @@ void BPA_DP_SendSourceMibConfigHkCmd(void)
 /* Send Node MIB Counters housekeeping command */
 void BPA_DP_SendNodeMibCountersHkCmd(void)
 {
-    BPLib_Status_t Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
     uint8 i;
 
@@ -765,16 +764,7 @@ void BPA_DP_SendNodeMibCountersHkCmd(void)
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 
-    Status = BPLib_NC_SendNodeMibCountersHkCmd();
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-    }
-    else
-    {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-    }
+    BPLib_NC_SendNodeMibCountersHkCmd();
 }
 
 /* Send per-source mib counter hk command */
@@ -816,7 +806,6 @@ void BPA_DP_SendChannelContactStatHkCmd(void)
 {
     BPLib_TIME_MonotonicTime_t MonotonicTime;
     uint8 i;
-    BPLib_Status_t Status;
 
     /* Get ADU status from all child tasks */
     for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
@@ -834,14 +823,5 @@ void BPA_DP_SendChannelContactStatHkCmd(void)
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
 
-    Status = BPLib_NC_SendChannelContactStatHkCmd();
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
-    }
-    else
-    {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
-    }
+    BPLib_NC_SendChannelContactStatHkCmd();
 }
