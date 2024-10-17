@@ -40,7 +40,7 @@ void BPA_DP_NoopCmd(void)
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
-    BPLib_NC_NoopCmd();
+    BPLib_NC_Noop();
 
     BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
 
@@ -61,7 +61,7 @@ void BPA_DP_AddAllApplicationsCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAllApplicationsCmd();
+    Status = BPLib_NC_AddAllApplications();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -78,7 +78,7 @@ void BPA_DP_StartAllApplicationsCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_StartAllApplicationsCmd();
+    Status = BPLib_NC_StartAllApplications();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -95,7 +95,7 @@ void BPA_DP_VerifyBundleStorageCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_VerifyBundleStorageCmd();
+    Status = BPLib_NC_VerifyBundleStorage();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -112,7 +112,7 @@ void BPA_DP_InitBundleStorageCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_InitBundleStorageCmd();
+    Status = BPLib_NC_InitBundleStorage();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -129,7 +129,7 @@ void BPA_DP_VerifyBundleMetadataCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_VerifyBundleMetadataCmd();
+    Status = BPLib_NC_VerifyBundleMetadata();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -146,7 +146,7 @@ void BPA_DP_RebuildBundleMetadataCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RebuildBundleMetadataCmd();
+    Status = BPLib_NC_RebuildBundleMetadata();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -163,7 +163,7 @@ void BPA_DP_ClearVolatileCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ClearVolatileCmd();
+    Status = BPLib_NC_ClearVolatile();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -180,7 +180,7 @@ void BPA_DP_ReloadSavedDataCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ReloadSavedDataCmd();
+    Status = BPLib_NC_ReloadSavedData();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -208,7 +208,7 @@ void BPA_DP_ResetAllCountersCmd(void)
         BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
     }
 
-    BPLib_NC_ResetAllCountersCmd();
+    BPLib_NC_ResetAllCounters();
 }
 
 /* Reset counter command */
@@ -216,7 +216,7 @@ void BPA_DP_ResetCounterCmd(const BPNode_ResetCounterCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetCounterCmd(Msg->Payload);
+    Status = BPLib_NC_ResetCounter(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -233,7 +233,7 @@ void BPA_DP_ResetSourceCountersCmd(const BPNode_ResetSourceCountersCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetSourceCountersCmd(Msg->Payload);
+    Status = BPLib_NC_ResetSourceCounters(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -250,7 +250,7 @@ void BPA_DP_ResetBundleCountersCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetBundleCountersCmd();
+    Status = BPLib_NC_ResetBundleCounters();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -267,7 +267,7 @@ void BPA_DP_ResetErrorCountersCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ResetErrorCountersCmd();
+    Status = BPLib_NC_ResetErrorCounters();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -284,7 +284,7 @@ void BPA_DP_AddApplicationCmd(const BPNode_AddApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddApplicationCmd(Msg->Payload);
+    Status = BPLib_NC_AddApplication(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -301,7 +301,7 @@ void BPA_DP_RemoveApplicationCmd(const BPNode_RemoveApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveApplicationCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveApplication(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -318,7 +318,7 @@ void BPA_DP_SetRegistrationStateCmd(const BPNode_SetRegistrationStateCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SetRegistrationStateCmd(Msg->Payload);
+    Status = BPLib_NC_SetRegistrationState(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -335,7 +335,7 @@ void BPA_DP_StartApplicationCmd(const BPNode_StartApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_StartApplicationCmd(Msg->Payload);
+    Status = BPLib_NC_StartApplication(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -352,7 +352,7 @@ void BPA_DP_StopApplicationCmd(const BPNode_StopApplicationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_StopApplicationCmd(Msg->Payload);
+    Status = BPLib_NC_StopApplication(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -369,7 +369,7 @@ void BPA_DP_AddAuthSourcesCmd(const BPNode_AddAuthSourcesCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthSourcesCmd(Msg->Payload);
+    Status = BPLib_NC_AddAuthSources(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -386,7 +386,7 @@ void BPA_DP_RemoveAuthSourcesCmd(const BPNode_RemoveAuthSourcesCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthSourcesCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveAuthSources(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -403,7 +403,7 @@ void BPA_DP_AddAuthCustodySourcesCmd(const BPNode_AddAuthCustodySourcesCmd_t *Ms
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthCustodySourcesCmd(Msg->Payload);
+    Status = BPLib_NC_AddAuthCustodySources(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -420,7 +420,7 @@ void BPA_DP_RemoveAuthCustodySourcesCmd(const BPNode_RemoveAuthCustodySourcesCmd
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthCustodySourcesCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveAuthCustodySources(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -437,7 +437,7 @@ void BPA_DP_AddAuthCustodiansCmd(const BPNode_AddAuthCustodiansCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthCustodiansCmd(Msg->Payload);
+    Status = BPLib_NC_AddAuthCustodians(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -454,7 +454,7 @@ void BPA_DP_RemoveAuthCustodiansCmd(const BPNode_RemoveAuthCustodiansCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthCustodiansCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveAuthCustodians(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -471,7 +471,7 @@ void BPA_DP_AddAuthReportToEidCmd(const BPNode_AddAuthReportToEidCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddAuthReportToEidCmd(Msg->Payload);
+    Status = BPLib_NC_AddAuthReportToEid(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -488,7 +488,7 @@ void BPA_DP_RemoveAuthReportToEidCmd(const BPNode_RemoveAuthReportToEidCmd_t *Ms
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveAuthReportToEidCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveAuthReportToEid(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -505,7 +505,7 @@ void BPA_DP_AddLatencyCmd(const BPNode_AddLatencyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddLatencyCmd(Msg->Payload);
+    Status = BPLib_NC_AddLatency(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -522,7 +522,7 @@ void BPA_DP_RemoveLatencyCmd(const BPNode_RemoveLatencyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveLatencyCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveLatency(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -539,7 +539,7 @@ void BPA_DP_ContactSetupCmd(const BPNode_ContactSetupCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactSetupCmd(Msg->Payload);
+    Status = BPLib_NC_ContactSetup(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -556,7 +556,7 @@ void BPA_DP_ContactStartCmd(const BPNode_ContactStartCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactStartCmd(Msg->Payload);
+    Status = BPLib_NC_ContactStart(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -573,7 +573,7 @@ void BPA_DP_ContactStopCmd(const BPNode_ContactStopCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactStopCmd(Msg->Payload);
+    Status = BPLib_NC_ContactStop(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -590,7 +590,7 @@ void BPA_DP_ContactTeardownCmd(const BPNode_ContactTeardownCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_ContactTeardownCmd(Msg->Payload);
+    Status = BPLib_NC_ContactTeardown(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -607,7 +607,7 @@ void BPA_DP_AddMibArrayKeyCmd(const BPNode_AddMibArrayKeyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddMibArrayKeyCmd(Msg->Payload);
+    Status = BPLib_NC_AddMibArrayKey(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -624,7 +624,7 @@ void BPA_DP_RemoveMibArrayKeyCmd(const BPNode_RemoveMibArrayKeyCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveMibArrayKeyCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveMibArrayKey(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -641,7 +641,7 @@ void BPA_DP_SetMibItemCmd(const BPNode_SetMibItemCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SetMibItemCmd(Msg->Payload);
+    Status = BPLib_NC_SetMibItem(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -658,7 +658,7 @@ void BPA_DP_AddStorageAllocationCmd(const BPNode_AddStorageAllocationCmd_t *Msg)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_AddStorageAllocationCmd(Msg->Payload);
+    Status = BPLib_NC_AddStorageAllocation(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -675,7 +675,7 @@ void BPA_DP_RemoveStorageAllocationCmd(const BPNode_RemoveStorageAllocationCmd_t
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_RemoveStorageAllocationCmd(Msg->Payload);
+    Status = BPLib_NC_RemoveStorageAllocation(Msg->Payload);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -692,7 +692,7 @@ void BPA_DP_PerformSelfTestCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_PerformSelfTestCmd();
+    Status = BPLib_NC_PerformSelfTest();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -709,7 +709,7 @@ void BPA_DP_SendNodeMibConfigHkCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendNodeMibConfigHkCmd();
+    Status = BPLib_NC_SendNodeMibConfigHk();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -726,7 +726,7 @@ void BPA_DP_SendSourceMibConfigHkCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendSourceMibConfigHkCmd();
+    Status = BPLib_NC_SendSourceMibConfigHk();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -764,7 +764,7 @@ void BPA_DP_SendNodeMibCountersHkCmd(void)
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
 
-    BPLib_NC_SendNodeMibCountersHkCmd();
+    BPLib_NC_SendNodeMibCountersHk();
 }
 
 /* Send per-source mib counter hk command */
@@ -772,7 +772,7 @@ void BPA_DP_SendSourceMibCountersHkCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendSourceMibCountersHkCmd();
+    Status = BPLib_NC_SendSourceMibCountersHk();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -789,7 +789,7 @@ void BPA_DP_SendStorageHkCmd(void)
 {
     BPLib_Status_t Status;
 
-    Status = BPLib_NC_SendStorageHkCmd();
+    Status = BPLib_NC_SendStorageHk();
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -823,5 +823,5 @@ void BPA_DP_SendChannelContactStatHkCmd(void)
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
 
-    BPLib_NC_SendChannelContactStatHkCmd();
+    BPLib_NC_SendChannelContactStatHk();
 }

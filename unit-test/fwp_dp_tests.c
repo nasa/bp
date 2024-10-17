@@ -45,7 +45,7 @@ void TEST_BPA_DP_NoopCmd_Nominal(void)
 
 void TEST_BPA_DP_NoopCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_NoopCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_Noop), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_NoopCmd();
 
@@ -64,7 +64,7 @@ void TEST_BPA_DP_AddAllApplicationsCmd_Nominal(void)
 
 void TEST_BPA_DP_AddAllApplicationsCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAllApplicationsCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAllApplications), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_AddAllApplicationsCmd();
 
@@ -83,7 +83,7 @@ void TEST_BPA_DP_StartAllApplicationsCmd_Nominal(void)
 
 void TEST_BPA_DP_StartAllApplicationsCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartAllApplicationsCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartAllApplications), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_StartAllApplicationsCmd();
 
@@ -102,7 +102,7 @@ void TEST_BPA_DP_VerifyBundleStorageCmd_Nominal(void)
 
 void TEST_BPA_DP_VerifyBundleStorageCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_VerifyBundleStorageCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_VerifyBundleStorage), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_VerifyBundleStorageCmd();
 
@@ -121,7 +121,7 @@ void TEST_BPA_DP_InitBundleStorageCmd_Nominal(void)
 
 void TEST_BPA_DP_InitBundleStorageCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_InitBundleStorageCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_InitBundleStorage), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_InitBundleStorageCmd();
 
@@ -140,7 +140,7 @@ void TEST_BPA_DP_VerifyBundleMetadataCmd_Nominal(void)
 
 void TEST_BPA_DP_VerifyBundleMetadataCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_VerifyBundleMetadataCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_VerifyBundleMetadata), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_VerifyBundleMetadataCmd();
 
@@ -159,7 +159,7 @@ void TEST_BPA_DP_RebuildBundleMetadataCmd_Nominal(void)
 
 void TEST_BPA_DP_RebuildBundleMetadataCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RebuildBundleMetadataCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RebuildBundleMetadata), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_RebuildBundleMetadataCmd();
 
@@ -178,7 +178,7 @@ void TEST_BPA_DP_ClearVolatileCmd_Nominal(void)
 
 void TEST_BPA_DP_ClearVolatileCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ClearVolatileCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ClearVolatile), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_ClearVolatileCmd();
 
@@ -197,7 +197,7 @@ void TEST_BPA_DP_ReloadSavedDataCmd_Nominal(void)
 
 void TEST_BPA_DP_ReloadSavedDataCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ReloadSavedDataCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ReloadSavedData), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_ReloadSavedDataCmd();
 
@@ -219,7 +219,7 @@ void TEST_BPA_DP_ResetAllCountersCmd_Nominal(void)
 
 void TEST_BPA_DP_ResetAllCountersCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetAllCountersCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetAllCounters), BPLIB_UNIMPLEMENTED);
     
     BPA_DP_ResetAllCountersCmd();
 
@@ -247,7 +247,7 @@ void TEST_BPA_DP_ResetCounterCmd_Error(void)
 {
     BPNode_ResetCounterCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetCounterCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetCounter), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 2;
 
@@ -274,7 +274,7 @@ void TEST_BPA_DP_ResetSourceCountersCmd_Error(void)
 {
     BPNode_ResetSourceCountersCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetSourceCountersCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetSourceCounters), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 42;
 
@@ -295,7 +295,7 @@ void TEST_BPA_DP_ResetBundleCountersCmd_Nominal(void)
 
 void TEST_BPA_DP_ResetBundleCountersCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetBundleCountersCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetBundleCounters), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_ResetBundleCountersCmd();
 
@@ -314,7 +314,7 @@ void TEST_BPA_DP_ResetErrorCountersCmd_Nominal(void)
 
 void TEST_BPA_DP_ResetErrorCountersCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetErrorCountersCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ResetErrorCounters), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_ResetErrorCountersCmd();
 
@@ -353,7 +353,7 @@ void TEST_BPA_DP_AddApplicationCmd_Error(void)
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     /* Return invalid channel ID error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_ADU_ADD_CHAN_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplication), BPLIB_ADU_ADD_CHAN_ERR);
 
     BPA_DP_AddApplicationCmd(&TestMsg);
 
@@ -363,7 +363,7 @@ void TEST_BPA_DP_AddApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 
     /* Return invalid application state error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_ADU_ADD_STAT_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplication), BPLIB_ADU_ADD_STAT_ERR);
 
     BPA_DP_AddApplicationCmd(&TestMsg);
 
@@ -373,7 +373,7 @@ void TEST_BPA_DP_AddApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 
     /* Return generic, unhandled error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplicationCmd), BPLIB_ERROR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplication), BPLIB_ERROR);
 
     BPA_DP_AddApplicationCmd(&TestMsg);
 
@@ -400,7 +400,7 @@ void TEST_BPA_DP_RemoveApplicationCmd_Error(void)
 {
     BPNode_RemoveApplicationCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveApplicationCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveApplication), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 100;
 
@@ -427,7 +427,7 @@ void TEST_BPA_DP_SetRegistrationStateCmd_Error(void)
 {
     BPNode_SetRegistrationStateCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SetRegistrationStateCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SetRegistrationState), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 19;
 
@@ -468,7 +468,7 @@ void TEST_BPA_DP_StartApplicationCmd_Error(void)
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     /* Return invalid channel ID error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ADU_START_CHAN_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ADU_START_CHAN_ERR);
 
     BPA_DP_StartApplicationCmd(&TestMsg);
 
@@ -478,7 +478,7 @@ void TEST_BPA_DP_StartApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 
     /* Return invalid application state error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ADU_START_STAT_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ADU_START_STAT_ERR);
 
     BPA_DP_StartApplicationCmd(&TestMsg);
 
@@ -488,7 +488,7 @@ void TEST_BPA_DP_StartApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 
     /* Return subscribe error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ADU_START_SUB_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ADU_START_SUB_ERR);
 
     BPA_DP_StartApplicationCmd(&TestMsg);
 
@@ -498,7 +498,7 @@ void TEST_BPA_DP_StartApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 
     /* Return generic, unhandled error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplicationCmd), BPLIB_ERROR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ERROR);
 
     BPA_DP_StartApplicationCmd(&TestMsg);
 
@@ -539,7 +539,7 @@ void TEST_BPA_DP_StopApplicationCmd_Error(void)
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     /* Return invalid channel ID error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ADU_STOP_CHAN_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplication), BPLIB_ADU_STOP_CHAN_ERR);
 
     BPA_DP_StopApplicationCmd(&TestMsg);
 
@@ -549,7 +549,7 @@ void TEST_BPA_DP_StopApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 
     /* Return invalid application state error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ADU_STOP_STAT_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplication), BPLIB_ADU_STOP_STAT_ERR);
 
     BPA_DP_StopApplicationCmd(&TestMsg);
 
@@ -559,7 +559,7 @@ void TEST_BPA_DP_StopApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
 
     /* Return unsubscribe error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ADU_STOP_UNSUB_ERR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplication), BPLIB_ADU_STOP_UNSUB_ERR);
 
     BPA_DP_StopApplicationCmd(&TestMsg);
 
@@ -569,7 +569,7 @@ void TEST_BPA_DP_StopApplicationCmd_Error(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 
     /* Return generic, unhandled error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplicationCmd), BPLIB_ERROR);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StopApplication), BPLIB_ERROR);
 
     BPA_DP_StopApplicationCmd(&TestMsg);
 
@@ -596,7 +596,7 @@ void TEST_BPA_DP_AddAuthSourcesCmd_Error(void)
 {
     BPNode_AddAuthSourcesCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthSourcesCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthSources), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 4;
 
@@ -623,7 +623,7 @@ void TEST_BPA_DP_RemoveAuthSourcesCmd_Error(void)
 {
     BPNode_RemoveAuthSourcesCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthSourcesCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthSources), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 5;
 
@@ -650,7 +650,7 @@ void TEST_BPA_DP_AddAuthCustodySourcesCmd_Error(void)
 {
     BPNode_AddAuthCustodySourcesCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthCustodySourcesCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthCustodySources), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 6;
 
@@ -677,7 +677,7 @@ void TEST_BPA_DP_RemoveAuthCustodySourcesCmd_Error(void)
 {
     BPNode_RemoveAuthCustodySourcesCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthCustodySourcesCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthCustodySources), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 7;
 
@@ -704,7 +704,7 @@ void TEST_BPA_DP_AddAuthCustodiansCmd_Error(void)
 {
     BPNode_AddAuthCustodiansCmd_t TestMsg;
     
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthCustodiansCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthCustodians), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 8;
 
@@ -731,7 +731,7 @@ void TEST_BPA_DP_RemoveAuthCustodiansCmd_Error(void)
 {
     BPNode_RemoveAuthCustodiansCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthCustodiansCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthCustodians), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 9;
 
@@ -758,7 +758,7 @@ void TEST_BPA_DP_AddAuthReportToEidCmd_Error(void)
 {
     BPNode_AddAuthReportToEidCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthReportToEidCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddAuthReportToEid), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 10;
 
@@ -785,7 +785,7 @@ void TEST_BPA_DP_RemoveAuthReportToEidCmd_Error(void)
 {
     BPNode_RemoveAuthReportToEidCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthReportToEidCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveAuthReportToEid), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 11;
 
@@ -812,7 +812,7 @@ void TEST_BPA_DP_AddLatencyCmd_Error(void)
 {
     BPNode_AddLatencyCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddLatencyCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddLatency), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 12;
 
@@ -839,7 +839,7 @@ void TEST_BPA_DP_RemoveLatencyCmd_Error(void)
 {
     BPNode_RemoveLatencyCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveLatencyCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveLatency), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 13;
 
@@ -866,7 +866,7 @@ void TEST_BPA_DP_ContactSetupCmd_Error(void)
 {
     BPNode_ContactSetupCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactSetupCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactSetup), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 14;
 
@@ -893,7 +893,7 @@ void TEST_BPA_DP_ContactStartCmd_Error(void)
 {
     BPNode_ContactStartCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactStartCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactStart), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 15;
 
@@ -920,7 +920,7 @@ void TEST_BPA_DP_ContactStopCmd_Error(void)
 {
     BPNode_ContactStopCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactStopCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactStop), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 16;
 
@@ -947,7 +947,7 @@ void TEST_BPA_DP_ContactTeardownCmd_Error(void)
 {
     BPNode_ContactTeardownCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactTeardownCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ContactTeardown), BPLIB_UNIMPLEMENTED);
 
     TestMsg.Payload.ExampleParameter = 17;
 
@@ -974,7 +974,7 @@ void TEST_BPA_DP_AddMibArrayKeyCmd_Error(void)
 {
     BPNode_AddMibArrayKeyCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddMibArrayKeyCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddMibArrayKey), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 18;
 
@@ -1001,7 +1001,7 @@ void TEST_BPA_DP_RemoveMibArrayKeyCmd_Error(void)
 {
     BPNode_RemoveMibArrayKeyCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveMibArrayKeyCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveMibArrayKey), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 19;
 
@@ -1028,7 +1028,7 @@ void TEST_BPA_DP_SetMibItemCmd_Error(void)
 {
     BPNode_SetMibItemCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SetMibItemCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SetMibItem), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 20;
 
@@ -1055,7 +1055,7 @@ void TEST_BPA_DP_AddStorageAllocationCmd_Error(void)
 {
     BPNode_AddStorageAllocationCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddStorageAllocationCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddStorageAllocation), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 21;
 
@@ -1082,7 +1082,7 @@ void TEST_BPA_DP_RemoveStorageAllocationCmd_Error(void)
 {
     BPNode_RemoveStorageAllocationCmd_t TestMsg;
 
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveStorageAllocationCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_RemoveStorageAllocation), BPLIB_UNIMPLEMENTED);
     
     TestMsg.Payload.ExampleParameter = 22;
 
@@ -1103,7 +1103,7 @@ void TEST_BPA_DP_PerformSelfTestCmd_Nominal(void)
 
 void TEST_BPA_DP_PerformSelfTestCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_PerformSelfTestCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_PerformSelfTest), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_PerformSelfTestCmd();
 
@@ -1122,7 +1122,7 @@ void TEST_BPA_DP_SendNodeMibConfigHkCmd_Nominal(void)
 
 void TEST_BPA_DP_SendNodeMibConfigHkCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendNodeMibConfigHkCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendNodeMibConfigHk), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_SendNodeMibConfigHkCmd();
 
@@ -1141,7 +1141,7 @@ void TEST_BPA_DP_SendSourceMibConfigHkCmd_Nominal(void)
 
 void TEST_BPA_DP_SendSourceMibConfigHkCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendSourceMibConfigHkCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendSourceMibConfigHk), BPLIB_UNIMPLEMENTED);
     
     BPA_DP_SendSourceMibConfigHkCmd();
 
@@ -1159,7 +1159,7 @@ void TEST_BPA_DP_SendNodeMibCountersHkCmd_Nominal(void)
 
 void TEST_BPA_DP_SendNodeMibCountersHkCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendNodeMibCountersHkCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendNodeMibCountersHk), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_SendNodeMibCountersHkCmd();
 
@@ -1177,7 +1177,7 @@ void TEST_BPA_DP_SendSourceMibCountersHkCmd_Nominal(void)
 
 void TEST_BPA_DP_SendSourceMibCountersHkCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendSourceMibCountersHkCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendSourceMibCountersHk), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_SendSourceMibCountersHkCmd();
 
@@ -1196,7 +1196,7 @@ void TEST_BPA_DP_SendStorageHkCmd_Nominal(void)
 
 void TEST_BPA_DP_SendStorageHkCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendStorageHkCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendStorageHk), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_SendStorageHkCmd();
 
@@ -1215,7 +1215,7 @@ void TEST_BPA_DP_SendChannelContactStatHkCmd_Nominal(void)
 
 void TEST_BPA_DP_SendChannelContactStatHkCmd_Error(void)
 {
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendChannelContactStatHkCmd), BPLIB_UNIMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendChannelContactStatHk), BPLIB_UNIMPLEMENTED);
 
     BPA_DP_SendChannelContactStatHkCmd();
 
