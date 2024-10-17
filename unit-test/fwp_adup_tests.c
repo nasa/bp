@@ -126,7 +126,7 @@ void Test_BPA_ADUP_In_SizeErr(void)
     BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 10;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
-    UT_CHECKEVENT_SETUP(&EventTest, BPLIB_ADU_TOO_BIG_ERR_EID,
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_ADU_IN_TOO_BIG_ERR_EID,
             "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d");
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_ERROR);

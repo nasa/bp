@@ -36,7 +36,6 @@
 #include "bpnode_version.h"
 #include "bpnode_tbl.h"
 #include "bpnode_utils.h"
-#include "bpnode_msg.h"
 
 #include "bplib.h"
 #include "bplib_eventids.h"

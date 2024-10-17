@@ -29,6 +29,7 @@
 /* ======== */
 
 #include "fwp_dp.h"
+#include "bpnode_app.h"
 
 /* ==================== */
 /* Function Definitions */
