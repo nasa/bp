@@ -37,7 +37,7 @@
 */
 
 /* Validate ADU Proxy table data */
-BPLib_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
 {
     BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
     uint8_t i, j;
@@ -63,7 +63,7 @@ BPLib_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
         }  
     }
 
-    return BPLIB_SUCCESS;
+    return CFE_SUCCESS;
 }
 
 /* Ingest an ADU */
