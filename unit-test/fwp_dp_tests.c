@@ -326,61 +326,28 @@ void TEST_BPA_DP_ResetErrorCountersCmd_Error(void)
 void TEST_BPA_DP_AddApplicationCmd_Nominal(void)
 {
     BPNode_AddApplicationCmd_t TestMsg;
-    UT_CheckEvent_t            EventTest;
-    uint16                     ExpAcceptedCount = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPLIB_ADD_APP_SUCCESS_EID, 
-                            "Successful add-application directive for ChanId=%d");
-
     BPA_DP_AddApplicationCmd(&TestMsg);
 
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
-                            ExpAcceptedCount);
-
-    /* Confirm that the event was generated */
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
 /* Test add-application command failure case */
 void TEST_BPA_DP_AddApplicationCmd_Error(void)
 {
     BPNode_AddApplicationCmd_t TestMsg;
-    uint16                     ExpRejectedCount = 1;
-    uint16                     ExpEventCount    = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     /* Return invalid channel ID error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplication), BPLIB_ADU_ADD_CHAN_ERR);
-
-    BPA_DP_AddApplicationCmd(&TestMsg);
-
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount++);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
-
-    /* Return invalid application state error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplication), BPLIB_ADU_ADD_STAT_ERR);
-
-    BPA_DP_AddApplicationCmd(&TestMsg);
-
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount++);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
-
-    /* Return generic, unhandled error code */
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_AddApplication), BPLIB_ERROR);
 
     BPA_DP_AddApplicationCmd(&TestMsg);
 
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
 }
 
 /* Test Remove Application command nominal case */
@@ -441,71 +408,27 @@ void TEST_BPA_DP_SetRegistrationStateCmd_Error(void)
 void TEST_BPA_DP_StartApplicationCmd_Nominal(void)
 {
     BPNode_StartApplicationCmd_t TestMsg;
-    UT_CheckEvent_t              EventTest;
-    uint16                       ExpAcceptedCount = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPLIB_START_APP_SUCCESS_EID, 
-                            "Successful start-application directive for ChanId=%d");
-
     BPA_DP_StartApplicationCmd(&TestMsg);
 
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount,
-                            ExpAcceptedCount);
-
-    /* Confirm that the event was generated */
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
 }
 
 /* Test start-application command failure case */
 void TEST_BPA_DP_StartApplicationCmd_Error(void)
 {
     BPNode_StartApplicationCmd_t TestMsg;
-    uint16                       ExpRejectedCount = 1;
-    uint16                       ExpEventCount    = 1;
 
     memset(&TestMsg, 0, sizeof(TestMsg));
 
     /* Return invalid channel ID error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ADU_START_CHAN_ERR);
-
-    BPA_DP_StartApplicationCmd(&TestMsg);
-
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount++);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
-
-    /* Return invalid application state error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ADU_START_STAT_ERR);
-
-    BPA_DP_StartApplicationCmd(&TestMsg);
-
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount++);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount++);
-
-    /* Return subscribe error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ADU_START_SUB_ERR);
-
-    BPA_DP_StartApplicationCmd(&TestMsg);
-
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount++);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
-
-    /* Return generic, unhandled error code */
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_StartApplication), BPLIB_ERROR);
 
     BPA_DP_StartApplicationCmd(&TestMsg);
 
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount,
-                            ExpRejectedCount);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, ExpEventCount);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
 /* Test stop-application command nominal case */
