@@ -35,5 +35,6 @@
 #include "fwp_adup.h"
 #include "fwp_evp.h"
 #include "fwp_perflogp.h"
+#include "fwp_dp.h"
 
 #endif

@@ -36,8 +36,6 @@
 
 #include "bplib.h"
 #include "fwp.h"
-#include "fwp_tablep.h"
-#include "fwp_dp.h"
 
 /*
 ** Global Data
