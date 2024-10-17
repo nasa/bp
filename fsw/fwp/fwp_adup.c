@@ -92,7 +92,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
     {
         Status = BPLIB_ERROR;
 
-        BPLib_EM_SendEvent(BPLIB_ADU_TOO_BIG_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_IN_TOO_BIG_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d",
                             ChanId, Size, BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize);
     }
