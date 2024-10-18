@@ -811,7 +811,7 @@ void BPA_DP_SendChannelContactStatHkCmd(void)
     /* Get ADU status from all child tasks */
     for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
-        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStats[i].State = BPNode_AppData.AduState[i].AppState;
+        BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
     }
 
     /* Get DTN time data */
