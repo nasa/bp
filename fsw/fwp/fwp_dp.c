@@ -30,7 +30,6 @@
 
 #include "fwp_dp.h"
 #include "bpnode_app.h"
-#include "bpnode_dispatch.h"
 #include "bpnode_eventids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"

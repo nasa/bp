@@ -30,7 +30,6 @@
 #include "bpnode_app.h"
 #include "bpnode_utils.h"
 #include "bpnode_eventids.h"
-#include "bpnode_dispatch.h"
 #include "bpnode_tbl.h"
 #include "bpnode_version.h"
 
