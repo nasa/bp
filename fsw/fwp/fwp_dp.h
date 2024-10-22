@@ -40,10 +40,60 @@
 #include "bplib.h"
 #include "bplib_eventids.h"
 
-
 /* =================== */
 /* Function Prototypes */
 /* =================== */
+
+/**
+ * \brief Process a command pipe message
+ *
+ *  \par Description
+ *       Processes a single software bus command pipe message. Checks
+ *       the message ID and calls the appropriate routine
+ *       to handle the message.
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \param[in] SBBufPtr Pointer to Software Bus buffer
+ */
+void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr);
+
+/**
+ * \brief Process a command pipe message
+ *
+ *  \par Description
+ *       Processes a single software bus command pipe message. Checks
+ *       the command ID and calls the appropriate routine
+ *       to handle the message.
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \param[in] SBBufPtr Pointer to Software Bus buffer
+ */
+void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr);
+
+/**
+ * \brief Verify message length
+ *
+ *  \par Description
+ *       Checks if the actual length of a software bus message matches
+ *       the expected length and sends an error event if a mismatch
+ *       occurs
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \param[in] MsgPtr         Message Pointer
+ *  \param[in] ExpectedLength Expected length
+ *
+ *  \return Boolean message length matches response
+ *  \retval true  Length matches expected
+ *  \retval false Length does not match expected
+ *
+ */
+bool BPNode_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
 
 /**
  * \brief Noop command
