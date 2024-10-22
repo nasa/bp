@@ -19,16 +19,6 @@ set(APP_SRC_FILES
   fsw/fwp/fwp_tlmp.c
 )
 
-if (CFE_EDS_ENABLED_BUILD)
-  list(APPEND APP_SRC_FILES
-    fsw/src/bpnode_eds_dispatch.c
-  )
-else()
-  list(APPEND APP_SRC_FILES
-    fsw/src/bpnode_dispatch.c
-  )
-endif()
-
 set(APP_TABLE_FILES
   fsw/tables/bpnode_adup_config_tbl.c
   fsw/tables/bpnode_channel_config_tbl.c
