@@ -27,9 +27,6 @@
 ** Include Files
 */
 
-#include "bpnode_app.h"
-#include "bpnode_eventids.h"
-#include "bpnode_tbl.h"
 #include "bpnode_utils.h"
 
 

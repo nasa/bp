@@ -36,6 +36,8 @@
 #include "cfe_msg_hdr.h"
 #include "bplib.h"
 
+#include "bplib_nc_payloads.h"
+
 /*
 ** Command type Definitions
 */
@@ -126,6 +128,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetCounter_Payload_t Payload;
 } BPNode_ResetCounterCmd_t;
 
 /**
@@ -134,6 +137,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetSourceCounters_Payload_t Payload;
 } BPNode_ResetSourceCountersCmd_t;
 
 /**
@@ -157,9 +161,8 @@ typedef struct
  */
 typedef struct
 {
-    CFE_MSG_CommandHeader_t CommandHeader;  /**< \brief Command header */
-    uint8                   ChanId;         /**< \brief Channel ID */
-    uint8                   Spare[3];       /**< \brief Spare bytes */
+    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddApplication_Payload_t Payload;
 } BPNode_AddApplicationCmd_t;
 
 /**
@@ -168,6 +171,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveApplication_Payload_t Payload;
 } BPNode_RemoveApplicationCmd_t;
 
 /**
@@ -176,6 +180,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SetRegistrationState_Payload_t Payload;
 } BPNode_SetRegistrationStateCmd_t;
 
 /**
@@ -183,9 +188,8 @@ typedef struct
  */
 typedef struct
 {
-    CFE_MSG_CommandHeader_t CommandHeader;  /**< \brief Command header */
-    uint8                   ChanId;         /**< \brief Channel ID */
-    uint8                   Spare[3];       /**< \brief Spare bytes */
+    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_StartApplication_Payload_t Payload;
 } BPNode_StartApplicationCmd_t;
 
 /**
@@ -193,9 +197,8 @@ typedef struct
  */
 typedef struct
 {
-    CFE_MSG_CommandHeader_t CommandHeader;  /**< \brief Command header */
-    uint8                   ChanId;         /**< \brief Channel ID */
-    uint8                   Spare[3];       /**< \brief Spare bytes */
+    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_StopApplication_Payload_t Payload;
 } BPNode_StopApplicationCmd_t;
 
 /**
@@ -204,6 +207,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthSources_Payload_t Payload;
 } BPNode_AddAuthSourcesCmd_t;
 
 /**
@@ -212,6 +216,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthSources_Payload_t Payload;
 } BPNode_RemoveAuthSourcesCmd_t;
 
 /**
@@ -220,6 +225,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthCustodySources_Payload_t Payload;
 } BPNode_AddAuthCustodySourcesCmd_t;
 
 /**
@@ -228,6 +234,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthCustodySources_Payload_t Payload;
 } BPNode_RemoveAuthCustodySourcesCmd_t;
 
 /**
@@ -236,6 +243,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthCustodians_Payload_t Payload;
 } BPNode_AddAuthCustodiansCmd_t;
 
 /**
@@ -244,6 +252,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthCustodians_Payload_t Payload;
 } BPNode_RemoveAuthCustodiansCmd_t;
 
 /**
@@ -252,6 +261,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddAuthReportToEid_Payload_t Payload;
 } BPNode_AddAuthReportToEidCmd_t;
 
 /**
@@ -260,6 +270,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveAuthReportToEid_Payload_t Payload;
 } BPNode_RemoveAuthReportToEidCmd_t;
 
 /**
@@ -268,6 +279,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddLatency_Payload_t Payload;
 } BPNode_AddLatencyCmd_t;
 
 /**
@@ -276,6 +288,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveLatency_Payload_t Payload;
 } BPNode_RemoveLatencyCmd_t;
 
 /**
@@ -284,6 +297,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactSetup_Payload_t Payload;
 } BPNode_ContactSetupCmd_t;
 
 /**
@@ -292,6 +306,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactStart_Payload_t Payload;
 } BPNode_ContactStartCmd_t;
 
 /**
@@ -300,6 +315,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactStop_Payload_t Payload;
 } BPNode_ContactStopCmd_t;
 
 /**
@@ -308,6 +324,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ContactTeardown_Payload_t Payload;
 } BPNode_ContactTeardownCmd_t;
 
 /**
@@ -316,6 +333,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddMibArrayKey_Payload_t Payload;
 } BPNode_AddMibArrayKeyCmd_t;
 
 /**
@@ -324,6 +342,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveMibArrayKey_Payload_t Payload;
 } BPNode_RemoveMibArrayKeyCmd_t;
 
 /**
@@ -332,6 +351,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_SetMibItem_Payload_t Payload;
 } BPNode_SetMibItemCmd_t;
 
 /**
@@ -340,6 +360,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_AddStorageAllocation_Payload_t Payload;
 } BPNode_AddStorageAllocationCmd_t;
 
 /**
@@ -348,6 +369,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_RemoveStorageAllocation_Payload_t Payload;
 } BPNode_RemoveStorageAllocationCmd_t;
 
 /**

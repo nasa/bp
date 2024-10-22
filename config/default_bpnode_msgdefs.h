@@ -35,9 +35,4 @@
 
 #include "bplib.h"
 
-/*
-** Type Definitions
-*/
-
-
 #endif /* BPNODE_MSGDEFS_H */

@@ -32,6 +32,7 @@
 #include "fwp_tablep.h"
 #include "fwp_adup.h"
 #include "bpnode_utils.h"
+#include "bpnode_app.h"
 
 /*
 ** Function Definitions

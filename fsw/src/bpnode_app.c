@@ -28,7 +28,6 @@
 */
 
 #include "bpnode_app.h"
-#include "bpnode_cmds.h"
 #include "bpnode_utils.h"
 #include "bpnode_eventids.h"
 #include "bpnode_dispatch.h"
@@ -159,21 +158,30 @@ CFE_Status_t BPNode_AppInit(void)
     uint8 i;
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
-        .BPA_TIMEP_GetHostClockState            = BPA_TIMEP_GetHostClockState,
-        .BPA_TIMEP_GetHostEpoch                 = BPA_TIMEP_GetHostEpoch,
-        .BPA_TIMEP_GetHostTime                  = BPA_TIMEP_GetHostTime,
-        .BPA_TIMEP_GetMonotonicTime             = BPA_TIMEP_GetMonotonicTime,
-        .BPA_TABLEP_SingleTableUpdate           = BPA_TABLEP_SingleTableUpdate,
-        .BPA_EVP_Init                           = BPA_EVP_Init,
-        .BPA_EVP_SendEvent                      = BPA_EVP_SendEvent,
-        .BPA_PERFLOGP_Entry                     = BPA_PERFLOGP_Entry,
-        .BPA_PERFLOGP_Exit                      = BPA_PERFLOGP_Exit,  
-        .BPA_TLMP_SendNodeMibConfigPkt          = BPA_TLMP_SendNodeMibConfigPkt,
-        .BPA_TLMP_SendPerSourceMibConfigPkt     = BPA_TLMP_SendPerSourceMibConfigPkt,
-        .BPA_TLMP_SendNodeMibCounterPkt         = BPA_TLMP_SendNodeMibCounterPkt,
-        .BPA_TLMP_SendPerSourceMibCounterPkt    = BPA_TLMP_SendPerSourceMibCounterPkt,
-        .BPA_TLMP_SendChannelContactPkt         = BPA_TLMP_SendChannelContactPkt,
-        .BPA_TLMP_SendStoragePkt                = BPA_TLMP_SendStoragePkt                
+        /* Time Proxy */
+        .BPA_TIMEP_GetMonotonicTime = BPA_TIMEP_GetMonotonicTime,
+        .BPA_TIMEP_GetHostEpoch = BPA_TIMEP_GetHostEpoch,
+        .BPA_TIMEP_GetHostClockState = BPA_TIMEP_GetHostClockState,
+        .BPA_TIMEP_GetHostTime = BPA_TIMEP_GetHostTime,
+        /* Perf Log Proxy */
+        .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
+        .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit,
+        /* Table Proxy */
+        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
+        /* Event Proxy */
+        .BPA_EVP_Init = BPA_EVP_Init,
+        .BPA_EVP_SendEvent = BPA_EVP_SendEvent,
+        /* ADU Proxy */
+        .BPA_ADUP_AddApplication = BPA_ADUP_AddApplication,
+        .BPA_ADUP_StartApplication = BPA_ADUP_StartApplication,
+        .BPA_ADUP_StopApplication = BPA_ADUP_StopApplication,
+        /* Telemetry Proxy */
+        .BPA_TLMP_SendNodeMibConfigPkt = BPA_TLMP_SendNodeMibConfigPkt,
+        .BPA_TLMP_SendPerSourceMibConfigPkt = BPA_TLMP_SendPerSourceMibConfigPkt,
+        .BPA_TLMP_SendNodeMibCounterPkt = BPA_TLMP_SendNodeMibCounterPkt,
+        .BPA_TLMP_SendPerSourceMibCounterPkt = BPA_TLMP_SendPerSourceMibCounterPkt,
+        .BPA_TLMP_SendChannelContactPkt = BPA_TLMP_SendChannelContactPkt,
+        .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt
     };
 
     /* Initialize the FWP before using BPLib functions */
@@ -331,7 +339,7 @@ CFE_Status_t BPNode_AppInit(void)
             else 
             {
                 BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
-                            "Automatically added app configurations for ChanId=%d", i);
+                                    "Automatically added app configurations for ChanId=%d", i);
             }
 
         }

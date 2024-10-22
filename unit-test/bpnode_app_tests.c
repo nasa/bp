@@ -390,7 +390,7 @@ void Test_BPNode_AppInit_AutoAddApp(void)
     TestChanTbl.Configs[0].AddAutomatically = true;
 
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_AUTO_ADD_APP_INF_EID, 
+    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_AUTO_ADD_APP_INF_EID,
                                 "Automatically added app configurations for ChanId=%d");
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);

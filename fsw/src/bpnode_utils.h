@@ -30,7 +30,7 @@
 ** Include Files
 */
 
-#include "bpnode_app.h"
+#include "cfe.h"
 
 /*
 ** Exported Functions
