@@ -55,17 +55,17 @@
 BPNode_TblNameParams_t TblNameParamsArr_test[] = 
 {
     {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, NULL},
-    {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),       NULL, NULL},
-    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_ContactsTable_t),       NULL, NULL},
-    {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, NULL},
-    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, NULL},
-    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPNode_CustodyTable_t),       NULL, NULL},
-    {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPNode_MIBConfigPNTable_t),   NULL, NULL},
-    {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPNode_MIBConfigPSTable_t),   NULL, NULL},
-    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPNode_ReportToTable_t),      NULL, NULL},
-    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPNode_SrcAuthTable_t),       NULL, NULL},
-    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPNode_SrcLatencyTable_t),    NULL, NULL},
-    {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPNode_StorageTable_t),       NULL, NULL}
+    {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, NULL},
+    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_CLA_ContactsTable_t),   NULL, NULL},
+    {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPLib_ARP_CRSTable_t),        NULL, NULL},
+    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PD_CustodianTable_t),   NULL, NULL},
+    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PD_CustodyTable_t),     NULL, NULL},
+    {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPNTable_t), NULL, NULL},
+    {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPSTable_t), NULL, NULL},
+    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PD_ReportToTable_t),    NULL, NULL},
+    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PD_SrcAuthTable_t),     NULL, NULL},
+    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PD_SrcLatencyTable_t),  NULL, NULL},
+    {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPLib_STOR_StorageTable_t),   NULL, NULL}
 };
 
 void Test_BPA_TABLEP_TableInit_Nominal(void)
@@ -126,7 +126,7 @@ void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
 
 void Test_BPNode_ContactsTblValidateFunc_Nominal(void)
 {
-    BPLib_ContactsTable_t TestTblData;
+    BPLib_CLA_ContactsTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     TestTblData.ContactSet[0].PortNum = 10;
     UtAssert_INT32_EQ((int32) BPNode_ContactsTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
@@ -134,7 +134,7 @@ void Test_BPNode_ContactsTblValidateFunc_Nominal(void)
 
 void Test_BPNode_ContactsTblValidateFunc_Invalid(void)
 {
-    BPLib_ContactsTable_t TestTblData;
+    BPLib_CLA_ContactsTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -146,7 +146,7 @@ void Test_BPNode_ContactsTblValidateFunc_Invalid(void)
 
 void Test_BPNode_CRSTblValidateFunc_Nominal(void)
 {
-    BPNode_CRSTable_t TestTblData;
+    BPLib_ARP_CRSTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     TestTblData.CRS_Set[0].SizeTrigger = 10;
     UtAssert_INT32_EQ((int32) BPNode_CRSTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
@@ -154,7 +154,7 @@ void Test_BPNode_CRSTblValidateFunc_Nominal(void)
 
 void Test_BPNode_CRSTblValidateFunc_Invalid(void)
 {
-    BPNode_CRSTable_t TestTblData;
+    BPLib_ARP_CRSTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -166,14 +166,14 @@ void Test_BPNode_CRSTblValidateFunc_Invalid(void)
 
 void Test_BPNode_CustodianAuthTblValidateFunc_Nominal(void)
 {
-    BPNode_CustodianTable_t TestTblData;
+    BPLib_PD_CustodianTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     UtAssert_INT32_EQ((int32) BPNode_CustodianAuthTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_CustodianAuthTblValidateFunc_Invalid(void)
 {
-    BPNode_CustodianTable_t TestTblData;
+    BPLib_PD_CustodianTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -184,14 +184,14 @@ void Test_BPNode_CustodianAuthTblValidateFunc_Invalid(void)
 
 void Test_BPNode_CustodyAuthTblValidateFunc_Nominal(void)
 {
-    BPNode_CustodyTable_t TestTblData;
+    BPLib_PD_CustodyTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     UtAssert_INT32_EQ((int32) BPNode_CustodyAuthTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_CustodyAuthTblValidateFunc_Invalid(void)
 {
-    BPNode_CustodyTable_t TestTblData;
+    BPLib_PD_CustodyTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -202,7 +202,7 @@ void Test_BPNode_CustodyAuthTblValidateFunc_Invalid(void)
 
 void Test_BPNode_MIBConfigPNTblValidateFunc_Nominal(void)
 {
-    BPNode_MIBConfigPNTable_t TestTblData;
+    BPLib_NC_MIBConfigPNTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     TestTblData.BundleAgentNum = 10;
     UtAssert_INT32_EQ((int32) BPNode_MIBConfigPNTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
@@ -210,7 +210,7 @@ void Test_BPNode_MIBConfigPNTblValidateFunc_Nominal(void)
 
 void Test_BPNode_MIBConfigPNTblValidateFunc_Invalid(void)
 {
-    BPNode_MIBConfigPNTable_t TestTblData;
+    BPLib_NC_MIBConfigPNTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -222,7 +222,7 @@ void Test_BPNode_MIBConfigPNTblValidateFunc_Invalid(void)
 
 void Test_BPNode_MIBConfigPSTblValidateFunc_Nominal(void)
 {
-    BPNode_MIBConfigPSTable_t TestTblData;
+    BPLib_NC_MIBConfigPSTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     TestTblData.MIB_PS_Set[0].ParamSetMaxLifetime = 10;
     UtAssert_INT32_EQ((int32) BPNode_MIBConfigPSTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
@@ -230,7 +230,7 @@ void Test_BPNode_MIBConfigPSTblValidateFunc_Nominal(void)
 
 void Test_BPNode_MIBConfigPSTblValidateFunc_Invalid(void)
 {
-    BPNode_MIBConfigPSTable_t TestTblData;
+    BPLib_NC_MIBConfigPSTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -242,14 +242,14 @@ void Test_BPNode_MIBConfigPSTblValidateFunc_Invalid(void)
 
 void Test_BPNode_ReportToAuthTblValidateFunc_Nominal(void)
 {
-    BPNode_ReportToTable_t TestTblData;
+    BPLib_PD_ReportToTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     UtAssert_INT32_EQ((int32) BPNode_ReportToAuthTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_ReportToAuthTblValidateFunc_Invalid(void)
 {
-    BPNode_ReportToTable_t TestTblData;
+    BPLib_PD_ReportToTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -260,14 +260,14 @@ void Test_BPNode_ReportToAuthTblValidateFunc_Invalid(void)
 
 void Test_BPNode_SrcAuthTblValidateFunc_Nominal(void)
 {
-    BPNode_SrcAuthTable_t TestTblData;
+    BPLib_PD_SrcAuthTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     UtAssert_INT32_EQ((int32) BPNode_SrcAuthTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_SrcAuthTblValidateFunc_Invalid(void)
 {
-    BPNode_SrcAuthTable_t TestTblData;
+    BPLib_PD_SrcAuthTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -278,14 +278,14 @@ void Test_BPNode_SrcAuthTblValidateFunc_Invalid(void)
 
 void Test_BPNode_SrcLatencyTblValidateFunc_Nominal(void)
 {
-    BPNode_SrcLatencyTable_t TestTblData;
+    BPLib_PD_SrcLatencyTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     UtAssert_INT32_EQ((int32) BPNode_SrcLatencyTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_SrcLatencyTblValidateFunc_Invalid(void)
 {
-    BPNode_SrcLatencyTable_t TestTblData;
+    BPLib_PD_SrcLatencyTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */
@@ -296,14 +296,14 @@ void Test_BPNode_SrcLatencyTblValidateFunc_Invalid(void)
 
 void Test_BPNode_StorageTblValidateFunc_Nominal(void)
 {
-    BPNode_StorageTable_t TestTblData;
+    BPLib_STOR_StorageTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
     UtAssert_INT32_EQ((int32) BPNode_StorageTblValidateFunc(&TestTblData), (int32) CFE_SUCCESS);     
 }
 
 void Test_BPNode_StorageTblValidateFunc_Invalid(void)
 {
-    BPNode_StorageTable_t TestTblData;
+    BPLib_STOR_StorageTable_t TestTblData;
     memset(&TestTblData, 0, sizeof(TestTblData));
 
     /* Error case should return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE */

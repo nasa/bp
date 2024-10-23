@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPNode_SrcLatencyTable_t SrcLatencyTable = {
+BPLib_PD_SrcLatencyTable_t SrcLatencyTable = {
     .LatencySet = {
         {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
         {.SrcEID = "100.1", .Latency = 0, .Spare = 0},

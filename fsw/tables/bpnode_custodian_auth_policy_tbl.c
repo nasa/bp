@@ -26,7 +26,7 @@
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "bpnode_tbl.h"
 
-BPNode_CustodianTable_t CustodianTable = {
+BPLib_PD_CustodianTable_t CustodianTable = {
     .AuthCustodians = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
 };
 

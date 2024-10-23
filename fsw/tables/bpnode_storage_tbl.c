@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPNode_StorageTable_t StorageTable = {
+BPLib_STOR_StorageTable_t StorageTable = {
     .StorageSet = {
         {.SrcEID = "100.1", .StorageSize = 10000},
         {.SrcEID = "100.1", .StorageSize = 10000},

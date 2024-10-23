@@ -46,16 +46,16 @@
 /* Test table data */
 BPA_ADUP_Table_t            TestAduTbl;
 BPLib_PI_ChannelTable_t     TestChanTbl;
-BPLib_ContactsTable_t       TestContactsTbl;
-BPNode_CRSTable_t           TestCrsTbl;
-BPNode_CustodianTable_t     TestCustodianTbl;
-BPNode_CustodyTable_t       TestCustodyTbl;
-BPNode_MIBConfigPNTable_t   TestMibPnTbl;
-BPNode_MIBConfigPSTable_t   TestMibPsTbl;
-BPNode_ReportToTable_t      TestReportTbl;
-BPNode_SrcAuthTable_t       TestAuthTbl;
-BPNode_SrcLatencyTable_t    TestLatencyTbl;
-BPNode_StorageTable_t       TestStorTbl;
+BPLib_CLA_ContactsTable_t   TestContactsTbl;
+BPLib_ARP_CRSTable_t        TestCrsTbl;
+BPLib_PD_CustodianTable_t   TestCustodianTbl;
+BPLib_PD_CustodyTable_t     TestCustodyTbl;
+BPLib_NC_MIBConfigPNTable_t TestMibPnTbl;
+BPLib_NC_MIBConfigPSTable_t TestMibPsTbl;
+BPLib_PD_ReportToTable_t    TestReportTbl;
+BPLib_PD_SrcAuthTable_t     TestAuthTbl;
+BPLib_PD_SrcLatencyTable_t  TestLatencyTbl;
+BPLib_STOR_StorageTable_t   TestStorTbl;
 
 
 /* An example hook function to check for a specific event */
@@ -163,16 +163,16 @@ void BPNode_UT_Setup(void)
 
     memset(&TestAduTbl, 0, sizeof(BPA_ADUP_Table_t));
     memset(&TestChanTbl, 0, sizeof(BPLib_PI_ChannelTable_t));
-    memset(&TestContactsTbl, 0, sizeof(BPLib_ContactsTable_t));
-    memset(&TestCrsTbl, 0, sizeof(BPNode_CRSTable_t));
-    memset(&TestCustodianTbl, 0, sizeof(BPNode_CustodianTable_t));
-    memset(&TestCustodyTbl, 0, sizeof(BPNode_CustodyTable_t));
-    memset(&TestMibPnTbl, 0, sizeof(BPNode_MIBConfigPNTable_t));
-    memset(&TestMibPsTbl, 0, sizeof(BPNode_MIBConfigPSTable_t));
-    memset(&TestReportTbl, 0, sizeof(BPNode_ReportToTable_t));
-    memset(&TestAuthTbl, 0, sizeof(BPNode_SrcAuthTable_t));
-    memset(&TestLatencyTbl, 0, sizeof(BPNode_SrcLatencyTable_t));
-    memset(&TestStorTbl, 0, sizeof(BPNode_StorageTable_t));
+    memset(&TestContactsTbl, 0, sizeof(BPLib_CLA_ContactsTable_t));
+    memset(&TestCrsTbl, 0, sizeof(BPLib_ARP_CRSTable_t));
+    memset(&TestCustodianTbl, 0, sizeof(BPLib_PD_CustodianTable_t));
+    memset(&TestCustodyTbl, 0, sizeof(BPLib_PD_CustodyTable_t));
+    memset(&TestMibPnTbl, 0, sizeof(BPLib_NC_MIBConfigPNTable_t));
+    memset(&TestMibPsTbl, 0, sizeof(BPLib_NC_MIBConfigPSTable_t));
+    memset(&TestReportTbl, 0, sizeof(BPLib_PD_ReportToTable_t));
+    memset(&TestAuthTbl, 0, sizeof(BPLib_PD_SrcAuthTable_t));
+    memset(&TestLatencyTbl, 0, sizeof(BPLib_PD_SrcLatencyTable_t));
+    memset(&TestStorTbl, 0, sizeof(BPLib_STOR_StorageTable_t));
 }
 
 /* Teardown function after every test */
