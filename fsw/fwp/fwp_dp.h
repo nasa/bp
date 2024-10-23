@@ -57,7 +57,7 @@
  *
  *  \param[in] SBBufPtr Pointer to Software Bus buffer
  */
-void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr);
+void BPA_DP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr);
 
 /**
  * \brief Process a command pipe message
@@ -72,7 +72,7 @@ void BPNode_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr);
  *
  *  \param[in] SBBufPtr Pointer to Software Bus buffer
  */
-void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr);
+void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr);
 
 /**
  * \brief Verify message length
@@ -93,7 +93,7 @@ void BPNode_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr);
  *  \retval false Length does not match expected
  *
  */
-bool BPNode_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
+bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength);
 
 /**
  * \brief Noop command

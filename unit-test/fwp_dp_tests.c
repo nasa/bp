@@ -35,7 +35,7 @@
 /* ==================== */
 
 /* Test task pipe processing in nominal case */
-void Test_BPNode_TaskPipe_Nominal(void)
+void Test_BPA_DP_TaskPipe_Nominal(void)
 {
     CFE_SB_Buffer_t   Buf;
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
@@ -46,14 +46,14 @@ void Test_BPNode_TaskPipe_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(MsgSize), false);
 
-    BPNode_TaskPipe(&Buf);
+    BPA_DP_TaskPipe(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_STUB_COUNT(BPA_DP_NoopCmd, 1);
 }
 
 /* Test task pipe processing after receiving an invalid message ID */
-void Test_BPNode_TaskPipe_InvalidMsgId(void)
+void Test_BPA_DP_TaskPipe_InvalidMsgId(void)
 {
     CFE_SB_Buffer_t   Buf;
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_INVALID_MSG_ID;
@@ -64,7 +64,7 @@ void Test_BPNode_TaskPipe_InvalidMsgId(void)
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
 
-    BPNode_TaskPipe(&Buf);
+    BPA_DP_TaskPipe(&Buf);
 
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
 }
@@ -76,7 +76,7 @@ void Test_BPNode_TaskPipe_InvalidMsgId(void)
  * The command stubs do not generate events.
  * The stubs only increment the stub call count for the command.
  */
-void Test_BPNode_ProcessGroundCommand_ValidNoop(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidNoop(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_NOOP_CC;
     size_t            Size = sizeof(BPNode_NoopCmd_t);
@@ -85,7 +85,7 @@ void Test_BPNode_ProcessGroundCommand_ValidNoop(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_NoopCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
@@ -99,7 +99,7 @@ void Test_BPNode_ProcessGroundCommand_ValidNoop(void)
  * and generates a BPNODE_CMD_LEN_ERR_EID event.
  */
 
-void Test_BPNode_ProcessGroundCommand_InvalidNoop(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidNoop(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_NOOP_CC;
     size_t            Size = sizeof(BPNode_NoopCmd_t) - 1; /* Invalid length */
@@ -114,7 +114,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidNoop(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_NoopCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -122,7 +122,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidNoop(void)
 }
 
 /* Test ground command processing after receiving a valid add-all-applications */
-void Test_BPNode_ProcessGroundCommand_ValidAddAllApplications(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddAllApplications(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_ALL_APPLICATIONS_CC;
     size_t            Size = sizeof(BPNode_AddAllApplicationsCmd_t);
@@ -131,14 +131,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddAllApplications(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAllApplicationsCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-all-applications */
-void Test_BPNode_ProcessGroundCommand_InvalidAddAllApplications(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_ALL_APPLICATIONS_CC;
     size_t            Size = sizeof(BPNode_AddAllApplicationsCmd_t) - 1; /* Invalid length */
@@ -156,7 +156,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAllApplications(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAllApplicationsCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -164,7 +164,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAllApplications(void)
 }
 
 /* Test ground command processing after receiving a valid start-all-applications */
-void Test_BPNode_ProcessGroundCommand_ValidStartAllApplications(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidStartAllApplications(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_START_ALL_APPLICATIONS_CC;
     size_t            Size = sizeof(BPNode_StartAllApplicationsCmd_t);
@@ -173,14 +173,14 @@ void Test_BPNode_ProcessGroundCommand_ValidStartAllApplications(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_StartAllApplicationsCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid start-all-applications */
-void Test_BPNode_ProcessGroundCommand_InvalidStartAllApplications(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_START_ALL_APPLICATIONS_CC;
     size_t            Size = sizeof(BPNode_StartAllApplicationsCmd_t) - 1; /* Invalid length */
@@ -196,7 +196,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidStartAllApplications(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_StartAllApplicationsCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -204,7 +204,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidStartAllApplications(void)
 }
 
 /* Test ground command processing after receiving a valid verify-bundle-storage */
-void Test_BPNode_ProcessGroundCommand_ValidVerifyBundleStorage(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleStorage(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_VERIFY_BUNDLE_STORAGE_CC;
     size_t            Size = sizeof(BPNode_VerifyBundleStorageCmd_t);
@@ -213,14 +213,14 @@ void Test_BPNode_ProcessGroundCommand_ValidVerifyBundleStorage(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_VerifyBundleStorageCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid verify-bundle-storage */
-void Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_VERIFY_BUNDLE_STORAGE_CC;
     size_t            Size = sizeof(BPNode_VerifyBundleStorageCmd_t) - 1; /* Invalid length */
@@ -236,7 +236,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_VerifyBundleStorageCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -244,7 +244,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
 }
 
 /* Test ground command processing after receiving a valid init-bundle-storage */
-void Test_BPNode_ProcessGroundCommand_ValidInitBundleStorage(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidInitBundleStorage(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_INIT_BUNDLE_STORAGE_CC;
     size_t            Size = sizeof(BPNode_InitBundleStorageCmd_t);
@@ -253,14 +253,14 @@ void Test_BPNode_ProcessGroundCommand_ValidInitBundleStorage(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_InitBundleStorageCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid init-bundle-storage */
-void Test_BPNode_ProcessGroundCommand_InvalidInitBundleStorage(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_INIT_BUNDLE_STORAGE_CC;
     size_t            Size = sizeof(BPNode_InitBundleStorageCmd_t) - 1; /* Invalid length */
@@ -276,7 +276,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidInitBundleStorage(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_InitBundleStorageCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -284,7 +284,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidInitBundleStorage(void)
 }
 
 /* Test ground command processing after receiving a valid verify-bundle-metadata */
-void Test_BPNode_ProcessGroundCommand_ValidVerifyBundleMetadata(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleMetadata(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_VERIFY_BUNDLE_METADATA_CC;
     size_t            Size = sizeof(BPNode_VerifyBundleMetadataCmd_t);
@@ -293,14 +293,14 @@ void Test_BPNode_ProcessGroundCommand_ValidVerifyBundleMetadata(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_VerifyBundleMetadataCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid verify-bundle-metadata */
-void Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_VERIFY_BUNDLE_METADATA_CC;
     size_t            Size = sizeof(BPNode_VerifyBundleMetadataCmd_t) - 1; /* Invalid length */
@@ -316,7 +316,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_VerifyBundleMetadataCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -324,7 +324,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
 }
 
 /* Test ground command processing after receiving a valid rebuild-bundle-metadata */
-void Test_BPNode_ProcessGroundCommand_ValidRebuildBundleMetadata(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRebuildBundleMetadata(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REBUILD_BUNDLE_METADATA_CC;
     size_t            Size = sizeof(BPNode_RebuildBundleMetadataCmd_t);
@@ -333,14 +333,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRebuildBundleMetadata(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RebuildBundleMetadataCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid rebuild-bundle-metadata */
-void Test_BPNode_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REBUILD_BUNDLE_METADATA_CC;
     size_t            Size = sizeof(BPNode_RebuildBundleMetadataCmd_t) - 1; /* Invalid length */
@@ -356,7 +356,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RebuildBundleMetadataCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -364,7 +364,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
 }
 
 /* Test ground command processing after receiving a valid clear-volatile */
-void Test_BPNode_ProcessGroundCommand_ValidClearVolatile(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidClearVolatile(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CLEAR_VOLATILE_CC;
     size_t            Size = sizeof(BPNode_ClearVolatileCmd_t);
@@ -373,14 +373,14 @@ void Test_BPNode_ProcessGroundCommand_ValidClearVolatile(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ClearVolatileCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid clear-volatile */
-void Test_BPNode_ProcessGroundCommand_InvalidClearVolatile(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CLEAR_VOLATILE_CC;
     size_t            Size = sizeof(BPNode_ClearVolatileCmd_t) - 1; /* Invalid length */
@@ -396,7 +396,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidClearVolatile(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ClearVolatileCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -404,7 +404,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidClearVolatile(void)
 }
 
 /* Test ground command processing after receiving a valid reload-saved-data */
-void Test_BPNode_ProcessGroundCommand_ValidReloadSavedData(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidReloadSavedData(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RELOAD_SAVED_DATA_CC;
     size_t            Size = sizeof(BPNode_ReloadSavedDataCmd_t);
@@ -413,14 +413,14 @@ void Test_BPNode_ProcessGroundCommand_ValidReloadSavedData(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ReloadSavedDataCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reload-saved-data */
-void Test_BPNode_ProcessGroundCommand_InvalidReloadSavedData(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RELOAD_SAVED_DATA_CC;
     size_t            Size = sizeof(BPNode_ReloadSavedDataCmd_t) - 1; /* Invalid length */
@@ -436,7 +436,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidReloadSavedData(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ReloadSavedDataCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -444,7 +444,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidReloadSavedData(void)
 }
 
 /* Test ground command processing after receiving a valid reset-all-counters */
-void Test_BPNode_ProcessGroundCommand_ValidResetAllCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidResetAllCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_ALL_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetAllCountersCmd_t);
@@ -453,14 +453,14 @@ void Test_BPNode_ProcessGroundCommand_ValidResetAllCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetAllCountersCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-all-counters */
-void Test_BPNode_ProcessGroundCommand_InvalidResetAllCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_ALL_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetAllCountersCmd_t) - 1; /* Invalid length */
@@ -476,7 +476,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetAllCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetAllCountersCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -484,7 +484,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetAllCounters(void)
 }
 
 /* Test ground command processing after receiving a valid reset-counter */
-void Test_BPNode_ProcessGroundCommand_ValidResetCounter(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidResetCounter(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_COUNTER_CC;
     size_t            Size = sizeof(BPNode_ResetCounterCmd_t);
@@ -493,14 +493,14 @@ void Test_BPNode_ProcessGroundCommand_ValidResetCounter(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetCounterCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-counter */
-void Test_BPNode_ProcessGroundCommand_InvalidResetCounter(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_COUNTER_CC;
     size_t            Size = sizeof(BPNode_ResetCounterCmd_t) - 1; /* Invalid length */
@@ -516,7 +516,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetCounter(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetCounterCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -524,7 +524,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetCounter(void)
 }
 
 /* Test ground command processing after receiving a valid reset-source-counters */
-void Test_BPNode_ProcessGroundCommand_ValidResetSourceCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidResetSourceCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_SOURCE_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetSourceCountersCmd_t);
@@ -533,14 +533,14 @@ void Test_BPNode_ProcessGroundCommand_ValidResetSourceCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetSourceCountersCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-source-counters */
-void Test_BPNode_ProcessGroundCommand_InvalidResetSourceCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_SOURCE_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetSourceCountersCmd_t) - 1; /* Invalid length */
@@ -556,7 +556,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetSourceCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetSourceCountersCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -564,7 +564,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetSourceCounters(void)
 }
 
 /* Test ground command processing after receiving a valid reset-bundle-counters */
-void Test_BPNode_ProcessGroundCommand_ValidResetBundleCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidResetBundleCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_BUNDLE_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetBundleCountersCmd_t);
@@ -573,14 +573,14 @@ void Test_BPNode_ProcessGroundCommand_ValidResetBundleCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetBundleCountersCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-bundle-counters */
-void Test_BPNode_ProcessGroundCommand_InvalidResetBundleCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_BUNDLE_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetBundleCountersCmd_t) - 1; /* Invalid length */
@@ -596,7 +596,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetBundleCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetBundleCountersCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -604,7 +604,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetBundleCounters(void)
 }
 
 /* Test ground command processing after receiving a valid reset-error-counters */
-void Test_BPNode_ProcessGroundCommand_ValidResetErrorCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidResetErrorCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_ERROR_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetErrorCountersCmd_t);
@@ -613,14 +613,14 @@ void Test_BPNode_ProcessGroundCommand_ValidResetErrorCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetErrorCountersCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-error-counters */
-void Test_BPNode_ProcessGroundCommand_InvalidResetErrorCounters(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_RESET_ERROR_COUNTERS_CC;
     size_t            Size = sizeof(BPNode_ResetErrorCountersCmd_t) - 1; /* Invalid length */
@@ -636,7 +636,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetErrorCounters(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ResetErrorCountersCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -644,7 +644,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidResetErrorCounters(void)
 }
 
 /* Test ground command processing after receiving a valid add-application */
-void Test_BPNode_ProcessGroundCommand_ValidAddApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_AddApplicationCmd_t);
@@ -653,14 +653,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddApplicationCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-application */
-void Test_BPNode_ProcessGroundCommand_InvalidAddApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_AddApplicationCmd_t) - 1; /* Invalid length */
@@ -676,7 +676,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddApplicationCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -684,7 +684,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddApplication(void)
 }
 
 /* Test ground command processing after receiving a valid remove-application */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_RemoveApplicationCmd_t);
@@ -693,14 +693,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveApplicationCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-application */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_RemoveApplicationCmd_t) - 1; /* Invalid length */
@@ -716,7 +716,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveApplicationCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -724,7 +724,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveApplication(void)
 }
 
 /* Test ground command processing after receiving a valid set-registration-state */
-void Test_BPNode_ProcessGroundCommand_ValidSetRegistrationState(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSetRegistrationState(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SET_REGISTRATION_STATE_CC;
     size_t            Size = sizeof(BPNode_SetRegistrationStateCmd_t);
@@ -733,14 +733,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSetRegistrationState(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SetRegistrationStateCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid set-registration-state */
-void Test_BPNode_ProcessGroundCommand_InvalidSetRegistrationState(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SET_REGISTRATION_STATE_CC;
     size_t            Size = sizeof(BPNode_SetRegistrationStateCmd_t) - 1; /* Invalid length */
@@ -756,7 +756,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSetRegistrationState(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SetRegistrationStateCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -764,7 +764,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSetRegistrationState(void)
 }
 
 /* Test ground command processing after receiving a valid start-application */
-void Test_BPNode_ProcessGroundCommand_ValidStartApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidStartApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_START_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_StartApplicationCmd_t);
@@ -773,14 +773,14 @@ void Test_BPNode_ProcessGroundCommand_ValidStartApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_StartApplicationCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid start-application */
-void Test_BPNode_ProcessGroundCommand_InvalidStartApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_START_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_StartApplicationCmd_t) - 1; /* Invalid length */
@@ -796,7 +796,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidStartApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_StartApplicationCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -804,7 +804,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidStartApplication(void)
 }
 
 /* Test ground command processing after receiving a valid stop-application */
-void Test_BPNode_ProcessGroundCommand_ValidStopApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidStopApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_STOP_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_StopApplicationCmd_t);
@@ -813,14 +813,14 @@ void Test_BPNode_ProcessGroundCommand_ValidStopApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_StopApplicationCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid stop-application */
-void Test_BPNode_ProcessGroundCommand_InvalidStopApplication(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_STOP_APPLICATION_CC;
     size_t            Size = sizeof(BPNode_StopApplicationCmd_t) - 1; /* Invalid length */
@@ -836,7 +836,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidStopApplication(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_StopApplicationCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -844,7 +844,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidStopApplication(void)
 }
 
 /* Test ground command processing after receiving a valid add-auth-sources */
-void Test_BPNode_ProcessGroundCommand_ValidAddAuthSources(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthSources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_SOURCES_CC;
     size_t            Size = sizeof(BPNode_AddAuthSourcesCmd_t);
@@ -853,14 +853,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddAuthSources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthSourcesCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-sources */
-void Test_BPNode_ProcessGroundCommand_InvalidAddAuthSources(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_SOURCES_CC;
     size_t            Size = sizeof(BPNode_AddAuthSourcesCmd_t) - 1; /* Invalid length */
@@ -876,7 +876,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthSources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthSourcesCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -884,7 +884,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthSources(void)
 }
 
 /* Test ground command processing after receiving a valid remove-auth-sources */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthSources(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthSources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_SOURCES_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthSourcesCmd_t);
@@ -893,14 +893,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthSources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthSourcesCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-sources */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthSources(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_SOURCES_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthSourcesCmd_t) - 1; /* Invalid length */
@@ -916,7 +916,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthSources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthSourcesCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -924,7 +924,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthSources(void)
 }
 
 /* Test ground command processing after receiving a valid add-auth-custody-sources */
-void Test_BPNode_ProcessGroundCommand_ValidAddAuthCustodySources(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodySources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_CUSTODY_SOURCES_CC;
     size_t            Size = sizeof(BPNode_AddAuthCustodySourcesCmd_t);
@@ -933,14 +933,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddAuthCustodySources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthCustodySourcesCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-custody-sources */
-void Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_CUSTODY_SOURCES_CC;
     size_t            Size = sizeof(BPNode_AddAuthCustodySourcesCmd_t) - 1; /* Invalid length */
@@ -956,7 +956,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthCustodySourcesCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -964,7 +964,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
 }
 
 /* Test ground command processing after receiving a valid remove-auth-custody-sources */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthCustodySources(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodySources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_CUSTODY_SOURCES_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthCustodySourcesCmd_t);
@@ -973,14 +973,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthCustodySources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthCustodySourcesCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-custody-sources */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_CUSTODY_SOURCES_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthCustodySourcesCmd_t) - 1; /* Invalid length */
@@ -996,7 +996,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthCustodySourcesCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1004,7 +1004,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
 }
 
 /* Test ground command processing after receiving a valid add-auth-custodians */
-void Test_BPNode_ProcessGroundCommand_ValidAddAuthCustodians(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodians(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_CUSTODIANS_CC;
     size_t            Size = sizeof(BPNode_AddAuthCustodiansCmd_t);
@@ -1013,14 +1013,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddAuthCustodians(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthCustodiansCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-custodians */
-void Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodians(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_CUSTODIANS_CC;
     size_t            Size = sizeof(BPNode_AddAuthCustodiansCmd_t) - 1; /* Invalid length */
@@ -1036,7 +1036,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodians(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthCustodiansCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1044,7 +1044,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodians(void)
 }
 
 /* Test ground command processing after receiving a valid remove-auth-custodians */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthCustodians(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodians(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_CUSTODIANS_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthCustodiansCmd_t);
@@ -1053,14 +1053,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthCustodians(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthCustodiansCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-custodians */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_CUSTODIANS_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthCustodiansCmd_t) - 1; /* Invalid length */
@@ -1076,7 +1076,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthCustodiansCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1084,7 +1084,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
 }
 
 /* Test ground command processing after receiving a valid add-auth-report-to-eid */
-void Test_BPNode_ProcessGroundCommand_ValidAddAuthReportToEid(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthReportToEid(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_REPORT_TO_EID_CC;
     size_t            Size = sizeof(BPNode_AddAuthReportToEidCmd_t);
@@ -1093,14 +1093,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddAuthReportToEid(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthReportToEidCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-report-to-eid */
-void Test_BPNode_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_AUTH_REPORT_TO_EID_CC;
     size_t            Size = sizeof(BPNode_AddAuthReportToEidCmd_t) - 1; /* Invalid length */
@@ -1116,7 +1116,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddAuthReportToEidCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1124,7 +1124,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
 }
 
 /* Test ground command processing after receiving a valid remove-auth-report-to-eid */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthReportToEid(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthReportToEid(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_REPORT_TO_EID_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthReportToEidCmd_t);
@@ -1133,14 +1133,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveAuthReportToEid(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthReportToEidCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-report-to-eid */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_AUTH_REPORT_TO_EID_CC;
     size_t            Size = sizeof(BPNode_RemoveAuthReportToEidCmd_t) - 1; /* Invalid length */
@@ -1156,7 +1156,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveAuthReportToEidCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1164,7 +1164,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
 }
 
 /* Test ground command processing after receiving a valid add-latency */
-void Test_BPNode_ProcessGroundCommand_ValidAddLatency(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddLatency(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_LATENCY_CC;
     size_t            Size = sizeof(BPNode_AddLatencyCmd_t);
@@ -1173,14 +1173,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddLatency(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddLatencyCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-latency */
-void Test_BPNode_ProcessGroundCommand_InvalidAddLatency(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_LATENCY_CC;
     size_t            Size = sizeof(BPNode_AddLatencyCmd_t) - 1; /* Invalid length */
@@ -1196,7 +1196,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddLatency(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddLatencyCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1204,7 +1204,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddLatency(void)
 }
 
 /* Test ground command processing after receiving a valid remove-latency */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveLatency(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveLatency(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_LATENCY_CC;
     size_t            Size = sizeof(BPNode_RemoveLatencyCmd_t);
@@ -1213,14 +1213,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveLatency(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveLatencyCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-latency */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveLatency(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_LATENCY_CC;
     size_t            Size = sizeof(BPNode_RemoveLatencyCmd_t) - 1; /* Invalid length */
@@ -1236,7 +1236,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveLatency(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveLatencyCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1244,7 +1244,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveLatency(void)
 }
 
 /* Test ground command processing after receiving a valid contact-setup */
-void Test_BPNode_ProcessGroundCommand_ValidContactSetup(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidContactSetup(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_SETUP_CC;
     size_t            Size = sizeof(BPNode_ContactSetupCmd_t);
@@ -1253,14 +1253,14 @@ void Test_BPNode_ProcessGroundCommand_ValidContactSetup(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactSetupCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid contact-setup */
-void Test_BPNode_ProcessGroundCommand_InvalidContactSetup(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_SETUP_CC;
     size_t            Size = sizeof(BPNode_ContactSetupCmd_t) - 1; /* Invalid length */
@@ -1276,7 +1276,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactSetup(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactSetupCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1284,7 +1284,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactSetup(void)
 }
 
 /* Test ground command processing after receiving a valid contact-start */
-void Test_BPNode_ProcessGroundCommand_ValidContactStart(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidContactStart(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_START_CC;
     size_t            Size = sizeof(BPNode_ContactStartCmd_t);
@@ -1293,14 +1293,14 @@ void Test_BPNode_ProcessGroundCommand_ValidContactStart(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactStartCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid contact-start */
-void Test_BPNode_ProcessGroundCommand_InvalidContactStart(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidContactStart(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_START_CC;
     size_t            Size = sizeof(BPNode_ContactStartCmd_t) - 1; /* Invalid length */
@@ -1316,7 +1316,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactStart(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactStartCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1324,7 +1324,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactStart(void)
 }
 
 /* Test ground command processing after receiving a valid contact-stop */
-void Test_BPNode_ProcessGroundCommand_ValidContactStop(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidContactStop(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_STOP_CC;
     size_t            Size = sizeof(BPNode_ContactStopCmd_t);
@@ -1333,14 +1333,14 @@ void Test_BPNode_ProcessGroundCommand_ValidContactStop(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactStopCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid contact-stop */
-void Test_BPNode_ProcessGroundCommand_InvalidContactStop(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidContactStop(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_STOP_CC;
     size_t            Size = sizeof(BPNode_ContactStopCmd_t) - 1; /* Invalid length */
@@ -1356,7 +1356,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactStop(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactStopCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1364,7 +1364,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactStop(void)
 }
 
 /* Test ground command processing after receiving a valid contact-teardown */
-void Test_BPNode_ProcessGroundCommand_ValidContactTeardown(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidContactTeardown(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_TEARDOWN_CC;
     size_t            Size = sizeof(BPNode_ContactTeardownCmd_t);
@@ -1373,14 +1373,14 @@ void Test_BPNode_ProcessGroundCommand_ValidContactTeardown(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactTeardownCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid contact-teardown */
-void Test_BPNode_ProcessGroundCommand_InvalidContactTeardown(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_CONTACT_TEARDOWN_CC;
     size_t            Size = sizeof(BPNode_ContactTeardownCmd_t) - 1; /* Invalid length */
@@ -1396,7 +1396,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactTeardown(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_ContactTeardownCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1404,7 +1404,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidContactTeardown(void)
 }
 
 /* Test ground command processing after receiving a valid add-mib-array-key */
-void Test_BPNode_ProcessGroundCommand_ValidAddMibArrayKey(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddMibArrayKey(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_MIB_ARRAY_KEY_CC;
     size_t            Size = sizeof(BPNode_AddMibArrayKeyCmd_t);
@@ -1413,14 +1413,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddMibArrayKey(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddMibArrayKeyCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-mib-array-key */
-void Test_BPNode_ProcessGroundCommand_InvalidAddMibArrayKey(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_MIB_ARRAY_KEY_CC;
     size_t            Size = sizeof(BPNode_AddMibArrayKeyCmd_t) - 1; /* Invalid length */
@@ -1436,7 +1436,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddMibArrayKey(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddMibArrayKeyCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1444,7 +1444,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddMibArrayKey(void)
 }
 
 /* Test ground command processing after receiving a valid remove-mib-array-key */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveMibArrayKey(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveMibArrayKey(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_MIB_ARRAY_KEY_CC;
     size_t            Size = sizeof(BPNode_RemoveMibArrayKeyCmd_t);
@@ -1453,14 +1453,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveMibArrayKey(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveMibArrayKeyCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-mib-array-key */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_MIB_ARRAY_KEY_CC;
     size_t            Size = sizeof(BPNode_RemoveMibArrayKeyCmd_t) - 1; /* Invalid length */
@@ -1476,7 +1476,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveMibArrayKeyCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1484,7 +1484,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
 }
 
 /* Test ground command processing after receiving a valid set-mib-item */
-void Test_BPNode_ProcessGroundCommand_ValidSetMibItem(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSetMibItem(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SET_MIB_ITEM_CC;
     size_t            Size = sizeof(BPNode_SetMibItemCmd_t);
@@ -1493,14 +1493,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSetMibItem(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SetMibItemCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid set-mib-item */
-void Test_BPNode_ProcessGroundCommand_InvalidSetMibItem(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SET_MIB_ITEM_CC;
     size_t            Size = sizeof(BPNode_SetMibItemCmd_t) - 1; /* Invalid length */
@@ -1516,7 +1516,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSetMibItem(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SetMibItemCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1524,7 +1524,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSetMibItem(void)
 }
 
 /* Test ground command processing after receiving a valid add-storage-allocation */
-void Test_BPNode_ProcessGroundCommand_ValidAddStorageAllocation(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidAddStorageAllocation(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_STORAGE_ALLOCATION_CC;
     size_t            Size = sizeof(BPNode_AddStorageAllocationCmd_t);
@@ -1533,14 +1533,14 @@ void Test_BPNode_ProcessGroundCommand_ValidAddStorageAllocation(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddStorageAllocationCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid add-storage-allocation */
-void Test_BPNode_ProcessGroundCommand_InvalidAddStorageAllocation(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_STORAGE_ALLOCATION_CC;
     size_t            Size = sizeof(BPNode_AddStorageAllocationCmd_t) - 1; /* Invalid length */
@@ -1556,7 +1556,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddStorageAllocation(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_AddStorageAllocationCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1564,7 +1564,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidAddStorageAllocation(void)
 }
 
 /* Test ground command processing after receiving a valid remove-storage-allocation */
-void Test_BPNode_ProcessGroundCommand_ValidRemoveStorageAllocation(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidRemoveStorageAllocation(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_STORAGE_ALLOCATION_CC;
     size_t            Size = sizeof(BPNode_RemoveStorageAllocationCmd_t);
@@ -1573,14 +1573,14 @@ void Test_BPNode_ProcessGroundCommand_ValidRemoveStorageAllocation(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveStorageAllocationCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid remove-storage-allocation */
-void Test_BPNode_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_REMOVE_STORAGE_ALLOCATION_CC;
     size_t            Size = sizeof(BPNode_RemoveStorageAllocationCmd_t) - 1; /* Invalid length */
@@ -1596,7 +1596,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_RemoveStorageAllocationCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1604,7 +1604,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
 }
 
 /* Test ground command processing after receiving a valid perform-self-test */
-void Test_BPNode_ProcessGroundCommand_ValidPerformSelfTest(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidPerformSelfTest(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_PERFORM_SELF_TEST_CC;
     size_t            Size = sizeof(BPNode_PerformSelfTestCmd_t);
@@ -1613,14 +1613,14 @@ void Test_BPNode_ProcessGroundCommand_ValidPerformSelfTest(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_PerformSelfTestCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid perform-self-test */
-void Test_BPNode_ProcessGroundCommand_InvalidPerformSelfTest(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_PERFORM_SELF_TEST_CC;
     size_t            Size = sizeof(BPNode_PerformSelfTestCmd_t) - 1; /* Invalid length */
@@ -1636,7 +1636,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidPerformSelfTest(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_PerformSelfTestCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1644,7 +1644,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidPerformSelfTest(void)
 }
 
 /* Test ground command processing after receiving a valid send-node-mib-config-hk */
-void Test_BPNode_ProcessGroundCommand_ValidSendNodeMibConfigHk(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibConfigHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_CONFIG_HK_CC;
     size_t            Size = sizeof(BPNode_SendNodeMibConfigHkCmd_t);
@@ -1653,14 +1653,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSendNodeMibConfigHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendNodeMibConfigHkCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-config-hk */
-void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_CONFIG_HK_CC;
     size_t            Size = sizeof(BPNode_SendNodeMibConfigHkCmd_t) - 1; /* Invalid length */
@@ -1676,7 +1676,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendNodeMibConfigHkCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1684,7 +1684,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
 }
 
 /* Test ground command processing after receiving a valid send-source-mib-config-hk */
-void Test_BPNode_ProcessGroundCommand_ValidSendSourceMibConfigHk(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibConfigHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC;
     size_t            Size = sizeof(BPNode_SendSourceMibConfigHkCmd_t);
@@ -1693,14 +1693,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSendSourceMibConfigHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendSourceMibConfigHkCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-source-mib-config-hk */
-void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC;
     size_t            Size = sizeof(BPNode_SendSourceMibConfigHkCmd_t) - 1; /* Invalid length */
@@ -1716,7 +1716,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendSourceMibConfigHkCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1724,7 +1724,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
 }
 
 /* Test ground command processing after receiving a valid send-node-mib-counters-hk */
-void Test_BPNode_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
     size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t);
@@ -1733,14 +1733,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendNodeMibCountersHkCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-counters-hk */
-void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
     size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t) - 1; /* Invalid length */
@@ -1756,7 +1756,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendNodeMibCountersHkCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1764,7 +1764,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
 }
 
 /* Test ground command processing after receiving a valid send-source-mib-counters-hk */
-void Test_BPNode_ProcessGroundCommand_ValidSendSourceMibCountersHk(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC;
     size_t            Size = sizeof(BPNode_SendSourceMibCountersHkCmd_t);
@@ -1773,14 +1773,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSendSourceMibCountersHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendSourceMibCountersHkCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-source-mib-counters-hk */
-void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC;
     size_t            Size = sizeof(BPNode_SendSourceMibCountersHkCmd_t) - 1; /* Invalid length */
@@ -1796,7 +1796,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendSourceMibCountersHkCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1804,7 +1804,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
 }
 
 /* Test ground command processing after receiving a valid send-storage-hk-tlm */
-void Test_BPNode_ProcessGroundCommand_ValidSendStorageHkTlm(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_STORAGE_HK_CC;
     size_t            Size = sizeof(BPNode_SendStorageHkCmd_t);
@@ -1813,14 +1813,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSendStorageHkTlm(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendStorageHkCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-storage-hk-tlm */
-void Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_STORAGE_HK_CC;
     size_t            Size = sizeof(BPNode_SendStorageHkCmd_t) - 1; /* Invalid length */
@@ -1836,7 +1836,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendStorageHkCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1844,7 +1844,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
 }
 
 /* Test ground command processing after receiving a valid send-channel-contact-stat-hk-tlm */
-void Test_BPNode_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
+void Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC;
     size_t            Size = sizeof(BPNode_SendChannelContactStatHkCmd_t);
@@ -1853,14 +1853,14 @@ void Test_BPNode_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendChannelContactStatHkCmd, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-channel-contact-stat-hk-tlm */
-void Test_BPNode_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 {
     CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC;
     size_t            Size = sizeof(BPNode_SendChannelContactStatHkCmd_t) - 1; /* Invalid length */
@@ -1876,7 +1876,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPA_DP_SendChannelContactStatHkCmd, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1885,7 +1885,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 
 
 /* Test ground command processing after receiving an invalid command code */
-void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidCmdCode(void)
 {
     UT_CheckEvent_t   EventTest;
     CFE_MSG_FcnCode_t FcnCode = 1000;   /* Invalid CC */
@@ -1894,7 +1894,7 @@ void Test_BPNode_ProcessGroundCommand_InvalidCmdCode(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
 
-    BPNode_ProcessGroundCommand(&Buf);
+    BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
@@ -1908,7 +1908,7 @@ void Test_BPNode_VerifyCmdLength_Nominal(void)
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &ActualLength, sizeof(ActualLength), false);
 
-    BPNode_VerifyCmdLength(NULL, ExpectedLength);
+    BPA_DP_VerifyCmdLength(NULL, ExpectedLength);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
@@ -1926,7 +1926,7 @@ void Test_BPNode_VerifyCmdLength_InvalidLength(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
 
-    BPNode_VerifyCmdLength(NULL, ExpectedLength);
+    BPA_DP_VerifyCmdLength(NULL, ExpectedLength);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
@@ -3136,100 +3136,100 @@ void UtTest_Setup(void)
     ADD_TEST(TEST_BPA_DP_SendChannelContactStatHkCmd_Nominal);
     ADD_TEST(TEST_BPA_DP_SendChannelContactStatHkCmd_Error);
 
-    ADD_TEST(Test_BPNode_TaskPipe_Nominal);
-    ADD_TEST(Test_BPNode_TaskPipe_InvalidMsgId);
+    ADD_TEST(Test_BPA_DP_TaskPipe_Nominal);
+    ADD_TEST(Test_BPA_DP_TaskPipe_InvalidMsgId);
 
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidNoop);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidNoop);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddAllApplications);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddAllApplications);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidStartAllApplications);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidStartAllApplications);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidVerifyBundleStorage);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleStorage);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidInitBundleStorage);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidInitBundleStorage);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidVerifyBundleMetadata);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidVerifyBundleMetadata);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRebuildBundleMetadata);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRebuildBundleMetadata);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidClearVolatile);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidClearVolatile);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidReloadSavedData);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidReloadSavedData);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidResetAllCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidResetAllCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidResetCounter);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidResetCounter);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidResetSourceCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidResetSourceCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidResetBundleCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidResetBundleCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidResetErrorCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidResetErrorCounters);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSetRegistrationState);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSetRegistrationState);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidStartApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidStartApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidStopApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidStopApplication);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddAuthSources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddAuthSources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveAuthSources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthSources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddAuthCustodySources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodySources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveAuthCustodySources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodySources);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddAuthCustodians);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddAuthCustodians);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveAuthCustodians);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthCustodians);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddAuthReportToEid);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddAuthReportToEid);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveAuthReportToEid);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveAuthReportToEid);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddLatency);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddLatency);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveLatency);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveLatency);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidContactSetup);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidContactSetup);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidContactStart);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidContactStart);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidContactStop);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidContactStop);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidContactTeardown);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidContactTeardown);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddMibArrayKey);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddMibArrayKey);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveMibArrayKey);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveMibArrayKey);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSetMibItem);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSetMibItem);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidAddStorageAllocation);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidAddStorageAllocation);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidRemoveStorageAllocation);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidRemoveStorageAllocation);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidPerformSelfTest);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidPerformSelfTest);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSendNodeMibConfigHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibConfigHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSendSourceMibConfigHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibConfigHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSendNodeMibCountersHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSendNodeMibCountersHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSendSourceMibCountersHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSendSourceMibCountersHk);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSendStorageHkTlm);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSendStorageHkTlm);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);
-    ADD_TEST(Test_BPNode_ProcessGroundCommand_InvalidCmdCode);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidNoop);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidNoop);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAllApplications);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStartAllApplications);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleStorage);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidInitBundleStorage);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleMetadata);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRebuildBundleMetadata);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidClearVolatile);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidReloadSavedData);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetAllCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetCounter);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetSourceCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetBundleCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetErrorCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSetRegistrationState);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStartApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStopApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthSources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthSources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodySources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodySources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodians);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodians);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthReportToEid);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthReportToEid);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddLatency);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveLatency);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactSetup);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactStart);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactStart);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactStop);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactStop);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactTeardown);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddMibArrayKey);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveMibArrayKey);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSetMibItem);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddStorageAllocation);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveStorageAllocation);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidPerformSelfTest);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibConfigHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibConfigHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCmdCode);
 
     ADD_TEST(Test_BPNode_VerifyCmdLength_Nominal);
     ADD_TEST(Test_BPNode_VerifyCmdLength_InvalidLength);

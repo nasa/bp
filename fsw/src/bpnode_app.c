@@ -132,7 +132,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
         if (Status == CFE_SUCCESS && BufPtr != NULL)
         {
-            BPNode_TaskPipe(BufPtr);
+            BPA_DP_TaskPipe(BufPtr);
         }
 
     } while (Status == CFE_SUCCESS);
