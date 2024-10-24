@@ -1737,7 +1737,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibConfigHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibConfigHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-config-hk */
@@ -1779,7 +1780,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibConfigHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibConfigHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-source-mib-config-hk */
@@ -1821,7 +1823,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-counters-hk */
@@ -1863,7 +1866,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibCountersHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-source-mib-counters-hk */
@@ -1905,7 +1909,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendStorageHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-storage-hk-tlm */
@@ -1947,7 +1952,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 1);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount, 0);
+    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 0);
 }
 
 /* Test ground command processing after receiving an invalid send-channel-contact-stat-hk-tlm */
