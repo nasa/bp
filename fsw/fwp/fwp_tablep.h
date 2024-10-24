@@ -46,17 +46,6 @@
 CFE_Status_t BPA_TABLEP_TableInit(void);
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
 CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
-CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_CRSTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_CustodianAuthTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_CustodyAuthTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_MIBConfigPNTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_MIBConfigPSTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_ReportToAuthTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_SrcAuthTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_SrcLatencyTblValidateFunc(void *TblData);
-CFE_Status_t BPNode_StorageTblValidateFunc(void *TblData);
-
 
 #endif /* FWP_TABLEP_H */
 
