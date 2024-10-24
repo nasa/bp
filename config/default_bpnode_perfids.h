@@ -30,12 +30,12 @@
 ** Macro Definitions
 */
 
-#define BPNODE_PERF_ID (99)
+#define BPNODE_PERF_ID                      (75)
 
-#define BPNODE_ADU_IN_PERF_ID_BASE (110)
-#define BPNODE_ADU_OUT_PERF_ID_BASE (120)
+#define BPNODE_ADU_IN_PERF_ID_BASE          (80)
+#define BPNODE_ADU_OUT_PERF_ID_BASE         (90)
 
-#define BPNODE_CLA_IN_PERF_ID_BASE          (180)
-#define BPNODE_CLA_OUT_PERF_ID_BASE         (190)
+#define BPNODE_CLA_IN_PERF_ID_BASE          (100)
+#define BPNODE_CLA_OUT_PERF_ID_BASE         (110)
 
 #endif /* BPNODE_PERFIDS_H */
