@@ -463,16 +463,14 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_CONFIG_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibConfigHkCmd_t)))
             {
-                BPLib_NC_SendNodeMibConfigHk();
-                Status = BPLIB_UNKNOWN;
+                Status = BPLib_NC_SendNodeMibConfigHk();
             }
             break;
 
         case BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibConfigHkCmd_t)))
             {
-                BPLib_NC_SendSourceMibConfigHk();
-                Status = BPLIB_UNKNOWN;
+                Status = BPLib_NC_SendSourceMibConfigHk();
             }
             break;
 
@@ -511,16 +509,14 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibCountersHkCmd_t)))
             {
-                BPLib_NC_SendSourceMibCountersHk();
-                Status = BPLIB_UNKNOWN;
+                Status = BPLib_NC_SendSourceMibCountersHk();
             }
             break;
 
         case BPNODE_SEND_STORAGE_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
             {
-                BPLib_NC_SendStorageHk();
-                Status = BPLIB_UNKNOWN;
+                Status = BPLib_NC_SendStorageHk();
             }
             break;
 
