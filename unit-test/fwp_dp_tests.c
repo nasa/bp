@@ -40,7 +40,7 @@ void Test_BPA_DP_TaskPipe_Nominal(void)
     CFE_SB_Buffer_t   Buf;
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_MSG_FcnCode_t FcnCode = BPNODE_ADD_ALL_APPLICATIONS_CC;
-    size_t            MsgSize = sizeof(BPNode_NoopCmd_t);
+    size_t            MsgSize = sizeof(BPNode_AddAllApplicationsCmd_t);
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
@@ -49,7 +49,7 @@ void Test_BPA_DP_TaskPipe_Nominal(void)
     BPA_DP_TaskPipe(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(BPLib_NC_Noop, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_AddAllApplications, 1);
 }
 
 /* Test task pipe processing after receiving an invalid message ID */
