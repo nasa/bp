@@ -1983,7 +1983,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 
 
 /* Test ground command processing after receiving an invalid command code */
-void Test_BPLib_NC_ProcessGroundCommand_InvalidCode(void)
+void Test_BPA_DP_ProcessGroundCommand_InvalidCode(void)
 {
     UT_CheckEvent_t   EventTest;
     CFE_MSG_FcnCode_t FcnCode = 1000;   /* Invalid CC */
@@ -2000,7 +2000,7 @@ void Test_BPLib_NC_ProcessGroundCommand_InvalidCode(void)
 }
 
 /* Test command length verification in nominal case */
-void Test_BPNode_VerifyCmdLength_Nominal(void)
+void Test_BPA_DP_VerifyCmdLength_Nominal(void)
 {
     size_t            ActualLength   = 1;
     size_t            ExpectedLength = ActualLength;
@@ -2014,7 +2014,7 @@ void Test_BPNode_VerifyCmdLength_Nominal(void)
 }
 
 /* Test command length verification for an invalid length */
-void Test_BPNode_VerifyCmdLength_InvalidLength(void)
+void Test_BPA_DP_VerifyCmdLength_InvalidLength(void)
 {
     size_t            ActualLength   = 1;
     size_t            ExpectedLength = 2;
@@ -2172,8 +2172,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);
 
-    ADD_TEST(Test_BPLib_NC_ProcessGroundCommand_InvalidCode);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCode);
 
-    ADD_TEST(Test_BPNode_VerifyCmdLength_Nominal);
-    ADD_TEST(Test_BPNode_VerifyCmdLength_InvalidLength);
+    ADD_TEST(Test_BPA_DP_VerifyCmdLength_Nominal);
+    ADD_TEST(Test_BPA_DP_VerifyCmdLength_InvalidLength);
 }
