@@ -30,6 +30,7 @@
 #include "bplib.h"
 #include "bpnode_test_utils.h"
 #include "fwp_tablep.h"
+#include "fwp_dp.h"
 
 /* Handler to set table pointers to test tables */
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey, 
