@@ -478,6 +478,29 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
             {
                 Status = BPLib_NC_SendNodeMibCountersHk();
+
+                BPLib_TIME_MonotonicTime_t MonotonicTime;
+                uint8 i;
+
+                BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
+                BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+
+                /* Get ADU counts for all ADU child tasks */
+                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+                {
+                    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
+                    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
+                }
+
+                /* Get DTN time data */
+                BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+
+                BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
+                BPNode_AppData.NodeMibCountersHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
+                BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+
+                CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
+                CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
             }
             break;
 
@@ -499,6 +522,25 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
             {
                 Status = BPLib_NC_SendChannelContactStatHk();
+
+                BPLib_TIME_MonotonicTime_t MonotonicTime;
+                uint8 i;
+
+                /* Get ADU status from all child tasks */
+                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+                {
+                    BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
+                }
+
+                /* Get DTN time data */
+                BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+
+                BPNode_AppData.ChannelContactStatHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
+                BPNode_AppData.ChannelContactStatHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
+                BPNode_AppData.ChannelContactStatHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
+
+                CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
+                CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
             }
             break;
 
