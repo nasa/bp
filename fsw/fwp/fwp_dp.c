@@ -463,24 +463,28 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_CONFIG_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibConfigHkCmd_t)))
             {
-                Status = BPLib_NC_SendNodeMibConfigHk();
+                BPLib_NC_SendNodeMibConfigHk();
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
         case BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibConfigHkCmd_t)))
             {
-                Status = BPLib_NC_SendSourceMibConfigHk();
+                BPLib_NC_SendSourceMibConfigHk();
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
         case BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
             {
-                Status = BPLib_NC_SendNodeMibCountersHk();
-
                 BPLib_TIME_MonotonicTime_t MonotonicTime;
                 uint8 i;
+
+                BPLib_NC_SendNodeMibCountersHk();
+
+                Status = BPLIB_UNKNOWN;
 
                 BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
                 BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
@@ -507,24 +511,28 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibCountersHkCmd_t)))
             {
-                Status = BPLib_NC_SendSourceMibCountersHk();
+                BPLib_NC_SendSourceMibCountersHk();
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
         case BPNODE_SEND_STORAGE_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
             {
-                Status = BPLib_NC_SendStorageHk();
+                BPLib_NC_SendStorageHk();
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
             {
-                Status = BPLib_NC_SendChannelContactStatHk();
-
                 BPLib_TIME_MonotonicTime_t MonotonicTime;
                 uint8 i;
+
+                BPLib_NC_SendChannelContactStatHk();
+
+                Status = BPLIB_UNKNOWN;
 
                 /* Get ADU status from all child tasks */
                 for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
