@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPLib_PD_CustodyTable_t CustodyTable = {
+BPLib_PDB_CustodyTable_t CustodyTable = {
     .AuthCustodySrc = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
 };
 

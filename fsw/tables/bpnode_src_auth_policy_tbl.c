@@ -30,7 +30,7 @@
 ** The following is an example of the declaration statement that defines the desired
 ** contents of the table image.
 */
-BPLib_PD_SrcAuthTable_t SrcAuthTable = {
+BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
     .AuthSrcEIDs = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
 };
 

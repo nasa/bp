@@ -58,13 +58,13 @@ BPNode_TblNameParams_t TblNameParamsArr_test[] =
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, NULL},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_CLA_ContactsTable_t),   NULL, NULL},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPLib_ARP_CRSTable_t),        NULL, NULL},
-    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PD_CustodianTable_t),   NULL, NULL},
-    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PD_CustodyTable_t),     NULL, NULL},
+    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PDB_CustodianTable_t),  NULL, NULL},
+    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PDB_CustodyTable_t),    NULL, NULL},
     {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPNTable_t), NULL, NULL},
     {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPSTable_t), NULL, NULL},
-    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PD_ReportToTable_t),    NULL, NULL},
-    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PD_SrcAuthTable_t),     NULL, NULL},
-    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PD_SrcLatencyTable_t),  NULL, NULL},
+    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PDB_ReportToTable_t),   NULL, NULL},
+    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PDB_SrcAuthTable_t),    NULL, NULL},
+    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PDB_SrcLatencyTable_t), NULL, NULL},
     {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPLib_STOR_StorageTable_t),   NULL, NULL}
 };
 

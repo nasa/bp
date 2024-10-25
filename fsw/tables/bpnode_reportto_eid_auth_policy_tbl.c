@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPLib_PD_ReportToTable_t ReportToTable = {
+BPLib_PDB_ReportToTable_t ReportToTable = {
     .AuthReportToEIDs = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
 };
 

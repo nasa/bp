@@ -44,13 +44,13 @@ BPNode_TblNameParams_t TblNameParamsArr0[] =
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PI_ValidateConfigs},
     {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_CLA_ContactsTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_CLA_ContactsTblValidateFunc},
     {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPLib_ARP_CRSTable_t),        NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_ARP_CRSTblValidateFunc},
-    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PD_CustodianTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PD_CustodianAuthTblValidateFunc},
-    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PD_CustodyTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PD_CustodyAuthTblValidateFunc},
+    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PDB_CustodianTable_t),  NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_CustodianAuthTblValidateFunc},
+    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PDB_CustodyTable_t),    NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_CustodyAuthTblValidateFunc},
     {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPNTable_t), NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_NC_MIBConfigPNTblValidateFunc},
     {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPSTable_t), NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_NC_MIBConfigPSTblValidateFunc},
-    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PD_ReportToTable_t),    NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PD_ReportToAuthTblValidateFunc},
-    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PD_SrcAuthTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PD_SrcAuthTblValidateFunc},
-    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PD_SrcLatencyTable_t),  NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PD_SrcLatencyTblValidateFunc},
+    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PDB_ReportToTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_ReportToAuthTblValidateFunc},
+    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PDB_SrcAuthTable_t),    NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_SrcAuthTblValidateFunc},
+    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PDB_SrcLatencyTable_t), NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_SrcLatencyTblValidateFunc},
     {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPLib_STOR_StorageTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_STOR_StorageTblValidateFunc}
 };
 

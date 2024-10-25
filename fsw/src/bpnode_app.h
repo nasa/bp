@@ -103,13 +103,13 @@ typedef struct
     BPLib_PI_ChannelTable_t     *ChanTblPtr;
     BPLib_CLA_ContactsTable_t   *ContactsTblPtr;
     BPLib_ARP_CRSTable_t        *CrsTblPtr;
-    BPLib_PD_CustodianTable_t   *CustodianTblPtr;
-    BPLib_PD_CustodyTable_t     *CustodyTblPtr;
+    BPLib_PDB_CustodianTable_t  *CustodianTblPtr;
+    BPLib_PDB_CustodyTable_t    *CustodyTblPtr;
     BPLib_NC_MIBConfigPNTable_t *MibPnTblPtr;
     BPLib_NC_MIBConfigPSTable_t *MibPsTblPtr;
-    BPLib_PD_ReportToTable_t    *ReportTblPtr;
-    BPLib_PD_SrcAuthTable_t     *AuthTblPtr;
-    BPLib_PD_SrcLatencyTable_t  *LatTblPtr;
+    BPLib_PDB_ReportToTable_t   *ReportTblPtr;
+    BPLib_PDB_SrcAuthTable_t    *AuthTblPtr;
+    BPLib_PDB_SrcLatencyTable_t *LatTblPtr;
     BPLib_STOR_StorageTable_t   *StorTblPtr;    
 } BPNode_AppData_t;
 

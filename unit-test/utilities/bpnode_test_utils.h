@@ -56,13 +56,13 @@ extern BPA_ADUP_Table_t            TestAduTbl;
 extern BPLib_PI_ChannelTable_t     TestChanTbl;
 extern BPLib_CLA_ContactsTable_t   TestContactsTbl;
 extern BPLib_ARP_CRSTable_t        TestCrsTbl;
-extern BPLib_PD_CustodianTable_t   TestCustodianTbl;
-extern BPLib_PD_CustodyTable_t     TestCustodyTbl;
+extern BPLib_PDB_CustodianTable_t  TestCustodianTbl;
+extern BPLib_PDB_CustodyTable_t    TestCustodyTbl;
 extern BPLib_NC_MIBConfigPNTable_t TestMibPnTbl;
 extern BPLib_NC_MIBConfigPSTable_t TestMibPsTbl;
-extern BPLib_PD_ReportToTable_t    TestReportTbl;
-extern BPLib_PD_SrcAuthTable_t     TestAuthTbl;
-extern BPLib_PD_SrcLatencyTable_t  TestLatencyTbl;
+extern BPLib_PDB_ReportToTable_t   TestReportTbl;
+extern BPLib_PDB_SrcAuthTable_t    TestAuthTbl;
+extern BPLib_PDB_SrcLatencyTable_t TestLatencyTbl;
 extern BPLib_STOR_StorageTable_t   TestStorTbl;
 
 /*
