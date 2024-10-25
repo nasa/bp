@@ -30,7 +30,6 @@
 #include "bpnode_app.h"
 #include "bpnode_utils.h"
 #include "bpnode_eventids.h"
-#include "bpnode_dispatch.h"
 #include "bpnode_tbl.h"
 #include "bpnode_version.h"
 
@@ -133,7 +132,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
         if (Status == CFE_SUCCESS && BufPtr != NULL)
         {
-            BPNode_TaskPipe(BufPtr);
+            BPA_DP_TaskPipe(BufPtr);
         }
 
     } while (Status == CFE_SUCCESS);

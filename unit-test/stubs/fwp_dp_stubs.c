@@ -27,6 +27,34 @@
 #include "fwp_dp.h"
 #include "utgenstub.h"
 
+/* Stub for BPA_DP_VerifyCmdLength() */
+bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_DP_VerifyCmdLength, bool);
+
+    UT_GenStub_AddParam(BPA_DP_VerifyCmdLength, const CFE_MSG_Message_t*, MsgPtr);
+    UT_GenStub_AddParam(BPA_DP_VerifyCmdLength, size_t, ExpectedLength);
+
+    UT_GenStub_Execute(BPA_DP_VerifyCmdLength, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_DP_VerifyCmdLength, bool);
+}
+
+/* Stub for BPA_DP_ProcessGroundCommand() */
+void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
+{
+    UT_GenStub_AddParam(BPA_DP_ProcessGroundCommand, const CFE_SB_Buffer_t*, SBBufPtr);
+
+    UT_GenStub_Execute(BPA_DP_ProcessGroundCommand, Basic, NULL);
+}
+
+void BPA_DP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
+{
+    UT_GenStub_AddParam(BPA_DP_TaskPipe, const CFE_SB_Buffer_t*, SBBufPtr);
+
+    UT_GenStub_Execute(BPA_DP_TaskPipe, Basic, NULL);
+}
+
 /*
  * ----------------------------------------------------
  * Generated stub function for BPA_DP_AddAllApplicationsCmd()
@@ -34,7 +62,6 @@
  */
 void BPA_DP_AddAllApplicationsCmd(void)
 {
-
     UT_GenStub_Execute(BPA_DP_AddAllApplicationsCmd, Basic, NULL);
 }
 
