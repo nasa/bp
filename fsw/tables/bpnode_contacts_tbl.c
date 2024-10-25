@@ -28,7 +28,7 @@
 #include "bplib.h"
 
 
-BPLib_ContactsTable_t ContactsTable = 
+BPLib_CLA_ContactsTable_t ContactsTable = 
 {
     .ContactSet = {
         {

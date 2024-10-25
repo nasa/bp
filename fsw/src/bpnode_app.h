@@ -45,7 +45,6 @@
 #include "bpnode_eventids.h"
 #include "bpnode_adu_in.h"
 #include "bpnode_adu_out.h"
-//#include "fwp_adup.h"
 #include "bpnode_cla_in.h"
 #include "bpnode_cla_out.h"
 #include "fwp.h"
@@ -102,17 +101,16 @@ typedef struct
 
     BPA_ADUP_Table_t            *AduTblPtr;
     BPLib_PI_ChannelTable_t     *ChanTblPtr;
-    BPLib_ContactsTable_t       *ContactsTblPtr;
-
-    BPNode_CRSTable_t           *CrsTblPtr;
-    BPNode_CustodianTable_t     *CustodianTblPtr;
-    BPNode_CustodyTable_t       *CustodyTblPtr;
-    BPNode_MIBConfigPNTable_t   *MibPnTblPtr;
-    BPNode_MIBConfigPSTable_t   *MibPsTblPtr;
-    BPNode_ReportToTable_t      *ReportTblPtr;
-    BPNode_SrcAuthTable_t       *AuthTblPtr;
-    BPNode_SrcLatencyTable_t    *LatTblPtr;
-    BPNode_StorageTable_t       *StorTblPtr;    
+    BPLib_CLA_ContactsTable_t   *ContactsTblPtr;
+    BPLib_ARP_CRSTable_t        *CrsTblPtr;
+    BPLib_PDB_CustodianTable_t  *CustodianTblPtr;
+    BPLib_PDB_CustodyTable_t    *CustodyTblPtr;
+    BPLib_NC_MIBConfigPNTable_t *MibPnTblPtr;
+    BPLib_NC_MIBConfigPSTable_t *MibPsTblPtr;
+    BPLib_PDB_ReportToTable_t   *ReportTblPtr;
+    BPLib_PDB_SrcAuthTable_t    *AuthTblPtr;
+    BPLib_PDB_SrcLatencyTable_t *LatTblPtr;
+    BPLib_STOR_StorageTable_t   *StorTblPtr;    
 } BPNode_AppData_t;
 
 

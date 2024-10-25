@@ -68,7 +68,7 @@ typedef struct
     size_t                          CurrentBufferSize;
     uint8_t                         BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
     
-    BPLib_ContactsTable_t           ContactsTbl;
+    BPLib_CLA_ContactsTable_t       ContactsTbl;
     
 } BPNode_ClaOutData_t;
 
