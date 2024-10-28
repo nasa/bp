@@ -199,9 +199,6 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
-    /* Zero out the global data structure */
-    CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
-
     /* Register with Event Services */
     BpStatus = BPLib_EM_Init();
     if (BpStatus != CFE_SUCCESS)
@@ -219,6 +216,14 @@ CFE_Status_t BPNode_AppInit(void)
                             "Error initializing BPLib Time Management, RC = %d", BpStatus);
         
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    /* Make all counter values zero */
+    BpStatus = BPLib_NC_ResetAllCounters();
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_AS_ZERO_OUT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error resetting all counters to zero, RC = %d", BpStatus);
     }
 
     /* Create command pipe */
