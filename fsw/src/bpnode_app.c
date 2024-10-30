@@ -222,8 +222,10 @@ CFE_Status_t BPNode_AppInit(void)
     BpStatus = BPLib_NC_ResetAllCounters();
     if (BpStatus != BPLIB_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_AS_ZERO_OUT_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_AS_RESET_ALL_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error resetting all counters to zero, RC = %d", BpStatus);
+
+        return BpStatus;
     }
 
     /* Create command pipe */
