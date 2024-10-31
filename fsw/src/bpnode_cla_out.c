@@ -282,12 +282,16 @@ void BPNode_ClaOut_AppMain(void)
             Status = BPNode_CLA_ProcessBundleOutput(&BPNode_AppData.ClaOutData[ContId], ContId);
             if (Status != CFE_SUCCESS)
             {
+                BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
                 OS_TaskDelay(BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC);
+                BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
             }
         }
         else 
         {
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
             (void) OS_TaskDelay(BPNODE_CLA_OUT_SLEEP_MSEC);
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
         }
     }
 
