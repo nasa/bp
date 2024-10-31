@@ -197,9 +197,15 @@ int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId
         RdBuf.BufferSize = sizeof(CLAIngress->BundleBuffer);
         RdBuf.BufferMem  = CLAIngress->BundleBuffer;
 
+        /* Exit performance log */
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+        
         Status = CFE_PSP_IODriver_Command(&CLAIngress->PspLocation, CFE_PSP_IODriver_PACKET_IO_READ,
                                           CFE_PSP_IODriver_VPARG(&RdBuf));
 
+        /* Start performance log */
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+        
         if (Status == CFE_PSP_SUCCESS)
         {
             CLAIngress->CurrentBufferSize = RdBuf.BufferSize;
@@ -213,8 +219,15 @@ int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId
 
     if (CLAIngress->CurrentBufferSize != 0)
     {
+        /* Exit performance log */
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+        
         Status = BPLib_CLA_Ingress(ContId, CLAIngress->BundleBuffer,
                                             CLAIngress->CurrentBufferSize, 0);
+        
+        /* Start performance log */
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
         if (Status != BPLIB_CLA_TIMEOUT)
         {
             CLAIngress->CurrentBufferSize = 0;
@@ -273,12 +286,16 @@ void BPNode_ClaIn_AppMain(void)
             Status = BPNode_CLA_ProcessBundleInput(&BPNode_AppData.ClaInData[ContId], ContId);
             if (Status != CFE_SUCCESS)
             {
+                BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
                 OS_TaskDelay(BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC);
+                BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
             }
         }
         else 
         {
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
             (void) OS_TaskDelay(BPNODE_CLA_IN_SLEEP_MSEC);
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
         }
     }
 

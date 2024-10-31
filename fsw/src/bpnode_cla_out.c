@@ -199,7 +199,15 @@ int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContI
     {
         /* Load next bundle */
         TempSize = sizeof(CLAEgress->BundleBuffer);
+        
+        /* Exit performance log */
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
+
         Status = BPLib_CLA_Egress(ContId, CLAEgress->BundleBuffer, &TempSize, 100);
+        
+        /* Start performance log */
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
+
         if (Status == BPLIB_SUCCESS)
         {
             CLAEgress->CurrentBufferSize = TempSize;
@@ -217,10 +225,16 @@ int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContI
         /* Read next bundle */
         WrBuf.OutputSize = CLAEgress->CurrentBufferSize;
         WrBuf.BufferMem  = CLAEgress->BundleBuffer;
+        
+        /* Exit performance log */
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         /* this does not check return code here, it is "best effort" at this stage.
          * bplib should retry based on custody signals if this does not work. */
         CFE_PSP_IODriver_Command(&CLAEgress->PspLocation, CFE_PSP_IODriver_PACKET_IO_WRITE, CFE_PSP_IODriver_VPARG(&WrBuf));
+        
+        /* Start performance log */
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         CLAEgress->CurrentBufferSize = 0;
     }
@@ -268,12 +282,16 @@ void BPNode_ClaOut_AppMain(void)
             Status = BPNode_CLA_ProcessBundleOutput(&BPNode_AppData.ClaOutData[ContId], ContId);
             if (Status != CFE_SUCCESS)
             {
+                BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
                 OS_TaskDelay(BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC);
+                BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
             }
         }
         else 
         {
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
             (void) OS_TaskDelay(BPNODE_CLA_OUT_SLEEP_MSEC);
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
         }
     }
 
