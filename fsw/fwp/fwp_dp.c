@@ -61,7 +61,7 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
 
         Result = false;
 
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        BPLib_AS_Increment(BPLIB_AS_NODE_EID, BUNDLE_AGT_REJ_CNT);
     }
 
     return Result;
@@ -161,20 +161,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_ALL_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetAllCountersCmd_t)))
             {
-                uint8 i;
-
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount = 0;
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount = 0;
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
-
-                for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
-                {
-                    BPNode_AppData.AduInData[i].AduCountReceived = 0;
-                    BPNode_AppData.AduOutData[i].AduCountDelivered = 0;
-                }
-
-                // Don't modify Status to guarantee that the directive counters don't increment
                 BPLib_NC_ResetAllCounters();
             }
             break;
@@ -559,11 +545,11 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
     if (Status == BPLIB_SUCCESS)
     {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.AcceptedDirectiveCount++;
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount++;
     }
     else if (Status != BPLIB_UNKNOWN)
     {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+        BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount++;
     }
 }
 
@@ -581,7 +567,7 @@ void BPA_DP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
             break;
 
         default:
-            BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount++;
+            BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount++;
 
             BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid command packet,MID = 0x%x",
