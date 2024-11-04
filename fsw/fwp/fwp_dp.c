@@ -464,31 +464,24 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
             {
                 BPLib_TIME_MonotonicTime_t MonotonicTime;
+                uint32_t ADU_Delivered;
+                uint32_t ADU_Received;
                 uint8 i;
 
-                BPLib_NC_SendNodeMibCountersHk();
-
-                Status = BPLIB_UNKNOWN;
-
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered = 0;
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived = 0;
+                ADU_Delivered = 0;
+                ADU_Received  = 0;
 
                 /* Get ADU counts for all ADU child tasks */
                 for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
                 {
-                    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountDelivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
-                    BPNode_AppData.NodeMibCountersHkTlm.Payload.AduCountReceived += BPNode_AppData.AduInData[i].AduCountReceived;
+                    ADU_Delivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
+                    ADU_Received  += BPNode_AppData.AduInData[i].AduCountReceived;
                 }
 
-                /* Get DTN time data */
-                BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+                BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_DELVR, ADU_Delivered);
+                BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_RECV,  ADU_Received);
 
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
-                BPNode_AppData.NodeMibCountersHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
-
-                CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader));
-                CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.NodeMibCountersHkTlm.TelemetryHeader), true);
+                Status = BPLib_NC_SendNodeMibCountersHk();
             }
             break;
 
