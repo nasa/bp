@@ -463,7 +463,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
             {
-                BPLib_TIME_MonotonicTime_t MonotonicTime;
                 uint32_t ADU_Delivered;
                 uint32_t ADU_Received;
                 uint8 i;
@@ -502,28 +501,15 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
             {
-                BPLib_TIME_MonotonicTime_t MonotonicTime;
                 uint8 i;
-
-                BPLib_NC_SendChannelContactStatHk();
-
-                Status = BPLIB_UNKNOWN;
 
                 /* Get ADU status from all child tasks */
                 for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
                 {
-                    BPNode_AppData.ChannelContactStatHkTlm.Payload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
+                    BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
                 }
 
-                /* Get DTN time data */
-                BPLib_TIME_GetMonotonicTime(&MonotonicTime);
-
-                BPNode_AppData.ChannelContactStatHkTlm.Payload.MonotonicTime = MonotonicTime.Time;
-                BPNode_AppData.ChannelContactStatHkTlm.Payload.TimeBootEra = MonotonicTime.BootEra;
-                BPNode_AppData.ChannelContactStatHkTlm.Payload.CorrelationFactor = BPLib_TIME_GetCorrelationFactor();
-
-                CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader));
-                CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ChannelContactStatHkTlm.TelemetryHeader), true);
+                Status = BPLib_NC_SendChannelContactStatHk();
             }
             break;
 
