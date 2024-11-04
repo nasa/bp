@@ -45,6 +45,7 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
     size_t            ActualLength = 0;
     CFE_SB_MsgId_t    MsgId        = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_FcnCode_t FcnCode      = 0;
+    BPLib_Status_t    Status;
 
     CFE_MSG_GetSize(MsgPtr, &ActualLength);
 
@@ -477,10 +478,31 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                     ADU_Received  += BPNode_AppData.AduInData[i].AduCountReceived;
                 }
 
-                BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_DELVR, ADU_Delivered);
-                BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_RECV,  ADU_Received);
+                Status = BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_DELVR, ADU_Delivered);
 
-                Status = BPLib_NC_SendNodeMibCountersHk();
+                if (Status == BPLIB_SUCCESS)
+                {
+                    Status = BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_RECV, ADU_Received);
+
+                    if (Status == BPLIB_SUCCESS)
+                    {
+                        Status = BPLib_NC_SendNodeMibCountersHk();
+
+                        if (Status != BPLIB_SUCCESS)
+                        {
+                            /* Failed to send the Node MIB counter HK */
+                        }
+                    }
+                    else
+                    {
+                        /* Failed to set the Node ADU Counts Received counter */
+                    }
+                }
+                else
+                {
+                    /* Failed to set the Node ADU Counts Delivered counter */
+
+                }
             }
             break;
 
@@ -510,6 +532,11 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 }
 
                 Status = BPLib_NC_SendChannelContactStatHk();
+
+                if (Status != BPLIB_SUCCESS)
+                {
+                    /* Failed to send channel contact stats HK */
+                }
             }
             break;
 
@@ -524,11 +551,11 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
     if (Status == BPLIB_SUCCESS)
     {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount++;
+        BPLib_AS_Increment(BPLIB_AS_NODE_EID, BUNDLE_AGT_ACCPT_CNT);
     }
     else if (Status != BPLIB_UNKNOWN)
     {
-        BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount++;
+        BPLib_AS_Increment(BPLIB_AS_NODE_EID, BUNDLE_AGT_REJ_CNT);
     }
 }
 
