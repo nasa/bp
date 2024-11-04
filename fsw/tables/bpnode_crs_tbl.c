@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPNode_CRSTable_t CRSTable = {
+BPLib_ARP_CRSTable_t CRSTable = {
     .CRS_Set = {
         {.DestEID = "100.1", .TimeTrigger = 2, .SizeTrigger = 10},
         {.DestEID = "100.2", .TimeTrigger = 2, .SizeTrigger = 10},

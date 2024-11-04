@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPNode_MIBConfigPNTable_t MIBConfigPNTable = {
+BPLib_NC_MIBConfigPNTable_t MIBConfigPNTable = {
     .SysNodeName                        = "Name", 
     .SysNodeOwner                       = "NASA",
     .SysSoftExec                        = "SysExec",

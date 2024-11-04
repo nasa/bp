@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPNode_MIBConfigPSTable_t MIBConfigPSTable = {
+BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
     .MIB_PS_Set = {
         {
             .SrcEID                                 = "100.1",

@@ -38,136 +38,20 @@
 ** Function Definitions
 */
 
-/* Validate Contacts table data */
-CFE_Status_t BPNode_ContactsTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPLib_ContactsTable_t *TblDataPtr = (BPLib_ContactsTable_t *)TblData;
-
-    /* Validate data values are within allowed range */
-    if (TblDataPtr[0].ContactSet->PortNum <= 0)
-    {
-        /* element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-    }
-
-    return ReturnCode;
-}
-
-/* Validate CRS table data */
-CFE_Status_t BPNode_CRSTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_CRSTable_t *TblDataPtr = (BPNode_CRSTable_t *)TblData;
-
-    /* Validate data values are within allowed range */
-    if (TblDataPtr[0].CRS_Set->SizeTrigger <= 0)
-    {
-        /* element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-    }
-
-    return ReturnCode;
-}
-
-/* Validate Custodian Auth table data */
-CFE_Status_t BPNode_CustodianAuthTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    /* Validate data values are within allowed range */
-
-    return ReturnCode;
-}
-
-/* Validate Custody Auth table data */
-CFE_Status_t BPNode_CustodyAuthTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    /* Validate data values are within allowed range */
-
-    return ReturnCode;
-}
-
-/* Validate MIB Config PN table data */
-CFE_Status_t BPNode_MIBConfigPNTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_MIBConfigPNTable_t *TblDataPtr = (BPNode_MIBConfigPNTable_t *)TblData;
-
-    /* Validate data values are within allowed range */
-    if (TblDataPtr->BundleAgentNum <= 0)
-    {
-        /* element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-    }
-
-    return ReturnCode;
-}
-
-/* Validate MIB Config PS table data */
-CFE_Status_t BPNode_MIBConfigPSTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-    BPNode_MIBConfigPSTable_t *TblDataPtr = (BPNode_MIBConfigPSTable_t *)TblData;
-
-    /* Validate data values are within allowed range */
-    if (TblDataPtr[0].MIB_PS_Set->ParamSetMaxLifetime <= 0)
-    {
-        /* element is out of range, return an appropriate error code */
-        ReturnCode = BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
-    }
-
-    return ReturnCode;
-}
-
-/* Validate Report-To Auth table data */
-CFE_Status_t BPNode_ReportToAuthTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    return ReturnCode;
-}
-
-/* Validate Source Auth table data */
-CFE_Status_t BPNode_SrcAuthTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    return ReturnCode;
-}
-
-/* Validate Source Latency table data */
-CFE_Status_t BPNode_SrcLatencyTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    return ReturnCode;
-}
-
-/* Validate Storage table data */
-CFE_Status_t BPNode_StorageTblValidateFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    return ReturnCode;
-}
-
 BPNode_TblNameParams_t TblNameParamsArr0[] = 
 {
     {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_ADUP_ValidateConfigTbl},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PI_ValidateConfigs},
-    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_ContactsTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ContactsTblValidateFunc},
-    {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPNode_CRSTable_t),           NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CRSTblValidateFunc},
-    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPNode_CustodianTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodianAuthTblValidateFunc},
-    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPNode_CustodyTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_CustodyAuthTblValidateFunc},
-    {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPNode_MIBConfigPNTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_MIBConfigPNTblValidateFunc},
-    {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPNode_MIBConfigPSTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_MIBConfigPSTblValidateFunc},
-    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPNode_ReportToTable_t),      NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_ReportToAuthTblValidateFunc},
-    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPNode_SrcAuthTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_SrcAuthTblValidateFunc},
-    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPNode_SrcLatencyTable_t),    NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_SrcLatencyTblValidateFunc},
-    {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPNode_StorageTable_t),       NULL, (CFE_TBL_CallbackFuncPtr_t)BPNode_StorageTblValidateFunc}
+    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_CLA_ContactsTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_CLA_ContactsTblValidateFunc},
+    {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPLib_ARP_CRSTable_t),        NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_ARP_CRSTblValidateFunc},
+    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PDB_CustodianTable_t),  NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_CustodianAuthTblValidateFunc},
+    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PDB_CustodyTable_t),    NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_CustodyAuthTblValidateFunc},
+    {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPNTable_t), NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_NC_MIBConfigPNTblValidateFunc},
+    {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPSTable_t), NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_NC_MIBConfigPSTblValidateFunc},
+    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PDB_ReportToTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_ReportToAuthTblValidateFunc},
+    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PDB_SrcAuthTable_t),    NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_SrcAuthTblValidateFunc},
+    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PDB_SrcLatencyTable_t), NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_PDB_SrcLatencyTblValidateFunc},
+    {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPLib_STOR_StorageTable_t),   NULL, (CFE_TBL_CallbackFuncPtr_t)BPLib_STOR_StorageTblValidateFunc}
 };
 
 

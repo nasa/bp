@@ -30,6 +30,7 @@
 #include "bplib.h"
 #include "bpnode_test_utils.h"
 #include "fwp_tablep.h"
+#include "fwp_dp.h"
 
 /* Handler to set table pointers to test tables */
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey, 
@@ -154,7 +155,7 @@ void Test_BPNode_AppMain_CommandRecvd(void)
     BPNode_AppMain();
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 3);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 1);
     UtAssert_UINT32_EQ(BPNode_AppData.RunStatus, CFE_ES_RunStatus_APP_RUN);
 }
 
@@ -172,7 +173,7 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 1);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
@@ -190,7 +191,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
@@ -213,7 +214,7 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
     UtAssert_INT32_NEQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(EventTest.MatchCount, 1);
 }
@@ -231,7 +232,7 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
@@ -244,7 +245,7 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
  
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
-    UtAssert_STUB_COUNT(BPNode_TaskPipe, 0);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
