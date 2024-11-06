@@ -45,7 +45,7 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
     size_t            ActualLength = 0;
     CFE_SB_MsgId_t    MsgId        = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_FcnCode_t FcnCode      = 0;
-    BPLib_Status_t    Status;
+    // BPLib_Status_t    Status;
 
     CFE_MSG_GetSize(MsgPtr, &ActualLength);
 
@@ -468,6 +468,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 uint32_t ADU_Received;
                 uint8 i;
 
+                /* Reset ADU counters so += can be used in a loop*/
                 ADU_Delivered = 0;
                 ADU_Received  = 0;
 
@@ -478,30 +479,21 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                     ADU_Received  += BPNode_AppData.AduInData[i].AduCountReceived;
                 }
 
+                /* Set the node's ADUs delivered counter to the new value */
                 Status = BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_DELVR, ADU_Delivered);
 
                 if (Status == BPLIB_SUCCESS)
-                {
+                { /* ADUs delivered counter was successfully set*/
+
+                    /* Set the node's ADUs received to the new value */
                     Status = BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_RECV, ADU_Received);
 
                     if (Status == BPLIB_SUCCESS)
-                    {
-                        Status = BPLib_NC_SendNodeMibCountersHk();
+                    { /* ADUs received counter was successfully set */
 
-                        if (Status != BPLIB_SUCCESS)
-                        {
-                            /* Failed to send the Node MIB counter HK */
-                        }
+                        /* Send the node MIB counters HK */
+                        BPLib_NC_SendNodeMibCountersHk();
                     }
-                    else
-                    {
-                        /* Failed to set the Node ADU Counts Received counter */
-                    }
-                }
-                else
-                {
-                    /* Failed to set the Node ADU Counts Delivered counter */
-
                 }
             }
             break;
