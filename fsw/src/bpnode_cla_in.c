@@ -41,7 +41,9 @@ int32 BPNode_ClaInCreateTasks(void)
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
+#ifdef BPNODE_CLA_UDP_DRIVER    
     char   Str[100];
+#endif
     
     /* Create all of the CLA In task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)

@@ -114,7 +114,11 @@ void Test_BPNode_ClaInCreateTasks_IODFindByNameErr(void)
 
 void Test_BPNode_ClaInCreateTasks_IODCommandDirErr(void)
 {
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 3, CFE_PSP_ERROR);
+#else
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
+#endif
     UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -123,7 +127,11 @@ void Test_BPNode_ClaInCreateTasks_IODCommandDirErr(void)
 
 void Test_BPNode_ClaInCreateTasks_IODCommandRunningErr(void)
 {
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 4, CFE_PSP_ERROR);
+#else
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 2, CFE_PSP_ERROR);
+#endif
     UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);

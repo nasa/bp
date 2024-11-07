@@ -36,7 +36,7 @@
 
 #include "bpnode_interface_cfg.h"
 
-#define BPNODE_CLA_UDP_DRIVER 1
+#define BPNODE_CLA_UDP_DRIVER  
 #define BPNODE_CLA_IN_PORT      4501
 #define BPNODE_CLA_IN_IP        "0.0.0.0"
 #define BPNODE_CLA_OUT_PORT     4502
