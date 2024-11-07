@@ -43,6 +43,7 @@ int32 BPNode_ClaOutCreateTasks(void)
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
+    char    Str[100];
     
     /* Create all of the CLA Out task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
@@ -72,6 +73,17 @@ int32 BPNode_ClaOutCreateTasks(void)
 
         BPNode_AppData.ClaOutData[i].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
         BPNode_AppData.ClaOutData[i].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
+
+#ifdef BPNODE_CLA_UDP_DRIVER
+        /* Configure Port Number */
+        snprintf(Str, sizeof(Str), "port=%d", BPNODE_CLA_OUT_PORT);
+        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_CONFIGURATION,
+                                             CFE_PSP_IODriver_CONST_STR(Str));
+        /* Configure Port Number */
+        snprintf(Str, sizeof(Str), "IpAddr=%s", BPNODE_CLA_OUT_IP);
+        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_CONFIGURATION,
+                                             CFE_PSP_IODriver_CONST_STR(Str));
+#endif
 
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_DIRECTION,
                                              CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
