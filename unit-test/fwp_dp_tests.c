@@ -57,17 +57,15 @@ void Test_BPA_DP_TaskPipe_InvalidMsgId(void)
 {
     CFE_SB_Buffer_t   Buf;
     CFE_SB_MsgId_t    TestMsgId = CFE_SB_INVALID_MSG_ID;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_MID_ERR_EID, 
-                        "Invalid command packet,MID = 0x%x");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &TestMsgId, sizeof(TestMsgId), false);
 
     BPA_DP_TaskPipe(&Buf);
 
     UtAssert_UINT32_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_MID_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid command packet,MID = 0x%x", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 /**
@@ -107,10 +105,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidNoop(void)
     size_t            Size = sizeof(BPNode_NoopCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
@@ -120,7 +115,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidNoop(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_Noop, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -148,10 +145,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications(void)
     size_t            Size = sizeof(BPNode_AddAllApplicationsCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -164,7 +157,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAllApplications, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -192,10 +187,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications(void)
     size_t            Size = sizeof(BPNode_StartAllApplicationsCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -206,7 +197,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_StartAllApplications, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -234,10 +227,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
     size_t            Size = sizeof(BPNode_VerifyBundleStorageCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -248,7 +237,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_VerifyBundleStorage, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -276,10 +267,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage(void)
     size_t            Size = sizeof(BPNode_InitBundleStorageCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -290,7 +277,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_InitBundleStorage, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -318,10 +307,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
     size_t            Size = sizeof(BPNode_VerifyBundleMetadataCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -332,7 +317,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_VerifyBundleMetadata, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -360,10 +347,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
     size_t            Size = sizeof(BPNode_RebuildBundleMetadataCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
 
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -374,7 +358,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RebuildBundleMetadata, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -402,10 +388,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile(void)
     size_t            Size = sizeof(BPNode_ClearVolatileCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -416,7 +398,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ClearVolatile, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -444,10 +428,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData(void)
     size_t            Size = sizeof(BPNode_ReloadSavedDataCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -458,7 +438,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ReloadSavedData, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -487,10 +469,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters(void)
     size_t            Size = sizeof(BPNode_ResetAllCountersCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -501,7 +479,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetAllCounters, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -529,10 +509,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter(void)
     size_t            Size = sizeof(BPNode_ResetCounterCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -543,7 +519,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetCounter, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -571,10 +549,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters(void)
     size_t            Size = sizeof(BPNode_ResetSourceCountersCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -585,7 +559,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetSourceCounters, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -613,10 +589,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters(void)
     size_t            Size = sizeof(BPNode_ResetBundleCountersCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -627,7 +599,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetBundleCounters, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -655,10 +629,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters(void)
     size_t            Size = sizeof(BPNode_ResetErrorCountersCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -669,7 +639,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetErrorCounters, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -697,10 +669,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication(void)
     size_t            Size = sizeof(BPNode_AddApplicationCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -711,7 +679,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddApplication, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -739,10 +709,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication(void)
     size_t            Size = sizeof(BPNode_RemoveApplicationCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -753,7 +719,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveApplication, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -781,10 +749,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState(void)
     size_t            Size = sizeof(BPNode_SetRegistrationStateCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -795,7 +759,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SetRegistrationState, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -823,10 +789,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication(void)
     size_t            Size = sizeof(BPNode_StartApplicationCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -837,7 +799,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_StartApplication, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -865,10 +829,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication(void)
     size_t            Size = sizeof(BPNode_StopApplicationCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -879,7 +839,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_StopApplication, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -907,10 +869,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources(void)
     size_t            Size = sizeof(BPNode_AddAuthSourcesCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -921,7 +879,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthSources, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -949,10 +909,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources(void)
     size_t            Size = sizeof(BPNode_RemoveAuthSourcesCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -963,7 +919,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthSources, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -991,10 +949,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
     size_t            Size = sizeof(BPNode_AddAuthCustodySourcesCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1005,7 +959,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthCustodySources, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1033,10 +989,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
     size_t            Size = sizeof(BPNode_RemoveAuthCustodySourcesCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1047,7 +999,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthCustodySources, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1075,10 +1029,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians(void)
     size_t            Size = sizeof(BPNode_AddAuthCustodiansCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1089,7 +1039,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthCustodians, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1117,10 +1069,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
     size_t            Size = sizeof(BPNode_RemoveAuthCustodiansCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1131,7 +1079,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthCustodians, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1159,10 +1109,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
     size_t            Size = sizeof(BPNode_AddAuthReportToEidCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1173,7 +1119,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthReportToEid, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1201,10 +1149,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
     size_t            Size = sizeof(BPNode_RemoveAuthReportToEidCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1215,7 +1159,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthReportToEid, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1243,10 +1189,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency(void)
     size_t            Size = sizeof(BPNode_AddLatencyCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1257,7 +1199,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddLatency, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1285,10 +1229,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency(void)
     size_t            Size = sizeof(BPNode_RemoveLatencyCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1299,7 +1239,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveLatency, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1327,10 +1269,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup(void)
     size_t            Size = sizeof(BPNode_ContactSetupCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1341,7 +1279,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactSetup, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1369,10 +1309,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactStart(void)
     size_t            Size = sizeof(BPNode_ContactStartCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1383,7 +1319,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactStart(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactStart, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1411,10 +1349,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactStop(void)
     size_t            Size = sizeof(BPNode_ContactStopCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1425,7 +1359,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactStop(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactStop, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1453,10 +1389,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown(void)
     size_t            Size = sizeof(BPNode_ContactTeardownCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1467,7 +1399,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactTeardown, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1495,10 +1429,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey(void)
     size_t            Size = sizeof(BPNode_AddMibArrayKeyCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1509,7 +1439,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddMibArrayKey, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1537,10 +1469,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
     size_t            Size = sizeof(BPNode_RemoveMibArrayKeyCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1551,7 +1479,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveMibArrayKey, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1579,10 +1509,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem(void)
     size_t            Size = sizeof(BPNode_SetMibItemCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1593,7 +1519,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SetMibItem, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1621,10 +1549,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation(void)
     size_t            Size = sizeof(BPNode_AddStorageAllocationCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1635,7 +1559,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddStorageAllocation, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1663,10 +1589,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
     size_t            Size = sizeof(BPNode_RemoveStorageAllocationCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1677,7 +1599,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveStorageAllocation, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1705,10 +1629,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest(void)
     size_t            Size = sizeof(BPNode_PerformSelfTestCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1719,7 +1639,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_PerformSelfTest, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1748,10 +1670,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
     size_t            Size = sizeof(BPNode_SendNodeMibConfigHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1762,7 +1680,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibConfigHk, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1791,10 +1711,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
     size_t            Size = sizeof(BPNode_SendSourceMibConfigHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1805,7 +1721,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibConfigHk, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1834,10 +1752,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
     size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1848,7 +1762,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1877,10 +1793,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
     size_t            Size = sizeof(BPNode_SendSourceMibCountersHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1891,7 +1803,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibCountersHk, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1920,10 +1834,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
     size_t            Size = sizeof(BPNode_SendStorageHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1934,7 +1844,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendStorageHk, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1963,10 +1875,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
     size_t            Size = sizeof(BPNode_SendChannelContactStatHkCmd_t) - 1; /* Invalid length */
     CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
     CFE_SB_Buffer_t   Buf;
-    UT_CheckEvent_t   EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CMD_LEN_ERR_EID,
-        "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u");
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
@@ -1977,7 +1885,9 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHk, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
@@ -1985,17 +1895,17 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
 /* Test ground command processing after receiving an invalid command code */
 void Test_BPA_DP_ProcessGroundCommand_InvalidCode(void)
 {
-    UT_CheckEvent_t   EventTest;
     CFE_MSG_FcnCode_t FcnCode = 1000;   /* Invalid CC */
     CFE_SB_Buffer_t   Buf;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CC_ERR_EID, NULL);
 
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CC_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid ground command code: CC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.RejectedDirectiveCount, 1);
 }
 
