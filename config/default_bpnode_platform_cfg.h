@@ -96,4 +96,20 @@
  */
 #define BPNODE_MAX_NUM_CONTACTS         10
 
+/**
+ * \brief Generic Worker Task stack size 
+ */
+#define BPNODE_GEN_WORKER_STACK_SIZE (8192u)
+
+/**
+ * \brief Generic Worker Task priority base 
+ *          The worker ID is added to the base value to get the final task priority
+ */
+#define BPNODE_GEN_WORKER_PRIORITY_BASE  (100u)
+
+/**
+ * \brief Number of generic worker tasks to run
+ */
+#define BPNODE_NUM_GEN_WORKER_TASKS         (1)
+
 #endif /* BPNODE_PLATFORM_CFG_H */

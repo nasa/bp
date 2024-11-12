@@ -319,6 +319,15 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }    
+
+    /* Create Generic Worker child tasks */
+    Status = BPNode_GenWorkerCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
     
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
@@ -384,6 +393,12 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+    }
+
+    /* Signal to generic worker tasks to exit */
+    for (i = 0; i < BPNODE_NUM_GEN_WORKER_TASKS; i++)
+    {
+        BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
     
     /* Performance Log Exit Stamp */
