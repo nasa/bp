@@ -100,7 +100,7 @@ typedef struct
     BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
     BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */        
 
-    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WORKER_TASKS]; /**< \brief Global data for Generic Worker tasks */        
+    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */        
 
     BPA_ADUP_Table_t            *AduTblPtr;
     BPLib_PI_ChannelTable_t     *ChanTblPtr;

@@ -37,11 +37,11 @@
 ** Macro Definitions
 */
 
-#define BPNODE_GEN_WORKER_INIT_SEM_BASE_NAME "BPN_GEN_WRKR_INIT" /**< \brief Initialization semaphore base name */
+#define BPNODE_GEN_WRKR_SEM_BASE_NAME "BPN_GEN_WRKR_SEM" /**< \brief Semaphore base name */
 
-#define BPNODE_GEN_WORKER_BASE_NAME    "BPNODE.GEN_WRKR"    /**< \brief Task base name */
+#define BPNODE_GEN_WRKR_BASE_NAME    "BPNODE.GEN_WRKR"    /**< \brief Task base name */
 
-#define BPNODE_GEN_WORKER_SLEEP_MSEC   (1000u)             /**< \brief Sleep time */
+#define BPNODE_GEN_WRKR_SLEEP_MSEC   (100u)              /**< \brief Sleep time */
 
 
 /*
@@ -54,7 +54,7 @@
 typedef struct
 {
     CFE_ES_TaskId_t TaskId;
-    osal_id_t       InitSemId;
+    osal_id_t       SemId;
     uint32          PerfId;
     uint32          RunStatus;
 } BPNode_GenWorkerData_t;

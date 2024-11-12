@@ -106,6 +106,13 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_Status_t     Status;
     BPLib_Status_t   BpStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
+    uint8            i;
+
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    {
+        /* Notify generic worker task(s) to start wakeup */
+        (void) OS_BinSemGive(BPNode_AppData.GenWorkerData[i].SemId);
+    }
 
     /* Update time as needed */
     BpStatus = BPLib_TIME_MaintenanceActivities();
@@ -396,7 +403,7 @@ void BPNode_AppExit(void)
     }
 
     /* Signal to generic worker tasks to exit */
-    for (i = 0; i < BPNODE_NUM_GEN_WORKER_TASKS; i++)
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
     {
         BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }

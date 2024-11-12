@@ -38,6 +38,6 @@
 #define BPNODE_CLA_IN_PERF_ID_BASE          (100)
 #define BPNODE_CLA_OUT_PERF_ID_BASE         (110)
 
-#define BPNODE_GEN_WORKER_PERF_ID_BASE      (120)
+#define BPNODE_GEN_WRKR_PERF_ID_BASE        (120)
 
 #endif /* BPNODE_PERFIDS_H */
