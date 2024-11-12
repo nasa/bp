@@ -189,7 +189,10 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_BUNDLE_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetBundleCountersCmd_t)))
             {
-                Status = BPLib_NC_ResetBundleCounters();
+                const BPNode_ResetBundleCountersCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ResetBundleCountersCmd_t*) SBBufPtr;
+
+                Status = BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
             }
             break;
 
