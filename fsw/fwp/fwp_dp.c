@@ -497,6 +497,32 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                         /* Send the node MIB counters HK */
                         BPLib_NC_SendNodeMibCountersHk();
                     }
+                    else
+                    {
+                        /*
+                        ** The call to BPLib_AS_Set() is so controlled that it seems unlikely that an error
+                        ** will occur from its use. This is also very difficult to test from a code coverage
+                        ** standpoint but an indication of an error is still needed in case the worst happens
+                        */
+
+                        BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
+                                            BPLib_EM_EventType_ERROR,
+                                            "Can't send node MIB counters; error setting ADUs received counter, RC = %d",
+                                            Status);
+                    }
+                }
+                else
+                {
+                    /*
+                    ** The call to BPLib_AS_Set() is so controlled that it seems unlikely that an error
+                    ** will occur from its use. This is also very difficult to test from a code coverage
+                    ** standpoint but an indication of an error is still needed in case the worst happens
+                    */
+
+                    BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "Can't send node MIB counters; error setting ADUs delivered counter, RC = %d",
+                                        Status);
                 }
             }
             break;
