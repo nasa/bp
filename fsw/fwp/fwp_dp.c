@@ -62,7 +62,7 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
 
         Result = false;
 
-        BPLib_AS_Increment(BPLIB_AS_NODE_EID, BUNDLE_AGT_REJ_CNT);
+        BPLib_AS_Increment(0, BUNDLE_AGT_REJ_CNT);
     }
 
     return Result;
@@ -199,7 +199,10 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_ERROR_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetErrorCountersCmd_t)))
             {
-                Status = BPLib_NC_ResetErrorCounters();
+                const BPNode_ResetErrorCountersCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ResetErrorCountersCmd_t*) SBBufPtr;
+
+                Status = BPLib_NC_ResetErrorCounters(MsgPtr->Payload);
             }
             break;
 
@@ -483,13 +486,13 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 }
 
                 /* Set the node's ADUs delivered counter to the new value */
-                Status = BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_DELVR, ADU_Delivered);
+                Status = BPLib_AS_Set(0, ADU_CNT_DELVR, ADU_Delivered);
 
                 if (Status == BPLIB_SUCCESS)
                 { /* ADUs delivered counter was successfully set*/
 
                     /* Set the node's ADUs received to the new value */
-                    Status = BPLib_AS_Set(BPLIB_AS_NODE_EID, ADU_CNT_RECV, ADU_Received);
+                    Status = BPLib_AS_Set(0, ADU_CNT_RECV, ADU_Received);
 
                     if (Status == BPLIB_SUCCESS)
                     { /* ADUs received counter was successfully set */
@@ -572,11 +575,11 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
     if (Status == BPLIB_SUCCESS)
     {
-        BPLib_AS_Increment(BPLIB_AS_NODE_EID, BUNDLE_AGT_ACCPT_CNT);
+        BPLib_AS_Increment(0, BUNDLE_AGT_ACCPT_CNT);
     }
     else if (Status != BPLIB_UNKNOWN)
     {
-        BPLib_AS_Increment(BPLIB_AS_NODE_EID, BUNDLE_AGT_REJ_CNT);
+        BPLib_AS_Increment(0, BUNDLE_AGT_REJ_CNT);
     }
 }
 
