@@ -155,6 +155,7 @@ typedef struct
 typedef struct
 {
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+    BPLib_ResetErrorCounters_Payload_t Payload;
 } BPNode_ResetErrorCountersCmd_t;
 
 /**
