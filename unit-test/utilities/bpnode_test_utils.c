@@ -57,101 +57,37 @@ BPLib_PDB_SrcAuthTable_t    TestAuthTbl;
 BPLib_PDB_SrcLatencyTable_t TestLatencyTbl;
 BPLib_STOR_StorageTable_t   TestStorTbl;
 
+#define UT_MAX_CFE_SENDEVENT_DEPTH 10
 
-/* An example hook function to check for a specific event */
-static int32 UT_CheckEvent_Hook(void *UserObj, int32 StubRetcode, uint32 CallCount, const UT_StubContext_t *Context,
-                                      va_list va)
-{
-    UT_CheckEvent_t *State = UserObj;
-    uint16           EventId;
-    const char *     Spec;
+CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[UT_MAX_CFE_SENDEVENT_DEPTH];
 
-    /*
-     * The BPLib_EM_SendEvent stub passes the EventID as the
-     * first context argument.
-     */
-    if (Context->ArgCount > 0)
-    {
-        EventId = UT_Hook_GetArgValueByName(Context, "EventID", uint16);
-        if (EventId == State->ExpectedEvent)
-        {
-            if (State->ExpectedFormat != NULL)
-            {
-                Spec = UT_Hook_GetArgValueByName(Context, "Spec", const char *);
-                if (Spec != NULL)
-                {
-                    /*
-                     * Example of how to validate the full argument set.
-                     * ------------------------------------------------
-                     *
-                     * If really desired one can call something like:
-                     *
-                     * char TestText[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH];
-                     * vsnprintf(TestText, sizeof(TestText), Spec, va);
-                     *
-                     * And then compare the output (TestText) to the expected fully-rendered string.
-                     *
-                     * NOTE: While this can be done, use with discretion - This isn't really
-                     * verifying that the FSW code unit generated the correct event text,
-                     * rather it is validating what the system snprintf() library function
-                     * produces when passed the format string and args.
-                     *
-                     * This type of check has been demonstrated to make tests very fragile,
-                     * because it is influenced by many factors outside the control of the
-                     * test case.
-                     *
-                     * __This derived string is not an actual output of the unit under test__
-                     */
-                    if (strcmp(Spec, State->ExpectedFormat) == 0)
-                    {
-                        ++State->MatchCount;
-                    }
-                    else // Print mismatched expected vs. actual event format strings.
-                    {
-                        UtPrintf("CheckEvent: Mismatched event format string.");
-                        UtPrintf("CheckEvent: Expected - [%s]", State->ExpectedFormat);
-                        UtPrintf("CheckEvent: Actual - [%s]", Spec);
-                    }
-                }
-                else
-                {
-                    UtPrintf(" <!> Spec is NULL");
-                }
-            }
-            else
-            {
-                ++State->MatchCount;
-            }
-        }
-        else
-        {
-            UtPrintf(" <!> Expected event ID of %d, received %d", State->ExpectedEvent, EventId);
-        }
-    }
-
-    return 0;
-}
 
 /*
- * Helper function to set up for event checking
- * This attaches the hook function to BPLib_EM_SendEvent
- */
-void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
-                              const char *ExpectedFormat)
+** Function Definitions
+*/
+
+void UT_Handler_CFE_EVS_SendEvent(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
 {
-    if (ExpectedFormat == NULL)
+    uint16 CallCount;
+    uint16 idx;
+
+    CallCount = UT_GetStubCount(UT_KEY(CFE_EVS_SendEvent));
+
+    if (CallCount > (sizeof(context_CFE_EVS_SendEvent) / sizeof(context_CFE_EVS_SendEvent[0])))
     {
-        UtPrintf("CheckEvent will match: %s(%u)", EventName, ExpectedEvent);
+        UtAssert_Failed("CFE_EVS_SendEvent UT depth %u exceeded: %u, increase UT_MAX_SENDEVENT_DEPTH",
+                        UT_MAX_SENDEVENT_DEPTH, CallCount);
     }
     else
     {
-        UtPrintf("CheckEvent will match: %s(%u), \"%s\"", EventName, ExpectedEvent, ExpectedFormat);
+        idx                                      = CallCount - 1;
+        context_CFE_EVS_SendEvent[idx].EventID   = UT_Hook_GetArgValueByName(Context, "EventID", uint16);
+        context_CFE_EVS_SendEvent[idx].EventType = UT_Hook_GetArgValueByName(Context, "EventType", uint16);
+
+        strncpy(context_CFE_EVS_SendEvent[idx].Spec, UT_Hook_GetArgValueByName(Context, "Spec", const char *),
+                CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
+        context_CFE_EVS_SendEvent[idx].Spec[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH - 1] = '\0';
     }
-    memset(Evt, 0, sizeof(*Evt));
-    Evt->ExpectedEvent  = ExpectedEvent;
-    Evt->ExpectedFormat = ExpectedFormat;
-    UT_SetVaHookFunction(UT_KEY(BPLib_EM_SendEvent), UT_CheckEvent_Hook, Evt);
-    UT_SetVaHookFunction(UT_KEY(CFE_EVS_SendEvent), UT_CheckEvent_Hook, Evt);
 }
 
 /* Setup function prior to every test */
@@ -160,6 +96,8 @@ void BPNode_UT_Setup(void)
     UT_ResetState(0);
 
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData_t));
+    memset(context_BPLib_EM_SendEvent, 0, sizeof(BPLib_EM_SendEvent_context_t) * UT_MAX_SENDEVENT_DEPTH);
+    memset(context_CFE_EVS_SendEvent, 0, sizeof(context_CFE_EVS_SendEvent));
 
     memset(&TestAduTbl, 0, sizeof(BPA_ADUP_Table_t));
     memset(&TestChanTbl, 0, sizeof(BPLib_PI_ChannelTable_t));
@@ -173,6 +111,9 @@ void BPNode_UT_Setup(void)
     memset(&TestAuthTbl, 0, sizeof(BPLib_PDB_SrcAuthTable_t));
     memset(&TestLatencyTbl, 0, sizeof(BPLib_PDB_SrcLatencyTable_t));
     memset(&TestStorTbl, 0, sizeof(BPLib_STOR_StorageTable_t));
+
+    UT_SetHandlerFunction(UT_KEY(BPLib_EM_SendEvent), UT_Handler_BPLib_EM_SendEvent, NULL);
+    UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), UT_Handler_CFE_EVS_SendEvent, NULL);
 }
 
 /* Teardown function after every test */

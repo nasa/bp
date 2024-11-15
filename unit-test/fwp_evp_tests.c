@@ -30,11 +30,6 @@
 #include "fwp_evp.h"
 #include "bpnode_test_utils.h"
 
-/* ================ */
-/* Global Variables */
-/* ================ */
-
-UT_CheckEvent_t EventTest;
 
 /* ==================== */
 /* Function Definitions */
@@ -174,6 +169,9 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     Status = BPLIB_UNKNOWN;
     Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_INFORMATION,
                                 "Bad return INFO event message test");
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
+    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
@@ -192,7 +190,9 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_ILLEGAL_APP_ID);
-
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
+    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 
     /* ===== CFE_EVS_APP_NOT_REGISTERED / BPLIB_EM_APP_NOT_REGISTERED returned ===== */
     /* Set return code for CFE_EVS_SendEvent to be non-success */
@@ -206,6 +206,9 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_APP_NOT_REGISTERED);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
+    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 
 
     /* ===== CFE_EVS_APP_SQUELCHED / BPLIB_EM_APP_SQUELCHED returned ===== */
@@ -220,6 +223,9 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_APP_SQUELCHED);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
+    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 
 
     /* ===== -1 / BPLIB_UNKNOWN returned ===== */
@@ -234,6 +240,9 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_UNKNOWN);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
+    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
 // Test that BPA_EVP_SendEvent() returns BPLIB_EM_MSG_TRUNCATED when given a long string
@@ -242,7 +251,6 @@ void Test_BPA_EVP_SendEvent_Truncation(void)
     BPLib_Status_t Status;
     uint16_t ExpectedStubCount = 1;
     uint16_t char_index;
-    UT_CheckEvent_t EventTest;
     char InputChar = 'a';
     char InputStringAboveMaxLen[BPLIB_EM_MAX_MESSAGE_LENGTH+1]; // +1 for a null-term after
 
@@ -266,16 +274,15 @@ void Test_BPA_EVP_SendEvent_Truncation(void)
     ExpectedOutputString[BPLIB_EM_MAX_MESSAGE_LENGTH - 1] = '\0';
     */
 
-    /* All we can verify is the expected format string passed to CFE_EVS_SendEvent() */
-    UT_CHECKEVENT_SETUP(&EventTest, 42, "%s");
-
     /* === INFO event message test === */
     Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_INFORMATION, InputStringAboveMaxLen);
 
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, ExpectedStubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_MSG_TRUNCATED);
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
+    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
 /* Register the test cases to execute with the unit test tool */

@@ -46,10 +46,27 @@
 #include "bpnode_tbl.h"
 
 #include "fwp_dp.h"
+#include "bplib_em_handlers.h"
+
+
+/*
+** Type Definitions
+*/
+
+/* CFE_EVS_SendEvent handler information */
+typedef struct
+{
+    uint16 EventID;
+    uint16 EventType;
+    char   Spec[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH];
+} CFE_EVS_SendEvent_context_t;
+
 
 /*
 ** Global Data
 */
+
+extern CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[];
 
 extern BPA_ADUP_Table_t            TestAduTbl;
 extern BPLib_PI_ChannelTable_t     TestChanTbl;
@@ -71,34 +88,10 @@ extern BPLib_STOR_StorageTable_t   TestStorTbl;
 /* Macro to add a test case to the list of tests to execute */
 #define ADD_TEST(test) UtTest_Add(test, BPNode_UT_Setup, BPNode_UT_TearDown, #test)
 
-/* Macro to get expected event name */
-#define UT_CHECKEVENT_SETUP(Evt, ExpectedEvent, ExpectedFormat) \
-    UT_CheckEvent_Setup_Impl(Evt, ExpectedEvent, #ExpectedEvent, ExpectedFormat)
-
-
-/*
-** Type Definitions
-*/
-
-/* Unit test check event hook information */
-typedef struct
-{
-    uint16      ExpectedEvent;
-    uint32      MatchCount;
-    const char *ExpectedFormat;
-} UT_CheckEvent_t;
-
 
 /*
 ** Exported Functions
 */
-
-/*
-** Helper function to set up for event checking
-** This attaches the hook function to BPLib_EM_SendEvent
-*/
-void UT_CheckEvent_Setup_Impl(UT_CheckEvent_t *Evt, uint16 ExpectedEvent, const char *EventName,
-                              const char *ExpectedFormat);
 
 /* Unit test case set up */
 void BPNode_UT_Setup(void);
