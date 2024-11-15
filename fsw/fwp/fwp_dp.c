@@ -62,7 +62,7 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
 
         Result = false;
 
-        BPLib_AS_Increment(0, BUNDLE_AGT_REJ_CNT);
+        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT);
     }
 
     return Result;
@@ -486,13 +486,13 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 }
 
                 /* Set the node's ADUs delivered counter to the new value */
-                Status = BPLib_AS_Set(0, ADU_CNT_DELVR, ADU_Delivered);
+                Status = BPLib_AS_Set(0, ADU_COUNT_DELIVERED, ADU_Delivered);
 
                 if (Status == BPLIB_SUCCESS)
                 { /* ADUs delivered counter was successfully set*/
 
                     /* Set the node's ADUs received to the new value */
-                    Status = BPLib_AS_Set(0, ADU_CNT_RECV, ADU_Received);
+                    Status = BPLib_AS_Set(0, ADU_COUNT_RECEIVED, ADU_Received);
 
                     if (Status == BPLIB_SUCCESS)
                     { /* ADUs received counter was successfully set */
@@ -575,11 +575,11 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
     if (Status == BPLIB_SUCCESS)
     {
-        BPLib_AS_Increment(0, BUNDLE_AGT_ACCPT_CNT);
+        BPLib_AS_Increment(0, BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT);
     }
     else if (Status != BPLIB_UNKNOWN)
     {
-        BPLib_AS_Increment(0, BUNDLE_AGT_REJ_CNT);
+        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT);
     }
 }
 
