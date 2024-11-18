@@ -162,13 +162,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_ALL_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetAllCountersCmd_t)))
             {
-                Status = BPLib_NC_ResetAllCounters();
-
-                if (Status == BPLIB_SUCCESS)
-                {
-                    /* Don't increment directive accepted counter after it's reset */
-                    Status = BPLIB_UNKNOWN;
-                }
+                BPLib_NC_ResetAllCounters();
             }
             break;
 
