@@ -88,7 +88,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidNoop(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_Noop, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /**
@@ -118,7 +118,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidNoop(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-all-applications */
@@ -135,7 +135,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddAllApplications(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAllApplications, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-all-applications */
@@ -160,7 +160,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid start-all-applications */
@@ -177,7 +177,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidStartAllApplications(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_StartAllApplications, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid start-all-applications */
@@ -200,7 +200,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid verify-bundle-storage */
@@ -217,7 +217,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleStorage(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_VerifyBundleStorage, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid verify-bundle-storage */
@@ -240,7 +240,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid init-bundle-storage */
@@ -257,7 +257,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidInitBundleStorage(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_InitBundleStorage, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid init-bundle-storage */
@@ -280,7 +280,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid verify-bundle-metadata */
@@ -297,7 +297,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleMetadata(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_VerifyBundleMetadata, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid verify-bundle-metadata */
@@ -320,7 +320,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid rebuild-bundle-metadata */
@@ -337,7 +337,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRebuildBundleMetadata(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RebuildBundleMetadata, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid rebuild-bundle-metadata */
@@ -361,7 +361,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid clear-volatile */
@@ -378,7 +378,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidClearVolatile(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ClearVolatile, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid clear-volatile */
@@ -401,7 +401,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid reload-saved-data */
@@ -418,7 +418,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidReloadSavedData(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ReloadSavedData, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid reload-saved-data */
@@ -441,7 +441,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid reset-all-counters */
@@ -456,10 +456,11 @@ void Test_BPA_DP_ProcessGroundCommand_ValidResetAllCounters(void)
 
     BPA_DP_ProcessGroundCommand(&Buf);
 
+    /* BPA_DP_ProcessGroundCommand() calls BPLib_NC_ResetAllCounters() */
     UtAssert_STUB_COUNT(BPLib_NC_ResetAllCounters, 1);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+
+    /* BPLib_AS_Increment() shouldn't be called since directive success counter is being reset */
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
 }
 
 /* Test ground command processing after receiving an invalid reset-all-counters */
@@ -482,7 +483,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid reset-counter */
@@ -499,7 +500,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidResetCounter(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetCounter, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid reset-counter */
@@ -522,7 +523,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid reset-source-counters */
@@ -539,7 +540,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidResetSourceCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetSourceCounters, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid reset-source-counters */
@@ -562,7 +563,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid reset-bundle-counters */
@@ -579,7 +580,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidResetBundleCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetBundleCounters, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid reset-bundle-counters */
@@ -602,7 +603,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid reset-error-counters */
@@ -619,7 +620,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidResetErrorCounters(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ResetErrorCounters, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid reset-error-counters */
@@ -642,7 +643,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-application */
@@ -659,7 +660,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddApplication, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-application */
@@ -682,7 +683,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-application */
@@ -699,7 +700,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveApplication, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-application */
@@ -722,7 +723,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid set-registration-state */
@@ -739,7 +740,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSetRegistrationState(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SetRegistrationState, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid set-registration-state */
@@ -762,7 +763,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid start-application */
@@ -779,7 +780,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidStartApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_StartApplication, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid start-application */
@@ -802,7 +803,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid stop-application */
@@ -819,7 +820,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidStopApplication(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_StopApplication, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid stop-application */
@@ -842,7 +843,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-auth-sources */
@@ -859,7 +860,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthSources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthSources, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-sources */
@@ -882,7 +883,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-auth-sources */
@@ -899,7 +900,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthSources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthSources, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-sources */
@@ -922,7 +923,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-auth-custody-sources */
@@ -939,7 +940,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodySources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthCustodySources, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-custody-sources */
@@ -962,7 +963,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-auth-custody-sources */
@@ -979,7 +980,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodySources(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthCustodySources, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-custody-sources */
@@ -1002,7 +1003,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-auth-custodians */
@@ -1019,7 +1020,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodians(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthCustodians, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-custodians */
@@ -1042,7 +1043,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-auth-custodians */
@@ -1059,7 +1060,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodians(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthCustodians, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-custodians */
@@ -1082,7 +1083,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-auth-report-to-eid */
@@ -1099,7 +1100,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddAuthReportToEid(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddAuthReportToEid, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-auth-report-to-eid */
@@ -1122,7 +1123,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-auth-report-to-eid */
@@ -1139,7 +1140,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthReportToEid(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveAuthReportToEid, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-auth-report-to-eid */
@@ -1162,7 +1163,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-latency */
@@ -1179,7 +1180,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddLatency(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddLatency, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-latency */
@@ -1202,7 +1203,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-latency */
@@ -1219,7 +1220,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveLatency(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveLatency, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-latency */
@@ -1242,7 +1243,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid contact-setup */
@@ -1259,7 +1260,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidContactSetup(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactSetup, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid contact-setup */
@@ -1282,7 +1283,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid contact-start */
@@ -1299,7 +1300,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidContactStart(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactStart, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid contact-start */
@@ -1322,7 +1323,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactStart(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid contact-stop */
@@ -1339,7 +1340,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidContactStop(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactStop, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid contact-stop */
@@ -1362,7 +1363,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactStop(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid contact-teardown */
@@ -1379,7 +1380,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidContactTeardown(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_ContactTeardown, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid contact-teardown */
@@ -1402,7 +1403,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-mib-array-key */
@@ -1419,7 +1420,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddMibArrayKey(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddMibArrayKey, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-mib-array-key */
@@ -1442,7 +1443,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-mib-array-key */
@@ -1459,7 +1460,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveMibArrayKey(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveMibArrayKey, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-mib-array-key */
@@ -1482,7 +1483,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid set-mib-item */
@@ -1499,7 +1500,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSetMibItem(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SetMibItem, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid set-mib-item */
@@ -1522,7 +1523,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid add-storage-allocation */
@@ -1539,7 +1540,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidAddStorageAllocation(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_AddStorageAllocation, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid add-storage-allocation */
@@ -1562,7 +1563,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid remove-storage-allocation */
@@ -1579,7 +1580,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidRemoveStorageAllocation(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_RemoveStorageAllocation, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid remove-storage-allocation */
@@ -1602,7 +1603,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid perform-self-test */
@@ -1619,7 +1620,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidPerformSelfTest(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_PerformSelfTest, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid perform-self-test */
@@ -1642,7 +1643,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid send-node-mib-config-hk */
@@ -1659,8 +1660,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibConfigHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibConfigHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-config-hk */
@@ -1683,7 +1684,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid send-source-mib-config-hk */
@@ -1700,8 +1701,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibConfigHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibConfigHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid send-source-mib-config-hk */
@@ -1724,7 +1725,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid send-node-mib-counters-hk */
@@ -1742,7 +1743,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk(void)
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid send-node-mib-counters-hk */
@@ -1765,7 +1766,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid send-source-mib-counters-hk */
@@ -1782,8 +1783,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibCountersHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid send-source-mib-counters-hk */
@@ -1806,7 +1807,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid send-storage-hk-tlm */
@@ -1823,8 +1824,8 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendStorageHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid send-storage-hk-tlm */
@@ -1847,7 +1848,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving a valid send-channel-contact-stat-hk-tlm */
@@ -1865,7 +1866,7 @@ void Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm(void)
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHk, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
     UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentAcceptedDirectiveCount, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test ground command processing after receiving an invalid send-channel-contact-stat-hk-tlm */
@@ -1888,7 +1889,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 
@@ -1906,7 +1907,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidCode(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CC_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid ground command code: CC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test command length verification in nominal case */
@@ -1920,7 +1921,7 @@ void Test_BPA_DP_VerifyCmdLength_Nominal(void)
     BPA_DP_VerifyCmdLength(NULL, ExpectedLength);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
 }
 
 /* Test command length verification for an invalid length */
@@ -1938,7 +1939,7 @@ void Test_BPA_DP_VerifyCmdLength_InvalidLength(void)
     BPA_DP_VerifyCmdLength(NULL, ExpectedLength);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_UINT16_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Register the test cases to execute with the unit test tool */
