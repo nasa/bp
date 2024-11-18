@@ -218,11 +218,11 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Make all counter values zero */
-    BpStatus = BPLib_NC_ResetAllCounters();
+    BpStatus = BPLib_AS_Init();
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_AS_RESET_ALL_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error resetting all counters to zero, RC = %d", BpStatus);
+                            "Error initializing AS and resetting all counters to zero, RC = %d", BpStatus);
 
         return BpStatus;
     }
