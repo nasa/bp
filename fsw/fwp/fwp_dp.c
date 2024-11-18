@@ -463,6 +463,19 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibConfigHkCmd_t)))
             {
                 Status = BPLib_NC_SendNodeMibConfigHk();
+
+                if (Status != BPLIB_SUCCESS)
+                {
+                    BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_MIB_CONFIG_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "Failed to send node MIB configuration HK, RC = %d",
+                                        Status);
+                }
+                else
+                {
+                    /* Don't increment the directive success counter */
+                    Status = BPLIB_UNKNOWN;
+                }
             }
             break;
 
@@ -470,6 +483,19 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibConfigHkCmd_t)))
             {
                 Status = BPLib_NC_SendSourceMibConfigHk();
+
+                if (Status != BPLIB_SUCCESS)
+                {
+                    BPLib_EM_SendEvent(BPNODE_DP_SEND_SRC_MIB_CONFIG_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "Failed to send per-source MIB configuration HK, RC = %d",
+                                        Status);
+                }
+                else
+                {
+                    /* Don't increment the directive success counter */
+                    Status = BPLIB_UNKNOWN;
+                }
             }
             break;
 
@@ -540,6 +566,19 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibCountersHkCmd_t)))
             {
                 Status = BPLib_NC_SendSourceMibCountersHk();
+
+                if (Status != BPLIB_SUCCESS)
+                {
+                    BPLib_EM_SendEvent(BPNODE_DP_SEND_SRC_CNTRS_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "Failed to send per-source MIB counters HK, RC = %d",
+                                        Status);
+                }
+                else
+                {
+                    /* Don't increment the directive success counter */
+                    Status = BPLIB_UNKNOWN;
+                }
             }
             break;
 
@@ -547,6 +586,19 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
             {
                 Status = BPLib_NC_SendStorageHk();
+
+                if (Status != BPLIB_SUCCESS)
+                {
+                    BPLib_EM_SendEvent(BPNODE_DP_SEND_STORAGE_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "Failed to send storage HK, RC = %d",
+                                        Status);
+                }
+                else
+                {
+                    /* Don't increment the directive success counter */
+                    Status = BPLIB_UNKNOWN;
+                }
             }
             break;
 
@@ -565,7 +617,15 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
                 if (Status != BPLIB_SUCCESS)
                 {
-                    /* Failed to send channel contact stats HK */
+                    BPLib_EM_SendEvent(BPNODE_DP_SEND_CHAN_CONTACT_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "Failed to send channel contact statistics HK, RC = %d",
+                                        Status);
+                }
+                else
+                {
+                    /* Don't increment the directive success counter */
+                    Status = BPLIB_UNKNOWN;
                 }
             }
             break;
