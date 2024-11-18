@@ -162,7 +162,13 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_ALL_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetAllCountersCmd_t)))
             {
-                BPLib_NC_ResetAllCounters();
+                Status = BPLib_NC_ResetAllCounters();
+
+                if (Status == BPLIB_SUCCESS)
+                {
+                    /* Don't increment directive accepted counter after it's reset */
+                    Status = BPLIB_UNKNOWN;
+                }
             }
             break;
 
@@ -173,6 +179,12 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 MsgPtr = (const BPNode_ResetCounterCmd_t*) SBBufPtr;
 
                 Status = BPLib_NC_ResetCounter(MsgPtr->Payload);
+
+                if (Status == BPLIB_SUCCESS && MsgPtr->Payload.Counter == BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT)
+                {
+                    /* Don't increment directive accepted counter after it's reset */
+                    Status = BPLIB_UNKNOWN;
+                }
             }
             break;
 
