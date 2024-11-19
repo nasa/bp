@@ -156,7 +156,6 @@ void BPNode_GenWorker_AppMain(void)
     int32 Status;
     BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
-    uint16 JobIdx;
     uint32 NumJobsComplete = 0;
 
     /* Perform task-specific initialization */
