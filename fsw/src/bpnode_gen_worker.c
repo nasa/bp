@@ -154,8 +154,10 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
 void BPNode_GenWorker_AppMain(void)
 {
     int32 Status;
+    BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
     uint16 JobIdx;
+    uint32 NumJobsComplete = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_GenWorker_TaskInit(&WorkerId);
@@ -194,16 +196,20 @@ void BPNode_GenWorker_AppMain(void)
         /* Process one cycle's worth of jobs */
         if (Status == OS_SUCCESS)
         {
-            for (JobIdx = 0; JobIdx < BPNODE_NUM_JOBS_PER_CYCLE; JobIdx++)
+            while (BpStatus == BPLIB_SUCCESS && NumJobsComplete < BPNODE_NUM_JOBS_PER_CYCLE)
             {
                 /*
                 ** TODO call the relevant BPLib JS API to process one job
                 */
-
+                
+                BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
                 (void) OS_TaskDelay(BPNODE_GEN_WRKR_SLEEP_MSEC);
+                BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+
+                NumJobsComplete++;
             }
 
-            (void) OS_BinSemGive(BPNode_AppData.GenWorkerData[WorkerId].SemId);
+            NumJobsComplete = 0;
         }
         else
         {
