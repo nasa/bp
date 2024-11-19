@@ -490,6 +490,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_WakeupProcess_FailedTblUpdate);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
 
     ADD_TEST(Test_BPNode_AppInit_Nominal);
     ADD_TEST(Test_BPNode_AppInit_FailedEvs);
