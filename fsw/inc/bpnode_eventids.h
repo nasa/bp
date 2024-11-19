@@ -116,5 +116,6 @@
 #define BPNODE_GEN_WRKR_INV_ID_ERR_EID          86
 #define BPNODE_GEN_WRKR_UNK_EXIT_CRIT_EID       87
 #define BPNODE_GEN_WRKR_SEM_TK_ERR_EID          88
+#define BPNODE_WKP_SEM_ERR_EID                  89
 
 #endif /* BPNODE_EVENTS_H */

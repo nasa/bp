@@ -105,13 +105,21 @@ CFE_Status_t BPNode_WakeupProcess(void)
 {
     CFE_Status_t     Status;
     BPLib_Status_t   BpStatus;
+    int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            i;
 
     for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
     {
         /* Notify generic worker task(s) to start wakeup */
-        (void) OS_BinSemGive(BPNode_AppData.GenWorkerData[i].SemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[i].SemId);
+
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "Error giving Generic Worker #%d its semaphore, RC = %d",
+                                i, OsStatus);            
+        }
     }
 
     /* Update time as needed */
