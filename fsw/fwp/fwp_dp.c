@@ -530,7 +530,20 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                     { /* ADUs received counter was successfully set */
 
                         /* Send the node MIB counters HK */
-                        BPLib_NC_SendNodeMibCountersHk();
+                        Status = BPLib_NC_SendNodeMibCountersHk();
+
+                        if (Status != BPLIB_SUCCESS)
+                        {
+                            BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
+                                                BPLib_EM_EventType_ERROR,
+                                                "An error occured while sending node counters HK, RC = %d",
+                                                Status);
+                        }
+                        else
+                        {
+                            /* Don't increment the directive accepted counter after HK is sent */
+                            Status = BPLIB_UNKNOWN;
+                        }
                     }
                     else
                     {
