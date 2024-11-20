@@ -109,6 +109,10 @@
 
 /**
  * \brief Number of generic worker tasks to run
+ *        Note: This should be set to the number of available CPU cores, having multiple
+ *              generic worker tasks is only beneficial if there's more than one core.
+ *              Until the cFE/OSAL supports spawning child tasks onto alternate CPU
+ *              cores, it is recommended to keep this set to 1.
  */
 #define BPNODE_NUM_GEN_WRKR_TASKS         (1)
 

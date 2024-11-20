@@ -186,6 +186,8 @@ void BPNode_GenWorker_AppMain(void)
     /* Generic Worker task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.GenWorkerData[WorkerId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
+        BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+
         /* Take semaphore from main task */
         Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].SemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
@@ -216,8 +218,6 @@ void BPNode_GenWorker_AppMain(void)
                             "[Generic Worker #%s]: Failure to take semaphore. Sem Error = %d.", 
                             WorkerId, Status);
         }
-
-        BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
     }
 
     /* Exit gracefully */
