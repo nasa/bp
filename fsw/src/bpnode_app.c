@@ -105,7 +105,22 @@ CFE_Status_t BPNode_WakeupProcess(void)
 {
     CFE_Status_t     Status;
     BPLib_Status_t   BpStatus;
+    int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
+    uint8            i;
+
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    {
+        /* Notify generic worker task(s) to start wakeup */
+        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[i].SemId);
+
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "Error giving Generic Worker #%d its semaphore, RC = %d",
+                                i, OsStatus);            
+        }
+    }
 
     /* Update time as needed */
     BpStatus = BPLib_TIME_MaintenanceActivities();
@@ -326,6 +341,15 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }    
+
+    /* Create Generic Worker child tasks */
+    Status = BPNode_GenWorkerCreateTasks();
+
+    if (Status != CFE_SUCCESS)
+    {
+        /* Event message handled in task creation function */
+        return Status;
+    }
     
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
@@ -391,6 +415,12 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+    }
+
+    /* Signal to generic worker tasks to exit */
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    {
+        BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
     
     /* Performance Log Exit Stamp */
