@@ -96,4 +96,29 @@
  */
 #define BPNODE_MAX_NUM_CONTACTS         10
 
+/**
+ * \brief Generic Worker Task stack size 
+ */
+#define BPNODE_GEN_WRKR_STACK_SIZE (8192u)
+
+/**
+ * \brief Generic Worker Task priority base 
+ *          The worker ID is added to the base value to get the final task priority
+ */
+#define BPNODE_GEN_WRKR_PRIORITY_BASE  (100u)
+
+/**
+ * \brief Number of generic worker tasks to run
+ *        Note: This should be set to the number of available CPU cores, having multiple
+ *              generic worker tasks is only beneficial if there's more than one core.
+ *              Until the cFE/OSAL supports spawning child tasks onto alternate CPU
+ *              cores, it is recommended to keep this set to 1.
+ */
+#define BPNODE_NUM_GEN_WRKR_TASKS         (1)
+
+/**
+ * \brief Number of generic worker jobs to process per cycle
+ */
+#define BPNODE_NUM_JOBS_PER_CYCLE           (10)
+
 #endif /* BPNODE_PLATFORM_CFG_H */
