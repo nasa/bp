@@ -62,7 +62,7 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
 
         Result = false;
 
-        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT);
+        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
     }
 
     return Result;
@@ -663,11 +663,11 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
     if (Status == BPLIB_SUCCESS)
     {
-        BPLib_AS_Increment(0, BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT);
+        BPLib_AS_Increment(0, BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT, 1);
     }
     else if (Status != BPLIB_UNKNOWN)
     {
-        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT);
+        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
     }
 }
 
