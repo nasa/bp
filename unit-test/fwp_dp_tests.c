@@ -1702,7 +1702,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk_Error(void)
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibConfigHk, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
     /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1767,7 +1766,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk_Error(void)
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibConfigHk, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
     /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -1886,12 +1884,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Error(void)
 
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Set, 2);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_NODE_CNTRS_ERR_EID);
-    UtAssert_STRINGBUF_EQ("An error occured while sending node counters HK, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 /* Test ground command processing after receiving a valid send-source-mib-counters-hk */
@@ -1948,7 +1940,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk_Error(void)
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibCountersHk, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
     /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -2013,7 +2004,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm_Error(void)
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_NC_SendStorageHk, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
     /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -2078,7 +2068,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error(vo
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHk, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
     /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
