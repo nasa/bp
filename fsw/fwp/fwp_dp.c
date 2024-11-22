@@ -471,40 +471,20 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_CONFIG_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibConfigHkCmd_t)))
             {
-                Status = BPLib_NC_SendNodeMibConfigHk();
+                BPLib_NC_SendNodeMibConfigHk();
 
-                if (Status != BPLIB_SUCCESS)
-                {
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_MIB_CONFIG_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Failed to send node MIB configuration HK, RC = %d",
-                                        Status);
-                }
-                else
-                {
-                    /* Don't increment the directive success counter */
-                    Status = BPLIB_UNKNOWN;
-                }
+                /* Don't increment the directive counters */
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
         case BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibConfigHkCmd_t)))
             {
-                Status = BPLib_NC_SendSourceMibConfigHk();
+                BPLib_NC_SendSourceMibConfigHk();
 
-                if (Status != BPLIB_SUCCESS)
-                {
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_SRC_MIB_CONFIG_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Failed to send per-source MIB configuration HK, RC = %d",
-                                        Status);
-                }
-                else
-                {
-                    /* Don't increment the directive success counter */
-                    Status = BPLIB_UNKNOWN;
-                }
+                /* Don't increment the directive counters */
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
@@ -539,20 +519,10 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                     { /* ADUs received counter was successfully set */
 
                         /* Send the node MIB counters HK */
-                        Status = BPLib_NC_SendNodeMibCountersHk();
+                        BPLib_NC_SendNodeMibCountersHk();
 
-                        if (Status != BPLIB_SUCCESS)
-                        {
-                            BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
-                                                BPLib_EM_EventType_ERROR,
-                                                "An error occured while sending node counters HK, RC = %d",
-                                                Status);
-                        }
-                        else
-                        {
-                            /* Don't increment the directive accepted counter after HK is sent */
-                            Status = BPLIB_UNKNOWN;
-                        }
+                        /* Don't increment the directive counters */
+                        Status = BPLIB_UNKNOWN;
                     }
                     else
                     {
@@ -587,40 +557,20 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibCountersHkCmd_t)))
             {
-                Status = BPLib_NC_SendSourceMibCountersHk();
+                BPLib_NC_SendSourceMibCountersHk();
 
-                if (Status != BPLIB_SUCCESS)
-                {
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_SRC_CNTRS_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Failed to send per-source MIB counters HK, RC = %d",
-                                        Status);
-                }
-                else
-                {
-                    /* Don't increment the directive success counter */
-                    Status = BPLIB_UNKNOWN;
-                }
+                /* Don't increment directive counters */
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
         case BPNODE_SEND_STORAGE_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
             {
-                Status = BPLib_NC_SendStorageHk();
+                BPLib_NC_SendStorageHk();
 
-                if (Status != BPLIB_SUCCESS)
-                {
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_STORAGE_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Failed to send storage HK, RC = %d",
-                                        Status);
-                }
-                else
-                {
-                    /* Don't increment the directive success counter */
-                    Status = BPLIB_UNKNOWN;
-                }
+                /* Don't increment directive counters */
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
@@ -635,20 +585,10 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                     BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
                 }
 
-                Status = BPLib_NC_SendChannelContactStatHk();
+                BPLib_NC_SendChannelContactStatHk();
 
-                if (Status != BPLIB_SUCCESS)
-                {
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_CHAN_CONTACT_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Failed to send channel contact statistics HK, RC = %d",
-                                        Status);
-                }
-                else
-                {
-                    /* Don't increment the directive success counter */
-                    Status = BPLIB_UNKNOWN;
-                }
+                /* Don't increment directive counters */
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
