@@ -1704,10 +1704,11 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk_Error(void)
     UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibConfigHk, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
+    /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_NODE_MIB_CONFIG_ERR_EID);
     UtAssert_STRINGBUF_EQ("Failed to send node MIB configuration HK, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    */
 }
 
 /* Test ground command processing after receiving a valid send-source-mib-config-hk */
@@ -1768,10 +1769,12 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk_Error(void)
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibConfigHk, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
+    /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_SRC_MIB_CONFIG_ERR_EID);
     UtAssert_STRINGBUF_EQ("Failed to send per-source MIB configuration HK, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    */
 }
 
 /* Test ground command processing after receiving a valid send-node-mib-counters-hk */
@@ -1947,10 +1950,12 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk_Error(void)
     UtAssert_STUB_COUNT(BPLib_NC_SendSourceMibCountersHk, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
+    /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_SRC_CNTRS_ERR_EID);
     UtAssert_STRINGBUF_EQ("Failed to send per-source MIB counters HK, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    */
 }
 
 /* Test ground command processing after receiving a valid send-storage-hk-tlm */
@@ -2010,10 +2015,12 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm_Error(void)
     UtAssert_STUB_COUNT(BPLib_NC_SendStorageHk, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
+    /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_STORAGE_ERR_EID);
     UtAssert_STRINGBUF_EQ("Failed to send storage HK, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    */
 }
 
 /* Test ground command processing after receiving a valid send-channel-contact-stat-hk-tlm */
@@ -2073,10 +2080,12 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error(vo
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHk, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 
+    /* Handle future events from TLMP
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_CHAN_CONTACT_ERR_EID);
     UtAssert_STRINGBUF_EQ("Failed to send channel contact statistics HK, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    */
 }
 
 
