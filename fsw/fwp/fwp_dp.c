@@ -207,6 +207,15 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ResetBundleCountersCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ResetBundleCountersCmd_t*) SBBufPtr;
 
+                uint16_t ChannelNum;
+
+                /* Get ADU counts for all ADU child tasks */
+                for(ChannelNum = 0; ChannelNum < BPLIB_MAX_NUM_CHANNELS; ChannelNum++)
+                {
+                    BPNode_AppData.AduOutData[ChannelNum].AduCountDelivered = 0;
+                    BPNode_AppData.AduInData[ChannelNum].AduCountReceived   = 0;
+                }
+
                 Status = BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
             }
             break;
