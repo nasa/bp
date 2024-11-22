@@ -2141,107 +2141,107 @@ void Test_BPA_DP_VerifyCmdLength_InvalidLength(void)
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
-    ADD_TEST(Test_BPA_DP_TaskPipe_Nominal);
-    ADD_TEST(Test_BPA_DP_TaskPipe_InvalidMsgId);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidNoop);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidNoop);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAllApplications);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStartAllApplications);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleStorage);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidInitBundleStorage);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleMetadata);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRebuildBundleMetadata);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidClearVolatile);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidReloadSavedData);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetAllCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetCounter);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetSourceCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetBundleCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetErrorCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSetRegistrationState);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStartApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStopApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthSources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthSources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodySources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodySources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodians);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodians);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthReportToEid);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthReportToEid);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddLatency);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveLatency);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactSetup);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactStart);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactStart);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactStop);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactStop);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactTeardown);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddMibArrayKey);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveMibArrayKey);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSetMibItem);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddStorageAllocation);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveStorageAllocation);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidPerformSelfTest);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibConfigHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk_Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibConfigHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk_Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set1Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set2Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk_Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm_Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error);
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCode);
-    ADD_TEST(Test_BPA_DP_VerifyCmdLength_Nominal);
-    ADD_TEST(Test_BPA_DP_VerifyCmdLength_InvalidLength);
+    ADD_TEST(Test_BPA_DP_TaskPipe_Nominal);                                             /* Test #001 */
+    ADD_TEST(Test_BPA_DP_TaskPipe_InvalidMsgId);                                        /* Test #002 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidNoop);                               /* Test #003 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidNoop);                             /* Test #004 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAllApplications);                 /* Test #005 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAllApplications);               /* Test #006 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStartAllApplications);               /* Test #007 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStartAllApplications);             /* Test #008 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleStorage);                /* Test #009 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleStorage);              /* Test #010 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidInitBundleStorage);                  /* Test #011 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidInitBundleStorage);                /* Test #012 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidVerifyBundleMetadata);               /* Test #013 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidVerifyBundleMetadata);             /* Test #014 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRebuildBundleMetadata);              /* Test #015 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRebuildBundleMetadata);            /* Test #016 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidClearVolatile);                      /* Test #017 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidClearVolatile);                    /* Test #018 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidReloadSavedData);                    /* Test #019 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidReloadSavedData);                  /* Test #020 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetAllCounters);                   /* Test #021 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetAllCounters);                 /* Test #022 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetCounter);                       /* Test #023 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetCounter);                     /* Test #024 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetSourceCounters);                /* Test #025 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetSourceCounters);              /* Test #026 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetBundleCounters);                /* Test #027 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetBundleCounters);              /* Test #028 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidResetErrorCounters);                 /* Test #029 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidResetErrorCounters);               /* Test #030 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddApplication);                     /* Test #031 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddApplication);                   /* Test #032 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveApplication);                  /* Test #033 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveApplication);                /* Test #034 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSetRegistrationState);               /* Test #035 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSetRegistrationState);             /* Test #036 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStartApplication);                   /* Test #037 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStartApplication);                 /* Test #038 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidStopApplication);                    /* Test #039 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidStopApplication);                  /* Test #040 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthSources);                     /* Test #041 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthSources);                   /* Test #042 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthSources);                  /* Test #043 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthSources);                /* Test #044 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodySources);              /* Test #045 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodySources);            /* Test #046 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodySources);           /* Test #047 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodySources);         /* Test #048 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthCustodians);                  /* Test #049 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthCustodians);                /* Test #050 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthCustodians);               /* Test #051 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthCustodians);             /* Test #052 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddAuthReportToEid);                 /* Test #053 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddAuthReportToEid);               /* Test #054 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveAuthReportToEid);              /* Test #055 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveAuthReportToEid);            /* Test #056 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddLatency);                         /* Test #057 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddLatency);                       /* Test #058 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveLatency);                      /* Test #059 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveLatency);                    /* Test #060 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactSetup);                       /* Test #061 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactSetup);                     /* Test #062 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactStart);                       /* Test #063 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactStart);                     /* Test #064 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactStop);                        /* Test #065 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactStop);                      /* Test #066 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidContactTeardown);                    /* Test #067 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidContactTeardown);                  /* Test #068 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddMibArrayKey);                     /* Test #069 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddMibArrayKey);                   /* Test #070 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveMibArrayKey);                  /* Test #071 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveMibArrayKey);                /* Test #072 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSetMibItem);                         /* Test #073 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSetMibItem);                       /* Test #074 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidAddStorageAllocation);               /* Test #075 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidAddStorageAllocation);             /* Test #076 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidRemoveStorageAllocation);            /* Test #077 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidRemoveStorageAllocation);          /* Test #078 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidPerformSelfTest);                    /* Test #079 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidPerformSelfTest);                  /* Test #080 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibConfigHk);                /* Test #081 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk);              /* Test #082 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibConfigHk_Error);        /* Test #083 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibConfigHk);              /* Test #084 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk);            /* Test #085 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk_Error);      /* Test #086 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk);              /* Test #087 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk);            /* Test #088 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set1Error);  /* Test #089 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set2Error);  /* Test #090 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Error);      /* Test #091 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk);            /* Test #092 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk);          /* Test #093 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk_Error);    /* Test #094 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm);                   /* Test #095 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm);                 /* Test #096 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm_Error);           /* Test #097 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);         /* Test #098 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);       /* Test #099 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error); /* Test #100 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCode);                             /* Test #101 */
+    ADD_TEST(Test_BPA_DP_VerifyCmdLength_Nominal);                                      /* Test #102 */
+    ADD_TEST(Test_BPA_DP_VerifyCmdLength_InvalidLength);                                /* Test #103 */
 }
