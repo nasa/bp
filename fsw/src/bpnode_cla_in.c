@@ -48,7 +48,7 @@ int32 BPNode_ClaInCreateTasks(void)
     /* Create all of the CLA In task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
     { 
-        BPNode_AppData.ClaInData[i].IngressServiceEnabled = false;
+        BPNode_AppData.ClaInData[i].IngressServiceEnabled = true;
         
         /* Create init semaphore so main task knows when child initialized */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_INIT_SEM_BASE_NAME, i);
@@ -213,7 +213,7 @@ int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId
 
         /* Exit performance log */
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-        
+
         Status = CFE_PSP_IODriver_Command(&CLAIngress->PspLocation, CFE_PSP_IODriver_PACKET_IO_READ,
                                           CFE_PSP_IODriver_VPARG(&RdBuf));
 

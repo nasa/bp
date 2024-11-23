@@ -50,7 +50,7 @@ int32 BPNode_ClaOutCreateTasks(void)
     /* Create all of the CLA Out task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
     {
-        BPNode_AppData.ClaOutData[i].EgressServiceEnabled = false;
+        BPNode_AppData.ClaOutData[i].EgressServiceEnabled = true;
 
         /* Create init semaphore so main task knows when child initialized */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_INIT_SEM_BASE_NAME, i);
