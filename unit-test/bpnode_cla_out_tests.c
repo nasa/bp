@@ -48,16 +48,13 @@ void Test_BPNode_ClaOutCreateTasks_Nominal(void)
 /* Test BPNode_ClaOutCreateTasks when the init semaphore fails to create */
 void Test_BPNode_ClaOutCreateTasks_InitSemErr(void)
 {
-    UT_CheckEvent_t EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_INIT_SEM_ERR_EID, 
-                    "Failed to create the CLA Out #%d task init semaphore. Error = %d.");
-
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 1, OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(BPNode_ClaOutCreateTasks(), OS_SEM_FAILURE);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_INIT_SEM_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Failed to create the CLA Out #%d task init semaphore. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
@@ -67,16 +64,13 @@ void Test_BPNode_ClaOutCreateTasks_InitSemErr(void)
 /* Test BPNode_ClaOutCreateTasks when the child task creation fails */
 void Test_BPNode_ClaOutCreateTasks_TaskCrErr(void)
 {
-    UT_CheckEvent_t EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_CREATE_ERR_EID, 
-                    "Failed to create the CLA Out #%d child task. Error = %d.");
-
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_CreateChildTask), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(BPNode_ClaOutCreateTasks(), CFE_ES_ERR_CHILD_TASK_CREATE);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_CREATE_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Failed to create the CLA Out #%d child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
@@ -86,16 +80,13 @@ void Test_BPNode_ClaOutCreateTasks_TaskCrErr(void)
 /* Test BPNode_ClaOutCreateTasks when taking the init semaphore fails */
 void Test_BPNode_ClaOutCreateTasks_TakeSemErr(void)
 {
-    UT_CheckEvent_t EventTest;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_RUN_ERR_EID, 
-                    "CLA Out #%d task not running. Init Sem Error = %d.");
-
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(BPNode_ClaOutCreateTasks(), OS_SEM_FAILURE);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_RUN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("CLA Out #%d task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
@@ -108,6 +99,9 @@ void Test_BPNode_ClaOutCreateTasks_IODFindByNameErr(void)
     UtAssert_INT32_NEQ(BPNode_ClaOutCreateTasks(), CFE_SUCCESS);
     
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IOD_FINDNAME_OUT_EID);
+    UtAssert_STRINGBUF_EQ("IODriver Error: CFE_PSP_IODriver_FindByName status %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
 }
 
@@ -121,6 +115,9 @@ void Test_BPNode_ClaOutCreateTasks_IODCommandDirErr(void)
     UtAssert_INT32_NEQ(BPNode_ClaOutCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IOD_COMMAND_DIR_OUT_EID);
+    UtAssert_STRINGBUF_EQ("IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (output) status %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
 }
 
@@ -134,13 +131,15 @@ void Test_BPNode_ClaOutCreateTasks_IODCommandRunningErr(void)
     UtAssert_INT32_NEQ(BPNode_ClaOutCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IOD_COMMAND_RUN_OUT_EID);
+    UtAssert_STRINGBUF_EQ("IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (output) status %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
 }
 
 /* Test BPNode_ClaOut_TaskInit when everything succeeds */
 void Test_BPNode_ClaOut_TaskInit_Nominal(void)
 {
-    UT_CheckEvent_t EventTest;
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
     uint8 ExpContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
@@ -149,12 +148,12 @@ void Test_BPNode_ClaOut_TaskInit_Nominal(void)
     BPNode_AppData.ClaOutData[ExpContId].TaskId = TaskId;
 
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_INIT_INF_EID, 
-                    "[CLA Out #%d]: Child Task Initialized.");
 
     UtAssert_INT32_EQ(BPNode_ClaOut_TaskInit(&ContId), CFE_SUCCESS);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_INIT_INF_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Child Task Initialized.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ContId, ExpContId);
     UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ExpContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
@@ -166,18 +165,17 @@ void Test_BPNode_ClaOut_TaskInit_Nominal(void)
 /* Test BPNode_ClaOut_TaskInit when it fails to get the task ID */
 void Test_BPNode_ClaOut_TaskInit_GetIdErr(void)
 {
-    UT_CheckEvent_t EventTest;
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
     uint8 ExpContId = BPLIB_MAX_NUM_CONTACTS;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetTaskID), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_NO_ID_ERR_EID, 
-                    "[CLA Out #?]: Failed to get task ID. Error = %d");
 
     UtAssert_INT32_EQ(BPNode_ClaOut_TaskInit(&ContId), CFE_ES_ERR_RESOURCEID_NOT_VALID);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_NO_ID_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #?]: Failed to get task ID. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ContId, ExpContId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
@@ -187,7 +185,6 @@ void Test_BPNode_ClaOut_TaskInit_GetIdErr(void)
 /* Test BPNode_ClaOut_TaskInit when the task IDs don't match */
 void Test_BPNode_ClaOut_TaskInit_MatchIdErr(void)
 {
-    UT_CheckEvent_t EventTest;
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
     uint8 ExpContId = BPLIB_MAX_NUM_CONTACTS;
     CFE_ES_TaskId_t TaskId = 1234;
@@ -196,12 +193,12 @@ void Test_BPNode_ClaOut_TaskInit_MatchIdErr(void)
     BPNode_AppData.ClaOutData[0].TaskId = 5678;
 
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_INV_ID_ERR_EID, 
-                    "[CLA Out #?]: Task ID does not match any known task IDs. ID = %d");
 
     UtAssert_INT32_EQ(BPNode_ClaOut_TaskInit(&ContId), CFE_ES_ERR_RESOURCEID_NOT_VALID);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_INV_ID_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #?]: Task ID does not match any known task IDs. ID = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ContId, ExpContId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
@@ -211,7 +208,6 @@ void Test_BPNode_ClaOut_TaskInit_MatchIdErr(void)
 /* Test BPNode_ClaOut_TaskInit when init semaphore give fails */
 void Test_BPNode_ClaOut_TaskInit_GiveSemErr(void)
 {
-    UT_CheckEvent_t EventTest;
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
     uint8 ExpContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
@@ -221,12 +217,12 @@ void Test_BPNode_ClaOut_TaskInit_GiveSemErr(void)
 
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_SEM_FAILURE);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_INIT_SEM_TK_ERR_EID, 
-                    "[CLA Out #%d]: Failed to give init semaphore. Error = %d");
 
     UtAssert_INT32_EQ(BPNode_ClaOut_TaskInit(&ContId), OS_SEM_FAILURE);
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_INIT_SEM_TK_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Failed to give init semaphore. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ContId, ExpContId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
@@ -270,6 +266,9 @@ void Test_BPNode_ClaOut_AppMain_InitErr(void)
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_ERROR);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_CLA_OUT_EXIT_CRIT_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Terminating Task. RunStatus = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 1);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
@@ -278,23 +277,22 @@ void Test_BPNode_ClaOut_AppMain_InitErr(void)
 /* Test BPNode_ClaOut_AppMain when initialization failed and channel ID is unknown */
 void Test_BPNode_ClaOut_AppMain_ContIdErr(void)
 {
-    UT_CheckEvent_t EventTest;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetTaskID), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_UNK_EXIT_CRIT_EID, 
-                                "Terminating Unknown CLA Out Task.");
 
     BPNode_ClaOut_AppMain();
 
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_CLA_OUT_UNK_EXIT_CRIT_EID);
+    UtAssert_STRINGBUF_EQ("Terminating Unknown CLA Out Task.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 0);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
 }
 
-/* Test BPNode_ClaOut_AppMain when app state is stopped */
-void Test_BPNode_ClaOut_AppMain_AppStopped(void)
+/* Test BPNode_ClaOut_AppMain when bundle egress is disabled */
+void Test_BPNode_ClaOut_AppMain_NoEgress(void)
 {
     uint8 ContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
@@ -339,15 +337,13 @@ void Test_BPNode_ClaOut_AppMain_FailedProcBundle(void)
 /* Test BPNode_ClaOut_TaskExit in nominal shutdown */
 void Test_BPNode_ClaOut_TaskExit_Nominal(void)
 {
-    UT_CheckEvent_t EventTest;
     uint8 ContId = 0;
-
-    UT_CHECKEVENT_SETUP(&EventTest, BPNODE_CLA_OUT_EXIT_CRIT_EID, 
-                                "[CLA Out #%d]: Terminating Task. RunStatus = %d.");
 
     UtAssert_VOIDCALL(BPNode_ClaOut_TaskExit(ContId));
     
-    UtAssert_UINT32_EQ(EventTest.MatchCount, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_EXIT_CRIT_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Terminating Task. RunStatus = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 1);
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
@@ -367,7 +363,11 @@ void Test_BPNode_CLA_ProcessBundleOutput_FailedBPLibEgress(void)
     BPNode_ClaOutData_t CLAEgress;
     memset(&CLAEgress, 0, sizeof(BPNode_ClaOutData_t));
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_ERROR);
-    UtAssert_UINT32_NEQ(BPNode_CLA_ProcessBundleOutput(&CLAEgress, ContId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_CLA_ProcessBundleOutput(&CLAEgress, ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+    
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_LIB_LOAD_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA Out #%d] Error %s - Failed (%d) to load bundle", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 void Test_BPNode_CLA_ProcessBundleOutput_CLATimeout(void)
@@ -404,7 +404,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_MatchIdErr);
 
     ADD_TEST(Test_BPNode_ClaOut_AppMain_Nominal);
-    ADD_TEST(Test_BPNode_ClaOut_AppMain_AppStopped);
+    ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_InitErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_ContIdErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_FailedProcBundle);
