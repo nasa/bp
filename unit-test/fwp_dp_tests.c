@@ -1746,7 +1746,10 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    
+    /* Verify BPLib_AS_Increment arguments */
+    Test_BPLib_AS_VerifyIncrementDecrementCounter(BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT);
+    Test_BPLib_AS_VerifyIncrementDecrementAmount(1);
 }
 
 void Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk_Error(void)

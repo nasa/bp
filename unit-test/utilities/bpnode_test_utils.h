@@ -47,6 +47,9 @@
 
 #include "fwp_dp.h"
 #include "bplib_em_handlers.h"
+#include "bplib_as_handlers.h"
+#include "bplib_as_internal.h"
+#include "bplib_as_test_utils.h"
 
 
 /*
