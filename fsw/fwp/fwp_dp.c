@@ -634,7 +634,7 @@ void BPA_DP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
             break;
 
         default:
-            BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount++;
+            BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
 
             BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid command packet,MID = 0x%x",
