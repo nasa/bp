@@ -162,16 +162,8 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_ALL_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetAllCountersCmd_t)))
             {
-                uint16_t ChannelNum;
-
-                /* Get ADU counts for all ADU child tasks */
-                for(ChannelNum = 0; ChannelNum < BPLIB_MAX_NUM_CHANNELS; ChannelNum++)
-                {
-                    BPNode_AppData.AduOutData[ChannelNum].AduCountDelivered = 0;
-                    BPNode_AppData.AduInData[ChannelNum].AduCountReceived   = 0;
-                }
-
                 BPLib_NC_ResetAllCounters();
+                Status = BPLIB_SUCCESS;
             }
             break;
 
@@ -206,15 +198,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             {
                 const BPNode_ResetBundleCountersCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ResetBundleCountersCmd_t*) SBBufPtr;
-
-                uint16_t ChannelNum;
-
-                /* Get ADU counts for all ADU child tasks */
-                for(ChannelNum = 0; ChannelNum < BPLIB_MAX_NUM_CHANNELS; ChannelNum++)
-                {
-                    BPNode_AppData.AduOutData[ChannelNum].AduCountDelivered = 0;
-                    BPNode_AppData.AduInData[ChannelNum].AduCountReceived   = 0;
-                }
 
                 Status = BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
             }
@@ -500,66 +483,10 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
             {
-                uint32_t ADU_Delivered;
-                uint32_t ADU_Received;
-                uint8 i;
+                BPLib_NC_SendNodeMibCountersHk();
 
-                /* Reset ADU counters so += can be used in a loop*/
-                ADU_Delivered = 0;
-                ADU_Received  = 0;
-
-                /* Get ADU counts for all ADU child tasks */
-                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
-                {
-                    ADU_Delivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
-                    ADU_Received  += BPNode_AppData.AduInData[i].AduCountReceived;
-                }
-
-                /* Set the node's ADUs delivered counter to the new value */
-                Status = BPLib_AS_Set(0, ADU_COUNT_DELIVERED, ADU_Delivered);
-
-                if (Status == BPLIB_SUCCESS)
-                { /* ADUs delivered counter was successfully set*/
-
-                    /* Set the node's ADUs received to the new value */
-                    Status = BPLib_AS_Set(0, ADU_COUNT_RECEIVED, ADU_Received);
-
-                    if (Status == BPLIB_SUCCESS)
-                    { /* ADUs received counter was successfully set */
-
-                        /* Send the node MIB counters HK */
-                        BPLib_NC_SendNodeMibCountersHk();
-
-                        /* Don't increment the directive counters */
-                        Status = BPLIB_UNKNOWN;
-                    }
-                    else
-                    {
-                        /*
-                        ** The call to BPLib_AS_Set() is so controlled that it seems unlikely that an error
-                        ** will occur from its use. This is also very difficult to test from a code coverage
-                        ** standpoint but an indication of an error is still needed in case the worst happens
-                        */
-
-                        BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
-                                            BPLib_EM_EventType_ERROR,
-                                            "Can't send node MIB counters; error setting ADUs received counter, RC = %d",
-                                            Status);
-                    }
-                }
-                else
-                {
-                    /*
-                    ** The call to BPLib_AS_Set() is so controlled that it seems unlikely that an error
-                    ** will occur from its use. This is also very difficult to test from a code coverage
-                    ** standpoint but an indication of an error is still needed in case the worst happens
-                    */
-
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Can't send node MIB counters; error setting ADUs delivered counter, RC = %d",
-                                        Status);
-                }
+                /* Don't increment the directive counters */
+                Status = BPLIB_UNKNOWN;
             }
             break;
 
@@ -634,7 +561,7 @@ void BPA_DP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
             break;
 
         default:
-            BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount++;
+            BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
 
             BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, BPLib_EM_EventType_ERROR,
                               "Invalid command packet,MID = 0x%x",

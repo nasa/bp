@@ -101,7 +101,6 @@ void Test_BPA_ADUP_In_Nominal(void)
 {
     CFE_SB_Buffer_t Buf;
     uint8_t ChanId = 0;
-    uint16 ExpAduCountRecv = 1;
     CFE_MSG_Size_t Size = 10;
 
     /* Set global data */
@@ -110,7 +109,7 @@ void Test_BPA_ADUP_In_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
-    UtAssert_UINT16_EQ(BPNode_AppData.AduInData[ChanId].AduCountReceived, ExpAduCountRecv);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test BPA_ADUP_In when the payload is too big*/
@@ -118,7 +117,6 @@ void Test_BPA_ADUP_In_SizeErr(void)
 {
     CFE_SB_Buffer_t Buf;
     uint8_t ChanId = 0;
-    uint16 ExpAduCountRecv = 0;
     CFE_MSG_Size_t Size = 100;
 
     /* Set global data */
@@ -128,7 +126,7 @@ void Test_BPA_ADUP_In_SizeErr(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_ERROR);
 
-    UtAssert_UINT16_EQ(BPNode_AppData.AduInData[ChanId].AduCountReceived, ExpAduCountRecv);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_IN_TOO_BIG_ERR_EID);
     UtAssert_STRINGBUF_EQ("[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);

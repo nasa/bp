@@ -84,7 +84,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
             /* TODO remove header */
         }
 
-        BPNode_AppData.AduInData[ChanId].AduCountReceived++;
+        BPLib_AS_Increment(0, ADU_COUNT_RECEIVED, 1);
 
         /* TODO pass to PI */
     }
