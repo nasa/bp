@@ -88,8 +88,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
                 char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
 
-                Status = BPLib_NC_Noop();
-
                 (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
                                 BPNODE_MAJOR_VERSION,
                                 BPNODE_MINOR_VERSION,
@@ -106,56 +104,56 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_ADD_ALL_APPLICATIONS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddAllApplicationsCmd_t)))
             {
-                Status = BPLib_NC_AddAllApplications();
+                BPLib_NC_AddAllApplications();
             }
             break;
 
         case BPNODE_START_ALL_APPLICATIONS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_StartAllApplicationsCmd_t)))
             {
-                Status = BPLib_NC_StartAllApplications();
+                BPLib_NC_StartAllApplications();
             }
             break;
 
         case BPNODE_VERIFY_BUNDLE_STORAGE_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_VerifyBundleStorageCmd_t)))
             {
-                Status = BPLib_NC_VerifyBundleStorage();
+                BPLib_NC_VerifyBundleStorage();
             }
             break;
 
         case BPNODE_INIT_BUNDLE_STORAGE_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_InitBundleStorageCmd_t)))
             {
-                Status = BPLib_NC_InitBundleStorage();
+                BPLib_NC_InitBundleStorage();
             }
             break;
 
         case BPNODE_VERIFY_BUNDLE_METADATA_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_VerifyBundleMetadataCmd_t)))
             {
-                Status = BPLib_NC_VerifyBundleMetadata();
+                BPLib_NC_VerifyBundleMetadata();
             }
             break;
 
         case BPNODE_REBUILD_BUNDLE_METADATA_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RebuildBundleMetadataCmd_t)))
             {
-                Status = BPLib_NC_RebuildBundleMetadata();
+                BPLib_NC_RebuildBundleMetadata();
             }
             break;
 
         case BPNODE_CLEAR_VOLATILE_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ClearVolatileCmd_t)))
             {
-                Status = BPLib_NC_ClearVolatile();
+                BPLib_NC_ClearVolatile();
             }
             break;
 
         case BPNODE_RELOAD_SAVED_DATA_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ReloadSavedDataCmd_t)))
             {
-                Status = BPLib_NC_ReloadSavedData();
+                BPLib_NC_ReloadSavedData();
             }
             break;
 
@@ -181,13 +179,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ResetCounterCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ResetCounterCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ResetCounter(MsgPtr->Payload);
-
-                if (Status == BPLIB_SUCCESS && MsgPtr->Payload.Counter == BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT)
-                {
-                    /* Don't increment directive accepted counter after it's reset */
-                    Status = BPLIB_UNKNOWN;
-                }
+                BPLib_NC_ResetCounter(MsgPtr->Payload);
             }
             break;
 
@@ -197,7 +189,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ResetSourceCountersCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ResetSourceCountersCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ResetSourceCounters(MsgPtr->Payload);
+                BPLib_NC_ResetSourceCounters(MsgPtr->Payload);
             }
             break;
 
@@ -216,7 +208,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                     BPNode_AppData.AduInData[ChannelNum].AduCountReceived   = 0;
                 }
 
-                Status = BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
+                BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
             }
             break;
 
@@ -226,7 +218,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ResetErrorCountersCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ResetErrorCountersCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ResetErrorCounters(MsgPtr->Payload);
+                BPLib_NC_ResetErrorCounters(MsgPtr->Payload);
             }
             break;
 
@@ -236,7 +228,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddApplicationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddApplicationCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddApplication(MsgPtr->Payload);
+                BPLib_NC_AddApplication(MsgPtr->Payload);
             }
             break;
 
@@ -246,7 +238,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveApplicationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveApplicationCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveApplication(MsgPtr->Payload);
+                BPLib_NC_RemoveApplication(MsgPtr->Payload);
             }
             break;
 
@@ -256,7 +248,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_SetRegistrationStateCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_SetRegistrationStateCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_SetRegistrationState(MsgPtr->Payload);
+                BPLib_NC_SetRegistrationState(MsgPtr->Payload);
             }
             break;
 
@@ -266,7 +258,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_StartApplicationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_StartApplicationCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_StartApplication(MsgPtr->Payload);
+                BPLib_NC_StartApplication(MsgPtr->Payload);
             }
             break;
 
@@ -276,7 +268,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_StopApplicationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_StopApplicationCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_StopApplication(MsgPtr->Payload);
+                BPLib_NC_StopApplication(MsgPtr->Payload);
             }
             break;
 
@@ -286,7 +278,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddAuthSourcesCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddAuthSourcesCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddAuthSources(MsgPtr->Payload);
+                BPLib_NC_AddAuthSources(MsgPtr->Payload);
             }
             break;
 
@@ -296,7 +288,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveAuthSourcesCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveAuthSourcesCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveAuthSources(MsgPtr->Payload);
+                BPLib_NC_RemoveAuthSources(MsgPtr->Payload);
             }
             break;
 
@@ -306,7 +298,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddAuthCustodySourcesCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddAuthCustodySourcesCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddAuthCustodySources(MsgPtr->Payload);
+                BPLib_NC_AddAuthCustodySources(MsgPtr->Payload);
             }
             break;
 
@@ -316,7 +308,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveAuthCustodySourcesCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveAuthCustodySourcesCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveAuthCustodySources(MsgPtr->Payload);
+                BPLib_NC_RemoveAuthCustodySources(MsgPtr->Payload);
             }
             break;
 
@@ -326,7 +318,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddAuthCustodiansCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddAuthCustodiansCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddAuthCustodians(MsgPtr->Payload);
+                BPLib_NC_AddAuthCustodians(MsgPtr->Payload);
             }
             break;
 
@@ -336,7 +328,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveAuthCustodiansCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveAuthCustodiansCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveAuthCustodians(MsgPtr->Payload);
+                BPLib_NC_RemoveAuthCustodians(MsgPtr->Payload);
             }
             break;
 
@@ -346,7 +338,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddAuthReportToEidCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddAuthReportToEidCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddAuthReportToEid(MsgPtr->Payload);
+                BPLib_NC_AddAuthReportToEid(MsgPtr->Payload);
             }
             break;
 
@@ -356,7 +348,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveAuthReportToEidCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveAuthReportToEidCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveAuthReportToEid(MsgPtr->Payload);
+                BPLib_NC_RemoveAuthReportToEid(MsgPtr->Payload);
             }
             break;
 
@@ -366,7 +358,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddLatencyCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddLatencyCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddLatency(MsgPtr->Payload);
+                BPLib_NC_AddLatency(MsgPtr->Payload);
             }
             break;
 
@@ -376,7 +368,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveLatencyCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveLatencyCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveLatency(MsgPtr->Payload);
+                BPLib_NC_RemoveLatency(MsgPtr->Payload);
             }
             break;
 
@@ -386,7 +378,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ContactSetupCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ContactSetupCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ContactSetup(MsgPtr->Payload);
+                BPLib_NC_ContactSetup(MsgPtr->Payload);
             }
             break;
 
@@ -396,7 +388,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ContactStartCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ContactStartCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ContactStart(MsgPtr->Payload);
+                BPLib_NC_ContactStart(MsgPtr->Payload);
             }
             break;
 
@@ -406,7 +398,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ContactStopCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ContactStopCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ContactStop(MsgPtr->Payload);
+                BPLib_NC_ContactStop(MsgPtr->Payload);
             }
             break;
 
@@ -416,7 +408,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ContactTeardownCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ContactTeardownCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_ContactTeardown(MsgPtr->Payload);
+                BPLib_NC_ContactTeardown(MsgPtr->Payload);
             }
             break;
 
@@ -426,7 +418,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddMibArrayKeyCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddMibArrayKeyCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddMibArrayKey(MsgPtr->Payload);
+                BPLib_NC_AddMibArrayKey(MsgPtr->Payload);
             }
             break;
 
@@ -436,7 +428,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveMibArrayKeyCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveMibArrayKeyCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveMibArrayKey(MsgPtr->Payload);
+                BPLib_NC_RemoveMibArrayKey(MsgPtr->Payload);
             }
             break;
 
@@ -446,7 +438,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_SetMibItemCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_SetMibItemCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_SetMibItem(MsgPtr->Payload);
+                BPLib_NC_SetMibItem(MsgPtr->Payload);
             }
             break;
 
@@ -456,7 +448,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_AddStorageAllocationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_AddStorageAllocationCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_AddStorageAllocation(MsgPtr->Payload);
+                BPLib_NC_AddStorageAllocation(MsgPtr->Payload);
             }
             break;
 
@@ -466,14 +458,14 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveStorageAllocationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveStorageAllocationCmd_t*) SBBufPtr;
 
-                Status = BPLib_NC_RemoveStorageAllocation(MsgPtr->Payload);
+                BPLib_NC_RemoveStorageAllocation(MsgPtr->Payload);
             }
             break;
 
         case BPNODE_PERFORM_SELF_TEST_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_PerformSelfTestCmd_t)))
             {
-                Status = BPLib_NC_PerformSelfTest();
+                BPLib_NC_PerformSelfTest();
             }
             break;
 
@@ -481,9 +473,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibConfigHkCmd_t)))
             {
                 BPLib_NC_SendNodeMibConfigHk();
-
-                /* Don't increment the directive counters */
-                Status = BPLIB_UNKNOWN;
             }
             break;
 
@@ -491,9 +480,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibConfigHkCmd_t)))
             {
                 BPLib_NC_SendSourceMibConfigHk();
-
-                /* Don't increment the directive counters */
-                Status = BPLIB_UNKNOWN;
             }
             break;
 
@@ -529,9 +515,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
                         /* Send the node MIB counters HK */
                         BPLib_NC_SendNodeMibCountersHk();
-
-                        /* Don't increment the directive counters */
-                        Status = BPLIB_UNKNOWN;
                     }
                     else
                     {
@@ -608,15 +591,6 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
             BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Invalid ground command code: CC = %d", CommandCode);
             break;
-    }
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        BPLib_AS_Increment(0, BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT, 1);
-    }
-    else if (Status != BPLIB_UNKNOWN)
-    {
-        BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
     }
 }
 
