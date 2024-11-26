@@ -502,13 +502,17 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 }
 
                 /* Set the node's ADUs delivered counter to the new value */
-                Status = BPLib_AS_Set(0, ADU_COUNT_DELIVERED, ADU_Delivered);
+                // Status = BPLib_AS_SetCounter(0, ADU_COUNT_DELIVERED, ADU_Delivered);
+                // Temporary fix
+                BPLib_AS_NodeCountersPayload.NodeCounters[ADU_COUNT_DELIVERED] = ADU_Delivered;
 
                 if (Status == BPLIB_SUCCESS)
                 { /* ADUs delivered counter was successfully set*/
 
                     /* Set the node's ADUs received to the new value */
-                    Status = BPLib_AS_Set(0, ADU_COUNT_RECEIVED, ADU_Received);
+                    // Status = BPLib_AS_SetCounter(0, ADU_COUNT_RECEIVED, ADU_Received);
+                    // Temporary fix
+                    BPLib_AS_NodeCountersPayload.NodeCounters[ADU_COUNT_RECEIVED] = ADU_Received;
 
                     if (Status == BPLIB_SUCCESS)
                     { /* ADUs received counter was successfully set */
