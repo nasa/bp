@@ -132,7 +132,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
         return BPLIB_ERROR;
     }
 
-    /* App state must be either removed or added */
+    /* App state must be removed */
     if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_REMOVED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
@@ -289,7 +289,7 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
         return BPLIB_ERROR;
     }
 
-    /* App state must be stopped */
+    /* App state must be stopped or added */
     if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_STOPPED &&
         BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_ADDED)
     {
