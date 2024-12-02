@@ -133,8 +133,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     }
 
     /* App state must be either removed or added */
-    if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_REMOVED &&
-        BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_ADDED)
+    if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_REMOVED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error with add-application directive, invalid AppState=%d for ChanId=%d", 
@@ -291,7 +290,8 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
     }
 
     /* App state must be stopped */
-    if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_STOPPED)
+    if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_STOPPED &&
+        BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_ADDED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_REM_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error with remove-application directive, invalid AppState=%d for ChanId=%d", 

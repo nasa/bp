@@ -187,48 +187,6 @@ void Test_BPA_ADUP_AddApplication_Nominal(void)
 
 }
 
-/* Test BPA_ADUP_AddApplication */
-void Test_BPA_ADUP_AddApplication_AlreadyAdded(void)
-{
-    uint8_t ChanId = 0;
-
-    /* Set test data */
-
-    TestAduTbl.Entries[ChanId].NumRecvFrmMsgIds = 1;
-    TestAduTbl.Entries[ChanId].RecvFrmMsgIds[0] = CFE_SB_ValueToMsgId(0x1801);
-    TestAduTbl.Entries[ChanId].SendToMsgId = CFE_SB_ValueToMsgId(0x0800);
-
-    TestChanTbl.Configs[ChanId].AddAutomatically = true;
-    TestChanTbl.Configs[ChanId].AduUnwrapping = false;
-    TestChanTbl.Configs[ChanId].AduWrapping = true;
-    TestChanTbl.Configs[ChanId].MaxBundlePayloadSize = 1234;
-
-    BPNode_AppData.AduTblPtr = &TestAduTbl;
-    BPNode_AppData.ChanTblPtr = &TestChanTbl;
-
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_ADDED;
-
-    UtAssert_INT32_EQ(BPA_ADUP_AddApplication(ChanId), BPLIB_SUCCESS);
-
-    /* Verify ADU configs were set properly */
-    UtAssert_INT32_EQ(BPNode_AppData.AduState[ChanId].AppState, BPA_ADUP_APP_ADDED);
-    UtAssert_INT32_EQ(CFE_SB_MsgIdToValue(BPNode_AppData.AduOutData[ChanId].SendToMsgId), 
-                      CFE_SB_MsgIdToValue(TestAduTbl.Entries[ChanId].SendToMsgId));
-    UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds, 
-                            TestAduTbl.Entries[ChanId].NumRecvFrmMsgIds);       
-    UtAssert_INT32_EQ(CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[0]), 
-                      CFE_SB_MsgIdToValue(TestAduTbl.Entries[ChanId].RecvFrmMsgIds[0]));       
-    UtAssert_INT32_EQ(BPNode_AppData.AduState[ChanId].AddAutomatically, 
-                            TestChanTbl.Configs[ChanId].AddAutomatically);
-    UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].AduUnwrapping, 
-                            TestChanTbl.Configs[ChanId].AduUnwrapping);       
-    UtAssert_INT32_EQ(BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize, 
-                            TestChanTbl.Configs[ChanId].MaxBundlePayloadSize);       
-    UtAssert_INT32_EQ(BPNode_AppData.AduOutData[ChanId].AduWrapping, 
-                            TestChanTbl.Configs[ChanId].AduWrapping);       
-
-}
-
 /* Test BPA_ADUP_AddApplication when the channel ID is invalid */
 void Test_BPA_ADUP_AddApplication_BadId(void)
 {
@@ -394,6 +352,19 @@ void Test_BPA_ADUP_RemoveApplication_Nominal(void)
     UtAssert_INT32_EQ(BPNode_AppData.AduState[ChanId].AppState, BPA_ADUP_APP_REMOVED);
 }
 
+
+/* Test BPA_ADUP_AddApplication */
+void Test_BPA_ADUP_RemoveApplication_Added(void)
+{
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_ADDED;
+
+    UtAssert_INT32_EQ(BPA_ADUP_RemoveApplication(ChanId), BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+    UtAssert_INT32_EQ(BPNode_AppData.AduState[ChanId].AppState, BPA_ADUP_APP_REMOVED); 
+}
+
 /* Test BPA_ADUP_RemoveApplication when the channel ID is invalid */
 void Test_BPA_ADUP_RemoveApplication_BadId(void)
 {
@@ -432,7 +403,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_ADUP_Out_Nominal);
     
     ADD_TEST(Test_BPA_ADUP_AddApplication_Nominal);
-    ADD_TEST(Test_BPA_ADUP_AddApplication_AlreadyAdded);
     ADD_TEST(Test_BPA_ADUP_AddApplication_BadId);
     ADD_TEST(Test_BPA_ADUP_AddApplication_BadState);
     
@@ -448,6 +418,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_ADUP_StopApplication_SubErr);
 
     ADD_TEST(Test_BPA_ADUP_RemoveApplication_Nominal);
+    ADD_TEST(Test_BPA_ADUP_RemoveApplication_Added);
     ADD_TEST(Test_BPA_ADUP_RemoveApplication_BadId);
     ADD_TEST(Test_BPA_ADUP_RemoveApplication_BadState);
 
