@@ -41,7 +41,7 @@
 
 #define BPNODE_CMD_PIPE_DEPTH               (32)    /* Depth of command pipe */
 
-#define BPNODE_WAKEUP_PIPE_DEPTH            (1)     /* Depth of wakeup pipe */
+#define BPNODE_WAKEUP_PIPE_DEPTH            (2)     /* Depth of wakeup pipe */
 
 #define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200)  /* Timeout of wakeup pipe */
 
