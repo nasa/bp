@@ -54,9 +54,10 @@
 */
 typedef enum 
 {
-    BPA_ADUP_APP_STOPPED = 0,
-    BPA_ADUP_APP_ADDED   = 1,
-    BPA_ADUP_APP_STARTED = 2
+    BPA_ADUP_APP_REMOVED = 0,
+    BPA_ADUP_APP_STOPPED = 1,
+    BPA_ADUP_APP_ADDED   = 2,
+    BPA_ADUP_APP_STARTED = 3
 } BPA_ADUP_ApplicationState_t;
 
 /** 
@@ -162,7 +163,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
  * \brief FWP ADU Proxy Start Application
  *
  *  \par Description
- *       Sets application state to started
+ *       Subscribes to configured msgids and sets app state to started
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -178,7 +179,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
  * \brief FWP ADU Proxy Stop Application
  *
  *  \par Description
- *       Sets application state to stopped
+ *       Unsubscribes from configured msgids and sets app state to stopped
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -189,5 +190,21 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
  *  \retval BPLIB_SUCCESS Operation was successful
  */
 BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
+
+/**
+ * \brief FWP ADU Proxy Remove Application
+ *
+ *  \par Description
+ *       Sets application state to removed
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
+ */
+BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId);
 
 #endif /* FWP_ADUP_H */
