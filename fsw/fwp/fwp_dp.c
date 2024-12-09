@@ -72,10 +72,8 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
 void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 {
     CFE_MSG_FcnCode_t CommandCode;
-    BPLib_Status_t    Status;
 
     CommandCode = 0;
-    Status      = BPLIB_UNKNOWN;
 
     CFE_MSG_GetFcnCode(&SBBufPtr->Msg, &CommandCode);
 
@@ -517,10 +515,9 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
         /* Default case already found during FC vs length test */
         default:
-            Status = BPLIB_ERROR;
-
             BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Invalid ground command code: CC = %d", CommandCode);
+
             break;
     }
 }
