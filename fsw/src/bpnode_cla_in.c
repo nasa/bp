@@ -132,7 +132,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 
     /* Get PSP module ID for either the Unix or UDP socket driver */
     PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, 
-                                &BPNode_AppData.ClaInData[i].PspLocation.PspModuleId);
+                                &BPNode_AppData.ClaInData[*ContId].PspLocation.PspModuleId);
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR, 
@@ -141,13 +141,13 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    BPNode_AppData.ClaInData[i].PspLocation.SubsystemId  = 1 + (CFE_PSP_GetProcessorId() & 1);
-    BPNode_AppData.ClaInData[i].PspLocation.SubchannelId = BPNODE_CLA_PSP_INPUT_SUBCHANNEL;
+    BPNode_AppData.ClaInData[*ContId].PspLocation.SubsystemId  = 1 + (CFE_PSP_GetProcessorId() & 1);
+    BPNode_AppData.ClaInData[*ContId].PspLocation.SubchannelId = BPNODE_CLA_PSP_INPUT_SUBCHANNEL;
 
 #ifdef BPNODE_CLA_UDP_DRIVER
     /* Configure Port Number */
     snprintf(Str, sizeof(Str), "port=%d", BPNODE_CLA_IN_PORT);
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[i].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
     if (PspStatus != CFE_PSP_SUCCESS)
@@ -160,7 +160,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 
     /* Configure IP Address */
     snprintf(Str, sizeof(Str), "IpAddr=%s", BPNODE_CLA_IN_IP);
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[i].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
     if (PspStatus != CFE_PSP_SUCCESS)
@@ -173,7 +173,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 #endif
 
     /* Set direction to input only */
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[i].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
                                             CFE_PSP_IODriver_SET_DIRECTION,
                                             CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_INPUT_ONLY));
     if (PspStatus != CFE_PSP_SUCCESS)
@@ -185,7 +185,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     }
 
     /* Set I/O to running */
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[i].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
@@ -317,7 +317,7 @@ void BPNode_ClaIn_AppMain(void)
     {
         if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
         {
-            Status = BPNode_ClaIn_ProcessBundleInput(ContId);
+            //Status = BPNode_ClaIn_ProcessBundleInput(ContId);
             if (Status != CFE_SUCCESS)
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
@@ -349,6 +349,11 @@ void BPNode_ClaIn_TaskExit(uint8 ContId)
     /* In case event services is not working, add a message to the system log */
     CFE_ES_WriteToSysLog("[CLA In #%d]: Terminating Task. RunStatus = %d.\n",
                          ContId, BPNode_AppData.ClaInData[ContId].RunStatus);
+
+    /* Set I/O to stop running */
+    CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation, 
+                            CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
+
 
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
