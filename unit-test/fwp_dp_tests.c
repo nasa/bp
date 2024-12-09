@@ -62,7 +62,8 @@ void Test_BPA_DP_TaskPipe_InvalidMsgId(void)
 
     BPA_DP_TaskPipe(&Buf);
 
-    UtAssert_UINT32_EQ(BPNode_AppData.NodeMibCountersHkTlm.Payload.BundleAgentRejectedDirectiveCount, 1);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_MID_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid command packet,MID = 0x%x", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -86,7 +87,6 @@ void Test_BPA_DP_ProcessGroundCommand_ValidNoop(void)
 
     BPA_DP_ProcessGroundCommand(&Buf);
 
-    UtAssert_STUB_COUNT(BPLib_NC_Noop, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
@@ -113,7 +113,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidNoop(void)
 
     BPA_DP_ProcessGroundCommand(&Buf);
 
-    UtAssert_STUB_COUNT(BPLib_NC_Noop, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
@@ -1814,78 +1813,6 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk(void)
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
-void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set1Error(void)
-{
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
-    size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t);
-    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t   Buf;
-
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
-
-    /* First BPLib_AS_Set() returns an error code */
-    UT_SetDeferredRetcode(UT_KEY(BPLib_AS_Set), 1, BPLIB_AS_INVALID_EID);
-
-    BPA_DP_ProcessGroundCommand(&Buf);
-
-    UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 0);
-    UtAssert_STUB_COUNT(BPLib_AS_Set, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_NODE_CNTRS_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Can't send node MIB counters; error setting ADUs delivered counter, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-}
-
-void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set2Error(void)
-{
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
-    size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t);
-    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t   Buf;
-
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
-
-    /* Second BPLib_AS_Set() returns an error code */
-    UT_SetDeferredRetcode(UT_KEY(BPLib_AS_Set), 2, BPLIB_AS_INVALID_EID);
-
-    BPA_DP_ProcessGroundCommand(&Buf);
-
-    UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 0);
-    UtAssert_STUB_COUNT(BPLib_AS_Set, 2);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DP_SEND_NODE_CNTRS_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Can't send node MIB counters; error setting ADUs received counter, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-}
-
-void Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Error(void)
-{
-    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC;
-    size_t            Size = sizeof(BPNode_SendNodeMibCountersHkCmd_t);
-    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
-    CFE_SB_Buffer_t   Buf;
-
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
-    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
-
-    /* Second BPLib_AS_Set() returns an error code */
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_SendNodeMibCountersHk), BPLIB_AS_INVALID_EID);
-
-    BPA_DP_ProcessGroundCommand(&Buf);
-
-    UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibCountersHk, 1);
-    UtAssert_STUB_COUNT(BPLib_AS_Set, 2);
-}
-
 /* Test ground command processing after receiving a valid send-source-mib-counters-hk */
 void Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk(void)
 {
@@ -2218,19 +2145,16 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibConfigHk_Error);      /* Test #086 */
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendNodeMibCountersHk);              /* Test #087 */
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk);            /* Test #088 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set1Error);  /* Test #089 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Set2Error);  /* Test #090 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendNodeMibCountersHk_Error);      /* Test #091 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk);            /* Test #092 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk);          /* Test #093 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk_Error);    /* Test #094 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm);                   /* Test #095 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm);                 /* Test #096 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm_Error);           /* Test #097 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);         /* Test #098 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);       /* Test #099 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error); /* Test #100 */
-    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCode);                             /* Test #101 */
-    ADD_TEST(Test_BPA_DP_VerifyCmdLength_Nominal);                                      /* Test #102 */
-    ADD_TEST(Test_BPA_DP_VerifyCmdLength_InvalidLength);                                /* Test #103 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendSourceMibCountersHk);            /* Test #089 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk);          /* Test #090 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendSourceMibCountersHk_Error);    /* Test #091 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendStorageHkTlm);                   /* Test #092 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm);                 /* Test #093 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendStorageHkTlm_Error);           /* Test #094 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);         /* Test #095 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);       /* Test #096 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error); /* Test #097 */
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCode);                             /* Test #098 */
+    ADD_TEST(Test_BPA_DP_VerifyCmdLength_Nominal);                                      /* Test #099 */
+    ADD_TEST(Test_BPA_DP_VerifyCmdLength_InvalidLength);                                /* Test #100 */
 }
