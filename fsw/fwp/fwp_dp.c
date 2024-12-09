@@ -33,7 +33,6 @@
 #include "bpnode_eventids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
-#include "bplib_as_internal.h"
 
 /* ==================== */
 /* Function Definitions */
@@ -487,106 +486,33 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
             {
-                uint32_t ADU_Delivered;
-                uint32_t ADU_Received;
-                uint8 i;
-
-                /* Reset ADU counters so += can be used in a loop*/
-                ADU_Delivered = 0;
-                ADU_Received  = 0;
-
-                /* Get ADU counts for all ADU child tasks */
-                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
-                {
-                    ADU_Delivered += BPNode_AppData.AduOutData[i].AduCountDelivered;
-                    ADU_Received  += BPNode_AppData.AduInData[i].AduCountReceived;
-                }
-
-                /* Set the node's ADUs delivered counter to the new value */
-                // Status = BPLib_AS_SetCounter(0, ADU_COUNT_DELIVERED, ADU_Delivered);
-                // Temporary fix
-                BPLib_AS_NodeCountersPayload.NodeCounters[ADU_COUNT_DELIVERED] = ADU_Delivered;
-
-                if (Status == BPLIB_SUCCESS)
-                { /* ADUs delivered counter was successfully set*/
-
-                    /* Set the node's ADUs received to the new value */
-                    // Status = BPLib_AS_SetCounter(0, ADU_COUNT_RECEIVED, ADU_Received);
-                    // Temporary fix
-                    BPLib_AS_NodeCountersPayload.NodeCounters[ADU_COUNT_RECEIVED] = ADU_Received;
-
-                    if (Status == BPLIB_SUCCESS)
-                    { /* ADUs received counter was successfully set */
-
-                        /* Send the node MIB counters HK */
-                        BPLib_NC_SendNodeMibCountersHk();
-                    }
-                    else
-                    {
-                        /*
-                        ** The call to BPLib_AS_Set() is so controlled that it seems unlikely that an error
-                        ** will occur from its use. This is also very difficult to test from a code coverage
-                        ** standpoint but an indication of an error is still needed in case the worst happens
-                        */
-
-                        BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
-                                            BPLib_EM_EventType_ERROR,
-                                            "Can't send node MIB counters; error setting ADUs received counter, RC = %d",
-                                            Status);
-                    }
-                }
-                else
-                {
-                    /*
-                    ** The call to BPLib_AS_Set() is so controlled that it seems unlikely that an error
-                    ** will occur from its use. This is also very difficult to test from a code coverage
-                    ** standpoint but an indication of an error is still needed in case the worst happens
-                    */
-
-                    BPLib_EM_SendEvent(BPNODE_DP_SEND_NODE_CNTRS_ERR_EID,
-                                        BPLib_EM_EventType_ERROR,
-                                        "Can't send node MIB counters; error setting ADUs delivered counter, RC = %d",
-                                        Status);
-                }
+                BPLib_NC_SendNodeMibCountersHk();
             }
+
             break;
 
         case BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibCountersHkCmd_t)))
             {
                 BPLib_NC_SendSourceMibCountersHk();
-
-                /* Don't increment directive counters */
-                Status = BPLIB_UNKNOWN;
             }
+
             break;
 
         case BPNODE_SEND_STORAGE_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
             {
                 BPLib_NC_SendStorageHk();
-
-                /* Don't increment directive counters */
-                Status = BPLIB_UNKNOWN;
             }
+
             break;
 
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
             {
-                uint8 i;
-
-                /* Get ADU status from all child tasks */
-                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
-                {
-                    BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
-                }
-
                 BPLib_NC_SendChannelContactStatHk();
-
-                /* Don't increment directive counters */
-                Status = BPLIB_UNKNOWN;
             }
+
             break;
 
         /* Default case already found during FC vs length test */
