@@ -72,6 +72,9 @@ int32 BPNode_ClaInCreateTasks(void)
             return Status;
         }
 
+        /* Enable ingress */
+        BPNode_AppData.ClaInData[i].IngressServiceEnabled = true;
+
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].InitSemId, 
@@ -195,9 +198,6 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    /* Enable ingress */
-    BPNode_AppData.ClaInData[*ContId].IngressServiceEnabled = true;
-
     /* Start performance log */
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
 
@@ -253,6 +253,8 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     /* Ingress received bundle to bplib CLA */
     if (Status == CFE_PSP_SUCCESS && BPNode_AppData.ClaInData[ContId].CurrentBufferSize != 0)
     {
+        Status = CFE_SUCCESS;
+
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
         
         BpStatus = BPLib_CLA_Ingress(ContId, BPNode_AppData.ClaInData[ContId].BundleBuffer,
@@ -264,11 +266,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
         if (BpStatus != BPLIB_CLA_TIMEOUT)
         {
             BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
-            if (BpStatus == BPLIB_SUCCESS)
-            {
-                Status = CFE_SUCCESS;
-            }
-            else
+            if (BpStatus != BPLIB_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
                                   "[CLA In #%d]: Failed to ingress bundle. Error = %d", 
@@ -317,7 +315,7 @@ void BPNode_ClaIn_AppMain(void)
     {
         if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
         {
-            //Status = BPNode_ClaIn_ProcessBundleInput(ContId);
+            Status = BPNode_ClaIn_ProcessBundleInput(ContId);
             if (Status != CFE_SUCCESS)
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);

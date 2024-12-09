@@ -94,51 +94,6 @@ void Test_BPNode_ClaInCreateTasks_TakeSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }
 
-void Test_BPNode_ClaInCreateTasks_IODFindByNameErr(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_FindByName), 1, CFE_PSP_ERROR);
-
-    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IOD_FINDNAME_IN_EID);
-    UtAssert_STRINGBUF_EQ("IODriver Error: CFE_PSP_IODriver_FindByName status %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
-}
-
-void Test_BPNode_ClaInCreateTasks_IODCommandDirErr(void)
-{
-#ifdef BPNODE_CLA_UDP_DRIVER 
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 3, CFE_PSP_ERROR);
-#else
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
-#endif
-    UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IOD_COMMAND_DIR_IN_EID);
-    UtAssert_STRINGBUF_EQ("IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (input) status %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
-}
-
-void Test_BPNode_ClaInCreateTasks_IODCommandRunningErr(void)
-{
-#ifdef BPNODE_CLA_UDP_DRIVER 
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 4, CFE_PSP_ERROR);
-#else
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 2, CFE_PSP_ERROR);
-#endif
-    UtAssert_INT32_NEQ(BPNode_ClaInCreateTasks(), CFE_SUCCESS);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IOD_COMMAND_RUN_IN_EID);
-    UtAssert_STRINGBUF_EQ("IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (input) status %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
-}
-
 /* Test BPNode_ClaIn_TaskInit when everything succeeds */
 void Test_BPNode_ClaIn_TaskInit_Nominal(void)
 {
@@ -213,6 +168,134 @@ void Test_BPNode_ClaIn_TaskInit_MatchIdErr(void)
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
 }
 
+/* Test BPNode_ClaIn_TaskInit when the PSP module can't be found */
+void Test_BPNode_ClaIn_TaskInit_FindByNameErr(void)
+{
+    uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
+    uint8 ExpContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    BPNode_AppData.ClaInData[ExpContId].TaskId = TaskId;
+
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_FindByName), 1, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(&ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_FIND_NAME_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Couldn't find I/O driver. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_FindByName, 1);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
+}
+
+/* Test BPNode_ClaIn_TaskInit when the port can't be configured */
+void Test_BPNode_ClaIn_TaskInit_PortErr(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
+    uint8 ExpContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    BPNode_AppData.ClaInData[ExpContId].TaskId = TaskId;
+
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(&ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_PORT_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Couldn't set port number configuration. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_FindByName, 1);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
+#endif
+}
+
+/* Test BPNode_ClaIn_TaskInit when the IP address can't be configured */
+void Test_BPNode_ClaIn_TaskInit_IpErr(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
+    uint8 ExpContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    BPNode_AppData.ClaInData[ExpContId].TaskId = TaskId;
+
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 2, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(&ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_IP_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Couldn't set IP address configuration. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_FindByName, 1);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 2);
+#endif
+}
+
+/* Test BPNode_ClaIn_TaskInit when the direction can't be set */
+void Test_BPNode_ClaIn_TaskInit_DirErr(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    int32 CmdCount = 3;
+#else
+    int32 CmdCount = 1;
+#endif
+
+    uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
+    uint8 ExpContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    BPNode_AppData.ClaInData[ExpContId].TaskId = TaskId;
+
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(&ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_DIR_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Couldn't set I/O direction to input. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount);
+}
+
+/* Test BPNode_ClaIn_TaskInit when the state can't be set to running */
+void Test_BPNode_ClaIn_TaskInit_RunErr(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    int32 CmdCount = 4;
+#else
+    int32 CmdCount = 2;
+#endif
+    uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
+    uint8 ExpContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    BPNode_AppData.ClaInData[ExpContId].TaskId = TaskId;
+
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(&ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Couldn't set I/O state to running. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);    
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount);
+}
+
 /* Test BPNode_ClaIn_TaskInit when init semaphore give fails */
 void Test_BPNode_ClaIn_TaskInit_GiveSemErr(void)
 {
@@ -234,8 +317,6 @@ void Test_BPNode_ClaIn_TaskInit_GiveSemErr(void)
     UtAssert_UINT8_EQ(ContId, ExpContId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_GetTaskID, 1);
-    UtAssert_STUB_COUNT(CFE_SB_CreatePipe, 1);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, 1);
 }
 
@@ -258,7 +339,6 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
 /* Test BPNode_ClaIn_AppMain when initialization failed but channel ID is known */
@@ -283,7 +363,6 @@ void Test_BPNode_ClaIn_AppMain_InitErr(void)
                             context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 1);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
 /* Test BPNode_ClaIn_AppMain when initialization failed and channel ID is unknown */
@@ -300,7 +379,6 @@ void Test_BPNode_ClaIn_AppMain_ContIdErr(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 0);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
 /* Test BPNode_ClaIn_AppMain when ingress service is disabled */
@@ -322,11 +400,15 @@ void Test_BPNode_ClaIn_AppMain_NoIngress(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 1);
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
 void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
 {
+#ifdef BPNODE_CLA_UDP_DRIVER 
+    int32 CmdCount = 5;
+#else
+    int32 CmdCount = 3;
+#endif
     uint8 ContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
@@ -336,7 +418,8 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
 
     BPNode_AppData.ClaInData[ContId].TaskId = TaskId;
     BPNode_AppData.ClaInData[ContId].IngressServiceEnabled = true;
-    UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_Command), CFE_PSP_ERROR);
+
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
 
     BPNode_ClaIn_AppMain();
 
@@ -344,7 +427,7 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 1);
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount + 1);
 }
 
 /* Test BPNode_ClaIn_TaskExit in nominal shutdown */
@@ -362,51 +445,55 @@ void Test_BPNode_ClaIn_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-void Test_BPNode_CLA_ProcessBundleInput_Nominal(void)
+void Test_BPNode_ClaIn_ProcessBundleInput_Nominal(void)
 {
     uint8 ContId = 0;
-    BPNode_ClaInData_t CLAIngress;
-    memset(&CLAIngress, 0, sizeof(BPNode_ClaInData_t));
-    UtAssert_UINT32_EQ(BPNode_CLA_ProcessBundleInput(&CLAIngress, ContId), CFE_SUCCESS);
+
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 }
 
-void Test_BPNode_CLA_ProcessBundleInput_FailedIODCommand(void)
+void Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand(void)
 {
     uint8 ContId = 0;
-    BPNode_ClaInData_t CLAIngress;
-    memset(&CLAIngress, 0, sizeof(BPNode_ClaInData_t));
+
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
-    UtAssert_UINT32_NEQ(BPNode_CLA_ProcessBundleInput(&CLAIngress, ContId), CFE_SUCCESS);
+    UtAssert_UINT32_NEQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 }
 
-void Test_BPNode_CLA_ProcessBundleInput_FailedBPLibIngress(void)
+void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
 {
     uint8 ContId = 0;
-    BPNode_ClaInData_t CLAIngress;
-    memset(&CLAIngress, 0, sizeof(BPNode_ClaInData_t));
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
-    UtAssert_UINT32_EQ(BPNode_CLA_ProcessBundleInput(&CLAIngress, ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_LIB_PROC_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[CLA IN #%d] Error %s - Failed (%d) to process bundle", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Failed to ingress bundle. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
-void Test_BPNode_CLA_ProcessBundleInput_CLATimeout(void)
+void Test_BPNode_ClaIn_ProcessBundleInput_CLATimeout(void)
 {
     uint8 ContId = 0;
-    BPNode_ClaInData_t CLAIngress;
-    memset(&CLAIngress, 0, sizeof(BPNode_ClaInData_t));
+
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_NEQ(BPNode_CLA_ProcessBundleInput(&CLAIngress, ContId), CFE_SUCCESS);
+    
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
+    UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
 }
 
-void Test_BPNode_CLA_ProcessBundleInput_NonZeroBuffSize(void)
+void Test_BPNode_ClaIn_ProcessBundleInput_NonZeroBuffSize(void)
 {
     uint8 ContId = 0;
-    BPNode_ClaInData_t CLAIngress;
-    CLAIngress.CurrentBufferSize = 1;
+
+    BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 1;
+
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_NEQ(BPNode_CLA_ProcessBundleInput(&CLAIngress, ContId), CFE_SUCCESS);
+    
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
+    UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
 }
 
 /* Register the test cases to execute with the unit test tool */
@@ -416,13 +503,16 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaInCreateTasks_InitSemErr);
     ADD_TEST(Test_BPNode_ClaInCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_ClaInCreateTasks_TakeSemErr);
-    ADD_TEST(Test_BPNode_ClaInCreateTasks_IODFindByNameErr);
-    ADD_TEST(Test_BPNode_ClaInCreateTasks_IODCommandDirErr);
-    ADD_TEST(Test_BPNode_ClaInCreateTasks_IODCommandRunningErr);
 
     ADD_TEST(Test_BPNode_ClaIn_TaskInit_Nominal);
     ADD_TEST(Test_BPNode_ClaIn_TaskInit_GetIdErr);
     ADD_TEST(Test_BPNode_ClaIn_TaskInit_MatchIdErr);
+    ADD_TEST(Test_BPNode_ClaIn_TaskInit_FindByNameErr);
+    ADD_TEST(Test_BPNode_ClaIn_TaskInit_PortErr);
+    ADD_TEST(Test_BPNode_ClaIn_TaskInit_IpErr);
+    ADD_TEST(Test_BPNode_ClaIn_TaskInit_DirErr);
+    ADD_TEST(Test_BPNode_ClaIn_TaskInit_RunErr);
+    ADD_TEST(Test_BPNode_ClaIn_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_ClaIn_AppMain_Nominal);
     ADD_TEST(Test_BPNode_ClaIn_AppMain_InitErr);
@@ -432,9 +522,9 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPNode_ClaIn_TaskExit_Nominal);
     
-    ADD_TEST(Test_BPNode_CLA_ProcessBundleInput_Nominal);
-    ADD_TEST(Test_BPNode_CLA_ProcessBundleInput_FailedIODCommand);
-    ADD_TEST(Test_BPNode_CLA_ProcessBundleInput_FailedBPLibIngress);
-    ADD_TEST(Test_BPNode_CLA_ProcessBundleInput_CLATimeout);
-    ADD_TEST(Test_BPNode_CLA_ProcessBundleInput_NonZeroBuffSize);
+    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_Nominal);
+    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand);
+    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress);
+    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_CLATimeout);
+    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_NonZeroBuffSize);
 }

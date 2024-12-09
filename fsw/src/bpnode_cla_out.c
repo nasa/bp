@@ -74,6 +74,9 @@ int32 BPNode_ClaOutCreateTasks(void)
             return Status;
         }
 
+        /* Enable egress */
+        BPNode_AppData.ClaOutData[i].EgressServiceEnabled = true;
+
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].InitSemId, 
@@ -197,9 +200,6 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    /* Enable egress */
-    BPNode_AppData.ClaOutData[*ContId].EgressServiceEnabled = true;
-
     /* Start performance log */
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[*ContId].PerfId);
 
@@ -315,7 +315,7 @@ void BPNode_ClaOut_AppMain(void)
     {
         if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
         {
-            //Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
+            Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
             if (Status != CFE_SUCCESS)
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
@@ -349,6 +349,7 @@ void BPNode_ClaOut_TaskExit(uint8 ContId)
     CFE_ES_WriteToSysLog("[CLA Out #%d]: Terminating Task. RunStatus = %d.\n",
                          ContId, BPNode_AppData.ClaOutData[ContId].RunStatus);
 
+    /* Set I/O to stop running */
     CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
 
