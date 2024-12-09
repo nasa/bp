@@ -117,9 +117,11 @@
 #define BPNODE_GEN_WRKR_UNK_EXIT_CRIT_EID       87
 #define BPNODE_GEN_WRKR_SEM_TK_ERR_EID          88
 #define BPNODE_WKP_SEM_ERR_EID                  89
-#define BPNODE_CLA_IN_CFG_PORT_ERR_EID          90
-#define BPNODE_CLA_IN_CFG_IP_ERR_EID            91
-#define BPNODE_CLA_OUT_CFG_PORT_ERR_EID         92
-#define BPNODE_CLA_OUT_CFG_IP_ERR_EID           93
+#define BPNODE_ADU_REM_CHAN_ERR_EID             90
+#define BPNODE_ADU_REM_STAT_ERR_EID             91
+#define BPNODE_CLA_IN_CFG_PORT_ERR_EID          92
+#define BPNODE_CLA_IN_CFG_IP_ERR_EID            93
+#define BPNODE_CLA_OUT_CFG_PORT_ERR_EID         94
+#define BPNODE_CLA_OUT_CFG_IP_ERR_EID           95
 
 #endif /* BPNODE_EVENTS_H */
