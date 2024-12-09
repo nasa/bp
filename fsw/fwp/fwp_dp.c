@@ -33,6 +33,7 @@
 #include "bpnode_eventids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
+#include "bplib_as_internal.h"
 
 /* ==================== */
 /* Function Definitions */
