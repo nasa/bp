@@ -47,6 +47,7 @@
 #define BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC           (250u)             /**< \brief Bundle processing Sleep time */
 #define BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL                (0u)                /**< \briefIODriver Output subchannel*/
 #define BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE               (3072u)             /**< \brief IODriver output buffer size*/
+#define BPNODE_CLA_OUT_QUEUE_PEND_TIME                  (100u)              /**< \brief Time to pend on bundle queue */
 
 /*
 ** Type Definitions
@@ -62,14 +63,13 @@ typedef struct
     uint32                          PerfId;
     uint32                          RunStatus;
     bool                            EgressServiceEnabled;
+
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t    Dir;
     CFE_PSP_IODriver_Location_t     PspLocation;
     size_t                          CurrentBufferSize;
     uint8_t                         BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
-    
-    BPLib_CLA_ContactsTable_t       ContactsTbl;
-    
+        
 } BPNode_ClaOutData_t;
 
 
@@ -143,13 +143,12 @@ void BPNode_ClaOut_TaskExit(uint8 ContId);
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] CLAEgress CLA output data
  *  \param[in] ContId Contact ID
  * 
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContId);
+int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
 
 #endif /* BPNODE_CLA_OUT_H */
 

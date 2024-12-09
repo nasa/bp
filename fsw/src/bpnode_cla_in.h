@@ -44,8 +44,6 @@
 #define BPNODE_CLA_IN_BASE_NAME                         "BPNODE.CLA_IN"     /**< \brief Task base name */
 #define BPNODE_CLA_IN_SLEEP_MSEC                        (1000u)             /**< \brief Sleep time */
 #define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC            (250u)              /**< \brief Bundle processing Sleep time */
-#define BPNODE_CLA_PIPE_DEPTH                           (32u)               /**< \brief CLA pipe depth */
-#define BPNODE_CLA_IN_PIPE_BASE_NAME                    "BPNODE_CLA_PIPE"   /**< \brief CLA pipe base name */
 #define BPNODE_CLA_PSP_INPUT_SUBCHANNEL                 (1u)                /**< \brief IODriver unsock_intf input subchannel*/
 #define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE                (3072u)             /**< \brief IODriver buffer size*/
 
@@ -63,14 +61,13 @@ typedef struct
     uint32                          PerfId;
     uint32                          RunStatus;
     bool                            IngressServiceEnabled;
+
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t    Dir;
     CFE_PSP_IODriver_Location_t     PspLocation;
     size_t                          CurrentBufferSize;
     uint8_t                         BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
-    
-    BPLib_CLA_ContactsTable_t       ContactsTbl;
-    
+        
 } BPNode_ClaInData_t;
 
 
@@ -145,13 +142,12 @@ void BPNode_ClaIn_TaskExit(uint8 ContId);
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
- *  \param[in] CLAIngress CLA input data
  *  \param[in] ContId Contact ID
  * 
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress, uint8 ContId);
+int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId);
 
 #endif /* BPNODE_CLA_IN_H */
 

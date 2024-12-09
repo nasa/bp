@@ -39,19 +39,13 @@
 int32 BPNode_ClaOutCreateTasks(void)
 {
     int32  Status;
-    int32  PspStatus;
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
-#ifdef BPNODE_CLA_UDP_DRIVER    
-    char    Str[100];
-#endif
     
     /* Create all of the CLA Out task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
     {
-        BPNode_AppData.ClaOutData[i].EgressServiceEnabled = true;
-
         /* Create init semaphore so main task knows when child initialized */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_INIT_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[i].InitSemId, NameBuff, 0, 0);
@@ -62,49 +56,6 @@ int32 BPNode_ClaOutCreateTasks(void)
                         "Failed to create the CLA Out #%d task init semaphore. Error = %d.", 
                         i, Status);
             return Status;
-        }
-
-        /* Create IODriver unsock_intf OUTPUT instance number should be 1 on processor 1, 2 on processor 2 */
-        PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, &BPNode_AppData.ClaOutData[i].PspLocation.PspModuleId);
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IOD_FINDNAME_OUT_EID, BPLib_EM_EventType_ERROR, "IODriver Error: CFE_PSP_IODriver_FindByName status %d",
-                              (unsigned int)PspStatus);
-            return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-        }
-
-        BPNode_AppData.ClaOutData[i].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
-        BPNode_AppData.ClaOutData[i].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
-
-#ifdef BPNODE_CLA_UDP_DRIVER
-        /* Configure Port Number */
-        snprintf(Str, sizeof(Str), "port=%d", BPNODE_CLA_OUT_PORT);
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_CONFIGURATION,
-                                             CFE_PSP_IODriver_CONST_STR(Str));
-        /* Configure Port Number */
-        snprintf(Str, sizeof(Str), "IpAddr=%s", BPNODE_CLA_OUT_IP);
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_CONFIGURATION,
-                                             CFE_PSP_IODriver_CONST_STR(Str));
-#endif
-
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_DIRECTION,
-                                             CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IOD_COMMAND_DIR_OUT_EID, BPLib_EM_EventType_ERROR,
-                              "IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_DIRECTION (output) status %d",
-                              (unsigned int)PspStatus);
-            return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-        }
-
-        PspStatus =
-            CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IOD_COMMAND_RUN_OUT_EID, BPLib_EM_EventType_ERROR,
-                              "IODriver Error: CFE_PSP_IODriver_Command CFE_PSP_IODriver_SET_RUNNING (output) status %d",
-                              (unsigned int)PspStatus);
-            return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
         
         /* Create child task */
@@ -146,7 +97,11 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
 {
     CFE_ES_TaskId_t TaskId;
     int32           Status;
+    int32           PspStatus;
     uint8           i;
+#ifdef BPNODE_CLA_UDP_DRIVER    
+    char            Str[100];
+#endif
 
     /* Get the task ID of currently running child task */
     Status = CFE_ES_GetTaskID(&TaskId);
@@ -177,6 +132,73 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
 
     BPNode_AppData.ClaOutData[*ContId].PerfId = BPNODE_CLA_OUT_PERF_ID_BASE + *ContId;
 
+    /* Get PSP module ID for either the Unix or UDP socket driver */
+    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, 
+                                &BPNode_AppData.ClaOutData[i].PspLocation.PspModuleId);
+    if (PspStatus != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR, 
+                            "[CLA Out #%d]: Couldn't find I/O driver. Error = %d",
+                            *ContId, PspStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    BPNode_AppData.ClaOutData[i].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
+    BPNode_AppData.ClaOutData[i].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
+
+#ifdef BPNODE_CLA_UDP_DRIVER
+    /* Configure Port Number */
+    snprintf(Str, sizeof(Str), "port=%d", BPNODE_CLA_OUT_PORT);
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, 
+                                            CFE_PSP_IODriver_SET_CONFIGURATION,
+                                            CFE_PSP_IODriver_CONST_STR(Str));
+    if (PspStatus != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR, 
+                            "[CLA Out #%d]: Couldn't set port number configuration. Error = %d",
+                            *ContId, PspStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }  
+
+    /* Configure IP Address */
+    snprintf(Str, sizeof(Str), "IpAddr=%s", BPNODE_CLA_OUT_IP);
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, 
+                                            CFE_PSP_IODriver_SET_CONFIGURATION,
+                                            CFE_PSP_IODriver_CONST_STR(Str));
+    if (PspStatus != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR, 
+                            "[CLA Out #%d]: Couldn't set IP address configuration. Error = %d",
+                            *ContId, PspStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }                       
+#endif
+
+    /* Set direction to output only */
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, 
+                                            CFE_PSP_IODriver_SET_DIRECTION,
+                                            CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
+    if (PspStatus != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[CLA Out #%d]: Couldn't set I/O direction to output. Error = %d",
+                            (unsigned int)PspStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[i].PspLocation, 
+                            CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
+    if (PspStatus != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[CLA Out #%d]: Couldn't set I/O state to running. Error = %d",
+                            *ContId, PspStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    /* Enable egress */
+    BPNode_AppData.ClaOutData[i].EgressServiceEnabled = true;
+
     /* Start performance log */
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[*ContId].PerfId);
 
@@ -201,60 +223,59 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     return CFE_SUCCESS;
 }
 
-/* BPNode_CLA_ProcessBundleOutput() -- Receive bundles from CLA and Send egress bundles to Network CL  */
-int32 BPNode_CLA_ProcessBundleOutput(BPNode_ClaOutData_t *CLAEgress, uint8 ContId)
+/* Receive bundles from CLA and send egress bundles to network CL */
+int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
 {
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
-    int32                                Status;
-    size_t                               TempSize;
+    int32                                Status = CFE_PSP_SUCCESS;
+    BPLib_Status_t                       BpStatus;
+    size_t                               TempSize = 0;
 
-    TempSize = 0;
-    if (CLAEgress->CurrentBufferSize == 0)
+    /* Get next bundle from CLA */
+    if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
     {
-        /* Load next bundle */
-        TempSize = sizeof(CLAEgress->BundleBuffer);
+        TempSize = sizeof(BPNode_AppData.ClaOutData[ContId].BundleBuffer);
         
-        /* Exit performance log */
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        Status = BPLib_CLA_Egress(ContId, CLAEgress->BundleBuffer, &TempSize, 100);
+        BpStatus = BPLib_CLA_Egress(ContId, BPNode_AppData.ClaOutData[ContId].BundleBuffer, 
+                                    &TempSize, BPNODE_CLA_OUT_QUEUE_PEND_TIME);
         
-        /* Start performance log */
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        if (Status == BPLIB_SUCCESS)
+        if (BpStatus == BPLIB_SUCCESS)
         {
-            CLAEgress->CurrentBufferSize = TempSize;
+            BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = TempSize;
         }
-        else if (Status != BPLIB_CLA_TIMEOUT)
+        else if (BpStatus != BPLIB_CLA_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR, "[CLA Out #%d] Error %s - Failed (%d) to load bundle",
-                              "CLA_Egress", ContId, (int)Status);
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR, 
+                               "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
+                               ContId, Status);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
     }
 
-    if (CLAEgress->CurrentBufferSize != 0)
+    /* Send egress bundle onto CL */
+    if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize != 0)
     {
-        /* Read next bundle */
-        WrBuf.OutputSize = CLAEgress->CurrentBufferSize;
-        WrBuf.BufferMem  = CLAEgress->BundleBuffer;
+        WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
+        WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].BundleBuffer;
         
-        /* Exit performance log */
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        /* this does not check return code here, it is "best effort" at this stage.
+        /* This does not check return code here, it is "best effort" at this stage.
          * bplib should retry based on custody signals if this does not work. */
-        CFE_PSP_IODriver_Command(&CLAEgress->PspLocation, CFE_PSP_IODriver_PACKET_IO_WRITE, CFE_PSP_IODriver_VPARG(&WrBuf));
+        CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
+                                    CFE_PSP_IODriver_PACKET_IO_WRITE, 
+                                    CFE_PSP_IODriver_VPARG(&WrBuf));
         
-        /* Start performance log */
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        CLAEgress->CurrentBufferSize = 0;
+        BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = 0;
     }
 
     return CFE_SUCCESS;
-
 }
 
 /* Main loop for CLA Out task(s) */
@@ -293,11 +314,11 @@ void BPNode_ClaOut_AppMain(void)
     {
         if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
         {
-            Status = BPNode_CLA_ProcessBundleOutput(&BPNode_AppData.ClaOutData[ContId], ContId);
+            Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
             if (Status != CFE_SUCCESS)
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
-                OS_TaskDelay(BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC);
+                (void) OS_TaskDelay(BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC);
                 BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
             }
         }
