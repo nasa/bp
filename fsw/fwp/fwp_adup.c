@@ -112,7 +112,7 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
     /* Send ADU onto Software Bus */
     CFE_SB_TransmitMsg((CFE_MSG_Message_t *) AduPtr, false);
 
-    BPNode_AppData.AduOutData[ChanId].AduCountDelivered++;
+    BPLib_AS_Increment(0, ADU_COUNT_DELIVERED, 1);
 
     return BPLIB_SUCCESS;
 }
