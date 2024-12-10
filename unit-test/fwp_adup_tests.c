@@ -137,10 +137,9 @@ void Test_BPA_ADUP_Out_Nominal(void)
 {
     CFE_SB_Buffer_t Buf;
     uint8_t ChanId = 0;
-    uint16 ExpAduCountDel = 1;
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
-    UtAssert_UINT16_EQ(BPNode_AppData.AduOutData[ChanId].AduCountDelivered, ExpAduCountDel);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
 }
 
 /* Test BPA_ADUP_AddApplication */
