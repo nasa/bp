@@ -255,6 +255,9 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     {
         Status = CFE_SUCCESS;
 
+        /* Temporary print to just verify success */
+        OS_printf("Packet received!\n");
+
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
         
         BpStatus = BPLib_CLA_Ingress(ContId, BPNode_AppData.ClaInData[ContId].BundleBuffer,
