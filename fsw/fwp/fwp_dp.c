@@ -508,6 +508,14 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
             {
+                uint8 i;
+
+                /* Get ADU status from all child tasks */
+                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+                {
+                    BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
+                }
+
                 BPLib_NC_SendChannelContactStatHk();
             }
 
