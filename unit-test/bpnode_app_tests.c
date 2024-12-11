@@ -513,6 +513,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
     ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
     ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedASInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
