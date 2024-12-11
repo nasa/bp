@@ -100,6 +100,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     int32           Status;
     int32           PspStatus;
     uint8           i;
+    int32           PortNum;
 #ifdef BPNODE_CLA_UDP_DRIVER    
     char   Str[100];
 #endif
@@ -149,7 +150,9 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 
 #ifdef BPNODE_CLA_UDP_DRIVER
     /* Configure Port Number */
-    snprintf(Str, sizeof(Str), "port=%d", BPNODE_CLA_IN_PORT);
+    PortNum = BPNODE_CLA_IN_PORT + CFE_PSP_GetProcessorId() - 1;
+    snprintf(Str, sizeof(Str), "port=%d", PortNum);
+
     PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
@@ -255,8 +258,17 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     {
         Status = CFE_SUCCESS;
 
-        /* Temporary print to just verify success */
-        OS_printf("Packet received!\n");
+        /* Temporary printf until there is telemetry to report bundle receipt */
+        OS_printf("Bundle received!\n");
+
+        /* Temporarily pass ingress bundle to egress thread for proof-of-concept */
+        if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
+        {
+            memcpy(BPNode_AppData.ClaOutData[ContId].BundleBuffer, 
+                   BPNode_AppData.ClaInData[ContId].BundleBuffer,
+                   BPNode_AppData.ClaInData[ContId].CurrentBufferSize);
+            BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = BPNode_AppData.ClaInData[ContId].CurrentBufferSize;
+        }
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
         
@@ -352,7 +364,7 @@ void BPNode_ClaIn_TaskExit(uint8 ContId)
                          ContId, BPNode_AppData.ClaInData[ContId].RunStatus);
 
     /* Set I/O to stop running */
-    CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation, 
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation, 
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
 
 

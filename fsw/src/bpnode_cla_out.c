@@ -102,6 +102,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     int32           Status;
     int32           PspStatus;
     uint8           i;
+    int32           PortNum;
 #ifdef BPNODE_CLA_UDP_DRIVER    
     char            Str[100];
 #endif
@@ -151,7 +152,9 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
 
 #ifdef BPNODE_CLA_UDP_DRIVER
     /* Configure Port Number */
-    snprintf(Str, sizeof(Str), "port=%d", BPNODE_CLA_OUT_PORT);
+    PortNum = BPNODE_CLA_OUT_PORT + CFE_PSP_GetProcessorId() - 1;
+    snprintf(Str, sizeof(Str), "port=%d", PortNum);
+
     PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation, 
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
@@ -230,25 +233,19 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
     int32                                Status = CFE_PSP_SUCCESS;
     BPLib_Status_t                       BpStatus;
-    size_t                               TempSize = 0;
 
     /* Get next bundle from CLA */
     if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
     {
-        TempSize = sizeof(BPNode_AppData.ClaOutData[ContId].BundleBuffer);
-        
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         BpStatus = BPLib_CLA_Egress(ContId, BPNode_AppData.ClaOutData[ContId].BundleBuffer, 
-                                    &TempSize, BPNODE_CLA_OUT_QUEUE_PEND_TIME);
+                                    &BPNode_AppData.ClaOutData[ContId].CurrentBufferSize, 
+                                    BPNODE_CLA_OUT_QUEUE_PEND_TIME);
         
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        if (BpStatus == BPLIB_SUCCESS)
-        {
-            BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = TempSize;
-        }
-        else if (BpStatus != BPLIB_CLA_TIMEOUT)
+        if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR, 
                                "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
@@ -262,6 +259,9 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
     {
         WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
         WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].BundleBuffer;
+
+        /* Temporary printf until there is telemetry to report bundle delivery */
+        OS_printf("Bundle delivered!\n");
         
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
@@ -350,7 +350,7 @@ void BPNode_ClaOut_TaskExit(uint8 ContId)
                          ContId, BPNode_AppData.ClaOutData[ContId].RunStatus);
 
     /* Set I/O to stop running */
-    CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
 
     /* Exit the perf log */

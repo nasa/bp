@@ -39,7 +39,7 @@
 #define BPNODE_CLA_UDP_DRIVER  
 #define BPNODE_CLA_IN_PORT      4501
 #define BPNODE_CLA_IN_IP        "0.0.0.0"
-#define BPNODE_CLA_OUT_PORT     4502
+#define BPNODE_CLA_OUT_PORT     4511
 #define BPNODE_CLA_OUT_IP       "127.0.0.1"
 
 #ifdef BPNODE_CLA_UDP_DRIVER
