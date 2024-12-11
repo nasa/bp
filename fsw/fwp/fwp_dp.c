@@ -33,7 +33,7 @@
 #include "bpnode_eventids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
-#include "bplib_as_internal.h"
+#include "bplib_as.h"
 
 /* ==================== */
 /* Function Definitions */
@@ -46,7 +46,6 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
     size_t            ActualLength = 0;
     CFE_SB_MsgId_t    MsgId        = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_FcnCode_t FcnCode      = 0;
-    // BPLib_Status_t    Status;
 
     CFE_MSG_GetSize(MsgPtr, &ActualLength);
 
