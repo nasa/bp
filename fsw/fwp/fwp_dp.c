@@ -185,10 +185,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_BUNDLE_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetBundleCountersCmd_t)))
             {
-                const BPNode_ResetBundleCountersCmd_t* MsgPtr;
-                MsgPtr = (const BPNode_ResetBundleCountersCmd_t*) SBBufPtr;
-
-                BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
+                BPLib_NC_ResetBundleCounters();
             }
             break;
 
@@ -495,7 +492,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 /* Get ADU status from all child tasks */
                 for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
                 {
-                    BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
+                    BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].State = BPNode_AppData.AduState[i].AppState;
                 }
 
                 BPLib_NC_SendChannelContactStatHk();
