@@ -33,6 +33,7 @@
 #include "bpnode_eventids.h"
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
+#include "bplib_as.h"
 
 /* ==================== */
 /* Function Definitions */
@@ -45,7 +46,6 @@ bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLeng
     size_t            ActualLength = 0;
     CFE_SB_MsgId_t    MsgId        = CFE_SB_INVALID_MSG_ID;
     CFE_MSG_FcnCode_t FcnCode      = 0;
-    // BPLib_Status_t    Status;
 
     CFE_MSG_GetSize(MsgPtr, &ActualLength);
 
@@ -490,6 +490,14 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
             {
+                uint8 i;
+
+                /* Get ADU status from all child tasks */
+                for(i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+                {
+                    BPLib_AS_ChannelContactStatsPayload.ChannelStatus[i].Status = BPNode_AppData.AduState[i].AppState;
+                }
+
                 BPLib_NC_SendChannelContactStatHk();
             }
 
