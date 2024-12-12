@@ -57,7 +57,19 @@ int32 BPNode_ClaOutCreateTasks(void)
                         i, Status);
             return Status;
         }
-        
+
+        /* Create exit semaphore so main task knows when child finished shutdown */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_EXIT_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[i].ExitSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                        "Failed to create the CLA Out #%d task exit semaphore. Error = %d.", 
+                        i, Status);
+            return Status;
+        }
+
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_BASE_NAME, i);
         TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + i;
@@ -341,6 +353,10 @@ void BPNode_ClaOut_AppMain(void)
 /* Exit child task */
 void BPNode_ClaOut_TaskExit(uint8 ContId)
 {
+    /* Set I/O to stop running */
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
+                            CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
+
     BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "[CLA Out #%d]: Terminating Task. RunStatus = %d.",
                       ContId, BPNode_AppData.ClaOutData[ContId].RunStatus);
@@ -349,12 +365,11 @@ void BPNode_ClaOut_TaskExit(uint8 ContId)
     CFE_ES_WriteToSysLog("[CLA Out #%d]: Terminating Task. RunStatus = %d.\n",
                          ContId, BPNode_AppData.ClaOutData[ContId].RunStatus);
 
-    /* Set I/O to stop running */
-    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
-                            CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
-
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
+
+    /* Signal to the main task that the child task has exited */
+    (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContId].ExitSemId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

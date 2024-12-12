@@ -485,6 +485,19 @@ void Test_BPNode_AppInit_FailedGenWrkr(void)
 
 }
 
+/* Test delete handler installation failure */
+void Test_BPNode_AppInit_InstallDelHandler(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_TaskInstallDeleteHandler), 1, OS_ERR_INVALID_ID);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), OS_ERR_INVALID_ID);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DEL_HANDLER_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Failed to install delete handler. Error = 0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -518,5 +531,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
     ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
+    ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
+
     ADD_TEST(Test_BPNode_AppExit_Nominal);
 }

@@ -40,7 +40,7 @@ void Test_BPNode_ClaOutCreateTasks_Nominal(void)
     UtAssert_INT32_EQ(BPNode_ClaOutCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CONTACTS * 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPLIB_MAX_NUM_CONTACTS);
 }
@@ -61,6 +61,22 @@ void Test_BPNode_ClaOutCreateTasks_InitSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
 
+/* Test BPNode_ClaOutCreateTasks when the exit semaphore fails to create */
+void Test_BPNode_ClaOutCreateTasks_ExitSemErr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 2, OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(BPNode_ClaOutCreateTasks(), OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_EXIT_SEM_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Failed to create the CLA Out #%d task exit semaphore. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
+}
+
 /* Test BPNode_ClaOutCreateTasks when the child task creation fails */
 void Test_BPNode_ClaOutCreateTasks_TaskCrErr(void)
 {
@@ -72,7 +88,7 @@ void Test_BPNode_ClaOutCreateTasks_TaskCrErr(void)
     UtAssert_STRINGBUF_EQ("Failed to create the CLA Out #%d child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -88,7 +104,7 @@ void Test_BPNode_ClaOutCreateTasks_TakeSemErr(void)
     UtAssert_STRINGBUF_EQ("CLA Out #%d task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }
@@ -472,6 +488,7 @@ void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_InitSemErr);
+    ADD_TEST(Test_BPNode_ClaOutCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_TakeSemErr);
 

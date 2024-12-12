@@ -42,6 +42,7 @@
 */
 
 #define BPNODE_CLA_OUT_INIT_SEM_BASE_NAME               "BPN_CLA_OUT_INIT"  /**< \brief Initialization semaphore base name */
+#define BPNODE_CLA_OUT_EXIT_SEM_BASE_NAME               "BPN_CLA_OUT_EXIT"  /**< \brief Exit semaphore base name */
 #define BPNODE_CLA_OUT_BASE_NAME                        "BPNODE.CLA_OUT"    /**< \brief Task base name */
 #define BPNODE_CLA_OUT_SLEEP_MSEC                       (1000u)             /**< \brief Sleep time */
 #define BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC           (250u)             /**< \brief Bundle processing Sleep time */
@@ -60,6 +61,7 @@ typedef struct
 {
     CFE_ES_TaskId_t                 TaskId;
     osal_id_t                       InitSemId;
+    osal_id_t                       ExitSemId;
     uint32                          PerfId;
     uint32                          RunStatus;
     bool                            EgressServiceEnabled;
@@ -81,7 +83,7 @@ typedef struct
  * \brief Create CLA Out Task(s)
  *
  *  \par Description
- *       Initialize init semaphore, then create the child task(s)
+ *       Initialize semaphores, then create the child task(s)
  *
  *  \par Assumptions, External Events, and Notes:
  *       - Note: This is the only function in this file called by the main task, all other

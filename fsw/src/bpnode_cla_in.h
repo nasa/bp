@@ -41,6 +41,7 @@
 */
 
 #define BPNODE_CLA_IN_INIT_SEM_BASE_NAME                "BPN_CLA_IN_INIT"   /**< \brief Initialization semaphore base name */
+#define BPNODE_CLA_IN_EXIT_SEM_BASE_NAME                "BPN_CLA_IN_EXIT"   /**< \brief Exit semaphore base name */
 #define BPNODE_CLA_IN_BASE_NAME                         "BPNODE.CLA_IN"     /**< \brief Task base name */
 #define BPNODE_CLA_IN_SLEEP_MSEC                        (1000u)             /**< \brief Sleep time */
 #define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC            (250u)              /**< \brief Bundle processing Sleep time */
@@ -58,6 +59,7 @@ typedef struct
 {
     CFE_ES_TaskId_t                 TaskId;
     osal_id_t                       InitSemId;
+    osal_id_t                       ExitSemId;
     uint32                          PerfId;
     uint32                          RunStatus;
     bool                            IngressServiceEnabled;
@@ -79,7 +81,7 @@ typedef struct
  * \brief Create CLA In Task(s)
  *
  *  \par Description
- *       Initialize init semaphore, then create the child task(s)
+ *       Initialize semaphores, then create the child task(s)
  *
  *  \par Assumptions, External Events, and Notes:
  *       - Note: This is the only function in this file called by the main task, all other
