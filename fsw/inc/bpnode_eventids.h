@@ -119,5 +119,7 @@
 #define BPNODE_WKP_SEM_ERR_EID                  89
 #define BPNODE_AS_RESET_ALL_INIT_ERR_EID        90
 #define BPNODE_DP_SEND_NODE_CNTRS_ERR_EID       91
+#define BPNODE_ADU_REM_CHAN_ERR_EID             92
+#define BPNODE_ADU_REM_STAT_ERR_EID             93
 
 #endif /* BPNODE_EVENTS_H */

@@ -488,6 +488,16 @@ void Test_BPNode_AppInit_FailedClaOut(void)
 
 }
 
+/* Test gen worker task initialization failure */
+void Test_BPNode_AppInit_FailedGenWrkr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(BPNode_GenWorkerCreateTasks), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -519,6 +529,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
     ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);    
+    ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
     ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
     ADD_TEST(Test_BPNode_AppExit_Nominal);

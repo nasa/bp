@@ -189,6 +189,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_ADUP_AddApplication = BPA_ADUP_AddApplication,
         .BPA_ADUP_StartApplication = BPA_ADUP_StartApplication,
         .BPA_ADUP_StopApplication = BPA_ADUP_StopApplication,
+        .BPA_ADUP_RemoveApplication = BPA_ADUP_RemoveApplication,
         /* Telemetry Proxy */
         .BPA_TLMP_SendNodeMibConfigPkt = BPA_TLMP_SendNodeMibConfigPkt,
         .BPA_TLMP_SendPerSourceMibConfigPkt = BPA_TLMP_SendPerSourceMibConfigPkt,
