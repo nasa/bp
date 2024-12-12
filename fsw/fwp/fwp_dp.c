@@ -96,6 +96,8 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
                 BPLib_EM_SendEvent(BPNODE_NOOP_INF_EID, BPLib_EM_EventType_INFORMATION,
                                     "No-op command. %s", VersionString);
+
+                BPLib_NC_Noop();
             }
             break;
 
