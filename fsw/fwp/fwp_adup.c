@@ -125,7 +125,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     /* Check for channel ID validity */
     if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
-        BPLib_EM_SendEvent(BPNODE_ADU_ADD_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_ADD_CHAN_ERR_EID, BPLib_EM_EventType_DEBUG,
                             "Error with add-application directive, invalid ChanId=%d",
                             ChanId);
 
@@ -135,7 +135,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     /* App state must be removed */
     if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_REMOVED)
     {
-        BPLib_EM_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_DEBUG,
                             "Error with add-application directive, invalid AppState=%d for ChanId=%d", 
                             BPNode_AppData.AduState[ChanId].AppState,
                             ChanId);
@@ -282,7 +282,7 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
     /* Check for channel ID validity */
     if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
     {
-        BPLib_EM_SendEvent(BPNODE_ADU_REM_CHAN_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_REM_CHAN_ERR_EID, BPLib_EM_EventType_DEBUG,
                             "Error with remove-application directive, invalid ChanId=%d",
                             ChanId);
 
@@ -293,7 +293,7 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
     if (BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_STOPPED &&
         BPNode_AppData.AduState[ChanId].AppState != BPA_ADUP_APP_ADDED)
     {
-        BPLib_EM_SendEvent(BPNODE_ADU_REM_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_REM_STAT_ERR_EID, BPLib_EM_EventType_DEBUG,
                             "Error with remove-application directive, invalid AppState=%d for ChanId=%d", 
                             BPNode_AppData.AduState[ChanId].AppState,
                             ChanId);
