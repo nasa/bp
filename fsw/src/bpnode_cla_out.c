@@ -189,7 +189,9 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
                             "[CLA Out #%d]: Couldn't set IP address configuration. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-    }                       
+    }
+
+    OS_printf("[CLA Out #%d]: Receiving on %s:%d\n", *ContId, BPNODE_CLA_OUT_IP, PortNum);
 #endif
 
     /* Set direction to output only */
