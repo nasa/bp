@@ -39,7 +39,6 @@
 #include "uttest.h"
 #include "utstubs.h"
 #include "bplib_as_handlers.h"
-#include "bplib_as_test_utils.h"
 
 /*
 ** Global Data
@@ -117,6 +116,7 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_EM_SendEvent), UT_Handler_BPLib_EM_SendEvent, NULL);
     UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), UT_Handler_CFE_EVS_SendEvent, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_IncrementDecrement, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_IncrementDecrement, NULL);
 }
 
 /* Teardown function after every test */

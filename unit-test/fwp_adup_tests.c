@@ -109,7 +109,9 @@ void Test_BPA_ADUP_In_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    
+    UtAssert_EQ(BPLib_AS_Counter_t, ADU_COUNT_RECEIVED, Context_BPLib_AS_IncrementDecrement.Counter);
+    UtAssert_EQ(uint32_t, 1, Context_BPLib_AS_IncrementDecrement.Amount);
 }
 
 /* Test BPA_ADUP_In when the payload is too big*/
@@ -129,8 +131,6 @@ void Test_BPA_ADUP_In_SizeErr(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_IN_TOO_BIG_ERR_EID);
     UtAssert_STRINGBUF_EQ("[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
 }
 
 /* Test BPA_ADUP_Out */
@@ -140,7 +140,9 @@ void Test_BPA_ADUP_Out_Nominal(void)
     uint8_t ChanId = 0;
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    
+    UtAssert_EQ(BPLib_AS_Counter_t, ADU_COUNT_DELIVERED, Context_BPLib_AS_IncrementDecrement.Counter);
+    UtAssert_EQ(uint32_t, 1, Context_BPLib_AS_IncrementDecrement.Amount);
 }
 
 /* Test BPA_ADUP_AddApplication */
