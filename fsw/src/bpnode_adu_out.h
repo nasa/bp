@@ -60,7 +60,6 @@ typedef struct
     uint32          RunStatus;
     bool            AduWrapping;
     CFE_SB_MsgId_t  SendToMsgId;
-    uint16          AduCountDelivered;
 } BPNode_AduOutData_t;
 
 

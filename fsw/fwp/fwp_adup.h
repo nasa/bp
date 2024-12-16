@@ -146,7 +146,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
  * \brief FWP ADU Proxy Start Application
  *
  *  \par Description
- *       Sets application state to started
+ *       Subscribes to configured msgids and sets app state to started
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -162,7 +162,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
  * \brief FWP ADU Proxy Stop Application
  *
  *  \par Description
- *       Sets application state to stopped
+ *       Unsubscribes from configured msgids and sets app state to stopped
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
@@ -173,5 +173,21 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
  *  \retval BPLIB_SUCCESS Operation was successful
  */
 BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
+
+/**
+ * \brief FWP ADU Proxy Remove Application
+ *
+ *  \par Description
+ *       Sets application state to removed
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
+ * 
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Operation was successful
+ */
+BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId);
 
 #endif /* FWP_ADUP_H */

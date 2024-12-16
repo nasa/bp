@@ -189,6 +189,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_ADUP_AddApplication = BPA_ADUP_AddApplication,
         .BPA_ADUP_StartApplication = BPA_ADUP_StartApplication,
         .BPA_ADUP_StopApplication = BPA_ADUP_StopApplication,
+        .BPA_ADUP_RemoveApplication = BPA_ADUP_RemoveApplication,
         /* Telemetry Proxy */
         .BPA_TLMP_SendNodeMibConfigPkt = BPA_TLMP_SendNodeMibConfigPkt,
         .BPA_TLMP_SendPerSourceMibConfigPkt = BPA_TLMP_SendPerSourceMibConfigPkt,
@@ -197,6 +198,9 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TLMP_SendChannelContactPkt = BPA_TLMP_SendChannelContactPkt,
         .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt
     };
+
+    /* Zero out the global data structure */
+    CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);

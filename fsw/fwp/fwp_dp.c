@@ -95,6 +95,8 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
                 BPLib_EM_SendEvent(BPNODE_NOOP_INF_EID, BPLib_EM_EventType_INFORMATION,
                                     "No-op command. %s", VersionString);
+
+                BPLib_NC_Noop();
             }
             break;
 
@@ -184,10 +186,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_RESET_BUNDLE_COUNTERS_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetBundleCountersCmd_t)))
             {
-                const BPNode_ResetBundleCountersCmd_t* MsgPtr;
-                MsgPtr = (const BPNode_ResetBundleCountersCmd_t*) SBBufPtr;
-
-                BPLib_NC_ResetBundleCounters(MsgPtr->Payload);
+                BPLib_NC_ResetBundleCounters();
             }
             break;
 
@@ -496,6 +495,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
         /* Default case already found during FC vs length test */
         default:
+            BPLib_AS_Increment(0, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
             BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Invalid ground command code: CC = %d", CommandCode);
 

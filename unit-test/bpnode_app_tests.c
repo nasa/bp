@@ -378,6 +378,19 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
                             context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
+/* Test app initialization when AS initialization fails */
+void Test_BPNode_AppInit_FailedASInit(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(BPLib_AS_Init), 1, BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_ERROR);
+    
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_AS_RESET_ALL_INIT_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Error initializing AS and resetting all counters to zero, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+}
+
 /* Test app initialization after failure to create ADU in child tasks */
 void Test_BPNode_AppInit_FailedAduInTasks(void)
 {
@@ -475,6 +488,16 @@ void Test_BPNode_AppInit_FailedClaOut(void)
 
 }
 
+/* Test gen worker task initialization failure */
+void Test_BPNode_AppInit_FailedGenWrkr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(BPNode_GenWorkerCreateTasks), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -500,11 +523,13 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
     ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
     ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedASInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
     ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);    
+    ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
     ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
     ADD_TEST(Test_BPNode_AppExit_Nominal);
