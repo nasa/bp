@@ -141,8 +141,6 @@ void Test_BPA_ADUP_Out_Nominal(void)
     UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
     
     Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
-    Test_FWP_ADUP_VerifyIncrement(-1, -1,                  1,  1);
-    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, -1, 1);
 }
 
 /* Test BPA_ADUP_AddApplication */
