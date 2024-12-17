@@ -199,6 +199,9 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt
     };
 
+    /* Zero out the global data structure */
+    CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
+
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);
     if (BpStatus != BPLIB_SUCCESS)
@@ -213,9 +216,6 @@ CFE_Status_t BPNode_AppInit(void)
 
         return BpStatus;
     }
-
-    /* Zero out the global data structure */
-    CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
     /* Register with Event Services */
     BpStatus = BPLib_EM_Init();
@@ -234,6 +234,16 @@ CFE_Status_t BPNode_AppInit(void)
                             "Error initializing BPLib Time Management, RC = %d", BpStatus);
         
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
+
+    /* Make all counter values zero */
+    BpStatus = BPLib_AS_Init();
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_AS_RESET_ALL_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing AS and resetting all counters to zero, RC = %d", BpStatus);
+
+        return BpStatus;
     }
 
     /* Create command pipe */
