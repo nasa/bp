@@ -304,7 +304,7 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_REM_STAT_ERR_EID, BPLib_EM_EventType_DEBUG,
                             "Error with remove-application directive, invalid AppState=%d for ChanId=%d", 
-                            BPNode_AppData.AduState[ChanId].AppState,
+                            AppState,
                             ChanId);
 
         return BPLIB_ERROR;
