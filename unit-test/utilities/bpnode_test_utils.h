@@ -95,6 +95,12 @@ extern BPLib_STOR_StorageTable_t   TestStorTbl;
 ** Exported Functions
 */
 
+/* Verify values given when BPLib_AS_Increment is called, match what's expected */
+void Test_FWP_ADUP_VerifyIncrement(int16_t SourceEid, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum);
+
+/* Verify values given when BPLib_AS_Decrement is called, match what's expected */
+void Test_FWP_ADUP_VerifyDecrement(int16_t SourceEid, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum);
+
 /* Unit test case set up */
 void BPNode_UT_Setup(void);
 

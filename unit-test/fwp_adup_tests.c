@@ -110,8 +110,7 @@ void Test_BPA_ADUP_In_Nominal(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
     
-    UtAssert_EQ(BPLib_AS_Counter_t, ADU_COUNT_RECEIVED, Context_BPLib_AS_IncrementDecrement.Counter);
-    UtAssert_EQ(uint32_t, 1, Context_BPLib_AS_IncrementDecrement.Amount);
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
 }
 
 /* Test BPA_ADUP_In when the payload is too big*/
@@ -141,8 +140,9 @@ void Test_BPA_ADUP_Out_Nominal(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
     
-    UtAssert_EQ(BPLib_AS_Counter_t, ADU_COUNT_DELIVERED, Context_BPLib_AS_IncrementDecrement.Counter);
-    UtAssert_EQ(uint32_t, 1, Context_BPLib_AS_IncrementDecrement.Amount);
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
+    Test_FWP_ADUP_VerifyIncrement(-1, -1,                  1,  1);
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, -1, 1);
 }
 
 /* Test BPA_ADUP_AddApplication */

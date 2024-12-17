@@ -91,6 +91,46 @@ void UT_Handler_CFE_EVS_SendEvent(void *UserObj, UT_EntryKey_t FuncKey, const UT
     }
 }
 
+void Test_FWP_ADUP_VerifyIncrement(int16_t SourceEid, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum)
+{
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, CallNum);
+
+    if (SourceEid != -1)
+    {
+        UtAssert_EQ(uint16_t, SourceEid, Context_BPLib_AS_IncrementDecrement[CallNum - 1].SourceEid);
+    }
+
+    if (Counter != -1)
+    {
+        UtAssert_EQ(BPLib_AS_Counter_t, Counter, Context_BPLib_AS_IncrementDecrement[CallNum - 1].Counter);
+    }
+
+    if (Amount != -1)
+    {
+        UtAssert_EQ(uint32_t, Amount, Context_BPLib_AS_IncrementDecrement[CallNum - 1].Amount);
+    }
+}
+
+void Test_FWP_ADUP_VerifyDecrement(int16_t SourceEid, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum)
+{
+    UtAssert_STUB_COUNT(BPLib_AS_Decrement, CallNum);
+
+    if (SourceEid != -1)
+    {
+        UtAssert_EQ(uint16_t, SourceEid, Context_BPLib_AS_IncrementDecrement[CallNum - 1].SourceEid);
+    }
+
+    if (Counter != -1)
+    {
+        UtAssert_EQ(BPLib_AS_Counter_t, Counter, Context_BPLib_AS_IncrementDecrement[CallNum - 1].Counter);
+    }
+
+    if (Amount != -1)
+    {
+        UtAssert_EQ(uint32_t, Amount, Context_BPLib_AS_IncrementDecrement[CallNum - 1].Amount);
+    }
+}
+
 /* Setup function prior to every test */
 void BPNode_UT_Setup(void)
 {
@@ -115,8 +155,8 @@ void BPNode_UT_Setup(void)
 
     UT_SetHandlerFunction(UT_KEY(BPLib_EM_SendEvent), UT_Handler_BPLib_EM_SendEvent, NULL);
     UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), UT_Handler_CFE_EVS_SendEvent, NULL);
-    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_IncrementDecrement, NULL);
-    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_IncrementDecrement, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
 }
 
 /* Teardown function after every test */
