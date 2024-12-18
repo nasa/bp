@@ -112,9 +112,9 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     int32           Status;
     int32           PspStatus;
     uint8           i;
-    int32           PortNum;
 #ifdef BPNODE_CLA_UDP_DRIVER    
-    char   Str[100];
+    int32           PortNum;
+    char            Str[100];
 #endif
 
     /* Get the task ID of currently running child task */

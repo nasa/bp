@@ -114,8 +114,8 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     int32           Status;
     int32           PspStatus;
     uint8           i;
-    int32           PortNum;
 #ifdef BPNODE_CLA_UDP_DRIVER    
+    int32           PortNum;
     char            Str[100];
 #endif
 
