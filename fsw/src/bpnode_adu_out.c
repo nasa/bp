@@ -203,12 +203,12 @@ void BPNode_AduOut_AppMain(void)
     /* ADU Out task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        /* Wait for wakeup sem take OS_BinSemTimedWait */
+        /* Attempt to take the wakeup semaphore */
         Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d", 
+                                "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d",
                                 ChanId,
                                 Status);
         }
