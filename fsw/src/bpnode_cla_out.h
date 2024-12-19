@@ -41,12 +41,12 @@
 ** Macro Definitions
 */
 
-#define BPNODE_CLA_OUT_INIT_SEM_BASE_NAME               "BPN_CLA_OUT_INIT"  /**< \brief Initialization semaphore base name */
-#define BPNODE_CLA_OUT_BASE_NAME                        "BPNODE.CLA_OUT"    /**< \brief Task base name */
-#define BPNODE_CLA_OUT_SLEEP_MSEC                       (1000u)             /**< \brief Sleep time */
-#define BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC           (250u)             /**< \brief Bundle processing Sleep time */
-#define BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL                (0u)                /**< \briefIODriver Output subchannel*/
-#define BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE               (3072u)             /**< \brief IODriver output buffer size*/
+#define BPNODE_CLA_OUT_SEM_BASE_NAME          "BPN_CLA_OUT"    /**< \brief Semaphore base name */
+#define BPNODE_CLA_OUT_BASE_NAME              "BPNODE.CLA_OUT" /**< \brief Task base name */
+#define BPNODE_CLA_OUT_SLEEP_MSEC             (1000u)          /**< \brief Sleep time */
+#define BPNODE_CLA_OUT_PROC_BUNDLE_SLEEP_MSEC (250u)           /**< \brief Bundle processing Sleep time */
+#define BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL      (0u)             /**< \briefIODriver Output subchannel*/
+#define BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE     (3072u)          /**< \brief IODriver output buffer size*/
 
 /*
 ** Type Definitions
@@ -59,6 +59,7 @@ typedef struct
 {
     CFE_ES_TaskId_t                 TaskId;
     osal_id_t                       InitSemId;
+    osal_id_t                       WakeupSemId;
     uint32                          PerfId;
     uint32                          RunStatus;
     bool                            EgressServiceEnabled;

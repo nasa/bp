@@ -122,7 +122,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
-    /* Wake up the ADU out tasks */
+    /* Wake up the ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
     {
         OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
@@ -136,7 +136,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
-    /* Wake up the ADU in tasks */
+    /* Wake up the ADU In tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
     {
         OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[TaskNum].WakeupSemId);
@@ -145,6 +145,20 @@ CFE_Status_t BPNode_WakeupProcess(void)
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        }
+    }
+
+    /* Wake up the CLA Out tasks */
+    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CONTACTS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
                                 TaskNum,
                                 OsStatus);
         }

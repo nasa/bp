@@ -50,14 +50,34 @@ int32 BPNode_ClaOutCreateTasks(void)
         BPNode_AppData.ClaOutData[i].EgressServiceEnabled = false;
 
         /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_INIT_SEM_BASE_NAME, i);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[i].InitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the CLA Out #%d task init semaphore. Error = %d.", 
-                        i, Status);
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Failed to create the CLA Out #%d task init semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
+        /* Create wakeup semaphore so main task can control CLA Out tasks */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[i].WakeupSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Failed to create the CLA Out #%d task wakeup semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
             return Status;
         }
 
@@ -111,7 +131,6 @@ int32 BPNode_ClaOutCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        OS_printf(">>>>>>>> CLA Out taking sem ID %d\n", BPNode_AppData.ClaOutData[i].InitSemId);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].InitSemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
@@ -278,6 +297,16 @@ void BPNode_ClaOut_AppMain(void)
     /* CLA Out task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.ClaOutData[ContId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
+        Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Failed to take wakeup semaphore for CLA Out Task #%d, RC = %d",
+                                ContId,
+                                Status);
+        }
+
         if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
         {
             Status = BPNode_CLA_ProcessBundleOutput(&BPNode_AppData.ClaOutData[ContId], ContId);
