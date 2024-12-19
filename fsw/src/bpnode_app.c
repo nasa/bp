@@ -136,6 +136,20 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
+    /* Wake up the ADU in tasks */
+    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        }
+    }
+
     /* Update time as needed */
     BpStatus = BPLib_TIME_MaintenanceActivities();
 

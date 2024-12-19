@@ -38,17 +38,12 @@
 ** Macro Definitions
 */
 
-#define BPNODE_ADU_IN_INIT_SEM_BASE_NAME "BPN_ADU_IN_INIT" /**< \brief Initialization semaphore base name */
-
-#define BPNODE_ADU_IN_BASE_NAME      "BPNODE.ADU_IN"    /**< \brief Task base name */
-
-#define BPNODE_ADU_IN_SLEEP_MSEC     (1000u)            /**< \brief Sleep time */
-
-#define BPNODE_ADU_PIPE_DEPTH        (32u)              /**< \brief ADU pipe depth */
-
-#define BPNODE_ADU_IN_PIPE_BASE_NAME "BPNODE_ADU_PIPE"  /**< \brief ADU pipe base name */
-
-#define BPNODE_ADU_IN_SB_TIMEOUT     (1000u)            /**< \brief SB timeout */
+#define BPNODE_ADU_IN_SEM_BASE_NAME "BPN_ADU_IN"       /**< \brief Semaphore base name */
+#define BPNODE_ADU_IN_BASE_NAME     "BPNODE.ADU_IN"    /**< \brief Task base name */
+#define BPNODE_ADU_IN_SLEEP_MSEC     (1000u)           /**< \brief Sleep time */
+#define BPNODE_ADU_PIPE_DEPTH        (32u)             /**< \brief ADU pipe depth */
+#define BPNODE_ADU_IN_PIPE_BASE_NAME "BPNODE_ADU_PIPE" /**< \brief ADU pipe base name */
+#define BPNODE_ADU_IN_SB_TIMEOUT     (1000u)           /**< \brief SB timeout */
 
 
 /*
@@ -62,6 +57,7 @@ typedef struct
 {
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
+    osal_id_t       WakeupSemId;
     uint32          PerfId;
     uint32          RunStatus;
     CFE_SB_PipeId_t AduPipe;
