@@ -67,8 +67,11 @@ int32 BPNode_AduOutCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the ADU Out #%d task wakeup semaphore. Error = %d.", 
-                        i, Status);
+                                "Failed to create the ADU Out #%d task wakeup semaphore, %s. Error = %d.", 
+                                i,
+                                NameBuff,
+                                Status);
+
             return Status;
         }
 
