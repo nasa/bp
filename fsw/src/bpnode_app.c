@@ -115,7 +115,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[i].WakeupSemId);
 
         BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            ">>>>>>>> Main gave wake up sem %d",
+                            ">>>>>>>> Main gave wakeup sem %d",
                             BPNode_AppData.GenWorkerData[i].WakeupSemId);
 
         if (OsStatus != OS_SUCCESS)
