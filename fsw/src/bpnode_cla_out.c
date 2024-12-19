@@ -274,9 +274,8 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
         WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
         WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].BundleBuffer;
 
-        /* Temporary printf until there is telemetry to report bundle delivery */
-        OS_printf("Bundle delivered!\n");
-        
+        BPLib_AS_Increment(0, BUNDLE_COUNT_DELIVERED, 1);
+
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         /* This does not check return code here, it is "best effort" at this stage.

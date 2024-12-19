@@ -272,8 +272,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     {
         Status = CFE_SUCCESS;
 
-        /* Temporary printf until there is telemetry to report bundle receipt */
-        OS_printf("Bundle received!\n");
+        BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, 1);
 
         /* Temporarily pass ingress bundle to egress thread for proof-of-concept */
         if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)

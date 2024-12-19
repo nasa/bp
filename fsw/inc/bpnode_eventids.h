@@ -121,12 +121,10 @@
 #define BPNODE_DP_SEND_NODE_CNTRS_ERR_EID       91
 #define BPNODE_ADU_REM_CHAN_ERR_EID             92
 #define BPNODE_ADU_REM_STAT_ERR_EID             93
-#define BPNODE_ADU_REM_CHAN_ERR_EID             94
-#define BPNODE_ADU_REM_STAT_ERR_EID             95
-#define BPNODE_CLA_IN_CFG_PORT_ERR_EID          96
-#define BPNODE_CLA_IN_CFG_IP_ERR_EID            97
-#define BPNODE_CLA_OUT_CFG_PORT_ERR_EID         98
-#define BPNODE_CLA_OUT_CFG_IP_ERR_EID           99
-#define BPNODE_DEL_HANDLER_ERR_EID             100
+#define BPNODE_CLA_IN_CFG_PORT_ERR_EID          94
+#define BPNODE_CLA_IN_CFG_IP_ERR_EID            95
+#define BPNODE_CLA_OUT_CFG_PORT_ERR_EID         96
+#define BPNODE_CLA_OUT_CFG_IP_ERR_EID           97
+#define BPNODE_DEL_HANDLER_ERR_EID              98
 
 #endif /* BPNODE_EVENTS_H */
