@@ -263,15 +263,15 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
         if (Status == CFE_PSP_SUCCESS)
         {
             BPNode_AppData.ClaInData[ContId].CurrentBufferSize = RdBuf.BufferSize;
+            
+            Status = CFE_SUCCESS;
         }
 
     }
 
     /* Ingress received bundle to bplib CLA */
-    if (Status == CFE_PSP_SUCCESS && BPNode_AppData.ClaInData[ContId].CurrentBufferSize != 0)
+    if (Status == CFE_SUCCESS && BPNode_AppData.ClaInData[ContId].CurrentBufferSize != 0)
     {
-        Status = CFE_SUCCESS;
-
         BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, 1);
 
         /* Temporarily pass ingress bundle to egress thread for proof-of-concept */

@@ -512,6 +512,22 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NonZeroBuffSize(void)
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
 }
 
+void Test_BPNode_ClaIn_ProcessBundleInput_ClaOutBusy(void)
+{
+    uint8 ContId = 0;
+    size_t ExpClaOutBuffSize = 1;
+
+    BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = ExpClaOutBuffSize;
+    BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
+    
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
+    UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
+    UtAssert_EQ(size_t, BPNode_AppData.ClaOutData[ContId].CurrentBufferSize, ExpClaOutBuffSize);
+    UtAssert_EQ(size_t, BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);    
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -544,4 +560,5 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress);
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_CLATimeout);
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_NonZeroBuffSize);
+    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_ClaOutBusy);
 }
