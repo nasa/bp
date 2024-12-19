@@ -206,8 +206,6 @@ void BPNode_AduOut_AppMain(void)
                                 "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d", 
                                 ChanId,
                                 Status);
-
-            return Status;
         }
 
         if (BPNode_AppData.AduState[ChanId].AppState == BPA_ADUP_APP_STARTED)
