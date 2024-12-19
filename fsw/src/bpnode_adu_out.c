@@ -61,7 +61,7 @@ int32 BPNode_AduOutCreateTasks(void)
         }
 
         /* Create wakeup semaphore so main task can control workflow */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKEUP_%d", BPNODE_ADU_OUT_SEM_BASE_NAME, i);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_ADU_OUT_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.AduOutData[i].WakeupSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
