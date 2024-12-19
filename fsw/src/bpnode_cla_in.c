@@ -109,6 +109,7 @@ int32 BPNode_ClaInCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        OS_printf(">>>>>>>> CLA In taking sem ID %d\n", BPNode_AppData.ClaInData[i].InitSemId);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].InitSemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);

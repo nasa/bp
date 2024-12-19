@@ -76,6 +76,7 @@ int32 BPNode_AduInCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        OS_printf(">>>>>>>> ADU In taking sem ID %d\n", BPNode_AppData.AduInData[i].InitSemId);
         Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[i].InitSemId, 
                                                                 BPNODE_SEM_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);

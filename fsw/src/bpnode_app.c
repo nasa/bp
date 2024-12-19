@@ -114,6 +114,10 @@ CFE_Status_t BPNode_WakeupProcess(void)
         /* Notify generic worker task(s) to start wakeup */
         OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[i].SemId);
 
+        BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
+                            ">>>>>>>> Main gave sem ID %d",
+                            BPNode_AppData.GenWorkerData[i].SemId);
+
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
