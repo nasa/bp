@@ -107,18 +107,32 @@ CFE_Status_t BPNode_WakeupProcess(void)
     BPLib_Status_t   BpStatus;
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8            i;
+    uint8            TaskNum;
 
-    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
     {
         /* Notify generic worker task(s) to start wakeup */
-        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[i].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
 
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
                                 "Error giving Generic Worker #%d its wakeup semaphore, RC = %d",
-                                i, OsStatus);            
+                                TaskNum, OsStatus);            
+        }
+    }
+
+    /* Wake up the ADU out tasks */
+    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
         }
     }
 
