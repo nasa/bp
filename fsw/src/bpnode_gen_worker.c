@@ -48,7 +48,7 @@ int32 BPNode_GenWorkerCreateTasks(void)
     {
         /* Create semaphore for main task control */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].SemId, NameBuff, 0, 0);
+        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].InitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
@@ -77,12 +77,12 @@ int32 BPNode_GenWorkerCreateTasks(void)
         /* Verify initialization by trying to take the semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 
-        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].SemId,
+        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].InitSemId,
                                                                 BPNODE_SEM_WAIT_MSEC);
                                                                 
         BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            ">>>>>>>> Main took sem ID %d",
-                            BPNode_AppData.GenWorkerData[i].SemId);
+                            ">>>>>>>> Main took init sem %d",
+                            BPNode_AppData.GenWorkerData[i].InitSemId);
 
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
@@ -135,12 +135,10 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     BPNode_AppData.GenWorkerData[*WorkerId].PerfId = BPNODE_GEN_WRKR_PERF_ID_BASE + *WorkerId;
 
     /* Notify main task that child task is running */
-    Status = OS_BinSemGive(BPNode_AppData.GenWorkerData[*WorkerId].SemId);
+    Status = OS_BinSemGive(BPNode_AppData.GenWorkerData[*WorkerId].InitSemId);
     BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            ">>>>>>>> Worker gave sem ID %d\n",
-                            BPNode_AppData.GenWorkerData[*WorkerId].SemId);
-
-    OS_TaskDelay(1);
+                            ">>>>>>>> Worker gave init sem %d",
+                            BPNode_AppData.GenWorkerData[*WorkerId].InitSemId);
 
     if (Status != OS_SUCCESS)
     {
@@ -200,12 +198,12 @@ void BPNode_GenWorker_AppMain(void)
         BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
 
         /* Take semaphore from main task */
-        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].SemId,
+        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].WakeupSemId,
                                                                 BPNODE_SEM_WAIT_MSEC);
 
         BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            ">>>>>>>> Worker took sem %d",
-                            BPNode_AppData.GenWorkerData[WorkerId].SemId);
+                            ">>>>>>>> Worker took wakeup sem %d",
+                            BPNode_AppData.GenWorkerData[WorkerId].WakeupSemId);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
 
