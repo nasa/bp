@@ -47,14 +47,33 @@ int32 BPNode_AduInCreateTasks(void)
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
         /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_IN_INIT_SEM_BASE_NAME, i);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_ADU_IN_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.AduInData[i].InitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the ADU In #%d task init semaphore. Error = %d.", 
-                        i, Status);
+                                "Failed to create the ADU In #%d task init semaphore, %s. Error = %d",
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
+        /* Create wakeup semaphore so main task can control ADU In tasks */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_ADU_IN_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.AduInData[i].WakeupSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Failed to create the ADU In #%d task wakeup semaphore, %s. Error = %d.", 
+                                i,
+                                NameBuff,
+                                Status);
+
             return Status;
         }
 
@@ -76,9 +95,7 @@ int32 BPNode_AduInCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        OS_printf(">>>>>>>> ADU In taking sem ID %d\n", BPNode_AppData.AduInData[i].InitSemId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[i].InitSemId, 
-                                                                BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[i].InitSemId, BPNODE_SEM_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
