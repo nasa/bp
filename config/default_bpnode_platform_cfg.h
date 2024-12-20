@@ -89,7 +89,7 @@
 /**
  * \brief Number of milliseconds to wait when trying to take a semaphore
  */
-#define BPNODE_SEM_WAIT_MSEC    (5000u)
+#define BPNODE_SEM_WAIT_MSEC    (2000u)
 
 /**
  * \brief Maximum number of CLA/CL contacts allowed at once

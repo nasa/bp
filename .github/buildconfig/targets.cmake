@@ -15,6 +15,7 @@ SET(MISSION_CPUNAMES tx rx)
 # but there is no equivalent for PSP_MODULELIST at this time
 list(APPEND MISSION_GLOBAL_APPLIST cf bpnode bplib ci_lab to_lab sch_lab)
 set(GLOBAL_PSP_MODULELIST unsock_intf)
+set(GLOBAL_PSP_MODULELIST udpsock_intf)
 
 SET(tx_PROCESSORID 1)
 SET(tx_PSP_MODULELIST ${GLOBAL_PSP_MODULELIST})

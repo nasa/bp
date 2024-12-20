@@ -96,7 +96,7 @@ void BPNode_AppMain(void)
         }
     }
 
-    BPNode_AppExit();
+    CFE_ES_ExitApp(BPNode_AppData.RunStatus);
 }
 
 
@@ -354,7 +354,17 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
-    
+
+    /* Register delete handler for graceful app shutdowns */
+    Status = OS_TaskInstallDeleteHandler(&BPNode_AppExit);
+    if (Status != OS_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_DEL_HANDLER_ERR_EID, CFE_EVS_EventType_ERROR,
+                            "Failed to install delete handler. Error = 0x%08X", Status);
+
+        return Status;
+    }
+
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
@@ -419,6 +429,11 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_SEM_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_SEM_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Signal to generic worker tasks to exit */
@@ -429,7 +444,4 @@ void BPNode_AppExit(void)
     
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-
-    CFE_ES_ExitApp(BPNode_AppData.RunStatus);
-
 }
