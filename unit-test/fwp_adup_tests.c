@@ -130,6 +130,8 @@ void Test_BPA_ADUP_In_SizeErr(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_IN_TOO_BIG_ERR_EID);
     UtAssert_STRINGBUF_EQ("[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
 }
 
 /* Test BPA_ADUP_Out */
