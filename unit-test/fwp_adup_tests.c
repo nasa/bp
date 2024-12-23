@@ -161,7 +161,7 @@ void Test_BPA_ADUP_AddApplication_Nominal(void)
     BPNode_AppData.AduTblPtr = &TestAduTbl;
     BPNode_AppData.ChanTblPtr = &TestChanTbl;
 
-    BPLib_NC_ChannelContactStatsPayload.ChannelStatus[ChanId].State = BPLIB_NC_APP_STATE_REMOVED;
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_REMOVED);
 
     UtAssert_INT32_EQ(BPA_ADUP_AddApplication(ChanId), BPLIB_SUCCESS);
 
