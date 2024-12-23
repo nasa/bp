@@ -157,6 +157,7 @@ void BPNode_AduOut_AppMain(void)
 {
     int32 Status;
     uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
+    BPLib_NC_ApplicationState_t AppState;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -186,7 +187,8 @@ void BPNode_AduOut_AppMain(void)
     /* ADU Out task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        if (BPNode_AppData.AduState[ChanId].AppState == BPA_ADUP_APP_STARTED)
+        AppState = BPLib_NC_GetAppState(ChanId);
+        if (AppState == BPLIB_NC_APP_STATE_STARTED)
         {
             /* 
             ** TODO 
