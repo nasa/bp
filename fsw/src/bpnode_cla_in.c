@@ -48,14 +48,32 @@ int32 BPNode_ClaInCreateTasks(void)
         BPNode_AppData.ClaInData[i].IngressServiceEnabled = false;
         
         /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_INIT_SEM_BASE_NAME, i);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].InitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the CLA In #%d task init semaphore. Error = %d.", 
-                        i, Status);
+                                "Failed to create the CLA In #%d task init semaphore, %s. Error = %d.", 
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
+        /* Create wakeup semaphore so main task can control workflow */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].WakeupSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "Failed to create the CLA In #%d task wakeup semaphore, %s. Error = %d.", 
+                                i,
+                                NameBuff,
+                                Status);
+
             return Status;
         }
 
@@ -282,6 +300,17 @@ void BPNode_ClaIn_AppMain(void)
     /* CLA In task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.ClaInData[ContId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
+        /* Attempt to take the wakeup semaphore */
+        Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Failed to take wakeup semaphore for CLA In Task #%d, RC = %d",
+                                ContId,
+                                Status);
+        }
+
         if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
         {
             Status = BPNode_CLA_ProcessBundleInput(&BPNode_AppData.ClaInData[ContId], ContId);
