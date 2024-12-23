@@ -36,4 +36,16 @@
 
 #include "bpnode_interface_cfg.h"
 
+#define BPNODE_CLA_UDP_DRIVER  
+#define BPNODE_CLA_IN_PORT      4501
+#define BPNODE_CLA_IN_IP        "0.0.0.0"
+#define BPNODE_CLA_OUT_PORT     4551
+#define BPNODE_CLA_OUT_IP       "127.0.0.1"
+
+#ifdef BPNODE_CLA_UDP_DRIVER
+    #define BPNODE_CLA_PSP_DRIVER_NAME          "udpsock_intf"       /*IODriver udpsock_intf driver name*/
+#else
+    #define BPNODE_CLA_PSP_DRIVER_NAME          "unsock_intf"       /*IODriver unsock_intf driver name*/
+#endif
+
 #endif /* BPNODE_MISSION_CFG_H */

@@ -1,9 +1,9 @@
 /*
- * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core
- * Flight System Application (BP) v6.5”
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
  *
- * Copyright © 2020 United States Government as represented by the Administrator
- * of the National Aeronautics and Space Administration. All Rights Reserved.
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +21,7 @@
 /**
  * @file
  *
- * Auto-Generated stub implementations for functions defined in bpnode_cla_in
- * header
+ * Auto-Generated stub implementations for functions defined in bpnode_cla_in header
  */
 
 #include "bpnode_cla_in.h"
@@ -30,35 +29,16 @@
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_CLA_ProcessBundleInput()
- * ----------------------------------------------------
- */
-int32 BPNode_CLA_ProcessBundleInput(BPNode_ClaInData_t *CLAIngress,
-                                           uint8 ContId) 
-{
-  UT_GenStub_SetupReturnBuffer(BPNode_CLA_ProcessBundleInput, int32);
-
-  UT_GenStub_AddParam(BPNode_CLA_ProcessBundleInput, BPNode_ClaInData_t *,
-                      CLAIngress);
-  UT_GenStub_AddParam(BPNode_CLA_ProcessBundleInput, uint8, ContId);
-
-  UT_GenStub_Execute(BPNode_CLA_ProcessBundleInput, Basic, NULL);
-
-  return UT_GenStub_GetReturnValue(BPNode_CLA_ProcessBundleInput, int32);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPNode_ClaInCreateTasks()
  * ----------------------------------------------------
  */
-int32 BPNode_ClaInCreateTasks(void) 
+int32 BPNode_ClaInCreateTasks(void)
 {
-  UT_GenStub_SetupReturnBuffer(BPNode_ClaInCreateTasks, int32);
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaInCreateTasks, int32);
 
-  UT_GenStub_Execute(BPNode_ClaInCreateTasks, Basic, NULL);
+    UT_GenStub_Execute(BPNode_ClaInCreateTasks, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPNode_ClaInCreateTasks, int32);
+    return UT_GenStub_GetReturnValue(BPNode_ClaInCreateTasks, int32);
 }
 
 /*
@@ -66,10 +46,26 @@ int32 BPNode_ClaInCreateTasks(void)
  * Generated stub function for BPNode_ClaIn_AppMain()
  * ----------------------------------------------------
  */
-void BPNode_ClaIn_AppMain(void) 
+void BPNode_ClaIn_AppMain(void)
 {
 
-  UT_GenStub_Execute(BPNode_ClaIn_AppMain, Basic, NULL);
+    UT_GenStub_Execute(BPNode_ClaIn_AppMain, Basic, NULL);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_ClaIn_ProcessBundleInput()
+ * ----------------------------------------------------
+ */
+int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaIn_ProcessBundleInput, int32);
+
+    UT_GenStub_AddParam(BPNode_ClaIn_ProcessBundleInput, uint8, ContId);
+
+    UT_GenStub_Execute(BPNode_ClaIn_ProcessBundleInput, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_ClaIn_ProcessBundleInput, int32);
 }
 
 /*
@@ -77,11 +73,11 @@ void BPNode_ClaIn_AppMain(void)
  * Generated stub function for BPNode_ClaIn_TaskExit()
  * ----------------------------------------------------
  */
-void BPNode_ClaIn_TaskExit(uint8 ContId) 
+void BPNode_ClaIn_TaskExit(uint8 ContId)
 {
-  UT_GenStub_AddParam(BPNode_ClaIn_TaskExit, uint8, ContId);
+    UT_GenStub_AddParam(BPNode_ClaIn_TaskExit, uint8, ContId);
 
-  UT_GenStub_Execute(BPNode_ClaIn_TaskExit, Basic, NULL);
+    UT_GenStub_Execute(BPNode_ClaIn_TaskExit, Basic, NULL);
 }
 
 /*
@@ -89,13 +85,13 @@ void BPNode_ClaIn_TaskExit(uint8 ContId)
  * Generated stub function for BPNode_ClaIn_TaskInit()
  * ----------------------------------------------------
  */
-int32 BPNode_ClaIn_TaskInit(uint8 *ChanId) 
+int32 BPNode_ClaIn_TaskInit(uint8 *ChanId)
 {
-  UT_GenStub_SetupReturnBuffer(BPNode_ClaIn_TaskInit, int32);
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaIn_TaskInit, int32);
 
-  UT_GenStub_AddParam(BPNode_ClaIn_TaskInit, uint8 *, ChanId);
+    UT_GenStub_AddParam(BPNode_ClaIn_TaskInit, uint8 *, ChanId);
 
-  UT_GenStub_Execute(BPNode_ClaIn_TaskInit, Basic, NULL);
+    UT_GenStub_Execute(BPNode_ClaIn_TaskInit, Basic, NULL);
 
-  return UT_GenStub_GetReturnValue(BPNode_ClaIn_TaskInit, int32);
+    return UT_GenStub_GetReturnValue(BPNode_ClaIn_TaskInit, int32);
 }

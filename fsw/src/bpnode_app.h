@@ -54,8 +54,6 @@
 #include "bplib.h"
 
 
-#define BPNODE_CLA_PSP_DRIVER_NAME          "unsock_intf"       /*IODriver unsock_intf driver name*/
-
 /*
 ** Type Definitions
 */
