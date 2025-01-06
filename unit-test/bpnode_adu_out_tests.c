@@ -191,13 +191,16 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
 {
     uint8 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
+    BPLib_NC_ApplicationState_t AppState;
+
+    AppState = BPLIB_NC_APP_STATE_STARTED;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDataBuffer(UT_KEY(BPLib_NC_GetAppState), &AppState, sizeof(AppState), false);
 
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     BPNode_AduOut_AppMain();
 
@@ -249,13 +252,16 @@ void Test_BPNode_AduOut_AppMain_AppStopped(void)
 {
     uint8 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
+    BPLib_NC_ApplicationState_t AppState;
+
+    AppState = BPLIB_NC_APP_STATE_STOPPED;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDataBuffer(UT_KEY(BPLib_NC_GetAppState), &AppState, sizeof(AppState), false);
 
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
     BPNode_AduOut_AppMain();
 
