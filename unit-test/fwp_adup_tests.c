@@ -109,7 +109,8 @@ void Test_BPA_ADUP_In_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
 }
 
 /* Test BPA_ADUP_In when the payload is too big*/
@@ -140,7 +141,8 @@ void Test_BPA_ADUP_Out_Nominal(void)
     uint8_t ChanId = 0;
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+    
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
 }
 
 /* Test BPA_ADUP_AddApplication */
