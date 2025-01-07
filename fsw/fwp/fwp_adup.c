@@ -274,7 +274,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     } 
 
     /* Set app state to stopped */
-    AppState = BPLIB_NC_APP_STATE_STOPPED;
+    BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_STOPPED);
 
     /* Notify ADU In task to clear pipe */
     BPNode_AppData.AduInData[ChanId].ClearPipe = true;

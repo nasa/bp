@@ -279,7 +279,7 @@ void Test_BPA_ADUP_StartApplication_SubErr(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_START_SUB_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(BPLib_NC_SetAppState, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_SetAppState, 0);
 }
 
 /* Test BPA_ADUP_StopApplication */
@@ -336,7 +336,7 @@ void Test_BPA_ADUP_StopApplication_SubErr(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_STOP_UNSUB_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error unsubscribing from ADU on channel #%d, Error = %d, MsgId = 0x%x", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(BPLib_NC_SetAppState, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_SetAppState, 0);
 }
 
 /* Test BPA_ADUP_RemoveApplication */
