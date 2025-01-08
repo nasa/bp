@@ -47,32 +47,32 @@ BPNode_StorageHkTlm_t            StorageHkTlm;            /** \brief Storage hou
 void BPA_TLMP_Init(void)
 {
     /* Inititalize node MIB configuration housekeeping packet */
-    CFE_MSG_Init((CFE_MSG_Message_t*) &NodeMibConfigHkTlm,
+    CFE_MSG_Init(CFE_MSG_PTR(NodeMibConfigHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_CONFIG_HK_TLM_MID),
                     sizeof(BPNode_NodeMibConfigHkTlm_t));
 
     /* Inititalize source MIB configuration housekeeping packet */
-    CFE_MSG_Init((CFE_MSG_Message_t*) &SourceMibConfigHkTlm,
+    CFE_MSG_Init(CFE_MSG_PTR(SourceMibConfigHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_CONFIG_HK_TLM_MID),
                     sizeof(BPNode_SourceMibConfigHkTlm_t));
 
     /* Inititalize node MIB counters housekeeping packet */
-    CFE_MSG_Init((CFE_MSG_Message_t*) &NodeMibCountersHkTlm,
+    CFE_MSG_Init(CFE_MSG_PTR(NodeMibCountersHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID),
                     sizeof(BPNode_NodeMibCountersHkTlm_t));
 
     /* Inititalize source MIB counters housekeeping packet */
-    CFE_MSG_Init((CFE_MSG_Message_t*) &SourceMibCountersHkTlm,
+    CFE_MSG_Init(CFE_MSG_PTR(SourceMibCountersHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_SOURCE_MIB_COUNTERS_HK_TLM_MID),
                     sizeof(BPNode_SourceMibCountersHkTlm_t));
 
     /* Inititalize channel contact statistics housekeeping packet */
-    CFE_MSG_Init((CFE_MSG_Message_t*) &ChannelContactStatHkTlm,
+    CFE_MSG_Init(CFE_MSG_PTR(ChannelContactStatHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID),
                     sizeof(BPNode_ChannelContactStatHkTlm_t));
 
     /* Inititalize storage housekeeping packet */
-    CFE_MSG_Init((CFE_MSG_Message_t*) &StorageHkTlm,
+    CFE_MSG_Init(CFE_MSG_PTR(StorageHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_STORAGE_HK_TLM_MID),
                     sizeof(BPNode_StorageHkTlm_t));
 }
