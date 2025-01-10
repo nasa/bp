@@ -314,13 +314,10 @@ void Test_BPNode_AduIn_AppMain_AppStopped(void)
 {
     uint8 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
-    BPLib_NC_ApplicationState_t AppState;
-
-    AppState = BPLIB_NC_APP_STATE_STOPPED;
 
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_SetDataBuffer(UT_KEY(BPLib_NC_GetAppState), &AppState, sizeof(AppState), false);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STOPPED);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
@@ -341,12 +338,8 @@ void Test_BPNode_AduIn_AppMain_ClearPipe(void)
     CFE_SB_Buffer_t *BufPtr = &Buf;
     uint8 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
-    BPLib_NC_ApplicationState_t AppState;
-
-    AppState = BPLIB_NC_APP_STATE_STOPPED;
 
     /* Test setup */
-
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
 
@@ -355,7 +348,7 @@ void Test_BPNode_AduIn_AppMain_ClearPipe(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); 
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
-    UT_SetDataBuffer(UT_KEY(BPLib_NC_GetAppState), &AppState, sizeof(AppState), false);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STOPPED);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
     BPNode_AppData.AduInData[ChanId].ClearPipe = true;
