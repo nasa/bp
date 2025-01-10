@@ -292,12 +292,12 @@ CFE_Status_t BPNode_AppInit(void)
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
-    /* Make all counter values zero */
-    BpStatus = BPLib_AS_Init();
+    /* Initialize configurations and counters */
+    BpStatus = BPLib_NC_Init();
     if (BpStatus != BPLIB_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_AS_RESET_ALL_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error initializing AS and resetting all counters to zero, RC = %d", BpStatus);
+        BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing NC/AS, RC = %d", BpStatus);
 
         return BpStatus;
     }

@@ -229,9 +229,9 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     BPNode_AduIn_AppMain();
 
@@ -256,9 +256,9 @@ void Test_BPNode_AduIn_AppMain_NullBuf(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STARTED;
 
     BPNode_AduIn_AppMain();
 
@@ -317,10 +317,10 @@ void Test_BPNode_AduIn_AppMain_AppStopped(void)
 
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STOPPED);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STOPPED;
 
     BPNode_AduIn_AppMain();
 
@@ -340,7 +340,6 @@ void Test_BPNode_AduIn_AppMain_ClearPipe(void)
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
-
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
 
@@ -349,9 +348,9 @@ void Test_BPNode_AduIn_AppMain_ClearPipe(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); 
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STOPPED);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-    BPNode_AppData.AduState[ChanId].AppState = BPA_ADUP_APP_STOPPED;
     BPNode_AppData.AduInData[ChanId].ClearPipe = true;
 
     BPNode_AduIn_AppMain();
