@@ -280,6 +280,12 @@ void Test_BPNode_AppInit_Nominal(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_INIT_INF_EID);
     UtAssert_STRINGBUF_EQ("BPNode Initialized: %s", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+
+    /* Verify that all BPLib init functions were called */
+    UtAssert_STUB_COUNT(BPLib_FWP_Init, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_Init, 1);
+    UtAssert_STUB_COUNT(BPLib_TIME_Init, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_Init, 1);
 }
 
 /* Test app initialization after event management initialization failure */
@@ -378,16 +384,16 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
                             context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
-/* Test app initialization when AS initialization fails */
-void Test_BPNode_AppInit_FailedASInit(void)
+/* Test app initialization when NC initialization fails */
+void Test_BPNode_AppInit_FailedNCInit(void)
 {
-    UT_SetDeferredRetcode(UT_KEY(BPLib_AS_Init), 1, BPLIB_ERROR);
+    UT_SetDeferredRetcode(UT_KEY(BPLib_NC_Init), 1, BPLIB_ERROR);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_ERROR);
     
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_AS_RESET_ALL_INIT_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error initializing AS and resetting all counters to zero, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_AS_INIT_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Error initializing NC/AS, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -536,7 +542,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
     ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
     ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
-    ADD_TEST(Test_BPNode_AppInit_FailedASInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedNCInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);

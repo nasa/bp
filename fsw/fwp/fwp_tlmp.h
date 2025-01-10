@@ -31,7 +31,6 @@
 #include "bplib.h"
 #include "bpnode_msgstruct.h"
 
-
 /**
  * \brief FWP Telemetry Proxy Initialization
  *
@@ -144,4 +143,3 @@ BPLib_Status_t BPA_TLMP_SendChannelContactPkt(BPLib_ChannelContactStatHkTlm_Payl
 BPLib_Status_t BPA_TLMP_SendStoragePkt(BPLib_StorageHkTlm_Payload_t* StorTlmPayload);
 
 #endif /* FWP_TLMP_H */
-

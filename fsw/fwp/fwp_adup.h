@@ -44,29 +44,12 @@
 
 #define BPNODE_MAX_CHAN_SUBSCRIPTION     10     /**< \brief Max number of message IDs one channel can subscribe to */
 
-
-/*
-** Type Definitions
-*/
-
-/** 
-** \brief Application state
-*/
-typedef enum 
-{
-    BPA_ADUP_APP_REMOVED = 0,
-    BPA_ADUP_APP_STOPPED = 1,
-    BPA_ADUP_APP_ADDED   = 2,
-    BPA_ADUP_APP_STARTED = 3
-} BPA_ADUP_ApplicationState_t;
-
 /** 
 ** \brief State configurations needed for ADU ingest/output
 */
 typedef struct 
 {
-    bool   AddAutomatically;
-    BPA_ADUP_ApplicationState_t AppState;
+    bool AddAutomatically;
 } BPA_ADUP_State_t;
 
 /** 
