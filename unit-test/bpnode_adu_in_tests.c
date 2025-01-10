@@ -259,6 +259,20 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(BPA_ADUP_In, 1);
 }
 
+void Test_BPNode_AduIn_AppMain_TakeSemErr()
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
+
+    BPNode_AduIn_AppMain();
+
+    /* Verify the error issued an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for ADU In Task #%d, RC = %d");
+
+    /* Verify that the function ran as intended */
+    // TODO
+}
+
 /* Test BPNode_AduIn_AppMain when app state is started and a null ADU is received */
 void Test_BPNode_AduIn_AppMain_NullBuf(void)
 {
@@ -411,6 +425,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduIn_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_AduIn_AppMain_Nominal);
+    ADD_TEST(Test_BPNode_AduIn_AppMain_TakeSemErr);
     ADD_TEST(Test_BPNode_AduIn_AppMain_NullBuf);
     ADD_TEST(Test_BPNode_AduIn_AppMain_InitErr);
     ADD_TEST(Test_BPNode_AduIn_AppMain_ChanIdErr);

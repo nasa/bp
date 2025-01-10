@@ -62,6 +62,20 @@ void Test_BPNode_GenWorkerCreateTasks_InitSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
 
+void Test_BPNode_GenWorkerCreateTasks_WakeupSemErr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 2, OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(BPNode_GenWorkerCreateTasks(), OS_SEM_FAILURE);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_GEN_WRKR_SEM_CR_ERR_EID, "Failed to create the Generic Worker #%d task wakeup semaphore. Error = %d.");
+
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
+}
+
 /* Test BPNode_GenWorkerCreateTasks when the child task creation fails */
 void Test_BPNode_GenWorkerCreateTasks_TaskCrErr(void)
 {
@@ -287,6 +301,7 @@ void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_InitSemErr);
+    ADD_TEST(Test_BPNode_GenWorkerCreateTasks_WakeupSemErr);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_TakeSemErr);
 

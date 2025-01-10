@@ -368,6 +368,20 @@ void Test_BPNode_ClaOut_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
 }
 
+void Test_BPNode_ClaOut_AppMain_TakeSemErr()
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
+
+    BPNode_ClaOut_AppMain();
+
+    /* Verify the error issued an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for CLA Out Task #%d, RC = %d");
+
+    /* Verify that the function ran as intended */
+    // TODO
+}
+
 /* Test BPNode_ClaOut_AppMain when initialization failed but channel ID is known */
 void Test_BPNode_ClaOut_AppMain_InitErr(void)
 {
@@ -504,6 +518,7 @@ void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_InitSemErr);
+    ADD_TEST(Test_BPNode_ClaOutCreateTasks_WakeupSemErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_TakeSemErr);
