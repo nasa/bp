@@ -204,7 +204,6 @@ void BPNode_AduOut_AppMain(void)
     /* ADU Out task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-<<<<<<< HEAD
         /* Attempt to take the wakeup semaphore */
         Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
         if (Status != OS_SUCCESS)
@@ -215,11 +214,8 @@ void BPNode_AduOut_AppMain(void)
                                 Status);
         }
 
-        if (BPNode_AppData.AduState[ChanId].AppState == BPA_ADUP_APP_STARTED)
-=======
         AppState = BPLib_NC_GetAppState(ChanId);
         if (AppState == BPLIB_NC_APP_STATE_STARTED)
->>>>>>> 952fe3cf0e48cbb25cb4b7975af782b21308b91b
         {
             /* 
             ** TODO 
