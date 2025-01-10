@@ -173,7 +173,7 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
 }
 
 /* Test wakeup process after failing to give a semaphore */
@@ -219,7 +219,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error doing time maintenance activities, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
@@ -242,7 +242,7 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error Updating Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
@@ -262,7 +262,7 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -277,7 +277,7 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
  
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
