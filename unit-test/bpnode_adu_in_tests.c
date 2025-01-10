@@ -62,6 +62,22 @@ void Test_BPNode_AduInCreateTasks_InitSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
 
+/* Test BPNode_AduInCreateTasks when the wakeup semaphore fails to create */
+void Test_BPNode_AduInCreateTasks_WakeupSemErr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 2, OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(BPNode_AduInCreateTasks(), OS_SEM_FAILURE);
+
+    /* Verify wake up semaphore creation error created event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID, "Failed to create the ADU In #%d task wakeup semaphore, %s. Error = %d.");
+
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
+}
+
 /* Test BPNode_AduInCreateTasks when the child task creation fails */
 void Test_BPNode_AduInCreateTasks_TaskCrErr(void)
 {
@@ -384,6 +400,7 @@ void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_AduInCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_AduInCreateTasks_InitSemErr);
+    ADD_TEST(Test_BPNode_AduInCreateTasks_WakeupSemErr);
     ADD_TEST(Test_BPNode_AduInCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_AduInCreateTasks_TakeSemErr);
 
@@ -391,6 +408,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduIn_TaskInit_GetIdErr);
     ADD_TEST(Test_BPNode_AduIn_TaskInit_MatchIdErr);
     ADD_TEST(Test_BPNode_AduIn_TaskInit_PipeErr);
+    ADD_TEST(Test_BPNode_AduIn_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_AduIn_AppMain_Nominal);
     ADD_TEST(Test_BPNode_AduIn_AppMain_NullBuf);
