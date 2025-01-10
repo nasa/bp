@@ -41,7 +41,7 @@ void Test_BPNode_AduInCreateTasks_Nominal(void)
     UtAssert_INT32_EQ(BPNode_AduInCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS * 2); /* An init and wake up semaphore are created per channel */
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPLIB_MAX_NUM_CHANNELS);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPLIB_MAX_NUM_CHANNELS);
 }
@@ -54,7 +54,7 @@ void Test_BPNode_AduInCreateTasks_InitSemErr(void)
     UtAssert_INT32_EQ(BPNode_AduInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_IN_INIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the ADU In #%d task init semaphore. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Failed to create the ADU In #%d task init semaphore, %s. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
@@ -73,7 +73,7 @@ void Test_BPNode_AduInCreateTasks_TaskCrErr(void)
     UtAssert_STRINGBUF_EQ("Failed to create the ADU In #%d child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -89,7 +89,7 @@ void Test_BPNode_AduInCreateTasks_TakeSemErr(void)
     UtAssert_STRINGBUF_EQ("ADU In #%d task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }

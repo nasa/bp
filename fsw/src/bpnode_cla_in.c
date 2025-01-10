@@ -51,7 +51,7 @@ int32 BPNode_ClaInCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Failed to create the CLA In #%d task init semaphore, %s. Error = %d.", 
+                                "Failed to create the CLA In #%d task init semaphore, %s. Error = %d.",
                                 i,
                                 NameBuff,
                                 Status);

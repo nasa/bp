@@ -85,8 +85,10 @@ int32 BPNode_ClaOutCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the CLA Out #%d task exit semaphore. Error = %d.", 
-                        i, Status);
+                                "Failed to create the CLA Out #%d task exit semaphore. Error = %d.",
+                                i,
+                                Status);
+
             return Status;
         }
 
