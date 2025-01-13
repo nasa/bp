@@ -545,6 +545,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_ClaOut_AppMain_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_AppMain_TakeSemErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_InitErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_ContIdErr);
