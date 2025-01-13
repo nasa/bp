@@ -222,7 +222,7 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
 }
 
-void Test_BPNode_AduOut_AppMain_TakeSemErr()
+void Test_BPNode_AduOut_AppMain_TakeSemErr(void)
 {
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);

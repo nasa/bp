@@ -259,7 +259,7 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(BPA_ADUP_In, 1);
 }
 
-void Test_BPNode_AduIn_AppMain_TakeSemErr()
+void Test_BPNode_AduIn_AppMain_TakeSemErr(void)
 {
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);

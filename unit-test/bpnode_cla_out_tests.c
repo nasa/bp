@@ -368,7 +368,7 @@ void Test_BPNode_ClaOut_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
 }
 
-void Test_BPNode_ClaOut_AppMain_TakeSemErr()
+void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
 {
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
