@@ -89,9 +89,28 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
         Truncated = true;
     }
 
-    // Use host-specific event generator
-    Status = CFE_EVS_SendEvent(EventID, EventType, "%s", EventStr);
-    
+    /* Translate BPLib event type to cFE event type */
+    switch(EventType)
+    {
+        case BPLib_EM_EventType_DEBUG:
+            CfeEventType = CFE_EVS_EventType_DEBUG;
+            break;
+
+        case BPLib_EM_EventType_INFORMATION:
+            CfeEventType = CFE_EVS_EventType_INFORMATION;
+            break;
+
+        case BPLib_EM_EventType_CRITICAL:
+            CfeEventType = CFE_EVS_EventType_CRITICAL;
+            break;
+
+        /* BPLib warnings and errors both map to cFE errors */
+        default:
+            CfeEventType = CFE_EVS_EventType_ERROR;
+            break;
+
+    }
+
     // Translate host specific return codes into BPLib return codes
     switch(Status)
     {
