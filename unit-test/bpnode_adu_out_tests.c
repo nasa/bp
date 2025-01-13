@@ -224,19 +224,29 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
 
 void Test_BPNode_AduOut_AppMain_TakeSemErr(void)
 {
+    CFE_ES_TaskId_t TaskId;
+    uint8 ChanId;
+
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
 
-    /* Enter ADU Out task loop only once */
-    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), CFE_ES_RunStatus_APP_RUN);
-    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 2, CFE_ES_RunStatus_APP_ERROR);
+    /* Enter task loop only once */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    /* Pass task ID gathering process */
+    TaskId = 1234;
+    ChanId = 0;
+    BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_GetTaskID), CFE_SUCCESS);
 
     /* Run the function under test */
     BPNode_AduOut_AppMain();
 
     /* Verify the error issued an event */
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d");
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
+    BPNode_Test_Verify_Event(1, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d");
 
     /* Verify that the wakeup activities were skipped when a wakeup fails */
     UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
