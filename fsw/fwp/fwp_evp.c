@@ -65,6 +65,7 @@ BPLib_Status_t BPA_EVP_Init(void)
 BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventType, char const* Spec)
 {
     BPLib_Status_t Status;
+    uint16 CfeEventType;
     size_t SpecLen;
     char EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH];
     bool Truncated;
@@ -110,6 +111,9 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
             break;
 
     }
+
+    // Use host-specific event generator
+    Status = CFE_EVS_SendEvent(EventID, CfeEventType, "%s", EventStr);
 
     // Translate host specific return codes into BPLib return codes
     switch(Status)
