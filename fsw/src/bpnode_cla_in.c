@@ -369,20 +369,22 @@ void BPNode_ClaIn_AppMain(void)
                                 ContId,
                                 Status);
         }
-
-        if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
+        else
         {
-            Status = BPNode_ClaIn_ProcessBundleInput(ContId);
-            if (Status != CFE_SUCCESS)
+            if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
+            {
+                Status = BPNode_ClaIn_ProcessBundleInput(ContId);
+                if (Status != CFE_SUCCESS)
+                {
+                    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+                    BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+                }
+            }
+            else 
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
                 BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
             }
-        }
-        else 
-        {
-            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
         }
     }
 

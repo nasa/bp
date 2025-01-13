@@ -224,16 +224,22 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
 
 void Test_BPNode_AduOut_AppMain_TakeSemErr()
 {
+    /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
 
+    /* Enter ADU Out task loop only once */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), CFE_ES_RunStatus_APP_RUN);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 2, CFE_ES_RunStatus_APP_ERROR);
+
+    /* Run the function under test */
     BPNode_AduOut_AppMain();
 
     /* Verify the error issued an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d");
 
-    /* Verify that the function ran as intended */
-    // TODO
+    /* Verify that the wakeup activities were skipped when a wakeup fails */
+    UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
 }
 
 /* Test BPNode_AduOut_AppMain when initialization failed but channel ID is known */

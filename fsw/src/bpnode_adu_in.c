@@ -228,48 +228,50 @@ void BPNode_AduIn_AppMain(void)
                                 ChanId,
                                 Status);
         }
-
-        AppState = BPLib_NC_GetAppState(ChanId);
-        if (AppState == BPLIB_NC_APP_STATE_STARTED)
+        else
         {
-            /* Check for ADUs to ingest */
-            do
+            AppState = BPLib_NC_GetAppState(ChanId);
+            if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
-                BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
-
-                Status = CFE_SB_ReceiveBuffer(&BufPtr, 
-                                              BPNode_AppData.AduInData[ChanId].AduPipe,
-                                              BPNODE_ADU_IN_SB_TIMEOUT);
-
-                BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
-
-                if (Status == CFE_SUCCESS && BufPtr != NULL)
+                /* Check for ADUs to ingest */
+                do
                 {
-                    Status = BPA_ADUP_In((void *) BufPtr, ChanId);
-                }
+                    BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
 
-            } while (Status == BPLIB_SUCCESS);
-        }
-        else 
-        {
-            /* Check if the application was recently stopped and the pipe needs to be cleared */
-            if (BPNode_AppData.AduInData[ChanId].ClearPipe == true)
-            {
-                BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
+                    Status = CFE_SB_ReceiveBuffer(&BufPtr, 
+                                                BPNode_AppData.AduInData[ChanId].AduPipe,
+                                                BPNODE_ADU_IN_SB_TIMEOUT);
 
-                while (Status == CFE_SUCCESS)
-                {
-                    Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.AduInData[ChanId].AduPipe,
-                                                CFE_SB_POLL);
-                }
+                    BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
 
-                BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
+                    if (Status == CFE_SUCCESS && BufPtr != NULL)
+                    {
+                        Status = BPA_ADUP_In((void *) BufPtr, ChanId);
+                    }
 
-                BPNode_AppData.AduInData[ChanId].ClearPipe = false;
+                } while (Status == BPLIB_SUCCESS);
             }
+            else 
+            {
+                /* Check if the application was recently stopped and the pipe needs to be cleared */
+                if (BPNode_AppData.AduInData[ChanId].ClearPipe == true)
+                {
+                    BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
 
-            /* Sleep until app is started again */
-            (void) OS_TaskDelay(BPNODE_ADU_IN_SLEEP_MSEC);
+                    while (Status == CFE_SUCCESS)
+                    {
+                        Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.AduInData[ChanId].AduPipe,
+                                                    CFE_SB_POLL);
+                    }
+
+                    BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
+
+                    BPNode_AppData.AduInData[ChanId].ClearPipe = false;
+                }
+
+                /* Sleep until app is started again */
+                (void) OS_TaskDelay(BPNODE_ADU_IN_SLEEP_MSEC);
+            }
         }
     }
 

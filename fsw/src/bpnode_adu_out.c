@@ -213,16 +213,18 @@ void BPNode_AduOut_AppMain(void)
                                 ChanId,
                                 Status);
         }
-
-        AppState = BPLib_NC_GetAppState(ChanId);
-        if (AppState == BPLIB_NC_APP_STATE_STARTED)
+        else
         {
-            /* 
-            ** TODO 
-            ** Poll bundle from PI out queue
-            ** If a bundle was received:
-            **      BPA_ADUP_Out((void *) Buf, ChanId);
-            */
+            AppState = BPLib_NC_GetAppState(ChanId);
+            if (AppState == BPLIB_NC_APP_STATE_STARTED)
+            {
+                /* 
+                ** TODO 
+                ** Poll bundle from PI out queue
+                ** If a bundle was received:
+                **      BPA_ADUP_Out((void *) Buf, ChanId);
+                */
+            }
         }
     }
 
