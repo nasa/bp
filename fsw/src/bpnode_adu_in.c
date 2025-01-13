@@ -268,9 +268,6 @@ void BPNode_AduIn_AppMain(void)
 
                     BPNode_AppData.AduInData[ChanId].ClearPipe = false;
                 }
-
-                /* Sleep until app is started again */
-                (void) OS_TaskDelay(BPNODE_ADU_IN_SLEEP_MSEC);
             }
         }
     }
