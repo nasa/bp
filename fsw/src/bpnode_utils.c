@@ -46,7 +46,43 @@ BPLib_Status_t BPNode_CFE_Status_To_BPLib_Status(CFE_Status_t CFE_Status)
 {
     BPLib_Status_t BPLib_Status;
 
-    BPLib_Status = BPLIB_SUCCESS;
+    if (CFE_Status & CFE_SEVERITY_SUCCESS)
+    { /* cFE success-type return code */
+        BPLib_Status = BPLIB_SUCCESS;
+    }
+    else if (CFE_Status & CFE_SEVERITY_ERROR)
+    { /* cFE error-type return code */
+        BPLib_Status = BPLIB_ERROR;
+    }
+    else
+    { /* cFE info-type return code */
+        switch (CFE_Status)
+        {
+            case CFE_TBL_INFO_UPDATE_PENDING:
+            case CFE_TBL_WARN_SHORT_FILE:
+            case CFE_TBL_INFO_UPDATED:
+            case CFE_TBL_INFO_VALIDATION_PENDING:
+            case CFE_TBL_WARN_PARTIAL_LOAD:
+            case CFE_TBL_INFO_DUMP_PENDING:
+            case CFE_TBL_INFO_RECOVERED_TBL:
+                BPLib_Status = BPLIB_SUCCESS;
+                break;
+            case CFE_STATUS_NO_COUNTER_INCREMENT:
+            case CFE_ES_CDS_ALREADY_EXISTS:
+            case CFE_ES_LIB_ALREADY_LOADED:
+            case CFE_ES_ERR_SYS_LOG_TRUNCATED:
+            case CFE_TBL_WARN_DUPLICATE:
+            case CFE_TBL_INFO_NO_UPDATE_PENDING:
+            case CFE_TBL_INFO_TABLE_LOCKED:
+            case CFE_TBL_INFO_NO_VALIDATION_PENDING:
+            case CFE_TBL_WARN_NOT_CRITICAL:
+                BPLib_Status = BPLIB_ERROR;
+                break;
+            default:
+                BPLib_Status = BPLIB_UNKNOWN;
+                break;
+        }
+    }
 
     return BPLib_Status;
 }
