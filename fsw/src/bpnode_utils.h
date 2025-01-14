@@ -26,15 +26,16 @@
 #ifndef BPNODE_UTILS_H
 #define BPNODE_UTILS_H
 
-/*
-** Include Files
-*/
+/* ======== */
+/* Includes */
+/* ======== */
 
 #include "cfe.h"
+#include "bplib_api_types.h"
 
-/*
-** Exported Functions
-*/
+/* =================== */
+/* Function Prototypes */
+/* =================== */
 
 /**
  * \brief Validate Example Table
@@ -53,5 +54,10 @@
  */
 CFE_Status_t BPNode_TblValidationFunc(void *TblData);
 
+/* TODO: Documentation */
+BPLib_Status_t BPNode_CFE_Status_To_BPLib_Status(CFE_Status_t CFE_Status);
+
+/* TODO: Documentation */
+CFE_Status_t BPNode_BPLib_Status_To_CFE_Status(BPLib_Status_t BPLib_Status);
 
 #endif /* BPNODE_UTILS_H */

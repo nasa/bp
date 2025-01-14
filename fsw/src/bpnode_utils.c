@@ -41,3 +41,21 @@ CFE_Status_t BPNode_TblValidationFunc(void *TblData)
 
     return ReturnCode;
 }
+
+BPLib_Status_t BPNode_CFE_Status_To_BPLib_Status(CFE_Status_t CFE_Status) 
+{
+    BPLib_Status_t BPLib_Status;
+
+    BPLib_Status = BPLIB_SUCCESS;
+
+    return BPLib_Status;
+}
+
+CFE_Status_t BPNode_BPLib_Status_To_CFE_Status(BPLib_Status_t BPLib_Status)
+{
+    CFE_Status_t CFE_Status;
+
+    CFE_Status = CFE_SUCCESS;
+
+    return CFE_Status;
+}
