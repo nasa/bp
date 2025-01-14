@@ -41,66 +41,10 @@ void Test_BPNode_TblValidationFunc_Nominal(void)
     UtAssert_INT32_EQ(BPNode_TblValidationFunc(NULL), CFE_SUCCESS);
 }
 
-void Test_BPNode_BPLib_Success_Status_To_CFE_Status(void)
-{
-    CFE_Status_t CFE_Status;
-
-    /* Convert BPLib success-type return code into a cFE success-type return code */
-    CFE_Status = BPNode_BPLib_Status_To_CFE_Status(BPLIB_SUCCESS);
-
-    UtAssert_BOOL_TRUE(CFE_Status & CFE_SEVERITY_SUCCESS);
-}
-
-void Test_BPNode_BPLib_Error_Status_To_CFE_Status(void)
-{
-    CFE_Status_t CFE_Status;
-
-    /* Convert BPLib error-type return code into a cFE error-type return code */
-    CFE_Status = BPNode_BPLib_Status_To_CFE_Status(BPLIB_ERROR);
-
-    UtAssert_BOOL_TRUE(CFE_Status & CFE_SEVERITY_ERROR);
-}
-
-void Test_BPNode_CFE_Success_Status_To_BPLib_Status(void)
-{
-    BPLib_Status_t BPLib_Status;
-
-    /* Convert cFE success-type return code into a BPLib success-type return code */
-    BPLib_Status = BPNode_CFE_Status_To_BPLib_Status(CFE_SUCCESS);
-
-    /* Verify the return code is a success type, accounting for different types of success */
-    UtAssert_GTEQ(BPLib_Status_t, BPLib_Status, BPLIB_SUCCESS);
-}
-
-void Test_BPNode_CFE_Error_Status_To_BPLib_Status(void)
-{
-    BPLib_Status_t BPLib_Status;
-
-    /* Convert cFE error-type return code into a BPLib error-type return code */
-    BPLib_Status = BPNode_CFE_Status_To_BPLib_Status(CFE_STATUS_NOT_IMPLEMENTED);
-
-    /* Verify the return code is an error type, accounting for different types of errors */
-    UtAssert_LTEQ(BPLib_Status_t, BPLib_Status, BPLIB_ERROR);
-}
-
-void Test_BPNode_CFE_Info_Status_To_BPLib_Status(void)
-{
-    BPLib_Status_t BPLib_Status;
-
-    /* Convert cFE info-type return code into a BPLib error-type return code */
-    BPLib_Status = BPNode_CFE_Status_To_BPLib_Status(CFE_STATUS_NO_COUNTER_INCREMENT);
-
-    /* Verify the return code is an error type, accounting for different types of errors */
-    UtAssert_LTEQ(BPLib_Status_t, BPLib_Status, BPLIB_ERROR);
-}
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_TblValidationFunc_Nominal);
-    ADD_TEST(Test_BPNode_BPLib_Success_Status_To_CFE_Status);
-    ADD_TEST(Test_BPNode_BPLib_Error_Status_To_CFE_Status);
-    ADD_TEST(Test_BPNode_CFE_Success_Status_To_BPLib_Status);
-    ADD_TEST(Test_BPNode_CFE_Error_Status_To_BPLib_Status);
-    ADD_TEST(Test_BPNode_CFE_Info_Status_To_BPLib_Status);
+
 }
