@@ -29,9 +29,9 @@
 #include "bplib_api_types.h"
 
 /* TODO: Documentation */
-BPLib_Status_t BPNode_CFE_Status_To_BPLib_Status(CFE_Status_t CFE_Status);
+BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status);
 
 /* TODO: Documentation */
-CFE_Status_t BPNode_BPLib_Status_To_CFE_Status(BPLib_Status_t BPLib_Status);
+CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status);
 
 #endif /* FWP_UTILS_H */
