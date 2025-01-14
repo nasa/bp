@@ -18,26 +18,20 @@
  *
  */
 
-/**
- * \file
- *   This file contains the source code for the BPNode utility functions
- */
+#ifndef FWP_UTILS_H
+#define FWP_UTILS_H
 
-/*
-** Include Files
-*/
+/* ======== */
+/* Includes */
+/* ======== */
 
-#include "bpnode_utils.h"
+#include "cfe.h"
+#include "bplib_api_types.h"
 
+/* TODO: Documentation */
+BPLib_Status_t BPNode_CFE_Status_To_BPLib_Status(CFE_Status_t CFE_Status);
 
-/*
-** Function Definitions
-*/
+/* TODO: Documentation */
+CFE_Status_t BPNode_BPLib_Status_To_CFE_Status(BPLib_Status_t BPLib_Status);
 
-/* Validate example table data */
-CFE_Status_t BPNode_TblValidationFunc(void *TblData)
-{
-    CFE_Status_t           ReturnCode = CFE_SUCCESS;
-
-    return ReturnCode;
-}
+#endif /* FWP_UTILS_H */
