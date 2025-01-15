@@ -24,12 +24,5 @@
 
 #include "fwp_utils.h"
 
-BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)
-{
-    return (CFE_Status & CFE_SEVERITY_SUCCESS) ? BPLIB_SUCCESS : BPLIB_ERROR;
-}
-
-CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status)
-{
-    return (BPLib_Status >= BPLIB_SUCCESS) ? CFE_SUCCESS : CFE_STATUS_NOT_IMPLEMENTED;
-}
+inline BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)     { return (CFE_Status & CFE_SEVERITY_SUCCESS) ? BPLIB_SUCCESS : BPLIB_ERROR; }
+inline CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status) { return (BPLib_Status >= BPLIB_SUCCESS) ? CFE_SUCCESS : CFE_STATUS_NOT_IMPLEMENTED; }
