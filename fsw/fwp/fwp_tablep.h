@@ -45,7 +45,7 @@
 
 CFE_Status_t BPA_TABLEP_TableInit(void);
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
-CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
+inline BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
 
 /**
  * \brief     Wrapper to translate return from BPLib_PI_ValidateConfigs into a CFE_Statuts_t type
@@ -169,4 +169,3 @@ inline CFE_Status_t BPA_TABLEP_PDB_SrcLatencyTblValidateFunc(void* TblData);
 inline CFE_Status_t BPA_TABLEP_STOR_StorageTblValidateFunc(void* TblData);
 
 #endif /* FWP_TABLEP_H */
-
