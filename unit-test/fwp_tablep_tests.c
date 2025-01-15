@@ -294,4 +294,16 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Fail);
     
     ADD_TEST(Test_BPA_TABLEP_SingleTableUpdate_Nominal);
+
+    ADD_TEST(Test_BPA_TABLEP_PI_ValidateConfigs_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_CLA_ContactsTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_ARP_CRSTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_PDB_CustodianAuthTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_PDB_CustodyAuthTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_NC_MIBConfigPSTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_PDB_ReportToAuthTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_PDB_SrcAuthTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_PDB_SrcLatencyTblValidateFunc_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_STOR_StorageTblValidateFunc_Nominal);
 }
