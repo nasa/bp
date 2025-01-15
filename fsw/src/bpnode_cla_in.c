@@ -360,7 +360,10 @@ void BPNode_ClaIn_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.ClaInData[ContId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
         /* Attempt to take the wakeup semaphore */
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID,

@@ -219,7 +219,10 @@ void BPNode_AduIn_AppMain(void)
     /* ADU In task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.AduInData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
+        BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
         Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[ChanId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
+
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,

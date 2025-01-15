@@ -348,7 +348,10 @@ void BPNode_ClaOut_AppMain(void)
     /* CLA Out task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.ClaOutData[ContId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
+
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
