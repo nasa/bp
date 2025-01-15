@@ -124,6 +124,161 @@ void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
     UtAssert_INT32_EQ((int32) BPA_TABLEP_SingleTableUpdate(1), (int32) CFE_SUCCESS);    
 }
 
+void Test_BPA_TABLEP_PI_ValidateConfigs_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_PI_ChannelTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PI_ValidateConfigs), BPLIB_SUCCESS);
+    // UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
+
+    Status = BPA_TABLEP_PI_ValidateConfigs((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_CLA_ContactsTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_CLA_ContactsTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactsTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_CLA_ContactsTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_ARP_CRSTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_ARP_CRSTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_ARP_CRSTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_ARP_CRSTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_PDB_CustodianAuthTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_PDB_CustodianTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PDB_CustodianAuthTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_PDB_CustodianAuthTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_PDB_CustodyAuthTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_PDB_CustodyTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PDB_CustodyAuthTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_PDB_CustodyAuthTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_NC_MIBConfigPNTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_MIBConfigPNTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_NC_MIBConfigPNTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_NC_MIBConfigPSTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_NC_MIBConfigPSTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_MIBConfigPSTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_NC_MIBConfigPSTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_PDB_ReportToAuthTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_PDB_ReportToTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PDB_ReportToAuthTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_PDB_ReportToAuthTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_PDB_SrcAuthTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_PDB_SrcAuthTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PDB_SrcAuthTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_PDB_SrcAuthTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_PDB_SrcLatencyTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_PDB_SrcLatencyTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PDB_SrcLatencyTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_PDB_SrcLatencyTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_STOR_StorageTblValidateFunc_Nominal(void)
+{
+    CFE_Status_t Status;
+    BPLib_STOR_StorageTable_t* TblData;
+
+    memset(&TblData, 0, sizeof(TblData));
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_STOR_StorageTblValidateFunc), BPLIB_SUCCESS);
+
+    Status = BPA_TABLEP_STOR_StorageTblValidateFunc((void*) TblData);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
 /*
  * Register the test cases to execute with the unit test tool
  */

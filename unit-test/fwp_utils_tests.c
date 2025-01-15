@@ -37,7 +37,8 @@ void Test_BPA_BPLib_Success_Status_Translate(void)
     /* Convert BPLib success-type return code into a cFE success-type return code */
     CFE_Status = BPA_BPLib_Status_Translate(BPLIB_SUCCESS);
 
-    UtAssert_BOOL_TRUE(CFE_Status & CFE_SEVERITY_SUCCESS);
+    /* Verify MSB is 0 since success return statuses have MSB of 0 */
+    UtAssert_LT(uint16, CFE_Status, 0x10000000);
 }
 
 void Test_BPA_BPLib_Error_Status_Translate(void)
