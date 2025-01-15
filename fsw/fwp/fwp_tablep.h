@@ -47,5 +47,38 @@ CFE_Status_t BPA_TABLEP_TableInit(void);
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
 CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
 
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_PI_ValidateConfigs into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_PI_ValidateConfigs(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_CLA_ContactsTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_CLA_ContactsTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_ARP_CRSTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_ARP_CRSTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_PDB_CustodianAuthTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_PDB_CustodianAuthTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_PDB_CustodyAuthTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_PDB_CustodyAuthTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_NC_MIBConfigPNTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_NC_MIBConfigPNTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_NC_MIBConfigPSTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_NC_MIBConfigPSTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_PDB_ReportToAuthTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_PDB_ReportToAuthTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_PDB_SrcAuthTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_PDB_SrcAuthTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_PDB_SrcLatencyTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_PDB_SrcLatencyTblValidateFunc(void* TblData);
+
+/* Translate the return BPLib_Status_t-type status from BPA_TABLEP_STOR_StorageTblValidateFunc into a CFE_Status_t-type for CFE_TBL_Register */
+inline CFE_Status_t BPA_TABLEP_STOR_StorageTblValidateFunc(void* TblData);
+
 #endif /* FWP_TABLEP_H */
 
