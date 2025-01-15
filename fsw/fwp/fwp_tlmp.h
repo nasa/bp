@@ -30,6 +30,7 @@
 #include "cfe_config.h"
 #include "bplib.h"
 #include "bpnode_msgstruct.h"
+#include "fwp_utils.h"
 
 /**
  * \brief FWP Telemetry Proxy Initialization
