@@ -38,7 +38,7 @@ void Test_BPA_BPLib_Success_Status_Translate(void)
     CFE_Status = BPA_BPLib_Status_Translate(BPLIB_SUCCESS);
 
     /* Verify MSB is 0 since success return statuses have MSB of 0 */
-    UtAssert_LT(uint16, CFE_Status, 0x10000000);
+    UtAssert_LTEQ(uint16, CFE_Status, BPA_MAX_CFE_SUCCESS);
 }
 
 void Test_BPA_BPLib_Error_Status_Translate(void)

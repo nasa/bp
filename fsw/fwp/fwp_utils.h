@@ -28,10 +28,34 @@
 #include "cfe.h"
 #include "bplib_api_types.h"
 
-/* TODO: Documentation */
+/* ====== */
+/* Macros */
+/* ====== */
+
+#define BPA_MAX_CFE_SUCCESS (0x0FFFFFFFu)
+
+/* =================== */
+/* Function Prototypes */
+/* =================== */
+
+/**
+ * \brief     Convert a cFE status type return code to a BPLib status type
+ * \details   The passed in cFE status is compared to BPA_MAX_CFE_SUCCESS to determine success
+ * \note      This assume all success return codes from cFE have a MSB of 0
+ * \param[in] CFE_Status (CFE_Status_t) cFE status to convert to BPLib_Status_t equivalent
+ * \return    Execution status translated into a BPLib_Status_t type
+ * \anchor    BPA_CFE_Status_Translate
+ */
 BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status);
 
-/* TODO: Documentation */
+/**
+ * \brief     Convert a BPLib status type return code to a cFE status type
+ * \details   The passed in BPLib status is compared to BPLIB_SUCCESS to determine success
+ * \note      This assume all success return codes from BPLib are positive
+ * \param[in] BPLib_Status (BPLib_Status_t) BPLib status to convert to CFE_Status_t equivalent
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_BPLib_Status_Translate
+ */
 CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status);
 
 #endif /* FWP_UTILS_H */
