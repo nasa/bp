@@ -95,7 +95,7 @@ int32 BPNode_AduInCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[i].InitSemId, BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[i].InitSemId, BPNODE_ADU_IN_SEM_INIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
@@ -220,7 +220,7 @@ void BPNode_AduIn_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.AduInData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[ChanId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[ChanId].WakeupSemId, BPNODE_ADU_IN_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
 
         if (Status != OS_SUCCESS)

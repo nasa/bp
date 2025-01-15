@@ -113,8 +113,7 @@ int32 BPNode_ClaOutCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].InitSemId, 
-                                                                BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].InitSemId, BPNODE_CLA_OUT_SEM_INIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
@@ -349,7 +348,7 @@ void BPNode_ClaOut_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.ClaOutData[ContId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContId].WakeupSemId, BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContId].WakeupSemId, BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         if (Status != OS_SUCCESS)

@@ -38,12 +38,13 @@
 ** Macro Definitions
 */
 
-#define BPNODE_ADU_IN_SEM_BASE_NAME "BPN_ADU_IN"       /**< \brief Semaphore base name */
-#define BPNODE_ADU_IN_BASE_NAME     "BPNODE.ADU_IN"    /**< \brief Task base name */
-#define BPNODE_ADU_PIPE_DEPTH        (32u)             /**< \brief ADU pipe depth */
-#define BPNODE_ADU_IN_PIPE_BASE_NAME "BPNODE_ADU_PIPE" /**< \brief ADU pipe base name */
-#define BPNODE_ADU_IN_SB_TIMEOUT     (1000u)           /**< \brief SB timeout */
-
+#define BPNODE_ADU_IN_SEM_BASE_NAME        "BPN_ADU_IN"      /** \brief Semaphore base name */
+#define BPNODE_ADU_IN_BASE_NAME            "BPNODE.ADU_IN"   /** \brief Task base name */
+#define BPNODE_ADU_PIPE_DEPTH              (32u)             /** \brief ADU pipe depth */
+#define BPNODE_ADU_IN_PIPE_BASE_NAME       "BPNODE_ADU_PIPE" /** \brief ADU pipe base name */
+#define BPNODE_ADU_IN_SB_TIMEOUT           (1000u)           /** \brief SB timeout */
+#define BPNODE_ADU_IN_SEM_INIT_WAIT_MSEC   (2000u)           /** \brief Wait time for init semaphore take, in milliseconds */
+#define BPNODE_ADU_IN_SEM_WAKEUP_WAIT_MSEC (2000u)           /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 /*
 ** Type Definitions

@@ -37,12 +37,11 @@
 ** Macro Definitions
 */
 
-#define BPNODE_GEN_WRKR_SEM_BASE_NAME "BPN_GEN_WRKR_SEM" /**< \brief Semaphore base name */
-
-#define BPNODE_GEN_WRKR_BASE_NAME    "BPNODE.GEN_WRKR"    /**< \brief Task base name */
-
-#define BPNODE_GEN_WRKR_SLEEP_MSEC   (100u)              /**< \brief Sleep time */
-
+#define BPNODE_GEN_WRKR_SEM_BASE_NAME        "BPN_GEN_WRKR_SEM" /** \brief Semaphore base name */
+#define BPNODE_GEN_WRKR_BASE_NAME            "BPNODE.GEN_WRKR"  /** \brief Task base name */
+#define BPNODE_GEN_WRKR_SLEEP_MSEC           (100u)             /** \brief Sleep time */
+#define BPNODE_GEN_WRKR_SEM_INIT_WAIT_MSEC   (2000u)            /** \brief Wait time for init semaphore take, in milliseconds */
+#define BPNODE_GEN_WRKR_SEM_WAKEUP_WAIT_MSEC (2000u)            /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 /*
 ** Type Definitions

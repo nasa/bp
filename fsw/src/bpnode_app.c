@@ -486,8 +486,8 @@ void BPNode_AppExit(void)
         BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
 
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_SEM_WAIT_MSEC);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_SEM_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
