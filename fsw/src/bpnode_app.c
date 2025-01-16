@@ -121,21 +121,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
-    /* Wake up the ADU Out tasks */
-    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
-                                OsStatus);
-        }
-    }
-
-    /* Wake up the ADU In tasks */
+    /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
     {
         OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[TaskNum].WakeupSemId);
@@ -147,23 +133,19 @@ CFE_Status_t BPNode_WakeupProcess(void)
                                 TaskNum,
                                 OsStatus);
         }
-    }
 
-    /* Wake up the CLA Out tasks */
-    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CONTACTS; TaskNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
+                                "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
                                 TaskNum,
                                 OsStatus);
         }
     }
 
-    /* Wake up the CLA In tasks */
+    /* Wake up the CLA In and CLA Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CONTACTS; TaskNum++)
     {
         OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[TaskNum].WakeupSemId);
@@ -172,6 +154,16 @@ CFE_Status_t BPNode_WakeupProcess(void)
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        }
+
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
                                 TaskNum,
                                 OsStatus);
         }
