@@ -42,7 +42,7 @@ int32 BPNode_AduInCreateTasks(void)
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
-    
+
     /* Create all of the ADU In task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
@@ -53,7 +53,7 @@ int32 BPNode_AduInCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Failed to create the ADU In #%d task init semaphore, %s. Error = %d",
+                                "[ADU In #%d]: Failed to create task initialization semaphore, %s. Error = %d",
                                 i,
                                 NameBuff,
                                 Status);
@@ -69,7 +69,7 @@ int32 BPNode_AduInCreateTasks(void)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Failed to create the ADU In #%d task wakeup semaphore, %s. Error = %d.", 
+                                "[ADU In #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
                                 i,
                                 NameBuff,
                                 Status);
@@ -88,7 +88,7 @@ int32 BPNode_AduInCreateTasks(void)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Failed to create the ADU In #%d child task. Error = %d.", 
+                            "[ADU In #%d]: Failed to create child task. Error = %d.",
                             i, Status);
             return Status;
         }
@@ -101,7 +101,7 @@ int32 BPNode_AduInCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "ADU In #%d task not running. Init Sem Error = %d.", 
+                            "[ADU In #%d]: Task not running. Init Sem Error = %d.",
                             i, Status);
             return Status;
         }
@@ -125,12 +125,12 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_IN_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[ADU In #?]: Failed to get task ID. Error = %d", Status);
-        return Status;        
+        return Status;
     }
 
     /* Map this task's ID to a channel ID */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
-    { 
+    {
         if (TaskId == BPNode_AppData.AduInData[i].TaskId)
         {
             *ChanId = i;
@@ -140,7 +140,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
     if (*ChanId == BPLIB_MAX_NUM_CHANNELS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_IN_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[ADU In #?]: Task ID does not match any known task IDs. ID = %d", 
+                          "[ADU In #?]: Task ID does not match any known task IDs. ID = %d",
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
@@ -152,12 +152,12 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
 
     /* Create ADU ingest pipe */
     snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_IN_PIPE_BASE_NAME, *ChanId);
-    Status = CFE_SB_CreatePipe(&BPNode_AppData.AduInData[*ChanId].AduPipe, 
+    Status = CFE_SB_CreatePipe(&BPNode_AppData.AduInData[*ChanId].AduPipe,
                                     BPNODE_ADU_PIPE_DEPTH, NameBuff);
     if (Status != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_IN_CR_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "[ADU In #%d]: Error creating SB ADU Pipe, Error = %d", 
+                        "[ADU In #%d]: Error creating SB ADU Pipe, Error = %d",
                         *ChanId, Status);
         return Status;
     }
@@ -170,7 +170,7 @@ int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
     if (Status != OS_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_IN_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[ADU In #%d]: Failed to give init semaphore. Error = %d", 
+                          "[ADU In #%d]: Failed to give init semaphore. Error = %d",
                           *ChanId, Status);
         return Status;
     }
@@ -225,14 +225,6 @@ void BPNode_AduIn_AppMain(void)
 
         if (Status != OS_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Failed to take wakeup semaphore for ADU In Task #%d, RC = %d",
-                                ChanId,
-                                Status);
-        }
-        else
-        {
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
@@ -241,7 +233,7 @@ void BPNode_AduIn_AppMain(void)
                 {
                     BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
 
-                    Status = CFE_SB_ReceiveBuffer(&BufPtr, 
+                    Status = CFE_SB_ReceiveBuffer(&BufPtr,
                                                 BPNode_AppData.AduInData[ChanId].AduPipe,
                                                 BPNODE_ADU_IN_SB_TIMEOUT);
 
@@ -254,7 +246,7 @@ void BPNode_AduIn_AppMain(void)
 
                 } while (Status == BPLIB_SUCCESS);
             }
-            else 
+            else
             {
                 /* Check if the application was recently stopped and the pipe needs to be cleared */
                 if (BPNode_AppData.AduInData[ChanId].ClearPipe == true)
@@ -272,6 +264,21 @@ void BPNode_AduIn_AppMain(void)
                     BPNode_AppData.AduInData[ChanId].ClearPipe = false;
                 }
             }
+        }
+        else if (Status == OS_SEM_TIMEOUT)
+        {
+            BPLib_EM_SendEvent(BPNODE_SEM_TAKE_TIMEOUT_ERR_EID,
+                                BPLib_EM_EventType_INFORMATION,
+                                "[ADU In #%d]: Timed out while waiting for the wakeup semaphore",
+                                ChanId);
+        }
+        else
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[ADU In #%d]: Failed to take wakeup semaphore, RC = %d",
+                                ChanId,
+                                Status);
         }
     }
 

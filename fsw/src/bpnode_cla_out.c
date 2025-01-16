@@ -42,7 +42,7 @@ int32 BPNode_ClaOutCreateTasks(void)
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
-    
+
     /* Create all of the CLA Out task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
     {
@@ -54,7 +54,7 @@ int32 BPNode_ClaOutCreateTasks(void)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Failed to create the CLA Out #%d task init semaphore, %s. Error = %d.",
+                                "[CLA Out #%d]: Failed to create initialization semaphore, %s. Error = %d.",
                                 i,
                                 NameBuff,
                                 Status);
@@ -70,7 +70,7 @@ int32 BPNode_ClaOutCreateTasks(void)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Failed to create the CLA Out #%d task wakeup semaphore, %s. Error = %d.",
+                                "[CLA Out #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
                                 i,
                                 NameBuff,
                                 Status);
@@ -85,7 +85,7 @@ int32 BPNode_ClaOutCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Failed to create the CLA Out #%d task exit semaphore. Error = %d.",
+                                "[CLA Out #%d]: Failed to create exit semaphore. Error = %d.",
                                 i,
                                 Status);
 
@@ -103,7 +103,7 @@ int32 BPNode_ClaOutCreateTasks(void)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Failed to create the CLA Out #%d child task. Error = %d.", 
+                            "[CLA Out #%d]: Failed to create child task. Error = %d.",
                             i, Status);
             return Status;
         }
@@ -119,7 +119,7 @@ int32 BPNode_ClaOutCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "CLA Out #%d task not running. Init Sem Error = %d.", 
+                            "[CLA Out #%d]: Task not running. Init Sem Error = %d.",
                             i, Status);
             return Status;
         }
@@ -135,7 +135,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     int32           Status;
     int32           PspStatus;
     uint8           i;
-#ifdef BPNODE_CLA_UDP_DRIVER    
+#ifdef BPNODE_CLA_UDP_DRIVER
     int32           PortNum;
     char            Str[100];
 #endif
@@ -147,7 +147,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[CLA Out #?]: Failed to get task ID. Error = %d", Status);
-        return Status;        
+        return Status;
     }
 
     /* Map this task's ID to a contact ID */
@@ -162,7 +162,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     if (*ContId == BPLIB_MAX_NUM_CONTACTS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[CLA Out #?]: Task ID does not match any known task IDs. ID = %d", 
+                          "[CLA Out #?]: Task ID does not match any known task IDs. ID = %d",
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
@@ -170,11 +170,11 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     BPNode_AppData.ClaOutData[*ContId].PerfId = BPNODE_CLA_OUT_PERF_ID_BASE + *ContId;
 
     /* Get PSP module ID for either the Unix or UDP socket driver */
-    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, 
+    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME,
                                 &BPNode_AppData.ClaOutData[*ContId].PspLocation.PspModuleId);
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_OUT_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR, 
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA Out #%d]: Couldn't find I/O driver. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -188,25 +188,25 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     PortNum = BPNODE_CLA_OUT_PORT + CFE_PSP_GetProcessorId() - 1;
     snprintf(Str, sizeof(Str), "port=%d", PortNum);
 
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation,
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR, 
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA Out #%d]: Couldn't set port number configuration. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-    }  
+    }
 
     /* Configure IP Address */
     snprintf(Str, sizeof(Str), "IpAddr=%s", BPNODE_CLA_OUT_IP);
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation,
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR, 
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA Out #%d]: Couldn't set IP address configuration. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -216,7 +216,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
 #endif
 
     /* Set direction to output only */
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation,
                                             CFE_PSP_IODriver_SET_DIRECTION,
                                             CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
     if (PspStatus != CFE_PSP_SUCCESS)
@@ -228,7 +228,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     }
 
     /* Set I/O to running */
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[*ContId].PspLocation,
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
@@ -249,7 +249,7 @@ int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
     if (Status != OS_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[CLA Out #%d]: Failed to give init semaphore. Error = %d", 
+                          "[CLA Out #%d]: Failed to give init semaphore. Error = %d",
                           *ContId, Status);
         return Status;
     }
@@ -274,15 +274,15 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Egress(ContId, BPNode_AppData.ClaOutData[ContId].BundleBuffer, 
-                                    &BPNode_AppData.ClaOutData[ContId].CurrentBufferSize, 
+        BpStatus = BPLib_CLA_Egress(ContId, BPNode_AppData.ClaOutData[ContId].BundleBuffer,
+                                    &BPNode_AppData.ClaOutData[ContId].CurrentBufferSize,
                                     BPNODE_CLA_OUT_QUEUE_PEND_TIME);
-        
+
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR, 
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
                                "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
                                ContId, Status);
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -301,10 +301,10 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
 
         /* This does not check return code here, it is "best effort" at this stage.
          * bplib should retry based on custody signals if this does not work. */
-        CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
-                                    CFE_PSP_IODriver_PACKET_IO_WRITE, 
+        CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation,
+                                    CFE_PSP_IODriver_PACKET_IO_WRITE,
                                     CFE_PSP_IODriver_VPARG(&WrBuf));
-        
+
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
         BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = 0;
@@ -351,17 +351,27 @@ void BPNode_ClaOut_AppMain(void)
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContId].WakeupSemId, BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        if (Status != OS_SUCCESS)
+        if (Status == OS_SUCCESS)
+        {
+            if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
+            {
+                (void) BPNode_ClaOut_ProcessBundleOutput(ContId);
+            }
+        }
+        else if (Status == OS_SEM_TIMEOUT)
+        {
+            BPLib_EM_SendEvent(BPNODE_SEM_TAKE_TIMEOUT_ERR_EID,
+                                BPLib_EM_EventType_INFORMATION,
+                                "[CLA Out #%d]: Timed out while waiting for the wakeup semaphore",
+                                ContId);
+        }
+        else
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Failed to take wakeup semaphore for CLA Out Task #%d, RC = %d",
+                                "[CLA Out #%d]: Failed to take wakeup semaphore, RC = %d",
                                 ContId,
                                 Status);
-        }
-        else if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
-        {
-            (void) BPNode_ClaOut_ProcessBundleOutput(ContId);
         }
     }
 
@@ -376,7 +386,7 @@ void BPNode_ClaOut_AppMain(void)
 void BPNode_ClaOut_TaskExit(uint8 ContId)
 {
     /* Set I/O to stop running */
-    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation, 
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation,
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
 
     BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,

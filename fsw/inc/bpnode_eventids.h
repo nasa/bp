@@ -130,5 +130,6 @@
 #define BPNODE_CLA_OUT_CFG_PORT_ERR_EID         100
 #define BPNODE_CLA_OUT_CFG_IP_ERR_EID           101
 #define BPNODE_DEL_HANDLER_ERR_EID              102
+#define BPNODE_SEM_TAKE_TIMEOUT_ERR_EID         103
 
 #endif /* BPNODE_EVENTS_H */
