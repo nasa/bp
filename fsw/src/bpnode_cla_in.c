@@ -371,22 +371,9 @@ void BPNode_ClaIn_AppMain(void)
                                 ContId,
                                 Status);
         }
-        else
+        else if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
         {
-            if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
-            {
-                Status = BPNode_ClaIn_ProcessBundleInput(ContId);
-                if (Status != CFE_SUCCESS)
-                {
-                    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-                    BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-                }
-            }
-            else 
-            {
-                BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-                BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-            }
+            (void) BPNode_ClaIn_ProcessBundleInput(ContId);
         }
     }
 
