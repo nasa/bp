@@ -53,7 +53,7 @@ int32 BPNode_GenWorkerCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the Generic Worker #%d task init semaphore. Error = %d.",
+                        "[Generic Worker #%d]: Failed to create initialization semaphore. Error = %d.",
                         i, Status);
             return Status;
         }
@@ -65,7 +65,7 @@ int32 BPNode_GenWorkerCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the Generic Worker #%d task wakeup semaphore. Error = %d.",
+                        "[Generic Worker #%d]: Failed to create wakeup semaphore. Error = %d.",
                         i, Status);
             return Status;
         }
@@ -81,7 +81,7 @@ int32 BPNode_GenWorkerCreateTasks(void)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Failed to create the Generic Worker #%d child task. Error = %d.",
+                            "[Generic Worker #%d]: Failed to create child task. Error = %d.",
                             i, Status);
             return Status;
         }
@@ -94,7 +94,7 @@ int32 BPNode_GenWorkerCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Generic Worker #%d task not running. Init Sem Error = %d.",
+                            "[Generic Worker #%d]: Task not running. Init Sem Error = %d.",
                             i, Status);
             return Status;
         }

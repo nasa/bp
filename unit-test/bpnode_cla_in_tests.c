@@ -54,7 +54,7 @@ void Test_BPNode_ClaInCreateTasks_InitSemErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_INIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the CLA In #%d task init semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Failed to create initialization semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
@@ -70,7 +70,7 @@ void Test_BPNode_ClaInCreateTasks_WakeupSemErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the CLA In #%d task wakeup semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Failed to create wakeup semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
@@ -86,7 +86,7 @@ void Test_BPNode_ClaInCreateTasks_ExitSemErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_EXIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the CLA In #%d task exit semaphore. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Failed to create exit semaphore. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
@@ -102,7 +102,7 @@ void Test_BPNode_ClaInCreateTasks_TaskCrErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CREATE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the CLA In #%d child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Failed to create child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
@@ -118,7 +118,7 @@ void Test_BPNode_ClaInCreateTasks_TakeSemErr(void)
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_RUN_ERR_EID);
-    UtAssert_STRINGBUF_EQ("CLA In #%d task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
@@ -397,7 +397,7 @@ void Test_BPNode_ClaIn_AppMain_TakeSemErr(void)
 
     /* Verify the error issued an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
-    BPNode_Test_Verify_Event(1, BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for CLA In Task #%d, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID, "[CLA In #%d]: Failed to take wakeup semaphore, RC = %d");
 
     /* Verify that the wakeup activities were skipped when a wakeup fails */
     UtAssert_STUB_COUNT(BPNode_ClaIn_ProcessBundleInput, 0);
@@ -571,6 +571,8 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ClaOutBusy(void)
     UtAssert_EQ(size_t, BPNode_AppData.ClaOutData[ContId].CurrentBufferSize, ExpClaOutBuffSize);
     UtAssert_EQ(size_t, BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);    
 }
+
+// TODO: Add OS_SEM_TIMEOUT case
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)

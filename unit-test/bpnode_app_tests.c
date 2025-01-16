@@ -182,10 +182,10 @@ void Test_BPNode_WakeupProcess_FailSem(void)
     /* Fail sem gives to cause errors */
     UT_SetDefaultReturnValue(UT_KEY(OS_BinSemGive), OS_SUCCESS);                       /* Guarantee only failures are those assigned below */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                         /* Fail first generic worker sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPNODE_NUM_GEN_WRKR_TASKS, OS_ERROR); /* Fail first ADU Out sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS, OS_ERROR);    /* Fail first ADU In sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS, OS_ERROR);    /* Fail first CLA Out sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CONTACTS, OS_ERROR);    /* Fail first CLA In sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPNODE_NUM_GEN_WRKR_TASKS, OS_ERROR); /* Fail first ADU In sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS, OS_ERROR);    /* Fail first ADU Out sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS, OS_ERROR);    /* Fail first CLA In sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CONTACTS, OS_ERROR);    /* Fail first CLA Out sem give call for wake up */
 
     /* Exit function under tests without going to the task pipe */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
@@ -201,10 +201,10 @@ void Test_BPNode_WakeupProcess_FailSem(void)
     /* Verify events */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 5);
     BPNode_Test_Verify_Event(0, BPNODE_WKP_SEM_ERR_EID, "Error giving Generic Worker #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
 }
 
 /* Test wakeup process after failing Time maintenance activities */

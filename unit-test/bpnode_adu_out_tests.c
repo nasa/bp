@@ -54,7 +54,7 @@ void Test_BPNode_AduOutCreateTasks_InitSemErr(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_INIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the ADU Out #%d task init semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create initialization semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
@@ -71,7 +71,7 @@ void Test_BPNode_AduOutCreateTasks_WakeupSemErr(void)
 
     /* Verify that wake up semaphore error during creation created an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "Failed to create the ADU Out #%d task wakeup semaphore, %s. Error = %d.");
+    BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "[ADU Out #%d]: Failed to create wakeup semaphore, %s. Error = %d.");
 
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
@@ -86,7 +86,7 @@ void Test_BPNode_AduOutCreateTasks_TaskCrErr(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_CREATE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to create the ADU Out #%d child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
@@ -102,7 +102,7 @@ void Test_BPNode_AduOutCreateTasks_TakeSemErr(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_RUN_ERR_EID);
-    UtAssert_STRINGBUF_EQ("ADU Out #%d task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
@@ -246,7 +246,7 @@ void Test_BPNode_AduOut_AppMain_TakeSemErr(void)
 
     /* Verify the error issued an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
-    BPNode_Test_Verify_Event(1, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "Failed to take wakeup semaphore for ADU Out Task #%d, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "[ADU Out #%d]: Failed to take wakeup semaphore, RC = %d");
 
     /* Verify that the wakeup activities were skipped when a wakeup fails */
     UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
@@ -323,6 +323,8 @@ void Test_BPNode_AduOut_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 1);
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
+
+// TODO: Add OS_SEM_TIMEOUT case
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
