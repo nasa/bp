@@ -252,6 +252,36 @@ void Test_BPNode_AduOut_AppMain_TakeSemErr(void)
     UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
 }
 
+void Test_BPNode_AduOut_AppMain_WakeupSemTimeout(void)
+{
+    CFE_ES_TaskId_t TaskId;
+    uint8 ChanId;
+
+    /* Force a failed task wakeup */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
+
+    /* Enter task loop only once */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    /* Pass task ID gathering process */
+    TaskId = 1234;
+    ChanId = 0;
+    BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_GetTaskID), CFE_SUCCESS);
+
+    /* Run the function under test */
+    BPNode_AduOut_AppMain();
+
+    /* Verify the error issued an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
+    BPNode_Test_Verify_Event(1, BPNODE_SEM_TAKE_TIMEOUT_ERR_EID, "[ADU Out #%d]: Timed out while waiting for the wakeup semaphore");
+
+    /* Verify that the wakeup activities were skipped when a wakeup fails */
+    UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
+}
+
 /* Test BPNode_AduOut_AppMain when initialization failed but channel ID is known */
 void Test_BPNode_AduOut_AppMain_InitErr(void)
 {
@@ -324,8 +354,6 @@ void Test_BPNode_AduOut_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-// TODO: Add OS_SEM_TIMEOUT case
-
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -342,6 +370,7 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPNode_AduOut_AppMain_Nominal);
     ADD_TEST(Test_BPNode_AduOut_AppMain_TakeSemErr);
+    ADD_TEST(Test_BPNode_AduOut_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_AduOut_AppMain_InitErr);
     ADD_TEST(Test_BPNode_AduOut_AppMain_ChanIdErr);
     ADD_TEST(Test_BPNode_AduOut_AppMain_AppStopped);

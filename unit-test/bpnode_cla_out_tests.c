@@ -397,6 +397,36 @@ void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
     UtAssert_STUB_COUNT(BPNode_ClaOut_ProcessBundleOutput, 0);
 }
 
+void Test_BPNode_ClaOut_AppMain_WakeupSemTimeout(void)
+{
+    CFE_ES_TaskId_t TaskId;
+    uint8 ChanId;
+
+    /* Force a failed task wakeup */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
+
+    /* Enter task loop only once */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    /* Pass task ID gathering process */
+    TaskId = 1234;
+    ChanId = 0;
+    BPNode_AppData.ClaOutData[ChanId].TaskId = TaskId;
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_GetTaskID), CFE_SUCCESS);
+
+    /* Run the function under test */
+    BPNode_ClaOut_AppMain();
+
+    /* Verify the error issued an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
+    BPNode_Test_Verify_Event(1, BPNODE_SEM_TAKE_TIMEOUT_ERR_EID, "[CLA Out #%d]: Timed out while waiting for the wakeup semaphore");
+
+    /* Verify that the wakeup activities were skipped when a wakeup fails */
+    UtAssert_STUB_COUNT(BPNode_ClaOut_ProcessBundleOutput, 0);
+}
+
 /* Test BPNode_ClaOut_AppMain when initialization failed but channel ID is known */
 void Test_BPNode_ClaOut_AppMain_InitErr(void)
 {
@@ -524,8 +554,6 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_NonZeroBuffSize(void)
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContId), CFE_SUCCESS);
 }
 
-// TODO: Add OS_SEM_TIMEOUT case
-
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -548,6 +576,7 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPNode_ClaOut_AppMain_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_TakeSemErr);
+    ADD_TEST(Test_BPNode_ClaOut_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_InitErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_ContIdErr);

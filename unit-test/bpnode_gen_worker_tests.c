@@ -244,6 +244,29 @@ void Test_BPNode_GenWorker_AppMain_SemErr(void)
                             context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
+void Test_BPNode_GenWorker_AppMain_WakeupSemTimeout(void)
+{
+    uint8 WorkerId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+
+    BPNode_AppData.GenWorkerData[WorkerId].TaskId = TaskId;
+
+    BPNode_GenWorker_AppMain();
+
+    UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[WorkerId].RunStatus,
+                                                        CFE_ES_RunStatus_APP_RUN);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3);
+    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_SEM_TAKE_TIMEOUT_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+}
+
 /* Test BPNode_GenWorker_AppMain when initialization failed but channel ID is known */
 void Test_BPNode_GenWorker_AppMain_InitErr(void)
 {
@@ -296,8 +319,6 @@ void Test_BPNode_GenWorker_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-// TODO: Add OS_SEM_TIMEOUT case
-
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -313,6 +334,7 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPNode_GenWorker_AppMain_Nominal);
     ADD_TEST(Test_BPNode_GenWorker_AppMain_SemErr);
+    ADD_TEST(Test_BPNode_GenWorker_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_GenWorker_AppMain_InitErr);
     ADD_TEST(Test_BPNode_GenWorker_AppMain_WorkerIdErr);
 

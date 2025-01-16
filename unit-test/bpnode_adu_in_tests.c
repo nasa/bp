@@ -296,6 +296,40 @@ void Test_BPNode_AduIn_AppMain_TakeSemErr(void)
     UtAssert_STUB_COUNT(BPA_ADUP_In, 0);
 }
 
+void Test_BPNode_AduIn_AppMain_WakeupSemTimeout(void)
+{
+    CFE_ES_TaskId_t TaskId;
+    uint8 ChanId;
+
+    /* Force a failed task wakeup */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
+
+    /* Enter task loop only once */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    /* Pass task ID gathering process */
+    TaskId = 1234;
+    ChanId = 0;
+    BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_ES_GetTaskID), CFE_SUCCESS);
+
+    /* Run the function under test */
+    BPNode_AduIn_AppMain();
+
+    /* Verify the error issued an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
+    BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_INIT_INF_EID, "[ADU In #%d]: Child Task Initialized.");
+    BPNode_Test_Verify_Event(1, BPNODE_SEM_TAKE_TIMEOUT_ERR_EID, "[ADU In #%d]: Timed out while waiting for the wakeup semaphore");
+    BPNode_Test_Verify_Event(2, BPNODE_ADU_IN_EXIT_CRIT_EID, "[ADU In #%d]: Terminating Task. RunStatus = %d.");
+
+    /* Verify that the wakeup activities were skipped when a wakeup fails */
+    UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
+    UtAssert_STUB_COUNT(BPA_ADUP_In, 0);
+}
+
 /* Test BPNode_AduIn_AppMain when app state is started and a null ADU is received */
 void Test_BPNode_AduIn_AppMain_NullBuf(void)
 {
@@ -436,8 +470,6 @@ void Test_BPNode_AduIn_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-// TODO: Add OS_SEM_TIMEOUT case
-
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -455,6 +487,7 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPNode_AduIn_AppMain_Nominal);
     ADD_TEST(Test_BPNode_AduIn_AppMain_TakeSemErr);
+    ADD_TEST(Test_BPNode_AduIn_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_AduIn_AppMain_NullBuf);
     ADD_TEST(Test_BPNode_AduIn_AppMain_InitErr);
     ADD_TEST(Test_BPNode_AduIn_AppMain_ChanIdErr);
