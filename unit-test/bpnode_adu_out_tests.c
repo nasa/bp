@@ -54,7 +54,7 @@ void Test_BPNode_AduOutCreateTasks_InitSemErr(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_INIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create initialization semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create initialization semaphore, %s. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 1);
@@ -86,7 +86,7 @@ void Test_BPNode_AduOutCreateTasks_TaskCrErr(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_CREATE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
@@ -102,7 +102,7 @@ void Test_BPNode_AduOutCreateTasks_TakeSemErr(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_RUN_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
@@ -125,7 +125,7 @@ void Test_BPNode_AduOut_TaskInit_Nominal(void)
     UtAssert_INT32_EQ(BPNode_AduOut_TaskInit(&ChanId), CFE_SUCCESS);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_INIT_INF_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Child Task Initialized.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Child Task Initialized.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ChanId, ExpChanId);
     UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[ExpChanId].RunStatus,
@@ -147,7 +147,7 @@ void Test_BPNode_AduOut_TaskInit_GetIdErr(void)
     UtAssert_INT32_EQ(BPNode_AduOut_TaskInit(&ChanId), CFE_ES_ERR_RESOURCEID_NOT_VALID);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_NO_ID_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #?]: Failed to get task ID. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #?]: Failed to get task ID. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ChanId, ExpChanId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -170,7 +170,7 @@ void Test_BPNode_AduOut_TaskInit_MatchIdErr(void)
     UtAssert_INT32_EQ(BPNode_AduOut_TaskInit(&ChanId), CFE_ES_ERR_RESOURCEID_NOT_VALID);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_INV_ID_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #?]: Task ID does not match any known task IDs. ID = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #?]: Task ID does not match any known task IDs. ID = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ChanId, ExpChanId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -194,7 +194,7 @@ void Test_BPNode_AduOut_TaskInit_GiveSemErr(void)
     UtAssert_INT32_EQ(BPNode_AduOut_TaskInit(&ChanId), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_INIT_SEM_TK_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to give init semaphore. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to give init semaphore. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_UINT8_EQ(ChanId, ExpChanId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
@@ -312,7 +312,7 @@ void Test_BPNode_AduOut_AppMain_ChanIdErr(void)
     BPNode_AduOut_AppMain();
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_ADU_OUT_UNK_EXIT_CRIT_EID);
-    UtAssert_STRINGBUF_EQ("Terminating Unknown ADU Out Task.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Terminating Unknown ADU Out Task.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_ES_RunLoop, 0);
@@ -345,9 +345,9 @@ void Test_BPNode_AduOut_TaskExit_Nominal(void)
     uint8 ChanId = 0;
 
     UtAssert_VOIDCALL(BPNode_AduOut_TaskExit(ChanId));
-    
+
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_EXIT_CRIT_EID);
-    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Terminating Task. RunStatus = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Terminating Task. RunStatus = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 1);
