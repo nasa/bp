@@ -223,7 +223,7 @@ void BPNode_AduIn_AppMain(void)
         Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[ChanId].WakeupSemId, BPNODE_ADU_IN_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
 
-        if (Status != OS_SUCCESS)
+        if (Status == OS_SUCCESS)
         {
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)

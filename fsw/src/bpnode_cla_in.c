@@ -363,7 +363,7 @@ void BPNode_ClaIn_AppMain(void)
         Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContId].WakeupSemId, BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        if (Status != OS_SUCCESS)
+        if (Status == OS_SUCCESS)
         {
             if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
             {
