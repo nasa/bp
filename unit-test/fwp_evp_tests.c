@@ -124,6 +124,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventType, CFE_EVS_EventType_INFORMATION);
 
 
     /* === ERROR event message test === */
@@ -133,6 +134,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[1].EventType, CFE_EVS_EventType_ERROR);
 
 
     /* === DEBUG event message test === */
@@ -142,6 +144,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[2].EventType, CFE_EVS_EventType_DEBUG);
 
 
     /* === CRITICAL event message test === */
@@ -151,6 +154,18 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[3].EventType, CFE_EVS_EventType_CRITICAL);
+
+
+    /* === WARNING event message test === */
+    Status = BPLIB_UNKNOWN;
+    Status = BPA_EVP_SendEvent((unsigned long) 123, BPLib_EM_EventType_WARNING, "WARNING event message test");
+
+    /* Verify that the EVS function that is being proxied, was called */
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[4].EventType, CFE_EVS_EventType_ERROR);    
+
 }
 
 // Test that BPA_EVP_SendEvent returns a bad value when expected
