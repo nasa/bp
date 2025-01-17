@@ -28,5 +28,26 @@
 /* Function Definitions */
 /* ==================== */
 
-BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)     { return (CFE_Status <= BPA_MAX_CFE_SUCCESS) ? BPLIB_SUCCESS : BPLIB_ERROR; }
-CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status) { return (BPLib_Status >= BPLIB_SUCCESS) ? CFE_SUCCESS : CFE_STATUS_NOT_IMPLEMENTED; }
+BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)
+{ 
+    if (CFE_Status <= BPA_MAX_CFE_SUCCESS)
+    {
+        return BPLIB_SUCCESS;
+    }
+    else
+    {
+        return BPLIB_ERROR;
+    }
+}
+
+CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status)
+{ 
+    if (BPLib_Status >= BPLIB_SUCCESS)
+    {
+        return CFE_SUCCESS;
+    }
+    else
+    {
+        return CFE_STATUS_NOT_IMPLEMENTED;
+    }
+}
