@@ -210,7 +210,7 @@ void BPNode_GenWorker_AppMain(void)
                 /*
                 ** TODO call the relevant BPLib JS API to process one job
                 */
-
+                OS_TaskDelay(BPNODE_GEN_WRKR_SLEEP_MSEC);
                 NumJobsComplete++;
             }
 
