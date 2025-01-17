@@ -50,6 +50,7 @@
 
 #define BPNODE_ADU_IN_SB_TIMEOUT     (1000u)            /**< \brief SB timeout */
 
+#define BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE (10u)          /**< \brief Maximum number of ADUs to ingest per wakeup cycle */
 
 /*
 ** Type Definitions

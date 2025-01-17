@@ -43,7 +43,9 @@
 
 #define BPNODE_ADU_OUT_SLEEP_MSEC   (1000u)             /**< \brief Sleep time */
 
-#define BPNODE_ADU_IN_PI_Q_TIMEOUT  (1000u)             /**< \brief PI queue timeout */
+#define BPNODE_ADU_OUT_PI_Q_TIMEOUT  (1000u)            /**< \brief PI queue timeout */
+
+#define BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE (10u)         /**< \brief Maximum number of ADUs to egress per wakeup cycle */
 
 /*
 ** Type Definitions

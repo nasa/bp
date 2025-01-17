@@ -156,8 +156,10 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
 void BPNode_AduOut_AppMain(void)
 {
     int32 Status;
+    BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
+    uint32 AdusEgressed;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -190,14 +192,22 @@ void BPNode_AduOut_AppMain(void)
         AppState = BPLib_NC_GetAppState(ChanId);
         if (AppState == BPLIB_NC_APP_STATE_STARTED)
         {
-            /* 
-            ** TODO 
-            ** Pend on bundle from PI out queue
-            ** If a bundle was received:
-            **      BPA_ADUP_Out((void *) Buf, ChanId);
-            */
+            AdusEgressed = 0;
 
-            (void) OS_TaskDelay(BPNODE_ADU_OUT_SLEEP_MSEC);
+            do
+            {
+                /* 
+                ** TODO 
+                ** Pend on bundle from PI out queue
+                ** If a bundle was received:
+                **      BPA_ADUP_Out((void *) Buf, ChanId);
+                */
+
+                (void) OS_TaskDelay(BPNODE_ADU_OUT_SLEEP_MSEC);
+
+                AdusEgressed++;
+
+            } while (BpStatus == BPLIB_SUCCESS && AdusEgressed < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
         }
         else 
         {
