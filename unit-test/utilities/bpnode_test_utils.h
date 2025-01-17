@@ -94,6 +94,9 @@ extern BPLib_STOR_StorageTable_t   TestStorTbl;
 ** Exported Functions
 */
 
+/* Verify values given when BPLib_EM_SendEvent is called */
+void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText);
+
 /* Verify values given when BPLib_AS_Increment is called, match what's expected */
 void Test_FWP_ADUP_VerifyIncrement(int16_t SourceEid, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum);
 

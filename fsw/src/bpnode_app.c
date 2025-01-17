@@ -74,7 +74,7 @@ void BPNode_AppMain(void)
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 
         /* Pend on receipt of wakeup message */
-        Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.WakeupPipe, 
+        Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.WakeupPipe,
                                                 BPNODE_WAKEUP_PIPE_TIMEOUT);
 
         /* Performance Log Entry Stamp */
@@ -85,7 +85,7 @@ void BPNode_AppMain(void)
             /* Process wakeup tasks */
             Status = BPNode_WakeupProcess();
         }
-        
+
         /* Exit upon pipe read error */
         if (Status != CFE_SUCCESS)
         {
@@ -107,18 +107,65 @@ CFE_Status_t BPNode_WakeupProcess(void)
     BPLib_Status_t   BpStatus;
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8            i;
+    uint8            TaskNum;
 
-    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    /* Notify generic worker task(s) to start wakeup */
+    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
     {
-        /* Notify generic worker task(s) to start wakeup */
-        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[i].SemId);
-
+        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error giving Generic Worker #%d its semaphore, RC = %d",
-                                i, OsStatus);            
+                                "Error giving Generic Worker #%d its wakeup semaphore, RC = %d",
+                                TaskNum, OsStatus);
+        }
+    }
+
+    /* Wake up the ADU In and ADU Out tasks */
+    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        }
+
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        }
+    }
+
+    /* Wake up the CLA In and CLA Out tasks */
+    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CONTACTS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        }
+
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
         }
     }
 
@@ -232,7 +279,7 @@ CFE_Status_t BPNode_AppInit(void)
     {
         BPLib_EM_SendEvent(BPNODE_TIME_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error initializing BPLib Time Management, RC = %d", BpStatus);
-        
+
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
@@ -247,7 +294,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Create command pipe */
-    Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH, 
+    Status = CFE_SB_CreatePipe(&BPNode_AppData.CommandPipe, BPNODE_CMD_PIPE_DEPTH,
                                 "BPNODE_CMD_PIPE");
 
     if (Status != CFE_SUCCESS)
@@ -259,7 +306,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Create wakeup pipe */
-    Status = CFE_SB_CreatePipe(&BPNode_AppData.WakeupPipe, BPNODE_WAKEUP_PIPE_DEPTH, 
+    Status = CFE_SB_CreatePipe(&BPNode_AppData.WakeupPipe, BPNODE_WAKEUP_PIPE_DEPTH,
                                 "BPNODE_WAKEUP_PIPE");
 
     if (Status != CFE_SUCCESS)
@@ -283,7 +330,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Subscribe to wakeup messages on the wakeup pipe */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID), 
+    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID),
                                 BPNode_AppData.WakeupPipe);
 
     if (Status != CFE_SUCCESS)
@@ -291,7 +338,7 @@ CFE_Status_t BPNode_AppInit(void)
         BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Subscribing to wakeup messages, RC = 0x%08lX",
                             (unsigned long)Status);
-        
+
         return Status;
     }
 
@@ -305,7 +352,7 @@ CFE_Status_t BPNode_AppInit(void)
 
         return BpStatus;
     }
-    
+
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
 
@@ -326,7 +373,7 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
-    
+
 
     /* Create CLA In child tasks */
     Status = BPNode_ClaInCreateTasks();
@@ -344,7 +391,7 @@ CFE_Status_t BPNode_AppInit(void)
     {
         /* Event message handled in task creation function */
         return Status;
-    }    
+    }
 
     /* Create Generic Worker child tasks */
     Status = BPNode_GenWorkerCreateTasks();
@@ -380,14 +427,14 @@ CFE_Status_t BPNode_AppInit(void)
                 /* Error event message handled by ADU Proxy */
                 return BpStatus;
             }
-            else 
+            else
             {
                 BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                                     "Automatically added app configurations for ChanId=%d", i);
             }
 
         }
-    }    
+    }
 
     /* App has initialized properly */
 
@@ -431,8 +478,8 @@ void BPNode_AppExit(void)
         BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
 
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_SEM_WAIT_MSEC);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_SEM_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
@@ -441,7 +488,7 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
-    
+
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
 }

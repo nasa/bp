@@ -33,7 +33,7 @@
 #include "fwp_dp.h"
 
 /* Handler to set table pointers to test tables */
-void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey, 
+void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
     BPNode_AppData.AduTblPtr = &TestAduTbl;
@@ -113,7 +113,7 @@ void Test_BPNode_AppMain_WakeupErr(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_PIPE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("SB Pipe Read Error, App Will Exit", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("SB Pipe Read Error, App Will Exit", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -131,7 +131,7 @@ void Test_BPNode_AppMain_CommandErr(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_PIPE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("SB Pipe Read Error, App Will Exit", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("SB Pipe Read Error, App Will Exit", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -173,26 +173,38 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
 }
 
 /* Test wakeup process after failing to give a semaphore */
 void Test_BPNode_WakeupProcess_FailSem(void)
 {
-    /* Fail sem give */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);
+    /* Fail sem gives to cause errors */
+    UT_SetDefaultReturnValue(UT_KEY(OS_BinSemGive), OS_SUCCESS);                        /* Guarantee only failures are those assigned below */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first generic worker sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPNODE_NUM_GEN_WRKR_TASKS, OS_ERROR);  /* Fail first ADU In sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first ADU Out sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS + 1, OS_ERROR); /* Fail first CLA In sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first CLA Out sem give call for wake up */
+
+    /* Exit function under tests without going to the task pipe */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
 
+    /* Run function under test */
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_WKP_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error giving Generic Worker #%d its semaphore, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+
+    /* Verify events */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 5);
+    BPNode_Test_Verify_Event(0, BPNODE_WKP_SEM_ERR_EID, "Error giving Generic Worker #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
 }
 
 /* Test wakeup process after failing Time maintenance activities */
@@ -207,10 +219,10 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error doing time maintenance activities, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error doing time maintenance activities, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -230,10 +242,10 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Updating Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error Updating Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -250,7 +262,7 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -260,12 +272,12 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 {
     /* Command receive error */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
- 
+
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
- 
+
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
@@ -275,10 +287,10 @@ void Test_BPNode_AppInit_Nominal(void)
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
-    
+
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_INIT_INF_EID);
-    UtAssert_STRINGBUF_EQ("BPNode Initialized: %s", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("BPNode Initialized: %s", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 
     /* Verify that all BPLib init functions were called */
@@ -307,10 +319,10 @@ void Test_BPNode_AppInit_FailedCmdPipeCreate(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_CreatePipe), 1, CFE_SB_BAD_ARGUMENT);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
-    
+
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CR_CMD_PIPE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error creating SB Command Pipe, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error creating SB Command Pipe, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -321,10 +333,10 @@ void Test_BPNode_AppInit_FailedWakeupPipeCreate(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_CreatePipe), 2, CFE_SB_BAD_ARGUMENT);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
-    
+
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CR_WKP_PIPE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error creating SB Wakeup Pipe, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error creating SB Wakeup Pipe, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -338,7 +350,7 @@ void Test_BPNode_AppInit_FailedCommandSub(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_SUB_CMD_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Subscribing to Commands, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error Subscribing to Commands, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -352,21 +364,21 @@ void Test_BPNode_AppInit_FailedWakeupSub(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_SUB_WKP_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Subscribing to wakeup messages, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error Subscribing to wakeup messages, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 /* Test app initialization after failure to register table */
 void Test_BPNode_AppInit_FailedTblInit(void)
 {
-    /* Failure to call BPA_TABLEP_TableInit() */    
+    /* Failure to call BPA_TABLEP_TableInit() */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableInit), CFE_TBL_ERR_INVALID_HANDLE);
 
     UtAssert_INT32_NEQ(BPNode_AppInit(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Getting Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error Getting Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -377,10 +389,10 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
     UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CALLBACK_INIT_ERROR);
-    
+
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, BPNODE_FWP_INIT_ERR_EID);
-    UtAssert_STRINGBUF_EQ("BPNode: Failure initializing function callbacks, RC = 0x%08lX", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
+    UtAssert_STRINGBUF_EQ("BPNode: Failure initializing function callbacks, RC = 0x%08lX", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH,
                             context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
@@ -390,10 +402,10 @@ void Test_BPNode_AppInit_FailedNCInit(void)
     UT_SetDeferredRetcode(UT_KEY(BPLib_NC_Init), 1, BPLIB_ERROR);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_ERROR);
-    
+
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_AS_INIT_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error initializing NC/AS, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error initializing NC/AS, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -423,7 +435,7 @@ void Test_BPNode_AppInit_AutoAddApp(void)
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SUCCESS);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_AUTO_ADD_APP_INF_EID);
-    UtAssert_STRINGBUF_EQ("Automatically added app configurations for ChanId=%d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Automatically added app configurations for ChanId=%d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
     UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
@@ -458,7 +470,7 @@ void Test_BPNode_AppExit_Nominal(void)
     }
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_EXIT_CRIT_EID);
-    UtAssert_STRINGBUF_EQ("App terminating, error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("App terminating, error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -468,10 +480,10 @@ void Test_BPNode_AppInit_FailedTimeInit(void)
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_Init), 1, BPLIB_TIME_READ_ERROR);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
-    
+
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_INIT_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error initializing BPLib Time Management, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Error initializing BPLib Time Management, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -512,7 +524,7 @@ void Test_BPNode_AppInit_InstallDelHandler(void)
     UtAssert_INT32_EQ(BPNode_AppInit(), OS_ERR_INVALID_ID);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_DEL_HANDLER_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Failed to install delete handler. Error = 0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+    UtAssert_STRINGBUF_EQ("Failed to install delete handler. Error = 0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 
 }
@@ -547,7 +559,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
     ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
-    ADD_TEST(Test_BPNode_AppInit_FailedClaOut);    
+    ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
     ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);

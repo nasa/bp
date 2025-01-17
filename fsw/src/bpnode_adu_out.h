@@ -37,13 +37,11 @@
 ** Macro Definitions
 */
 
-#define BPNODE_ADU_OUT_INIT_SEM_BASE_NAME "BPN_ADU_OUT_INIT" /**< \brief Initialization semaphore base name */
-
-#define BPNODE_ADU_OUT_BASE_NAME    "BPNODE.ADU_OUT"    /**< \brief Task base name */
-
-#define BPNODE_ADU_OUT_SLEEP_MSEC   (1000u)             /**< \brief Sleep time */
-
-#define BPNODE_ADU_IN_PI_Q_TIMEOUT  (1000u)             /**< \brief PI queue timeout */
+#define BPNODE_ADU_OUT_SEM_BASE_NAME        "BPN_ADU_OUT"    /** \brief Semaphore base name */
+#define BPNODE_ADU_OUT_BASE_NAME            "BPNODE.ADU_OUT" /** \brief Task base name */
+#define BPNODE_ADU_IN_PI_Q_TIMEOUT          (1000u)          /** \brief PI queue timeout */
+#define BPNODE_ADU_OUT_SEM_INIT_WAIT_MSEC   (2000u)          /** \brief Wait time for init semaphore take, in milliseconds */
+#define BPNODE_ADU_OUT_SEM_WAKEUP_WAIT_MSEC (1100u)          /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 /*
 ** Type Definitions
@@ -56,6 +54,7 @@ typedef struct
 {
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
+    osal_id_t       WakeupSemId;
     uint32          PerfId;
     uint32          RunStatus;
     bool            AduWrapping;
