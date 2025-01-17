@@ -211,10 +211,6 @@ void BPNode_GenWorker_AppMain(void)
                 ** TODO call the relevant BPLib JS API to process one job
                 */
 
-                BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-                (void) OS_TaskDelay(BPNODE_GEN_WRKR_SLEEP_MSEC);
-                BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-
                 NumJobsComplete++;
             }
 
