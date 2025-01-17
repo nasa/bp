@@ -360,7 +360,7 @@ void BPNode_ClaOut_AppMain(void)
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_SEM_TAKE_TIMEOUT_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_SEM_TK_TIMEOUT_ERR_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[CLA Out #%d]: Timed out while waiting for the wakeup semaphore",
                                 ContId);

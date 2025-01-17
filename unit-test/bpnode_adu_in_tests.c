@@ -321,7 +321,7 @@ void Test_BPNode_AduIn_AppMain_WakeupSemTimeout(void)
     /* Verify the error issued an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
     BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_INIT_INF_EID, "[ADU In #%d]: Child Task Initialized.");
-    BPNode_Test_Verify_Event(1, BPNODE_SEM_TAKE_TIMEOUT_ERR_EID, "[ADU In #%d]: Timed out while waiting for the wakeup semaphore");
+    BPNode_Test_Verify_Event(1, BPNODE_ADU_IN_SEM_TK_TIMEOUT_ERR_EID, "[ADU In #%d]: Timed out while waiting for the wakeup semaphore");
     BPNode_Test_Verify_Event(2, BPNODE_ADU_IN_EXIT_CRIT_EID, "[ADU In #%d]: Terminating Task. RunStatus = %d.");
 
     /* Verify that the wakeup activities were skipped when a wakeup fails */

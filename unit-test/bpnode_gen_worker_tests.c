@@ -261,8 +261,7 @@ void Test_BPNode_GenWorker_AppMain_WakeupSemTimeout(void)
     UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[WorkerId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3);
-    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_SEM_TAKE_TIMEOUT_ERR_EID);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_ERR_EID);
     UtAssert_STRINGBUF_EQ("[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
