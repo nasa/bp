@@ -204,7 +204,7 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
     UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[ChanId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(OS_TaskDelay, 1);
+    UtAssert_STUB_COUNT(OS_TaskDelay, BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
 }
 
 /* Test BPNode_AduOut_AppMain when initialization failed but channel ID is known */
