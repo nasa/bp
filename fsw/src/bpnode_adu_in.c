@@ -267,7 +267,7 @@ void BPNode_AduIn_AppMain(void)
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_IN_SEM_TK_TIMEOUT_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_SEM_TK_TIMEOUT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[ADU In #%d]: Timed out while waiting for the wakeup semaphore",
                                 ChanId);
