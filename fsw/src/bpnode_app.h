@@ -50,9 +50,13 @@
 #include "bpnode_gen_worker.h"
 #include "fwp.h"
 
-
 #include "bplib.h"
 
+/* ====== */
+/* Macros */
+/* ====== */
+#define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
+#define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
 
 /*
 ** Type Definitions

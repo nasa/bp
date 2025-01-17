@@ -40,34 +40,52 @@ int32 BPNode_ClaInCreateTasks(void)
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
-    
+
     /* Create all of the CLA In task(s) */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
-    { 
+    {
         /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_INIT_SEM_BASE_NAME, i);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].InitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the CLA In #%d task init semaphore. Error = %d.", 
-                        i, Status);
+                                "[CLA In #%d]: Failed to create initialization semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
+        /* Create wakeup semaphore so main task can control workflow */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].WakeupSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
             return Status;
         }
 
         /* Create exit semaphore so main task knows when child finished shutdown */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_EXIT_SEM_BASE_NAME, i);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].ExitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the CLA In #%d task exit semaphore. Error = %d.", 
+                        "[CLA In #%d]: Failed to create exit semaphore. Error = %d.",
                         i, Status);
             return Status;
         }
-        
+
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_BASE_NAME, i);
         TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + i;
@@ -79,7 +97,7 @@ int32 BPNode_ClaInCreateTasks(void)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Failed to create the CLA In #%d child task. Error = %d.", 
+                            "[CLA In #%d]: Failed to create child task. Error = %d.",
                             i, Status);
             return Status;
         }
@@ -89,14 +107,13 @@ int32 BPNode_ClaInCreateTasks(void)
 
         /* Verify initialization by trying to take the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].InitSemId, 
-                                                                BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].InitSemId, BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "CLA In #%d task not running. Init Sem Error = %d.", 
+                            "[CLA In #%d]: Task not running. Init Sem Error = %d.",
                             i, Status);
             return Status;
         }
@@ -112,7 +129,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     int32           Status;
     int32           PspStatus;
     uint8           i;
-#ifdef BPNODE_CLA_UDP_DRIVER    
+#ifdef BPNODE_CLA_UDP_DRIVER
     int32           PortNum;
     char            Str[100];
 #endif
@@ -124,12 +141,12 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[CLA In #?]: Failed to get task ID. Error = %d", Status);
-        return Status;        
+        return Status;
     }
 
     /* Map this task's ID to a contact ID */
     for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
-    { 
+    {
         if (TaskId == BPNode_AppData.ClaInData[i].TaskId)
         {
             *ContId = i;
@@ -139,7 +156,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     if (*ContId == BPLIB_MAX_NUM_CONTACTS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[CLA In #?]: Task ID does not match any known task IDs. ID = %d", 
+                          "[CLA In #?]: Task ID does not match any known task IDs. ID = %d",
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
@@ -147,11 +164,11 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     BPNode_AppData.ClaInData[*ContId].PerfId = BPNODE_CLA_IN_PERF_ID_BASE + *ContId;
 
     /* Get PSP module ID for either the Unix or UDP socket driver */
-    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME, 
+    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME,
                                 &BPNode_AppData.ClaInData[*ContId].PspLocation.PspModuleId);
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR, 
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA In #%d]: Couldn't find I/O driver. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -165,25 +182,25 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     PortNum = BPNODE_CLA_IN_PORT + CFE_PSP_GetProcessorId() - 1;
     snprintf(Str, sizeof(Str), "port=%d", PortNum);
 
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation,
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR, 
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA In #%d]: Couldn't set port number configuration. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-    }        
+    }
 
     /* Configure IP Address */
     snprintf(Str, sizeof(Str), "IpAddr=%s", BPNODE_CLA_IN_IP);
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation,
                                             CFE_PSP_IODriver_SET_CONFIGURATION,
                                             CFE_PSP_IODriver_CONST_STR(Str));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR, 
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA In #%d]: Couldn't set IP address configuration. Error = %d",
                             *ContId, PspStatus);
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
@@ -193,7 +210,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
 #endif
 
     /* Set direction to input only */
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation,
                                             CFE_PSP_IODriver_SET_DIRECTION,
                                             CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_INPUT_ONLY));
     if (PspStatus != CFE_PSP_SUCCESS)
@@ -205,7 +222,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     }
 
     /* Set I/O to running */
-    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation, 
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[*ContId].PspLocation,
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
     if (PspStatus != CFE_PSP_SUCCESS)
     {
@@ -226,7 +243,7 @@ int32 BPNode_ClaIn_TaskInit(uint8 *ContId)
     if (Status != OS_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[CLA In #%d]: Failed to give init semaphore. Error = %d", 
+                          "[CLA In #%d]: Failed to give init semaphore. Error = %d",
                           *ContId, Status);
         return Status;
     }
@@ -254,16 +271,16 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation, 
+        Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation,
                                           CFE_PSP_IODriver_PACKET_IO_READ,
                                           CFE_PSP_IODriver_VPARG(&RdBuf));
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-        
+
         if (Status == CFE_PSP_SUCCESS)
         {
             BPNode_AppData.ClaInData[ContId].CurrentBufferSize = RdBuf.BufferSize;
-            
+
             Status = CFE_SUCCESS;
         }
 
@@ -277,17 +294,17 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
         /* Temporarily pass ingress bundle to egress thread for proof-of-concept */
         if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
         {
-            memcpy(BPNode_AppData.ClaOutData[ContId].BundleBuffer, 
+            memcpy(BPNode_AppData.ClaOutData[ContId].BundleBuffer,
                    BPNode_AppData.ClaInData[ContId].BundleBuffer,
                    BPNode_AppData.ClaInData[ContId].CurrentBufferSize);
             BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = BPNode_AppData.ClaInData[ContId].CurrentBufferSize;
         }
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-        
+
         BpStatus = BPLib_CLA_Ingress(ContId, BPNode_AppData.ClaInData[ContId].BundleBuffer,
                                    BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);
-        
+
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
         /* If CLA did not timeout during ingress, zero out current buffer size */
@@ -297,7 +314,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
             if (BpStatus != BPLIB_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                  "[CLA In #%d]: Failed to ingress bundle. Error = %d", 
+                                  "[CLA In #%d]: Failed to ingress bundle. Error = %d",
                                   ContId, Status);
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
@@ -341,21 +358,32 @@ void BPNode_ClaIn_AppMain(void)
     /* CLA In task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.ClaInData[ContId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
+        /* Attempt to take the wakeup semaphore */
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+        Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContId].WakeupSemId, BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
+        if (Status == OS_SUCCESS)
         {
-            Status = BPNode_ClaIn_ProcessBundleInput(ContId);
-            if (Status != CFE_SUCCESS)
+            if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
             {
-                BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-                OS_TaskDelay(BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC);
-                BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+                (void) BPNode_ClaIn_ProcessBundleInput(ContId);
             }
         }
-        else 
+        else if (Status == OS_SEM_TIMEOUT)
         {
-            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-            (void) OS_TaskDelay(BPNODE_CLA_IN_SLEEP_MSEC);
-            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_SEM_TK_TIMEOUT_INF_EID,
+                                BPLib_EM_EventType_INFORMATION,
+                                "[CLA In #%d]: Timed out while waiting for the wakeup semaphore",
+                                ContId);
+        }
+        else
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: Failed to take wakeup semaphore, RC = %d",
+                                ContId,
+                                Status);
         }
     }
 
@@ -369,7 +397,7 @@ void BPNode_ClaIn_AppMain(void)
 void BPNode_ClaIn_TaskExit(uint8 ContId)
 {
     /* Set I/O to stop running */
-    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation, 
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation,
                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
 
     BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
