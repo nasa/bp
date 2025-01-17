@@ -47,7 +47,7 @@
 #define BPNODE_CLA_PSP_INPUT_SUBCHANNEL      (1u)            /** \brief IODriver unsock_intf input subchannel*/
 #define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (3072u)         /** \brief IODriver buffer size*/
 #define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)         /** \brief Wait time for init semaphore take, in milliseconds */
-#define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (2000u)         /** \brief Wait time for wakeup semaphore take, in milliseconds */
+#define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)         /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 /*
 ** Type Definitions
