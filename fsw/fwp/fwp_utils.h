@@ -28,12 +28,6 @@
 #include "cfe.h"
 #include "bplib_api_types.h"
 
-/* ====== */
-/* Macros */
-/* ====== */
-
-#define BPA_MAX_CFE_SUCCESS (0x0FFFFFFFu)
-
 /* =================== */
 /* Function Prototypes */
 /* =================== */

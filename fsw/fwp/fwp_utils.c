@@ -30,13 +30,13 @@
 
 BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)
 { 
-    if (CFE_Status <= BPA_MAX_CFE_SUCCESS)
+    if (CFE_Status & CFE_SEVERITY_ERROR)
     {
-        return BPLIB_SUCCESS;
+        return BPLIB_ERROR;
     }
     else
     {
-        return BPLIB_ERROR;
+        return BPLIB_SUCCESS;
     }
 }
 
