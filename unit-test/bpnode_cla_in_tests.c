@@ -373,6 +373,29 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
 }
 
+/* Test BPNode_ClaIn_AppMain when max number of bundles are received */
+void Test_BPNode_ClaIn_AppMain_MaxBundles(void)
+{
+    uint8 ContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    BPNode_AppData.ClaInData[ContId].TaskId = TaskId;
+    BPNode_AppData.ClaInData[ContId].IngressServiceEnabled = true;
+
+    // TODO How to add more bundles?
+
+    BPNode_ClaIn_AppMain();
+
+    UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
+                                                        CFE_ES_RunStatus_APP_RUN);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
+    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
+}
+
 void Test_BPNode_ClaIn_AppMain_TakeSemErr(void)
 {
     CFE_ES_TaskId_t TaskId;
@@ -623,6 +646,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaIn_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_ClaIn_AppMain_Nominal);
+    ADD_TEST(Test_BPNode_ClaIn_AppMain_MaxBundles);
     ADD_TEST(Test_BPNode_ClaIn_AppMain_TakeSemErr);
     ADD_TEST(Test_BPNode_ClaIn_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_ClaIn_AppMain_InitErr);

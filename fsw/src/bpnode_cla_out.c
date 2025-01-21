@@ -319,6 +319,8 @@ void BPNode_ClaOut_AppMain(void)
     int32 Status;
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS; /* Set to garbage value */
 
+    uint32 BundlesForwarded = 0;
+
     /* Perform task-specific initialization */
     Status = BPNode_ClaOut_TaskInit(&ContId);
 
@@ -353,9 +355,27 @@ void BPNode_ClaOut_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
+            BundlesForwarded = 0;
+            bool done = false;
+            do
             {
-                (void) BPNode_ClaOut_ProcessBundleOutput(ContId);
+                if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
+                {
+                    Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
+                    if (Status == CFE_SUCCESS)
+                    {
+                        BundlesForwarded++;
+                    }
+                }
+                else
+                {
+                    done = true;
+                }
+            } while (!done && Status == CFE_SUCCESS && BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE);
+
+            if (BundlesForwarded > 0)
+            {
+                BPLib_AS_Increment(0, BUNDLE_COUNT_FORWARDED, BundlesForwarded);
             }
         }
         else if (Status == OS_SEM_TIMEOUT)

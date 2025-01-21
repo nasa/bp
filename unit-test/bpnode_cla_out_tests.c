@@ -367,6 +367,28 @@ void Test_BPNode_ClaOut_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
 }
 
+/* Test BPNode_ClaOut_AppMain when max number of bundles are egressed */
+void Test_BPNode_ClaOut_AppMain_MaxBundles(void)
+{
+    uint8 ContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+
+    BPNode_AppData.ClaOutData[ContId].TaskId = TaskId;
+    BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled = true;
+
+    // TODO How to add more bundles?
+
+    BPNode_ClaOut_AppMain();
+
+    UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContId].RunStatus,
+                                                        CFE_ES_RunStatus_APP_RUN);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
+}
+
 void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
 {
     CFE_ES_TaskId_t TaskId;
@@ -575,6 +597,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_ClaOut_AppMain_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_AppMain_MaxBundles);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_TakeSemErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
