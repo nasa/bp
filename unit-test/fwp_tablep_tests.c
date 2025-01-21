@@ -135,6 +135,9 @@ void Test_BPA_TABLEP_PI_ValidateConfigs_Nominal(void)
     Status = BPA_TABLEP_PI_ValidateConfigs((void*) TblData);
 
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+
+    /* Verify that BPA_BPLib_Status_Translate received BPLIB_SUCCESS */
+    UtAssert_EQ(BPLib_Status_t, Context_BPLib_Status[0], BPLIB_SUCCESS);
 }
 
 void Test_BPA_TABLEP_PI_ValidateConfigs_Error(void)
@@ -148,6 +151,9 @@ void Test_BPA_TABLEP_PI_ValidateConfigs_Error(void)
     Status = BPA_TABLEP_PI_ValidateConfigs((void*) TblData);
 
     UtAssert_EQ(CFE_Status_t, Status, CFE_STATUS_NOT_IMPLEMENTED);
+
+    /* Verify that BPA_BPLib_Status_Translate received BPLIB_ERROR */
+    UtAssert_EQ(BPLib_Status_t, Context_BPLib_Status[0], BPLIB_ERROR);
 }
 
 void Test_BPA_TABLEP_CLA_ContactsTblValidateFunc_Nominal(void)
