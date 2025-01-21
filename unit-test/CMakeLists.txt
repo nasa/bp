@@ -21,6 +21,7 @@ add_cfe_coverage_stubs("bpnode_internal"
   stubs/fwp_perflogp_stubs.c
   stubs/fwp_dp_stubs.c
   stubs/fwp_tlmp_stubs.c
+  stubs/fwp_utils_stubs.c
   stubs/bpnode_cla_in_stubs.c
   stubs/bpnode_cla_out_stubs.c
   stubs/bpnode_gen_worker_stubs.c

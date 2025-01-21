@@ -45,7 +45,127 @@
 
 CFE_Status_t BPA_TABLEP_TableInit(void);
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
-CFE_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
+BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_PI_ValidateConfigs into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_PI_ValidateConfigs()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_PI_ValidateConfigs
+ */
+CFE_Status_t BPA_TABLEP_PI_ValidateConfigs(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_CLA_ContactsTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_CLA_ContactsTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_CLA_ContactsTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_CLA_ContactsTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return BPLibABLEP_ARP_CRSTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_ARP_CRSTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_ARP_CRSTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_ARP_CRSTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_PDB_CustodianAuthTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_PDB_CustodianAuthTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_PDB_CustodianAuthTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_PDB_CustodianAuthTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_PDB_CustodyAuthTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_PDB_CustodyAuthTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_PDB_CustodyAuthTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_PDB_CustodyAuthTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_NC_MIBConfigPNTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_NC_MIBConfigPNTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_NC_MIBConfigPNTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_NC_MIBConfigPNTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_NC_MIBConfigPSTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_NC_MIBConfigPSTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_NC_MIBConfigPSTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_NC_MIBConfigPSTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_PDB_ReportToAuthTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_PDB_ReportToAuthTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_PDB_ReportToAuthTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_PDB_ReportToAuthTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_PDB_SrcAuthTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_PDB_SrcAuthTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_PDB_SrcAuthTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_PDB_SrcAuthTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_PDB_SrcLatencyTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_PDB_SrcLatencyTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_PDB_SrcLatencyTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_PDB_SrcLatencyTblValidateFunc(void* TblData);
+
+/**
+ * \brief     Wrapper to translate return from BPLib_STOR_StorageTblValidateFunc() into a CFE_Statuts_t type
+ * \details   Translate the BPLib_Status_t-type return status from BPLib_STOR_StorageTblValidateFunc()
+ *            into a CFE_Status_t-type for CFE_TBL_Register()
+ * \note      A pointer to this function will be used in TblNameParamsArr0
+ * \param[in] TblData (void*) Table to validate
+ * \return    Execution status translated into a CFE_Status_t type
+ * \anchor    BPA_TABLEP_STOR_StorageTblValidateFunc
+ */
+CFE_Status_t BPA_TABLEP_STOR_StorageTblValidateFunc(void* TblData);
 
 #endif /* FWP_TABLEP_H */
-
