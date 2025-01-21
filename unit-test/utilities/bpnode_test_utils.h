@@ -67,6 +67,8 @@ typedef struct
 */
 
 extern CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[];
+extern BPLib_Status_t Context_BPLib_Status[];
+extern CFE_Status_t Context_CFE_Status[];
 
 extern BPA_ADUP_Table_t            TestAduTbl;
 extern BPLib_PI_ChannelTable_t     TestChanTbl;
