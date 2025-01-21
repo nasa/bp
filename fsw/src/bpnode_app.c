@@ -243,6 +243,12 @@ CFE_Status_t BPNode_AppInit(void)
     /* Initialize MEM and QM */
     // TODO: Refactor so num jobs != num events
     BPLib_QM_QueueTableInit(&BPNode_AppData.qtbl, 1024);
+    BPLib_MEM_PoolInit(&BPNode_AppData.pool, (void *)BPNode_AppData.pool_mem, (size_t)BPNODE_MEM_POOL_LEN);
+
+    /* REMOVE: Add a test bundle just to get the printfs flowing */
+    BPLib_Bundle_t* bundle = (BPLib_Bundle_t*)(BPLib_MEM_BlockAlloc(&BPNode_AppData.pool));
+    bundle->blocks.pri_blk.src_eid.node_number = 1;
+    BPLib_QM_PostEvent(&BPNode_AppData.qtbl, bundle, STATE_CLA_TO_BI, QM_PRI_NORMAL, QM_WAIT_FOREVER);
 
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);
