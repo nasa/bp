@@ -109,17 +109,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
 
-    /* Notify generic worker task(s) to start wakeup */
-    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error giving Generic Worker #%d its wakeup semaphore, RC = %d",
-                                TaskNum, OsStatus);
-        }
-    }
+    /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
+    BPLib_QM_EventLoopAdvance(&BPNode_AppData.qtbl, BPNODE_NUM_JOBS_PER_CYCLE);
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
@@ -248,6 +239,10 @@ CFE_Status_t BPNode_AppInit(void)
 
     /* Zero out the global data structure */
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
+
+    /* Initialize MEM and QM */
+    // TODO: Refactor so num jobs != num events
+    BPLib_QM_QueueTableInit(&BPNode_AppData.qtbl, 1024);
 
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);
