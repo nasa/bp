@@ -562,7 +562,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_Nominal(void)
 {
     uint8 ContId = 0;
 
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), 1); // Bundle count
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand(void)
@@ -617,7 +617,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ClaOutBusy(void)
     BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = ExpClaOutBuffSize;
     BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
 
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), 1); // Bundle count
 
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);

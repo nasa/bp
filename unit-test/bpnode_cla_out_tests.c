@@ -547,7 +547,7 @@ void Test_BPNode_ClaOut_TaskExit_Nominal(void)
 void Test_BPNode_ClaOut_ProcessBundleOutput_Nominal(void)
 {
     uint8 ContId = 0;
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContId), 1); // Bundle count
 }
 
 void Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress(void)

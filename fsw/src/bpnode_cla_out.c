@@ -280,7 +280,15 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
+        if (BpStatus == BPLIB_SUCCESS)
+        {
+            Status = 1; // Return the bundle count
+        }
+        else if (BpStatus == BPLIB_CLA_TIMEOUT)
+        {
+            Status = 0; // Return 0 for the bundle count.
+        }
+        else
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
                                "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
@@ -289,7 +297,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
         }
     }
 
-    /* Send egress bundle onto CL */
+    /* Send egress bundle on to CL */
     if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize != 0)
     {
         WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
@@ -310,7 +318,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
         BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = 0;
     }
 
-    return CFE_SUCCESS;
+    return Status;
 }
 
 /* Main loop for CLA Out task(s) */
