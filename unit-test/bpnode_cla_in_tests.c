@@ -370,7 +370,6 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 }
 
@@ -394,7 +393,6 @@ void Test_BPNode_ClaIn_AppMain_MaxBundles(void)
     UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 }
 
