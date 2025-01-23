@@ -375,7 +375,7 @@ void BPNode_ClaIn_AppMain(void)
                     Status = BPNode_ClaIn_ProcessBundleInput(ContId);
                     if (Status > 0)
                     {
-                        BundlesReceived++;
+                        BundlesReceived += Status;
                     }
                     tries++;
                 } while (tries < MAX_TRIES && Status > 0 && BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);

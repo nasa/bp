@@ -363,9 +363,9 @@ void BPNode_ClaOut_AppMain(void)
                 do
                 {
                     Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
-                    if (Status == CFE_SUCCESS)
+                    if (Status > 0)
                     {
-                        BundlesForwarded++;
+                        BundlesForwarded += Status;
                     }
                     tries++;
                 } while (tries < MAX_TRIES && Status > 0 && BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE);
