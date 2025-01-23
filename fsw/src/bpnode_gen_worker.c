@@ -42,18 +42,30 @@ int32 BPNode_GenWorkerCreateTasks(void)
     uint8  i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
-    
+
     /* Create all of the Generic Worker task(s) */
     for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
     {
-        /* Create semaphore for main task control */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].SemId, NameBuff, 0, 0);
+        /* Create initialization semaphore for main task control */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].InitSemId, NameBuff, 0, 0);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "Failed to create the Generic Worker #%d task init semaphore. Error = %d.", 
+                        "[Generic Worker #%d]: Failed to create initialization semaphore. Error = %d.",
+                        i, Status);
+            return Status;
+        }
+
+        /* Create wakeup semaphore for main task control */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKEUP_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].WakeupSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
+                        "[Generic Worker #%d]: Failed to create wakeup semaphore. Error = %d.",
                         i, Status);
             return Status;
         }
@@ -69,21 +81,20 @@ int32 BPNode_GenWorkerCreateTasks(void)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Failed to create the Generic Worker #%d child task. Error = %d.", 
+                            "[Generic Worker #%d]: Failed to create child task. Error = %d.",
                             i, Status);
             return Status;
         }
 
         /* Verify initialization by trying to take the semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].SemId, 
-                                                                BPNODE_SEM_WAIT_MSEC);
+        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].InitSemId, BPNODE_GEN_WRKR_SEM_INIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Generic Worker #%d task not running. Init Sem Error = %d.", 
+                            "[Generic Worker #%d]: Task not running. Init Sem Error = %d.",
                             i, Status);
             return Status;
         }
@@ -106,7 +117,7 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     {
         BPLib_EM_SendEvent(BPNODE_GEN_WRKR_NO_ID_ERR_EID, BPLib_EM_EventType_ERROR,
                           "[Generic Worker #?]: Failed to get task ID. Error = %d", Status);
-        return Status;        
+        return Status;
     }
 
     /* Map this task's ID to a worker ID */
@@ -121,7 +132,7 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     if (*WorkerId == BPNODE_NUM_GEN_WRKR_TASKS)
     {
         BPLib_EM_SendEvent(BPNODE_GEN_WRKR_INV_ID_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[Generic Worker #?]: Task ID does not match any known task IDs. ID = %d", 
+                          "[Generic Worker #?]: Task ID does not match any known task IDs. ID = %d",
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
@@ -129,12 +140,12 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     BPNode_AppData.GenWorkerData[*WorkerId].PerfId = BPNODE_GEN_WRKR_PERF_ID_BASE + *WorkerId;
 
     /* Notify main task that child task is running */
-    Status = OS_BinSemGive(BPNode_AppData.GenWorkerData[*WorkerId].SemId);
+    Status = OS_BinSemGive(BPNode_AppData.GenWorkerData[*WorkerId].InitSemId);
 
     if (Status != OS_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
-                          "[Generic Worker #%d]: Failed to give init semaphore. Error = %d", 
+                          "[Generic Worker #%d]: Failed to give init semaphore. Error = %d",
                           *WorkerId, Status);
         return Status;
     }
@@ -186,12 +197,9 @@ void BPNode_GenWorker_AppMain(void)
     /* Generic Worker task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.GenWorkerData[WorkerId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-
         /* Take semaphore from main task */
-        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].SemId, 
-                                                                BPNODE_SEM_WAIT_MSEC);
-
+        BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].WakeupSemId, BPNODE_GEN_WRKR_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
 
         /* Process one cycle's worth of jobs */
@@ -202,20 +210,23 @@ void BPNode_GenWorker_AppMain(void)
                 /*
                 ** TODO call the relevant BPLib JS API to process one job
                 */
-                
-                BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-                (void) OS_TaskDelay(BPNODE_GEN_WRKR_SLEEP_MSEC);
-                BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-
+                OS_TaskDelay(BPNODE_GEN_WRKR_SLEEP_MSEC);
                 NumJobsComplete++;
             }
 
             NumJobsComplete = 0;
         }
+        else if (Status == OS_SEM_TIMEOUT)
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID,
+                                BPLib_EM_EventType_INFORMATION,
+                                "[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore",
+                                WorkerId);
+        }
         else
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Generic Worker #%s]: Failure to take semaphore. Sem Error = %d.", 
+                            "[Generic Worker #%d]: Failure to take semaphore. Sem Error = %d.",
                             WorkerId, Status);
         }
     }

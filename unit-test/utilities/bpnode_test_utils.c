@@ -59,9 +59,11 @@ BPLib_PDB_SrcLatencyTable_t TestLatencyTbl;
 BPLib_STOR_StorageTable_t   TestStorTbl;
 
 #define UT_MAX_CFE_SENDEVENT_DEPTH 10
+#define UT_MAX_TRANSLATE_DEPTH     10
 
 CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[UT_MAX_CFE_SENDEVENT_DEPTH];
-
+BPLib_Status_t Context_BPLib_Status[UT_MAX_TRANSLATE_DEPTH];
+CFE_Status_t Context_CFE_Status[UT_MAX_TRANSLATE_DEPTH];
 
 /*
 ** Function Definitions
@@ -89,6 +91,52 @@ void UT_Handler_CFE_EVS_SendEvent(void *UserObj, UT_EntryKey_t FuncKey, const UT
                 CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
         context_CFE_EVS_SendEvent[idx].Spec[CFE_MISSION_EVS_MAX_MESSAGE_LENGTH - 1] = '\0';
     }
+}
+
+void UT_Handler_BPA_BPLib_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
+{
+    uint16 CallCount;
+    uint16 idx;
+
+    CallCount = UT_GetStubCount(UT_KEY(BPA_BPLib_Status_Translate));
+
+    if (CallCount > UT_MAX_TRANSLATE_DEPTH)
+    {
+        UtAssert_Failed("BPA_BPLib_Status_Translate UT depth %u exceeded: %u, increase UT_MAX_TRANSLATE_DEPTH",
+                        UT_MAX_TRANSLATE_DEPTH, CallCount);
+    }
+    else
+    {
+        idx = CallCount - 1;
+        Context_BPLib_Status[idx] = UT_Hook_GetArgValueByName(Context, "BPLib_Status", BPLib_Status_t);
+    }
+}
+
+void UT_Handler_BPA_CFE_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
+{
+    uint16 CallCount;
+    uint16 idx;
+
+    CallCount = UT_GetStubCount(UT_KEY(BPA_CFE_Status_Translate));
+
+    if (CallCount > UT_MAX_TRANSLATE_DEPTH)
+    {
+        UtAssert_Failed("BPA_CFE_Status_Translate UT depth %u exceeded: %u, increase UT_MAX_TRANSLATE_DEPTH",
+                        UT_MAX_TRANSLATE_DEPTH, CallCount);
+    }
+    else
+    {
+        idx = CallCount - 1;
+        Context_CFE_Status[idx] = UT_Hook_GetArgValueByName(Context, "CFE_Status", CFE_Status_t);
+    }
+}
+
+void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText)
+{
+    /* Check the string */
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[EventNum].EventID, EventID);
+    UtAssert_STRINGBUF_EQ(EventText, BPLIB_EM_EXPANDED_EVENT_SIZE,
+                            context_BPLib_EM_SendEvent[EventNum].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 void Test_FWP_ADUP_VerifyIncrement(int16_t SourceEid, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum)
@@ -139,6 +187,8 @@ void BPNode_UT_Setup(void)
     memset(&BPNode_AppData, 0, sizeof(BPNode_AppData_t));
     memset(context_BPLib_EM_SendEvent, 0, sizeof(BPLib_EM_SendEvent_context_t) * UT_MAX_SENDEVENT_DEPTH);
     memset(context_CFE_EVS_SendEvent, 0, sizeof(context_CFE_EVS_SendEvent));
+    memset(Context_BPLib_Status, 0, sizeof(BPLib_Status_t) * UT_MAX_TRANSLATE_DEPTH);
+    memset(Context_CFE_Status, 0, sizeof(CFE_Status_t) * UT_MAX_TRANSLATE_DEPTH);
 
     memset(&TestAduTbl, 0, sizeof(BPA_ADUP_Table_t));
     memset(&TestChanTbl, 0, sizeof(BPLib_PI_ChannelTable_t));
@@ -155,6 +205,8 @@ void BPNode_UT_Setup(void)
 
     UT_SetHandlerFunction(UT_KEY(BPLib_EM_SendEvent), UT_Handler_BPLib_EM_SendEvent, NULL);
     UT_SetHandlerFunction(UT_KEY(CFE_EVS_SendEvent), UT_Handler_CFE_EVS_SendEvent, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPA_BPLib_Status_Translate), UT_Handler_BPA_BPLib_Status_Translate, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPA_CFE_Status_Translate), UT_Handler_BPA_CFE_Status_Translate, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
 }
