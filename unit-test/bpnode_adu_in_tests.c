@@ -262,6 +262,39 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(BPA_ADUP_In, 1);
 }
 
+
+/* Test BPNode_AduIn_AppMain when app state is started and max number of ADUs are received */
+void Test_BPNode_AduIn_AppMain_MaxAdus(void)
+{
+    CFE_SB_Buffer_t  Buf;
+    CFE_SB_Buffer_t *BufPtr = &Buf;
+    uint8 ChanId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+    uint32 i;
+
+    /* Test setup */
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
+
+    for (i = 0; i < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE; i++)
+    {
+        UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+    }
+
+    BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
+
+    BPNode_AduIn_AppMain();
+
+    UtAssert_UINT32_EQ(BPNode_AppData.AduInData[ChanId].RunStatus,
+                                                        CFE_ES_RunStatus_APP_RUN);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
+    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
+    UtAssert_STUB_COUNT(BPA_ADUP_In, BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
+}
+
 void Test_BPNode_AduIn_AppMain_TakeSemErr(void)
 {
     CFE_ES_TaskId_t TaskId;
@@ -493,6 +526,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduIn_AppMain_ChanIdErr);
     ADD_TEST(Test_BPNode_AduIn_AppMain_AppStopped);
     ADD_TEST(Test_BPNode_AduIn_AppMain_ClearPipe);
+    ADD_TEST(Test_BPNode_AduIn_AppMain_MaxAdus);
 
     ADD_TEST(Test_BPNode_AduIn_TaskExit_Nominal);
 }
