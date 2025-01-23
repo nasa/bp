@@ -335,6 +335,7 @@ void BPNode_ClaIn_AppMain(void)
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS; /* Set to garbage value */
 
     uint32 BundlesReceived = 0;
+    uint8  ReceiveTries     = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_ClaIn_TaskInit(&ContId);
@@ -373,9 +374,8 @@ void BPNode_ClaIn_AppMain(void)
         {
             if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
             {
-                BundlesReceived   = 0;
-                uint8_t tries     = 0;
-                uint8_t MAX_TRIES = 2 * BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE;
+                BundlesReceived  = 0;
+                ReceiveTries     = 0;
                 do
                 {
                     Status = BPNode_ClaIn_ProcessBundleInput(ContId);
@@ -383,8 +383,8 @@ void BPNode_ClaIn_AppMain(void)
                     {
                         BundlesReceived += Status;
                     }
-                    tries++;
-                } while (tries < MAX_TRIES && Status > 0 && BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
+                    ReceiveTries++;
+                } while (ReceiveTries < BPNODE_CLA_IN_MAX_RETRIES && Status > 0 && BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 
                 if (BundlesReceived > 0)
                 {

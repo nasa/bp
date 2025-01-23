@@ -328,6 +328,7 @@ void BPNode_ClaOut_AppMain(void)
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS; /* Set to garbage value */
 
     uint32 BundlesForwarded = 0;
+    uint8 SendTries = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_ClaOut_TaskInit(&ContId);
@@ -366,8 +367,7 @@ void BPNode_ClaOut_AppMain(void)
             if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
             {
                 BundlesForwarded   = 0;
-                uint32_t tries     = 0;
-                uint32_t MAX_TRIES = 2 * BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE;
+                SendTries = 0;
                 do
                 {
                     Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
@@ -375,8 +375,8 @@ void BPNode_ClaOut_AppMain(void)
                     {
                         BundlesForwarded += Status;
                     }
-                    tries++;
-                } while (tries < MAX_TRIES && Status > 0 && BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE);
+                    SendTries++;
+                } while (SendTries < BPNODE_CLA_OUT_MAX_RETRIES && Status > 0 && BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE);
 
                 if (BundlesForwarded > 0)
                 {
