@@ -57,7 +57,9 @@
 /* ====== */
 #define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
 #define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
-#define BPNODE_MEM_POOL_LEN               (16834U)
+#define BPNODE_BPLIB_MEM_POOL_LEN         (16834u)
+#define BPNODE_BPLIB_MAX_JOBS             (256U)
+#define BPNODE_BPLIB_MAX_EVENTS           (1024U)
 
 /*
 ** Type Definitions
@@ -98,12 +100,9 @@ typedef struct
 
     BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */        
 
-    /* BPLib Memory Pool State */
-    uint8                       pool_mem[BPNODE_MEM_POOL_LEN];
-    BPLib_MEM_Pool_t            pool;
-
-    /* BPLib QM State */
+    /* BPLib Instance State */
     BPLib_QM_QueueTable_t       qtbl;
+    uint8                       pool_mem[BPNODE_BPLIB_MEM_POOL_LEN];
 
     BPA_ADUP_Table_t            *AduTblPtr;
     BPLib_PI_ChannelTable_t     *ChanTblPtr;
