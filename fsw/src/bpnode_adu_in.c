@@ -190,6 +190,7 @@ void BPNode_AduIn_AppMain(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
+    uint32 AdusIngested;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduIn_TaskInit(&ChanId);
@@ -228,6 +229,8 @@ void BPNode_AduIn_AppMain(void)
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
+                AdusIngested = 0;
+
                 /* Check for ADUs to ingest */
                 do
                 {
@@ -244,9 +247,14 @@ void BPNode_AduIn_AppMain(void)
                         Status = BPA_ADUP_In((void *) BufPtr, ChanId);
                     }
 
-                } while (Status == BPLIB_SUCCESS);
+                    if (Status == BPLIB_SUCCESS)
+                    {
+                        AdusIngested++;
+                    }
+
+                } while (Status == BPLIB_SUCCESS && AdusIngested < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
             }
-            else
+            else 
             {
                 /* Check if the application was recently stopped and the pipe needs to be cleared */
                 if (BPNode_AppData.AduInData[ChanId].ClearPipe == true)
