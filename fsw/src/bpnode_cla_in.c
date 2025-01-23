@@ -289,6 +289,8 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     /* Ingress received bundle to bplib CLA */
     if (Status == CFE_SUCCESS && BPNode_AppData.ClaInData[ContId].CurrentBufferSize != 0)
     {
+        BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, 1);
+
         /* Temporarily pass ingress bundle to egress thread for proof-of-concept */
         if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
         {
@@ -305,23 +307,17 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        if (BpStatus == BPLIB_SUCCESS)
+        /* If CLA did not timeout during ingress, zero out current buffer size */
+        if (BpStatus != BPLIB_CLA_TIMEOUT)
         {
-            Status = 1; // Return the bundle count
             BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
-        }
-        else if (BpStatus == BPLIB_CLA_TIMEOUT)
-        {
-            Status = 0; // Return zero for bundle count
-        }
-        else
-        {
-            /* If CLA did not timeout during ingress, zero out current buffer size */
-            BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Failed to ingress bundle. Error = %d",
-                                ContId, Status);
-            Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+            if (BpStatus != BPLIB_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
+                                  "[CLA In #%d]: Failed to ingress bundle. Error = %d",
+                                  ContId, Status);
+                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+            }
         }
     }
 
@@ -335,7 +331,6 @@ void BPNode_ClaIn_AppMain(void)
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS; /* Set to garbage value */
 
     uint32 BundlesReceived = 0;
-    uint8  ReceiveTries     = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_ClaIn_TaskInit(&ContId);
@@ -374,22 +369,15 @@ void BPNode_ClaIn_AppMain(void)
         {
             if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
             {
-                BundlesReceived  = 0;
-                ReceiveTries     = 0;
+                BundlesReceived = 0;
                 do
                 {
                     Status = BPNode_ClaIn_ProcessBundleInput(ContId);
-                    if (Status > 0)
+                    if (Status == CFE_SUCCESS)
                     {
-                        BundlesReceived += Status;
+                        BundlesReceived++;
                     }
-                    ReceiveTries++;
-                } while (ReceiveTries < BPNODE_CLA_IN_MAX_RETRIES && Status > 0 && BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
-
-                if (BundlesReceived > 0)
-                {
-                    BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, BundlesReceived);
-                }
+                } while ((Status == CFE_SUCCESS) && (BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE));
             }
         }
         else if (Status == OS_SEM_TIMEOUT)

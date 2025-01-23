@@ -371,6 +371,7 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 }
 
 /* Test BPNode_ClaIn_AppMain when max number of bundles are received */
@@ -394,6 +395,7 @@ void Test_BPNode_ClaIn_AppMain_MaxBundles(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 }
 
 void Test_BPNode_ClaIn_AppMain_TakeSemErr(void)
@@ -562,7 +564,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_Nominal(void)
 {
     uint8 ContId = 0;
 
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), 1); // Bundle count
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand(void)
@@ -617,7 +619,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ClaOutBusy(void)
     BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = ExpClaOutBuffSize;
     BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
 
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), 1); // Bundle count
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
