@@ -355,27 +355,25 @@ void BPNode_ClaOut_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            BundlesForwarded = 0;
-            bool done = false;
-            do
+            if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
             {
-                if (BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled)
+                BundlesForwarded   = 0;
+                uint32_t tries     = 0;
+                uint32_t MAX_TRIES = 2 * BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE;
+                do
                 {
                     Status = BPNode_ClaOut_ProcessBundleOutput(ContId);
                     if (Status == CFE_SUCCESS)
                     {
                         BundlesForwarded++;
                     }
-                }
-                else
-                {
-                    done = true;
-                }
-            } while (!done && Status == CFE_SUCCESS && BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE);
+                    tries++;
+                } while (tries < MAX_TRIES && Status > 0 && BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE);
 
-            if (BundlesForwarded > 0)
-            {
-                BPLib_AS_Increment(0, BUNDLE_COUNT_FORWARDED, BundlesForwarded);
+                if (BundlesForwarded > 0)
+                {
+                    BPLib_AS_Increment(0, BUNDLE_COUNT_FORWARDED, BundlesForwarded);
+                }
             }
         }
         else if (Status == OS_SEM_TIMEOUT)

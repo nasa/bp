@@ -365,27 +365,25 @@ void BPNode_ClaIn_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            BundlesReceived = 0;
-            bool done = false;
-            do
+            if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
             {
-                if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
+                BundlesReceived   = 0;
+                uint8_t tries     = 0;
+                uint8_t MAX_TRIES = 2 * BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE;
+                do
                 {
                     Status = BPNode_ClaIn_ProcessBundleInput(ContId);
-                    if (Status == CFE_SUCCESS)
+                    if (Status > 0)
                     {
                         BundlesReceived++;
                     }
-                }
-                else
-                {
-                    done = true;
-                }
-            } while (!done && Status == CFE_SUCCESS && BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
+                    tries++;
+                } while (tries < MAX_TRIES && Status > 0 && BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 
-            if (BundlesReceived > 0)
-            {
-                BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, BundlesReceived);
+                if (BundlesReceived > 0)
+                {
+                    BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, BundlesReceived);
+                }
             }
         }
         else if (Status == OS_SEM_TIMEOUT)
