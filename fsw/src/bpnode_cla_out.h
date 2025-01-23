@@ -52,7 +52,6 @@
 #define BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC   (1100u)          /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 #define BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE  (10u)            /** \brief Maximum number of bundles to forward per wakeup */
-#define BPNODE_CLA_OUT_MAX_RETRIES            (20u)            /** \brief Maximum number of retries in the send loop  */
 
 /*
 ** Type Definitions
