@@ -119,6 +119,6 @@
 /**
  * \brief Number of generic worker jobs to process per cycle
  */
-#define BPNODE_NUM_JOBS_PER_CYCLE           (10)
+#define BPNODE_NUM_JOBS_PER_CYCLE           (40)
 
 #endif /* BPNODE_PLATFORM_CFG_H */
