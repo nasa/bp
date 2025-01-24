@@ -51,7 +51,7 @@
 ** Type Definitions
 */
 
-/** 
+/**
 ** \brief ADU In Task Data
 */
 typedef struct
@@ -99,7 +99,7 @@ int32 BPNode_AduInCreateTasks(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Pointer to channel ID to set
  *
  *  \return Validation status
@@ -127,7 +127,7 @@ void BPNode_AduIn_AppMain(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID for this task
  */
 void BPNode_AduIn_TaskExit(uint8 ChanId);
