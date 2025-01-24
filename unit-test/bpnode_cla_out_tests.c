@@ -348,7 +348,7 @@ void Test_BPNode_ClaOut_TaskInit_GiveSemErr(void)
 }
 
 /* Test BPNode_ClaOut_AppMain when app state is started */
-void Test_BPNode_ClaOut_AppMain_Nominal(void)
+void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
 {
     uint8 ContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
@@ -359,12 +359,44 @@ void Test_BPNode_ClaOut_AppMain_Nominal(void)
 
     BPNode_AppData.ClaOutData[ContId].TaskId = TaskId;
     BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled = true;
+    BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = 0; /* buffer initially empty */
 
     BPNode_ClaOut_AppMain();
 
     UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
+}
+
+/* Test BPNode_ClaOut_AppMain when max number of bundles are egressed */
+void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
+{
+    uint8 ContId = 0;
+    CFE_ES_TaskId_t TaskId = 1234;
+
+    /* Test setup */
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+
+    BPNode_AppData.ClaOutData[ContId].TaskId = TaskId;
+    BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled = true;
+    BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = 4; /* buffer initially filled */
+
+    // TODO How to add more bundles?
+
+    BPNode_ClaOut_AppMain();
+
+    UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContId].RunStatus,
+                                                        CFE_ES_RunStatus_APP_RUN);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
+
+    /*
+    ** CurrentBufferSize should get cleared by BPNode_ClaOut_ProcessBundleOutput
+    ** after buffer is sent to CFE_PSP_IODriver_Command
+    */
+    UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContId].CurrentBufferSize, 0);
 }
 
 void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
@@ -574,7 +606,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_RunErr);
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_GiveSemErr);
 
-    ADD_TEST(Test_BPNode_ClaOut_AppMain_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_AppMain_NoBundleAvailable);
+    ADD_TEST(Test_BPNode_ClaOut_AppMain_SingleBundle);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_TakeSemErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
