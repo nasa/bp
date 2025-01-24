@@ -469,6 +469,11 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduInData[i].ExitSemId, BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduOutData[i].ExitSemId, BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Signal to CLA child tasks to exit */
@@ -487,6 +492,10 @@ void BPNode_AppExit(void)
     for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
     {
         BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        (void) OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].ExitSemId, BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Performance Log Exit Stamp */
