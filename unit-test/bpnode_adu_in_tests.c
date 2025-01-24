@@ -106,7 +106,7 @@ void Test_BPNode_AduInCreateTasks_TaskCrErr(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_CREATE_ERR_EID, "[ADU In #%d]: Failed to create child task. Error = %d.");
 
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -122,7 +122,7 @@ void Test_BPNode_AduInCreateTasks_TakeSemErr(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_RUN_ERR_EID, "[ADU In #%d]: Task not running. Init Sem Error = %d.");
 
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }
