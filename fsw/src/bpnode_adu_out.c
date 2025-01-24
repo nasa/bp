@@ -82,7 +82,8 @@ int32 BPNode_AduOutCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_EXIT_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
                                 "[ADU Out #%d]: Failed to create exit semaphore. Error = %d.",
                                 i,
                                 Status);

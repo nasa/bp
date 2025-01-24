@@ -78,6 +78,22 @@ void Test_BPNode_AduOutCreateTasks_WakeupSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
 
+/* Test BPNode_AduOutCreateTasks when the exit semaphore fails to create */
+void Test_BPNode_AduOutCreateTasks_ExitSemErr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 3, OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), OS_SEM_FAILURE);
+
+    /* Verify that wake up semaphore error during creation created an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_EXIT_SEM_ERR_EID, "[ADU Out #%d]: Failed to create exit semaphore. Error = %d.");
+
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
+}
+
 /* Test BPNode_AduOutCreateTasks when the child task creation fails */
 void Test_BPNode_AduOutCreateTasks_TaskCrErr(void)
 {
@@ -361,6 +377,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduOutCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_InitSemErr);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_WakeupSemErr);
+    ADD_TEST(Test_BPNode_AduOutCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_TakeSemErr);
 

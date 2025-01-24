@@ -41,7 +41,7 @@ void Test_BPNode_AduInCreateTasks_Nominal(void)
     UtAssert_INT32_EQ(BPNode_AduInCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS * 2); /* An init and wake up semaphore are created per channel */
+    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS * 3); /* An init, wakeup, and exit semaphore are created per channel */
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPLIB_MAX_NUM_CHANNELS);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPLIB_MAX_NUM_CHANNELS);
 }
@@ -75,6 +75,22 @@ void Test_BPNode_AduInCreateTasks_WakeupSemErr(void)
     BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID, "[ADU In #%d]: Failed to create wakeup semaphore, %s. Error = %d.");
 
     UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
+}
+
+/* Test BPNode_AduInCreateTasks when the exit semaphore fails to create */
+void Test_BPNode_AduInCreateTasks_ExitSemErr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 3, OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(BPNode_AduInCreateTasks(), OS_SEM_FAILURE);
+
+    /* Verify wake up semaphore creation error created event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_ADU_IN_EXIT_SEM_ERR_EID, "[ADU In #%d]: Failed to create exit semaphore. Error = %d.");
+
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -509,6 +525,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduInCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_AduInCreateTasks_InitSemErr);
     ADD_TEST(Test_BPNode_AduInCreateTasks_WakeupSemErr);
+    ADD_TEST(Test_BPNode_AduInCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_AduInCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_AduInCreateTasks_TakeSemErr);
 
