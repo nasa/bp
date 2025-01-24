@@ -291,14 +291,6 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     {
         BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, 1);
 
-        /* Temporarily pass ingress bundle to egress thread for proof-of-concept */
-        if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
-        {
-            memcpy(BPNode_AppData.ClaOutData[ContId].BundleBuffer,
-                   BPNode_AppData.ClaInData[ContId].BundleBuffer,
-                   BPNode_AppData.ClaInData[ContId].CurrentBufferSize);
-            BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = BPNode_AppData.ClaInData[ContId].CurrentBufferSize;
-        }
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
