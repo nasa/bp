@@ -77,6 +77,21 @@ int32 BPNode_AduInCreateTasks(void)
             return Status;
         }
 
+        /* Create exit semaphore so main task knows when child finished shutdown */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_ADU_IN_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.AduInData[i].ExitSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_EXIT_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[ADU In #%d]: Failed to create exit semaphore. Error = %d.",
+                                i,
+                                Status);
+
+            return Status;
+        }
+
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_ADU_IN_BASE_NAME, i);
         TaskPriority = BPNODE_ADU_IN_PRIORITY_BASE + i;
@@ -254,7 +269,7 @@ void BPNode_AduIn_AppMain(void)
 
                 } while (Status == BPLIB_SUCCESS && AdusIngested < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
             }
-            else 
+            else
             {
                 /* Check if the application was recently stopped and the pipe needs to be cleared */
                 if (BPNode_AppData.AduInData[ChanId].ClearPipe == true)
