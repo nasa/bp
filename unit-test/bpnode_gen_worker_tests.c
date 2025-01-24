@@ -83,7 +83,7 @@ void Test_BPNode_GenWorkerCreateTasks_ExitSemErr(void)
     UtAssert_INT32_EQ(BPNode_GenWorkerCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    BPNode_Test_Verify_Event(0, BPNODE_GEN_WRKR_EXIT_SEM_ERR_EID, "[Generic Worker #%d]: Failed to create exit semaphore. Error = %d.");
+    BPNode_Test_Verify_Event(0, BPNODE_GEN_WRKR_EXIT_SEM_ERR_EID, "[Generic Worker #%d]: Failed to create exit semaphore, %s. Error = %d.");
 
     UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
