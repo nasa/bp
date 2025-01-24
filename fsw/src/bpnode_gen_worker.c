@@ -266,6 +266,9 @@ void BPNode_GenWorker_TaskExit(uint8 WorkerId)
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
 
+    /* Signal to the main task that the child task has exited */
+    (void) OS_BinSemGive(BPNode_AppData.GenWorkerData[WorkerId].ExitSemId);
+
     /* Stop execution */
     CFE_ES_ExitChildTask();
 

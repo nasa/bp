@@ -282,6 +282,9 @@ void BPNode_AduOut_TaskExit(uint8 ChanId)
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
 
+    /* Signal to the main task that the child task has exited */
+    (void) OS_BinSemGive(BPNode_AppData.AduOutData[ChanId].ExitSemId);
+
     /* Stop execution */
     CFE_ES_ExitChildTask();
 
