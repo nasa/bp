@@ -110,7 +110,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     uint8            TaskNum;
 
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
-    BPLib_QM_EventLoopAdvance(&BPNode_AppData.bplib_inst, BPNODE_NUM_JOBS_PER_CYCLE);
+    BPLib_QM_SortJobs(&BPNode_AppData.bplib_inst, BPNODE_NUM_JOBS_PER_CYCLE);
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
