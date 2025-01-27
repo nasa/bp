@@ -197,7 +197,7 @@ void BPNode_GenWorker_AppMain(void)
     {
         /* Take semaphore from main task */
         BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-        BPLib_QM_RunJob(&BPNode_AppData.qtbl, BPNODE_GEN_WRKR_SLEEP_MSEC);
+        BPLib_QM_RunJob(&BPNode_AppData.bplib_inst, BPNODE_GEN_WRKR_SLEEP_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
     }
 

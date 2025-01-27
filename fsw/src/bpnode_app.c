@@ -110,7 +110,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     uint8            TaskNum;
 
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
-    BPLib_QM_EventLoopAdvance(&BPNode_AppData.qtbl, BPNODE_NUM_JOBS_PER_CYCLE);
+    BPLib_QM_EventLoopAdvance(&BPNode_AppData.bplib_inst, BPNODE_NUM_JOBS_PER_CYCLE);
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
@@ -241,8 +241,8 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
     /* Initialize MEM and QM */
-    BPLib_QM_QueueTableInit(&BPNode_AppData.qtbl, BPNODE_BPLIB_MAX_EVENTS);
-    BPLib_MEM_PoolInit(&BPNode_AppData.qtbl.pool, (void *)BPNode_AppData.pool_mem, (size_t)BPNODE_BPLIB_MEM_POOL_LEN);
+    BPLib_QM_QueueTableInit(&BPNode_AppData.bplib_inst, BPNODE_BPLIB_MAX_EVENTS);
+    BPLib_MEM_PoolInit(&BPNode_AppData.bplib_inst.pool, (void *)BPNode_AppData.pool_mem, (size_t)BPNODE_BPLIB_MEM_POOL_LEN);
 
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);
@@ -460,8 +460,8 @@ void BPNode_AppExit(void)
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
 
     /* Cleanup QM and MEM */
-    BPLib_QM_QueueTableDestroy(&BPNode_AppData.qtbl);
-    BPLib_MEM_PoolDestroy(&BPNode_AppData.qtbl.pool);
+    BPLib_QM_QueueTableDestroy(&BPNode_AppData.bplib_inst);
+    BPLib_MEM_PoolDestroy(&BPNode_AppData.bplib_inst.pool);
 
     /* Signal to ADU child tasks to exit */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
