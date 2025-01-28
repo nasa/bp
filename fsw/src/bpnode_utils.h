@@ -26,15 +26,15 @@
 #ifndef BPNODE_UTILS_H
 #define BPNODE_UTILS_H
 
-/*
-** Include Files
-*/
+/* ======== */
+/* Includes */
+/* ======== */
 
 #include "cfe.h"
 
-/*
-** Exported Functions
-*/
+/* =================== */
+/* Function Prototypes */
+/* =================== */
 
 /**
  * \brief Validate Example Table
@@ -52,6 +52,5 @@
  *  \retval #BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE Validation failure
  */
 CFE_Status_t BPNode_TblValidationFunc(void *TblData);
-
 
 #endif /* BPNODE_UTILS_H */
