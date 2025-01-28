@@ -121,4 +121,19 @@
  */
 #define BPNODE_NUM_JOBS_PER_CYCLE           (40)
 
+/**
+ * \brief Size of BPLib's Memory Pool, in bytes
+ */
+#define BPNODE_MEM_POOL_LEN               (16834u)
+
+/**
+ * \brief Maximum number of simultaneous active BPLib generic worker jobs
+*/
+#define BPNODE_MAX_JOBS                   (256U)
+
+/**
+ * \brief Maximum number of simultaneous unsorted BPLib generic worker jobs
+ */
+#define BPNODE_MAX_UNSORTED_JOBS          (1024U)
+
 #endif /* BPNODE_PLATFORM_CFG_H */

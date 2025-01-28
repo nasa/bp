@@ -240,10 +240,6 @@ CFE_Status_t BPNode_AppInit(void)
     /* Zero out the global data structure */
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
-    /* Initialize MEM and QM */
-    BPLib_QM_QueueTableInit(&BPNode_AppData.bplib_inst, BPNODE_BPLIB_MAX_EVENTS);
-    BPLib_MEM_PoolInit(&BPNode_AppData.bplib_inst.pool, (void *)BPNode_AppData.pool_mem, (size_t)BPNODE_BPLIB_MEM_POOL_LEN);
-
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);
     if (BpStatus != BPLIB_SUCCESS)
@@ -284,6 +280,26 @@ CFE_Status_t BPNode_AppInit(void)
     {
         BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error initializing NC/AS, RC = %d", BpStatus);
+
+        return BpStatus;
+    }
+
+    /* Initialize MEM and QM */
+    BpStatus = BPLib_QM_QueueTableInit(&BPNode_AppData.bplib_inst, BPNODE_MAX_UNSORTED_JOBS);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_QM_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing QM, RC = %d", BpStatus);
+
+        return BpStatus;
+    }
+
+    BpStatus = BPLib_MEM_PoolInit(&BPNode_AppData.bplib_inst.pool, (void *)BPNode_AppData.pool_mem,
+        (size_t)BPNODE_MEM_POOL_LEN);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_MEM_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing MEM, RC = %d", BpStatus);
 
         return BpStatus;
     }

@@ -57,9 +57,6 @@
 /* ====== */
 #define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
 #define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
-#define BPNODE_BPLIB_MEM_POOL_LEN         (16834u)
-#define BPNODE_BPLIB_MAX_JOBS             (256U)
-#define BPNODE_BPLIB_MAX_EVENTS           (1024U)
 
 /*
 ** Type Definitions
@@ -102,7 +99,7 @@ typedef struct
 
     /* BPLib Instance State */
     BPLib_Instance_t            bplib_inst;
-    uint8                       pool_mem[BPNODE_BPLIB_MEM_POOL_LEN];
+    uint8                       pool_mem[BPNODE_MEM_POOL_LEN];
 
     BPA_ADUP_Table_t            *AduTblPtr;
     BPLib_PI_ChannelTable_t     *ChanTblPtr;
