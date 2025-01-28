@@ -54,7 +54,6 @@ typedef struct
 {
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
-    osal_id_t       WakeupSemId;
     uint32          PerfId;
     uint32          RunStatus;
 } BPNode_GenWorkerData_t;

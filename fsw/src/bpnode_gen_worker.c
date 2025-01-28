@@ -58,10 +58,6 @@ int32 BPNode_GenWorkerCreateTasks(void)
             return Status;
         }
 
-        /* Create wakeup semaphore for main task control */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKEUP_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].WakeupSemId, NameBuff, 0, 0);
-
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
