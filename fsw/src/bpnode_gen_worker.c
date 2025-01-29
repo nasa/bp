@@ -58,14 +58,6 @@ int32 BPNode_GenWorkerCreateTasks(void)
             return Status;
         }
 
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "[Generic Worker #%d]: Failed to create wakeup semaphore. Error = %d.",
-                        i, Status);
-            return Status;
-        }
-
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_GEN_WRKR_BASE_NAME, i);
         TaskPriority = BPNODE_ADU_IN_PRIORITY_BASE + i;
