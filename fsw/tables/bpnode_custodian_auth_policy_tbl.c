@@ -27,7 +27,99 @@
 #include "bpnode_tbl.h"
 
 BPLib_PDB_CustodianTable_t CustodianTable = {
-    .AuthCustodians = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
+    // .AuthCustodians = {"100.1", "100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1","100.1"}
+    .AuthCustodians =
+        {   // 0
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 1
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 2
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 3
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 4
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 5
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 6
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 7
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 8
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+            // 9
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,}
+        }
 };
 
 /*
