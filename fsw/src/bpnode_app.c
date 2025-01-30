@@ -475,10 +475,6 @@ void BPNode_AppExit(void)
 
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
 
-    /* Cleanup QM and MEM */
-    BPLib_QM_QueueTableDestroy(&BPNode_AppData.bplib_inst);
-    BPLib_MEM_PoolDestroy(&BPNode_AppData.bplib_inst.pool);
-
     /* Signal to ADU child tasks to exit */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
@@ -503,6 +499,10 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
+
+    /* Cleanup QM and MEM */
+    BPLib_QM_QueueTableDestroy(&BPNode_AppData.bplib_inst);
+    BPLib_MEM_PoolDestroy(&BPNode_AppData.bplib_inst.pool);
 
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
