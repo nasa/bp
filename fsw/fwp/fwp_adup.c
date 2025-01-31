@@ -86,7 +86,8 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 
         BPLib_AS_Increment(0, ADU_COUNT_RECEIVED, 1);
 
-        /* TODO pass to PI */
+        /* Pass ADU to PI */
+        Status =  BPLib_PI_Ingress(&BPNode_AppData.bplib_inst, ChanId, AduPtr, Size);
     }
     else 
     {
