@@ -26,20 +26,139 @@
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "bpnode_tbl.h"
 
-
 BPLib_PDB_SrcLatencyTable_t SrcLatencyTable = {
     .LatencySet = {
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-        {.SrcEID = "100.1", .Latency = 0, .Spare = 0},
-    } 
+        // 0
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 1
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 2
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 3
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 4
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 5
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 6
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 7
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 8
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+        // 9
+        {.SrcEID =
+            {.Scheme       = BPLIB_EID_SCHEME_IPN,
+             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MinAllocator = 0,
+             .MaxNode      = 100, /* EID 100.1 */
+             .MinNode      = 100,
+             .MaxService   = 1,
+             .MinService   = 1,},
+        .Latency = 0,
+        .Spare = 0
+        },
+    }
 };
 
 /*
