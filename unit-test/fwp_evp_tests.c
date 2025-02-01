@@ -164,7 +164,7 @@ void Test_BPA_EVP_SendEvent_Nominal(void)
     /* Verify that the EVS function that is being proxied, was called */
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, stubCount++);
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[4].EventType, CFE_EVS_EventType_ERROR);    
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[4].EventType, CFE_EVS_EventType_INFORMATION);
 
 }
 
