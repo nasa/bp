@@ -219,12 +219,8 @@ void BPNode_AduOut_AppMain(void)
                 AppState = BPLib_NC_GetAppState(ChanId);
                 if (AppState == BPLIB_NC_APP_STATE_STARTED)
                 {
-                    /*
-                    ** TODO
-                    ** Poll bundle from PI out queue
-                    ** If a bundle was received:
-                    **      BPA_ADUP_Out((void *) Buf, ChanId);
-                    */
+                    /* Poll bundle from PI out queue */
+                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
                 }
 
                 AdusEgressed++;

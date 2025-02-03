@@ -110,7 +110,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     uint8            TaskNum;
 
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
-    BPLib_QM_SortJobs(&BPNode_AppData.bplib_inst, BPNODE_NUM_JOBS_PER_CYCLE);
+    BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
@@ -285,7 +285,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Initialize MEM and QM */
-    BpStatus = BPLib_QM_QueueTableInit(&BPNode_AppData.bplib_inst, BPNODE_MAX_UNSORTED_JOBS);
+    BpStatus = BPLib_QM_QueueTableInit(&BPNode_AppData.BplibInst, BPNODE_MAX_UNSORTED_JOBS);
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_QM_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
@@ -294,7 +294,7 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
-    BpStatus = BPLib_MEM_PoolInit(&BPNode_AppData.bplib_inst.pool, (void *)BPNode_AppData.pool_mem,
+    BpStatus = BPLib_MEM_PoolInit(&BPNode_AppData.BplibInst.pool, (void *)BPNode_AppData.pool_mem,
         (size_t)BPNODE_MEM_POOL_LEN);
     if (BpStatus != BPLIB_SUCCESS)
     {
@@ -501,8 +501,8 @@ void BPNode_AppExit(void)
     }
 
     /* Cleanup QM and MEM */
-    BPLib_QM_QueueTableDestroy(&BPNode_AppData.bplib_inst);
-    BPLib_MEM_PoolDestroy(&BPNode_AppData.bplib_inst.pool);
+    BPLib_QM_QueueTableDestroy(&BPNode_AppData.BplibInst);
+    BPLib_MEM_PoolDestroy(&BPNode_AppData.BplibInst.pool);
 
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);

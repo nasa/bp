@@ -87,11 +87,18 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
         BPLib_AS_Increment(0, ADU_COUNT_RECEIVED, 1);
 
         /* Pass ADU to PI */
-        Status =  BPLib_PI_Ingress(&BPNode_AppData.bplib_inst, ChanId, AduPtr, Size);
+        Status = BPLib_PI_Ingress(&BPNode_AppData.BplibInst, ChanId, AduPtr, Size);
+
+        if (Status != BPLIB_SUCCESS)
+        {
+            // Do something TODO
+        }
     }
     else 
     {
         Status = BPLIB_ERROR;
+
+        BPLib_AS_Increment(0, BUNDLE_COUNT_GENERATED_REJECTED, 1);
 
         BPLib_EM_SendEvent(BPNODE_ADU_IN_TOO_BIG_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d",
@@ -102,8 +109,19 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 }
 
 /* Send out an ADU */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 {
+    BPLib_Status_t Status;
+    CFE_MSG_Message_t AduPtr;
+    size_t AduSize;
+
+    Status = BPLib_PI_Egress(&BPNode_AppData.BplibInst, ChanId, (void *) &AduPtr, &AduSize, Timeout);
+
+    if (Status != BPLIB_SUCCESS)
+    {
+        // TODO do something
+    }
+
     /* Add cFS header to ADU */
     if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
     {
@@ -111,7 +129,7 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
     }
 
     /* Send ADU onto Software Bus */
-    CFE_SB_TransmitMsg((CFE_MSG_Message_t *) AduPtr, false);
+    CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &AduPtr, false);
 
     BPLib_AS_Increment(0, ADU_COUNT_DELIVERED, 1);
 

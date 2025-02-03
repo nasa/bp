@@ -124,7 +124,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout);
 
 /**
  * \brief FWP ADU Proxy Add Application
