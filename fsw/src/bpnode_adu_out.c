@@ -142,6 +142,10 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
 
+    /* Initialize generic output buffer with a dummy msgid and max possible size */
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.AduOutData[*ChanId].OutBuf.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(1), sizeof(BPNode_AduOutBuf_t));
+
     BPNode_AppData.AduOutData[*ChanId].PerfId = BPNODE_ADU_OUT_PERF_ID_BASE + *ChanId;
 
     /* Start performance log */

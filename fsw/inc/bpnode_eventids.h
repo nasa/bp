@@ -137,5 +137,6 @@
 #define BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID  107
 #define BPNODE_QM_INIT_ERR_EID                  108
 #define BPNODE_MEM_INIT_ERR_EID                 109
+#define BPNODE_ADU_OUT_PI_ERR_EID               110
 
 #endif /* BPNODE_EVENTS_H */
