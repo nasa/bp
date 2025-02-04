@@ -29,9 +29,39 @@
 
 BPLib_ARP_CRSTable_t CRSTable = {
     .CRS_Set = {
-        {.DestEID = "100.1", .TimeTrigger = 2, .SizeTrigger = 10},
-        {.DestEID = "100.2", .TimeTrigger = 2, .SizeTrigger = 10},
-        {.DestEID = "100.3", .TimeTrigger = 2, .SizeTrigger = 10},
+        {.DestEID            =    // "100.1"
+            {
+                .Allocator    = 0,
+                .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                .Node         = 100,
+                .Scheme       = BPLIB_EID_SCHEME_IPN,
+                .Service      = 1
+            },
+         .TimeTrigger = 2,
+         .SizeTrigger = 10
+        },
+        {.DestEID            =    // "100.2"
+            {
+                .Allocator    = 0,
+                .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                .Node         = 100,
+                .Scheme       = BPLIB_EID_SCHEME_IPN,
+                .Service      = 2
+            },
+         .TimeTrigger = 2,
+         .SizeTrigger = 10
+        },
+        {.DestEID            =    // "100.3"
+            {
+                .Allocator    = 0,
+                .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                .Node         = 100,
+                .Scheme       = BPLIB_EID_SCHEME_IPN,
+                .Service      = 3
+            },
+         .TimeTrigger = 2,
+         .SizeTrigger = 10
+        },
     }
 };
 
