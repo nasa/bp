@@ -91,7 +91,9 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 
         if (Status != BPLIB_SUCCESS)
         {
-            // Do something TODO
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_IN_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[ADU In #%d]: Failed to ingress an ADU. Error = %d.",
+                                ChanId, Status); 
         }
     }
     else 
@@ -144,7 +146,7 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
     /* Only report non-timeout errors */
     else if (Status != BPLIB_PI_TIMEOUT)
     {
-        BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_OUT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[ADU Out #%d]: Failed to egress an ADU. Error = %d.",
                             ChanId, Status);
     }
