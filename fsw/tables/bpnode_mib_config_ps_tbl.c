@@ -30,8 +30,18 @@
 BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
     .MIB_PS_Set = {
         {
-            .SrcEID                                 = "100.1",
-            .EIDPattern                             = "ipn",
+            // .SrcEID                                 = "100.1",
+            // .EIDPattern                             = "ipn",
+            .SrcEIDs = {
+                {.Scheme       = BPLIB_EID_SCHEME_IPN,
+                .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+                .MinAllocator = 0,
+                .MaxNode      = 100, /* EID 100.1 */
+                .MinNode      = 100,
+                .MaxService   = 1,
+                .MinService   = 1,}
+            },
             .ParamSetMaxLifetime                    = 1000, 
             .ParamSetMaxBSRGenerationRate           = 20000,
             .ParamSetMaxCBRGenerationRate           = 20000,
@@ -48,8 +58,18 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
             .Spare                                  = 0,
         },
         {
-            .SrcEID                                 = "101.1",
-            .EIDPattern                             = "ipn",
+            // .SrcEID                                 = "101.1",
+            // .EIDPattern                             = "ipn",
+            .SrcEIDs = {
+                {.Scheme       = BPLIB_EID_SCHEME_IPN,
+                .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+                .MinAllocator = 0,
+                .MaxNode      = 101, /* EID 101.1 */
+                .MinNode      = 101,
+                .MaxService   = 1,
+                .MinService   = 1,}
+            },
             .ParamSetMaxLifetime                    = 1000, 
             .ParamSetMaxBSRGenerationRate           = 20000,
             .ParamSetMaxCBRGenerationRate           = 20000,
@@ -66,8 +86,18 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
             .Spare                                  = 0,
         },
         {
-            .SrcEID                                 = "102.1",
-            .EIDPattern                             = "ipn",
+            // .SrcEID                                 = "102.1",
+            // .EIDPattern                             = "ipn",
+            .SrcEIDs = {
+                {.Scheme       = BPLIB_EID_SCHEME_IPN,
+                .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+                .MinAllocator = 0,
+                .MaxNode      = 102, /* EID 102.1 */
+                .MinNode      = 102,
+                .MaxService   = 1,
+                .MinService   = 1,}
+            },
             .ParamSetMaxLifetime                    = 1000, 
             .ParamSetMaxBSRGenerationRate           = 20000,
             .ParamSetMaxCBRGenerationRate           = 20000,
