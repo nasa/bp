@@ -84,7 +84,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
             /* TODO remove header */
         }
 
-        BPLib_AS_Increment(0, ADU_COUNT_RECEIVED, 1);
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1);
 
         /* TODO pass to PI */
     }
@@ -112,7 +112,7 @@ BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
     /* Send ADU onto Software Bus */
     CFE_SB_TransmitMsg((CFE_MSG_Message_t *) AduPtr, false);
 
-    BPLib_AS_Increment(0, ADU_COUNT_DELIVERED, 1);
+    BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
 
     return BPLIB_SUCCESS;
 }
