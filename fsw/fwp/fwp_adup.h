@@ -113,13 +113,14 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
  * \brief FWP ADU Proxy Out
  *
  *  \par Description
- *       Sends an ADU out to the receiving application
+ *       Receives an ADU from PI and sends it onto the software bus, with optional header
+ *       wrapping.
  *
  *  \par Assumptions, External Events, and Notes:
- *       - The pointer type is void to allow implementations with different pointer types
+ *       None
  * 
- *  \param[in] AduPtr Pointer to the ADU
  *  \param[in] ChanId Channel ID
+ *  \param[in] Timeout Total time to pend on channel out queue (in milliseconds)
  * 
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful

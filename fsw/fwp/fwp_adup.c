@@ -119,7 +119,7 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
     /* Get an ADU from PI */
     Status = BPLib_PI_Egress(&BPNode_AppData.BplibInst, ChanId, 
                             (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, 
-                            &AduSize, Timeout);
+                            &AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
 
     if (Status == BPLIB_SUCCESS)
     {
