@@ -99,50 +99,122 @@ void Test_BPA_ADUP_ValidateConfigTbl_InvRecvFrm(void)
 /* Test BPA_ADUP_In */
 void Test_BPA_ADUP_In_Nominal(void)
 {
-    // CFE_SB_Buffer_t Buf;
-    // uint8_t ChanId = 0;
-    // CFE_MSG_Size_t Size = 10;
+    CFE_SB_Buffer_t Buf;
+    uint8_t ChanId = 0;
+    CFE_MSG_Size_t Size = 10;
 
-    // /* Set global data */
-    // BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 100;
+    /* Set global data */
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 100;
 
-    // UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    // UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
     
-    // Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
+    UtAssert_STUB_COUNT(BPLib_PI_Ingress, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test BPA_ADUP_In when the payload is too big*/
 void Test_BPA_ADUP_In_SizeErr(void)
 {
-    // CFE_SB_Buffer_t Buf;
-    // uint8_t ChanId = 0;
-    // CFE_MSG_Size_t Size = 100;
+    CFE_SB_Buffer_t Buf;
+    uint8_t ChanId = 0;
+    CFE_MSG_Size_t Size = 100;
 
-    // /* Set global data */
-    // BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 10;
+    /* Set global data */
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 10;
 
-    // UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
 
-    // UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_ERROR);
+    UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_ERROR);
 
-    // UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_IN_TOO_BIG_ERR_EID);
-    // UtAssert_STRINGBUF_EQ("[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-    //                         context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_IN_TOO_BIG_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 
-    // UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
+    UtAssert_STUB_COUNT(BPLib_PI_Ingress, 0);
 }
 
-/* Test BPA_ADUP_Out */
+/* Test BPA_ADUP_In when ingress fails */
+void Test_BPA_ADUP_In_IngressErr(void)
+{
+    CFE_SB_Buffer_t Buf;
+    uint8_t ChanId = 0;
+    CFE_MSG_Size_t Size = 10;
+
+    /* Set global data */
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = 100;
+
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PI_Ingress), BPLIB_NULL_PTR_ERROR);
+
+    UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_NULL_PTR_ERROR);
+
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_PI_IN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[ADU In #%d]: Failed to ingress an ADU. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
+    UtAssert_STUB_COUNT(BPLib_PI_Ingress, 1);
+}
+
+/* Test BPA_ADUP_Out in nominal case with no wrapping */
 void Test_BPA_ADUP_Out_Nominal(void)
 {
-    // CFE_SB_Buffer_t Buf;
-    // uint8_t ChanId = 0;
+    uint8_t ChanId = 0;
 
-    // UtAssert_INT32_EQ(BPA_ADUP_Out(&Buf, ChanId), BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
-    // Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+/* Test BPA_ADUP_Out when wrapping is true */
+void Test_BPA_ADUP_Out_Wrapping(void)
+{
+    uint8_t ChanId = 0;
+
+    BPNode_AppData.AduOutData[ChanId].AduWrapping = true;
+
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
+    
+    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
+    UtAssert_STUB_COUNT(CFE_MSG_SetMsgId, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+/* Test BPA_ADUP_Out when egress fails */
+void Test_BPA_ADUP_Out_EgressErr(void)
+{
+    uint8_t ChanId = 0;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PI_Egress), BPLIB_ERROR);
+
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_ERROR);
+    
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_PI_OUT_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to egress an ADU. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+}
+
+/* Test BPA_ADUP_Out when PI times out with nothing in the queue */
+void Test_BPA_ADUP_Out_Timeout(void)
+{
+    uint8_t ChanId = 0;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_PI_Egress), BPLIB_PI_TIMEOUT);
+
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_PI_TIMEOUT);
+    
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+    UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 /* Test BPA_ADUP_AddApplication */
@@ -400,9 +472,13 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPA_ADUP_In_Nominal);
     ADD_TEST(Test_BPA_ADUP_In_SizeErr);
+    ADD_TEST(Test_BPA_ADUP_In_IngressErr);
 
     ADD_TEST(Test_BPA_ADUP_Out_Nominal);
-    
+    ADD_TEST(Test_BPA_ADUP_Out_Wrapping);
+    ADD_TEST(Test_BPA_ADUP_Out_EgressErr);
+    ADD_TEST(Test_BPA_ADUP_Out_Timeout);
+
     ADD_TEST(Test_BPA_ADUP_AddApplication_Nominal);
     ADD_TEST(Test_BPA_ADUP_AddApplication_BadId);
     ADD_TEST(Test_BPA_ADUP_AddApplication_BadState);
