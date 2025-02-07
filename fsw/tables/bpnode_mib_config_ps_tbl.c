@@ -33,7 +33,7 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
             // .SrcEID                                 = "100.1",
             // .EIDPattern                             = "ipn",
             .SrcEIDs = {
-                {.Scheme       = BPLIB_EID_SCHEME_IPN,
+                {.Scheme      = BPLIB_EID_SCHEME_IPN,
                 .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
                 .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
                 .MinAllocator = 0,
@@ -123,4 +123,4 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(MIBConfigPSTable, BPNODE.MIBConfigPSTable, MIB pre source Table, bpnode_mib_ps.tbl)
+CFE_TBL_FILEDEF(MIBConfigPSTable, BPNODE.MIBConfigPSTable, MIB per source Table, bpnode_mib_ps.tbl)
