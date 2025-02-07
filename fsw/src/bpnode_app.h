@@ -55,14 +55,17 @@
 /* ====== */
 /* Macros */
 /* ====== */
-#define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
-#define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
+#define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
+#define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
+#define BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for ADU In exit semaphore take, in milliseconds */
+#define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
+#define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
 
 /*
 ** Type Definitions
 */
 
-/** 
+/**
 ** \brief Table Data
 */
 typedef struct
@@ -75,7 +78,7 @@ typedef struct
     CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
 } BPNode_TblNameParams_t;
 
-/** 
+/**
 ** \brief Global Data
 */
 typedef struct
@@ -86,16 +89,16 @@ typedef struct
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
     BPNode_TblNameParams_t  *TblNameParamsArr;
-    
+
     /* Telemetry HK Packet structures*/
     BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
 
     BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
-    BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */        
+    BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */
 
-    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */        
+    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */
 
     /* BPLib Instance State */
     BPLib_Instance_t            BplibInst;
@@ -112,7 +115,7 @@ typedef struct
     BPLib_PDB_ReportToTable_t   *ReportTblPtr;
     BPLib_PDB_SrcAuthTable_t    *AuthTblPtr;
     BPLib_PDB_SrcLatencyTable_t *LatTblPtr;
-    BPLib_STOR_StorageTable_t   *StorTblPtr;    
+    BPLib_STOR_StorageTable_t   *StorTblPtr;
 } BPNode_AppData_t;
 
 

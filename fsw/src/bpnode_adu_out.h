@@ -68,6 +68,7 @@ typedef struct
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
     osal_id_t       WakeupSemId;
+    osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
     bool            AduWrapping;
@@ -104,7 +105,7 @@ int32 BPNode_AduOutCreateTasks(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Pointer to channel ID to set
  *
  *  \return Validation status
@@ -132,7 +133,7 @@ void BPNode_AduOut_AppMain(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID for this task
  */
 void BPNode_AduOut_TaskExit(uint8 ChanId);

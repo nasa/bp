@@ -458,6 +458,11 @@ void Test_BPNode_AppInit_AutoAddAppFail(void)
 void Test_BPNode_AppExit_Nominal(void)
 {
     uint8 i;
+    uint8 NumAduTasks;
+    uint8 NumClaTasks;
+
+    NumAduTasks = BPLIB_MAX_NUM_CHANNELS * 2; /* ADU In and Out tasks */
+    NumClaTasks = BPLIB_MAX_NUM_CONTACTS * 2; /* CLA In and Out tasks */
 
     BPNode_AppExit();
 
@@ -466,6 +471,20 @@ void Test_BPNode_AppExit_Nominal(void)
         UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
         UtAssert_UINT32_EQ(BPNode_AppData.AduInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
     }
+
+    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    {
+        UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+        UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+    }
+
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    {
+        UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+    }
+
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, NumAduTasks + NumClaTasks + BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 1);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_EXIT_CRIT_EID);
     UtAssert_STRINGBUF_EQ("App terminating, error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
