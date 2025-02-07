@@ -36,6 +36,8 @@ set(APP_TABLE_FILES
   fsw/tables/bpnode_storage_tbl.c
 )
 
+include_directories(${MISSION_SOURCE_DIR}/dtn_defs)
+
 # Create the app module
 add_cfe_app(bpnode ${APP_SRC_FILES})
 

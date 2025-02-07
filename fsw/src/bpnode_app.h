@@ -98,7 +98,7 @@ typedef struct
     BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */        
 
     /* BPLib Instance State */
-    BPLib_Instance_t            bplib_inst;
+    BPLib_Instance_t            BplibInst;
     uint8                       pool_mem[BPNODE_MEM_POOL_LEN];
 
     BPA_ADUP_Table_t            *AduTblPtr;
