@@ -101,6 +101,10 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
             CfeEventType = CFE_EVS_EventType_INFORMATION;
             break;
 
+        case BPLib_EM_EventType_WARNING:
+            CfeEventType = CFE_EVS_EventType_INFORMATION;
+            break;
+
         case BPLib_EM_EventType_CRITICAL:
             CfeEventType = CFE_EVS_EventType_CRITICAL;
             break;

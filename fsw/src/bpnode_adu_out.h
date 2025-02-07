@@ -39,17 +39,28 @@
 
 #define BPNODE_ADU_OUT_SEM_BASE_NAME        "BPN_ADU_OUT"    /** \brief Semaphore base name */
 #define BPNODE_ADU_OUT_BASE_NAME            "BPNODE.ADU_OUT" /** \brief Task base name */
-#define BPNODE_ADU_IN_PI_Q_TIMEOUT          (1000u)          /** \brief PI queue timeout */
+#define BPNODE_ADU_IN_PI_Q_TIMEOUT          (100u)           /** \brief PI queue timeout */
 #define BPNODE_ADU_OUT_SEM_INIT_WAIT_MSEC   (2000u)          /** \brief Wait time for init semaphore take, in milliseconds */
 #define BPNODE_ADU_OUT_SEM_WAKEUP_WAIT_MSEC (1100u)          /** \brief Wait time for wakeup semaphore take, in milliseconds */
 #define BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE   (10u)            /** \brief Maximum number of ADUs to egress per wakeup cycle */
+#define BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES    (1048u)
 
 
 /*
 ** Type Definitions
 */
 
-/**
+/** 
+** \brief Generic buffer for outgoing ADUs
+*/
+typedef struct 
+{
+    CFE_MSG_TelemetryHeader_t TelemetryHeader;
+    uint8 Payload[BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES];
+} BPNode_AduOutBuf_t;
+
+
+/** 
 ** \brief ADU Out Task Data
 */
 typedef struct
@@ -62,6 +73,7 @@ typedef struct
     uint32          RunStatus;
     bool            AduWrapping;
     CFE_SB_MsgId_t  SendToMsgId;
+    BPNode_AduOutBuf_t  OutBuf;
 } BPNode_AduOutData_t;
 
 

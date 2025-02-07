@@ -159,6 +159,10 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
 
+    /* Initialize generic output buffer with a dummy msgid and max possible size */
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.AduOutData[*ChanId].OutBuf.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(1), sizeof(BPNode_AduOutBuf_t));
+
     BPNode_AppData.AduOutData[*ChanId].PerfId = BPNODE_ADU_OUT_PERF_ID_BASE + *ChanId;
 
     /* Start performance log */
@@ -236,12 +240,8 @@ void BPNode_AduOut_AppMain(void)
                 AppState = BPLib_NC_GetAppState(ChanId);
                 if (AppState == BPLIB_NC_APP_STATE_STARTED)
                 {
-                    /*
-                    ** TODO
-                    ** Poll bundle from PI out queue
-                    ** If a bundle was received:
-                    **      BPA_ADUP_Out((void *) Buf, ChanId);
-                    */
+                    /* Poll bundle from PI out queue */
+                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
                 }
 
                 AdusEgressed++;

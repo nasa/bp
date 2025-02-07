@@ -57,6 +57,7 @@
 #define BPNODE_ADU_IN_TOO_BIG_ERR_EID           27
 #define BPNODE_ADU_IN_INIT_SEM_ERR_EID          28
 #define BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID        29
+<<<<<<< HEAD
 #define BPNODE_ADU_IN_EXIT_SEM_ERR_EID          30
 #define BPNODE_ADU_IN_CREATE_ERR_EID            31
 #define BPNODE_ADU_IN_RUN_ERR_EID               32
@@ -138,5 +139,9 @@
 #define BPNODE_CLA_IN_SEM_TK_TIMEOUT_INF_EID    108
 #define BPNODE_CLA_OUT_SEM_TK_TIMEOUT_INF_EID   109
 #define BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID  110
+#define BPNODE_QM_INIT_ERR_EID                  111
+#define BPNODE_MEM_INIT_ERR_EID                 112
+#define BPNODE_ADU_OUT_PI_OUT_ERR_EID           113
+#define BPNODE_ADU_OUT_PI_IN_ERR_EID            114
 
 #endif /* BPNODE_EVENTS_H */
