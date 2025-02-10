@@ -51,7 +51,7 @@
 ** Type Definitions
 */
 
-/** 
+/**
 ** \brief ADU In Task Data
 */
 typedef struct
@@ -59,6 +59,7 @@ typedef struct
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
     osal_id_t       WakeupSemId;
+    osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
     CFE_SB_PipeId_t AduPipe;
@@ -98,7 +99,7 @@ int32 BPNode_AduInCreateTasks(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Pointer to channel ID to set
  *
  *  \return Validation status
@@ -126,7 +127,7 @@ void BPNode_AduIn_AppMain(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID for this task
  */
 void BPNode_AduIn_TaskExit(uint8 ChanId);

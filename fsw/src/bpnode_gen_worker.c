@@ -58,6 +58,34 @@ int32 BPNode_GenWorkerCreateTasks(void)
             return Status;
         }
 
+        /* Create wakeup semaphore for main task control */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKEUP_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].WakeupSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
+                        "[Generic Worker #%d]: Failed to create wakeup semaphore. Error = %d.",
+                        i, Status);
+            return Status;
+        }
+
+        /* Create exit semaphore so main task knows when child finished shutdown */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].ExitSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_EXIT_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[Generic Worker #%d]: Failed to create exit semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_GEN_WRKR_BASE_NAME, i);
         TaskPriority = BPNODE_ADU_IN_PRIORITY_BASE + i;
@@ -208,6 +236,9 @@ void BPNode_GenWorker_TaskExit(uint8 WorkerId)
 
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+
+    /* Signal to the main task that the child task has exited */
+    (void) OS_BinSemGive(BPNode_AppData.GenWorkerData[WorkerId].ExitSemId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();
