@@ -35,7 +35,7 @@ BPLib_CLA_ContactsTable_t ContactsTable =
             .ContactID              = 0, /*Contact ID, uint32*/
             .DestEIDs               = {{.Scheme       = BPLIB_EID_SCHEME_IPN,
                                         .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                                        .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+                                        .MaxAllocator = 0,
                                         .MinAllocator = 0,
                                         .MaxNode      = 100, /* Destination EID 100.1 */
                                         .MinNode      = 100,
@@ -43,7 +43,7 @@ BPLib_CLA_ContactsTable_t ContactsTable =
                                         .MinService   = 1,},
                                        {.Scheme       = BPLIB_EID_SCHEME_DTN,
                                         .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                                        .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+                                        .MaxAllocator = 0,
                                         .MinAllocator = 0,
                                         .MaxNode      = 101, /* Destination EID 101.2 */
                                         .MinNode      = 101,

@@ -36,7 +36,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
         {   // 0
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -45,7 +45,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 1
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -54,7 +54,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 2
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -63,7 +63,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 3
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -72,7 +72,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 4
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -81,7 +81,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 5
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -90,7 +90,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 6
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -99,7 +99,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 7
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -108,7 +108,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 8
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
@@ -117,7 +117,7 @@ BPLib_PDB_SrcAuthTable_t SrcAuthTable = {
             // 9
             {.Scheme       = BPLIB_EID_SCHEME_IPN,
              .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-             .MaxAllocator = BPLIB_EID_PATTERN_MAX_ALLOCATOR,
+             .MaxAllocator = 0,
              .MinAllocator = 0,
              .MaxNode      = 100, /* EID 100.1 */
              .MinNode      = 100,
