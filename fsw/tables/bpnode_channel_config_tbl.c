@@ -45,28 +45,28 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Version            = 7,
                     .CrcType            = 1,
                     .BundleProcFlags    = 4,
-                    .DestEID            =    // "100.1"
+                    .DestEID            =    // "ipn:100.1"
                         {
-                            .Allocator    = 0,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Node         = 100,
                             .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
                             .Service      = 1
                         },
-                    .SrcEID             =   // "101.1",
+                    .SrcEID             =   // "ipn:101.1",
                         {
-                            .Allocator    = 0,
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
                             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
                             .Node         = 101,
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
                             .Service      = 1
                         },
-                    .ReportToEID        =   // "100.1"
+                    .ReportToEID        =   // "ipn:100.1"
                         {
-                            .Allocator    = 0,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Node         = 100,
                             .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
                             .Service      = 1
                         },
                     .LifeTime           = 10000
@@ -126,28 +126,28 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Version            = 7,
                     .CrcType            = 1,
                     .BundleProcFlags    = 4,
-                    .DestEID            =    // "100.1"
+                    .DestEID            =    // ipn:"100.1"
                         {
-                            .Allocator    = 0,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Node         = 100,
                             .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
                             .Service      = 1
                         },
-                    .SrcEID             =   // "101.1",
+                    .SrcEID             =   // "ipn:101.1",
                         {
-                            .Allocator    = 0,
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
                             .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
                             .Node         = 101,
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
                             .Service      = 1
                         },
-                    .ReportToEID        =   // "100.1"
+                    .ReportToEID        =   // "ipn:100.1"
                         {
-                            .Allocator    = 0,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Node         = 100,
                             .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
                             .Service      = 1
                         },
                     .LifeTime           = 10000
