@@ -41,7 +41,7 @@ void Test_BPNode_GenWorkerCreateTasks_Nominal(void)
     UtAssert_INT32_EQ(BPNode_GenWorkerCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPNODE_NUM_GEN_WRKR_TASKS * 2);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, BPNODE_NUM_GEN_WRKR_TASKS * 3); /* Each task create an init, wakeup, and exit sempahore */
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPNODE_NUM_GEN_WRKR_TASKS);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPNODE_NUM_GEN_WRKR_TASKS);
 }
@@ -76,6 +76,20 @@ void Test_BPNode_GenWorkerCreateTasks_WakeupSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
 
+void Test_BPNode_GenWorkerCreateTasks_ExitSemErr(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 3, OS_SEM_FAILURE);
+
+    UtAssert_INT32_EQ(BPNode_GenWorkerCreateTasks(), OS_SEM_FAILURE);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    BPNode_Test_Verify_Event(0, BPNODE_GEN_WRKR_EXIT_SEM_ERR_EID, "[Generic Worker #%d]: Failed to create exit semaphore, %s. Error = %d.");
+
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
+    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
+}
+
 /* Test BPNode_GenWorkerCreateTasks when the child task creation fails */
 void Test_BPNode_GenWorkerCreateTasks_TaskCrErr(void)
 {
@@ -87,7 +101,7 @@ void Test_BPNode_GenWorkerCreateTasks_TaskCrErr(void)
     UtAssert_STRINGBUF_EQ("[Generic Worker #%d]: Failed to create child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -103,7 +117,7 @@ void Test_BPNode_GenWorkerCreateTasks_TakeSemErr(void)
     UtAssert_STRINGBUF_EQ("[Generic Worker #%d]: Task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }
@@ -217,55 +231,7 @@ void Test_BPNode_GenWorker_AppMain_Nominal(void)
     UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[WorkerId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    /* TODO check the relevant BPLib JS API stub call count (rather than OS_TaskDelay) */
-    UtAssert_STUB_COUNT(OS_TaskDelay, BPNODE_NUM_JOBS_PER_CYCLE);
-    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
-}
-
-/* Test BPNode_GenWorker_AppMain when semaphore take fails */
-void Test_BPNode_GenWorker_AppMain_SemErr(void)
-{
-    uint8 WorkerId = 0;
-    CFE_ES_TaskId_t TaskId = 1234;
-
-    /* Test setup */
-    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_ERROR);
-    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-
-    BPNode_AppData.GenWorkerData[WorkerId].TaskId = TaskId;
-
-    BPNode_GenWorker_AppMain();
-
-    UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[WorkerId].RunStatus,
-                                                        CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3);
-    UtAssert_STUB_COUNT(OS_TaskDelay, 0);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_GEN_WRKR_SEM_TK_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Generic Worker #%d]: Failure to take semaphore. Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
-                            context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-}
-
-void Test_BPNode_GenWorker_AppMain_WakeupSemTimeout(void)
-{
-    uint8 WorkerId = 0;
-    CFE_ES_TaskId_t TaskId = 1234;
-
-    /* Test setup */
-    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
-    UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-
-    BPNode_AppData.GenWorkerData[WorkerId].TaskId = TaskId;
-
-    BPNode_GenWorker_AppMain();
-
-    UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[WorkerId].RunStatus,
-                                                        CFE_ES_RunStatus_APP_RUN);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[1].EventID, BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID);
-    UtAssert_STRINGBUF_EQ("[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore", BPLIB_EM_EXPANDED_EVENT_SIZE,
-                            context_BPLib_EM_SendEvent[1].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+    UtAssert_STUB_COUNT(BPLib_QM_RunJob, 1);
 }
 
 /* Test BPNode_GenWorker_AppMain when initialization failed but channel ID is known */
@@ -326,6 +292,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_InitSemErr);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_WakeupSemErr);
+    ADD_TEST(Test_BPNode_GenWorkerCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_GenWorkerCreateTasks_TakeSemErr);
 
@@ -334,8 +301,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_GenWorker_TaskInit_MatchIdErr);
 
     ADD_TEST(Test_BPNode_GenWorker_AppMain_Nominal);
-    ADD_TEST(Test_BPNode_GenWorker_AppMain_SemErr);
-    ADD_TEST(Test_BPNode_GenWorker_AppMain_WakeupSemTimeout);
     ADD_TEST(Test_BPNode_GenWorker_AppMain_InitErr);
     ADD_TEST(Test_BPNode_GenWorker_AppMain_WorkerIdErr);
 

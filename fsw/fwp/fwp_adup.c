@@ -86,7 +86,15 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 
         BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1);
 
-        /* TODO pass to PI */
+        /* Pass ADU to PI */
+        Status = BPLib_PI_Ingress(&BPNode_AppData.BplibInst, ChanId, AduPtr, Size);
+
+        if (Status != BPLIB_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_IN_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[ADU In #%d]: Failed to ingress an ADU. Error = %d.",
+                                ChanId, Status); 
+        }
     }
     else 
     {
@@ -101,20 +109,47 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 }
 
 /* Send out an ADU */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 {
-    /* Add cFS header to ADU */
-    if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
+    BPLib_Status_t Status;
+    size_t         AduSize;
+
+    /* Get an ADU from PI */
+    Status = BPLib_PI_Egress(&BPNode_AppData.BplibInst, ChanId, 
+                            (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, 
+                            &AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
+
+    if (Status == BPLIB_SUCCESS)
     {
-        /* TODO add header */
+        /* Add cFS header to ADU */
+        if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
+        {
+            CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), 
+                                        BPNode_AppData.AduOutData[ChanId].SendToMsgId);
+            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), 
+                                                AduSize + sizeof(CFE_MSG_TelemetryHeader_t));
+
+            /* Send wrapped ADU onto Software Bus */
+            CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), true);
+        }
+        /* Don't add cFS header, assume it has one already */
+        else 
+        {
+            /* Send ADU onto Software Bus */
+            CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, false);            
+        }
+
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
+    }
+    /* Only report non-timeout errors */
+    else if (Status != BPLIB_PI_TIMEOUT)
+    {
+        BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_OUT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[ADU Out #%d]: Failed to egress an ADU. Error = %d.",
+                            ChanId, Status);
     }
 
-    /* Send ADU onto Software Bus */
-    CFE_SB_TransmitMsg((CFE_MSG_Message_t *) AduPtr, false);
-
-    BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
-
-    return BPLIB_SUCCESS;
+    return Status;
 }
 
 /* Add a new application's configurations */

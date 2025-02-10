@@ -109,17 +109,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
 
-    /* Notify generic worker task(s) to start wakeup */
-    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error giving Generic Worker #%d its wakeup semaphore, RC = %d",
-                                TaskNum, OsStatus);
-        }
-    }
+    /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
+    BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
@@ -289,6 +280,26 @@ CFE_Status_t BPNode_AppInit(void)
     {
         BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error initializing NC/AS, RC = %d", BpStatus);
+
+        return BpStatus;
+    }
+
+    /* Initialize MEM and QM */
+    BpStatus = BPLib_QM_QueueTableInit(&BPNode_AppData.BplibInst, BPNODE_MAX_UNSORTED_JOBS);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_QM_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing QM, RC = %d", BpStatus);
+
+        return BpStatus;
+    }
+
+    BpStatus = BPLib_MEM_PoolInit(&BPNode_AppData.BplibInst.pool, (void *)BPNode_AppData.pool_mem,
+        (size_t)BPNODE_MEM_POOL_LEN);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_MEM_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error initializing MEM, RC = %d", BpStatus);
 
         return BpStatus;
     }
@@ -476,11 +487,6 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-
-        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
-        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Signal to generic worker tasks to exit */
@@ -488,6 +494,36 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
+
+    /* Wait on the ADU task exit semaphores */
+    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+    {
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduInData[i].ExitSemId, BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduOutData[i].ExitSemId, BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
+    }
+
+    /* Wait on the CLA task exit semaphores */
+    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    {
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
+    }
+
+    /* Wait on the generic worker task exit semaphores */
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    {
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        (void) OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].ExitSemId, BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
+    }
+
+    /* Cleanup QM and MEM */
+    BPLib_QM_QueueTableDestroy(&BPNode_AppData.BplibInst);
+    BPLib_MEM_PoolDestroy(&BPNode_AppData.BplibInst.pool);
 
     /* Performance Log Exit Stamp */
     BPLib_PL_PerfLogExit(BPNODE_PERF_ID);

@@ -173,7 +173,7 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
 }
 
 /* Test wakeup process after failing to give a semaphore */
@@ -181,8 +181,7 @@ void Test_BPNode_WakeupProcess_FailSem(void)
 {
     /* Fail sem gives to cause errors */
     UT_SetDefaultReturnValue(UT_KEY(OS_BinSemGive), OS_SUCCESS);                        /* Guarantee only failures are those assigned below */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first generic worker sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPNODE_NUM_GEN_WRKR_TASKS, OS_ERROR);  /* Fail first ADU In sem give call for wake up */
+    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first ADU In sem give call for wake up */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first ADU Out sem give call for wake up */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS + 1, OS_ERROR); /* Fail first CLA In sem give call for wake up */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first CLA Out sem give call for wake up */
@@ -196,15 +195,14 @@ void Test_BPNode_WakeupProcess_FailSem(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
 
     /* Verify events */
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 5);
-    BPNode_Test_Verify_Event(0, BPNODE_WKP_SEM_ERR_EID, "Error giving Generic Worker #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 4);
+    BPNode_Test_Verify_Event(0, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
 }
 
 /* Test wakeup process after failing Time maintenance activities */
@@ -219,7 +217,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error doing time maintenance activities, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
@@ -242,7 +240,7 @@ void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error Updating Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
@@ -262,7 +260,7 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -277,7 +275,7 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, BPNODE_NUM_GEN_WRKR_TASKS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
@@ -460,6 +458,11 @@ void Test_BPNode_AppInit_AutoAddAppFail(void)
 void Test_BPNode_AppExit_Nominal(void)
 {
     uint8 i;
+    uint8 NumAduTasks;
+    uint8 NumClaTasks;
+
+    NumAduTasks = BPLIB_MAX_NUM_CHANNELS * 2; /* ADU In and Out tasks */
+    NumClaTasks = BPLIB_MAX_NUM_CONTACTS * 2; /* CLA In and Out tasks */
 
     BPNode_AppExit();
 
@@ -468,6 +471,20 @@ void Test_BPNode_AppExit_Nominal(void)
         UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
         UtAssert_UINT32_EQ(BPNode_AppData.AduInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
     }
+
+    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    {
+        UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+        UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+    }
+
+    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    {
+        UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
+    }
+
+    UtAssert_STUB_COUNT(OS_BinSemTimedWait, NumAduTasks + NumClaTasks + BPNODE_NUM_GEN_WRKR_TASKS);
+    UtAssert_STUB_COUNT(CFE_ES_WriteToSysLog, 1);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_EXIT_CRIT_EID);
     UtAssert_STRINGBUF_EQ("App terminating, error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,

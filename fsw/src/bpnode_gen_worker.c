@@ -70,6 +70,22 @@ int32 BPNode_GenWorkerCreateTasks(void)
             return Status;
         }
 
+        /* Create exit semaphore so main task knows when child finished shutdown */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].ExitSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_EXIT_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[Generic Worker #%d]: Failed to create exit semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_GEN_WRKR_BASE_NAME, i);
         TaskPriority = BPNODE_ADU_IN_PRIORITY_BASE + i;
@@ -165,9 +181,7 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
 void BPNode_GenWorker_AppMain(void)
 {
     int32 Status;
-    BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
-    uint32 NumJobsComplete = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_GenWorker_TaskInit(&WorkerId);
@@ -199,36 +213,8 @@ void BPNode_GenWorker_AppMain(void)
     {
         /* Take semaphore from main task */
         BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].WakeupSemId, BPNODE_GEN_WRKR_SEM_WAKEUP_WAIT_MSEC);
+        BPLib_QM_RunJob(&BPNode_AppData.BplibInst, BPNODE_GEN_WRKR_SLEEP_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-
-        /* Process one cycle's worth of jobs */
-        if (Status == OS_SUCCESS)
-        {
-            while (BpStatus == BPLIB_SUCCESS && NumJobsComplete < BPNODE_NUM_JOBS_PER_CYCLE)
-            {
-                /*
-                ** TODO call the relevant BPLib JS API to process one job
-                */
-                OS_TaskDelay(BPNODE_GEN_WRKR_SLEEP_MSEC);
-                NumJobsComplete++;
-            }
-
-            NumJobsComplete = 0;
-        }
-        else if (Status == OS_SEM_TIMEOUT)
-        {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID,
-                                BPLib_EM_EventType_INFORMATION,
-                                "[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore",
-                                WorkerId);
-        }
-        else
-        {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Generic Worker #%d]: Failure to take semaphore. Sem Error = %d.",
-                            WorkerId, Status);
-        }
     }
 
     /* Exit gracefully */
@@ -250,6 +236,9 @@ void BPNode_GenWorker_TaskExit(uint8 WorkerId)
 
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+
+    /* Signal to the main task that the child task has exited */
+    (void) OS_BinSemGive(BPNode_AppData.GenWorkerData[WorkerId].ExitSemId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

@@ -30,7 +30,7 @@
 
 /* Development Build Macro Definitions */
 
-#define BPNODE_BUILD_NUMBER    (10u) /*!< Development Build: Number of development builds (not commits) since baseline */
+#define BPNODE_BUILD_NUMBER    (11u) /*!< Development Build: Number of development builds (not commits) since baseline */
 #define BPNODE_BUILD_BASELINE  "equuleus-rc1" /*!< Development Build: git tag that is the base for the current development */
 #define BPNODE_BUILD_DEV_CYCLE "equuleus-rc2" /**< @brief Development: Release name for current development cycle */
 #define BPNODE_BUILD_CODENAME  "Equuleus" /**< @brief: Development: Code name for the current build */

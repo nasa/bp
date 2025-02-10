@@ -47,7 +47,7 @@
 ** Type Definitions
 */
 
-/** 
+/**
 ** \brief Generic Worker Task Data
 */
 typedef struct
@@ -55,6 +55,7 @@ typedef struct
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
     osal_id_t       WakeupSemId;
+    osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
 } BPNode_GenWorkerData_t;
@@ -88,7 +89,7 @@ int32 BPNode_GenWorkerCreateTasks(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] WorkerId Pointer to worker ID to set
  *
  *  \return Validation status
@@ -116,7 +117,7 @@ void BPNode_GenWorker_AppMain(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] WorkerId Worker ID for this task
  */
 void BPNode_GenWorker_TaskExit(uint8 WorkerId);

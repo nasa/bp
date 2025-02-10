@@ -66,8 +66,25 @@ int32 BPNode_AduOutCreateTasks(void)
 
         if (Status != OS_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
                                 "[ADU Out #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
+                                i,
+                                NameBuff,
+                                Status);
+
+            return Status;
+        }
+
+        /* Create exit semaphore so main task knows when child finished shutdown */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_ADU_OUT_SEM_BASE_NAME, i);
+        Status = OS_BinSemCreate(&BPNode_AppData.AduOutData[i].ExitSemId, NameBuff, 0, 0);
+
+        if (Status != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_EXIT_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[ADU Out #%d]: Failed to create exit semaphore, %s. Error = %d.",
                                 i,
                                 NameBuff,
                                 Status);
@@ -141,6 +158,10 @@ int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
                           TaskId);
         return CFE_ES_ERR_RESOURCEID_NOT_VALID;
     }
+
+    /* Initialize generic output buffer with a dummy msgid and max possible size */
+    CFE_MSG_Init(CFE_MSG_PTR(BPNode_AppData.AduOutData[*ChanId].OutBuf.TelemetryHeader), 
+            CFE_SB_ValueToMsgId(1), sizeof(BPNode_AduOutBuf_t));
 
     BPNode_AppData.AduOutData[*ChanId].PerfId = BPNODE_ADU_OUT_PERF_ID_BASE + *ChanId;
 
@@ -219,12 +240,8 @@ void BPNode_AduOut_AppMain(void)
                 AppState = BPLib_NC_GetAppState(ChanId);
                 if (AppState == BPLIB_NC_APP_STATE_STARTED)
                 {
-                    /*
-                    ** TODO
-                    ** Poll bundle from PI out queue
-                    ** If a bundle was received:
-                    **      BPA_ADUP_Out((void *) Buf, ChanId);
-                    */
+                    /* Poll bundle from PI out queue */
+                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
                 }
 
                 AdusEgressed++;
@@ -266,6 +283,9 @@ void BPNode_AduOut_TaskExit(uint8 ChanId)
 
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
+
+    /* Signal to the main task that the child task has exited */
+    (void) OS_BinSemGive(BPNode_AppData.AduOutData[ChanId].ExitSemId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

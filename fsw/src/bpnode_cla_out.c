@@ -274,8 +274,10 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Egress(ContId, BPNode_AppData.ClaOutData[ContId].BundleBuffer,
+        BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst, ContId, 
+                                    BPNode_AppData.ClaOutData[ContId].BundleBuffer,
                                     &BPNode_AppData.ClaOutData[ContId].CurrentBufferSize,
+                                    BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
                                     BPNODE_CLA_OUT_QUEUE_PEND_TIME);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);

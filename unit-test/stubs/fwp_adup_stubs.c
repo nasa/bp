@@ -65,12 +65,12 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
  * Generated stub function for BPA_ADUP_Out()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_ADUP_Out(void *AduPtr, uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 {
     UT_GenStub_SetupReturnBuffer(BPA_ADUP_Out, BPLib_Status_t);
 
-    UT_GenStub_AddParam(BPA_ADUP_Out, void *, AduPtr);
     UT_GenStub_AddParam(BPA_ADUP_Out, uint8_t, ChanId);
+    UT_GenStub_AddParam(BPA_ADUP_Out, uint32_t, Timeout);
 
     UT_GenStub_Execute(BPA_ADUP_Out, Basic, NULL);
 
