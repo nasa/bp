@@ -25,21 +25,22 @@
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "bpnode_tbl.h"
-
+#include "bplib_eid.h"
 
 BPLib_STOR_StorageTable_t StorageTable = {
     .StorageSet = {
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-        {.SrcEID = "100.1", .StorageSize = 10000},
-    } 
+        [0].SrcEIDs = {
+            [0].Scheme       = BPLIB_EID_SCHEME_IPN,
+            [0].IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+            [0].MaxAllocator = 0,
+            [0].MinAllocator = 0,
+            [0].MaxNode      = 100, /* EID 100.1 */
+            [0].MinNode      = 100,
+            [0].MaxService   = 1,
+            [0].MinService   = 1,
+        },
+        [0].StorageSize        = 100000
+    }
 };
 /*
 ** The macro below identifies:

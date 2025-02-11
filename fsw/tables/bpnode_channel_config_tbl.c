@@ -40,52 +40,73 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .HopLimit               = 10,
             .LocalServiceNumber     = 2,
             .MaxBundlePayloadSize   = 15864,
-            .PriBlkConfig           =   
+            .PriBlkConfig           =
                 {
-                    .Version            = 7, 
-                    .CrcType            = 1, 
-                    .BundleProcFlags    = 4, 
-                    .DestEID            = "100.1", 
-                    .SrcEID             = "101.1", 
-                    .ReportToEID        = "100.1", 
+                    .Version            = 7,
+                    .CrcType            = 1,
+                    .BundleProcFlags    = 4,
+                    .DestEID            =    // "ipn:100.1"
+                        {
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
+                            .Service      = 1
+                        },
+                    .SrcEID             =   // "ipn:101.1",
+                        {
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 101,
+                            .Service      = 1
+                        },
+                    .ReportToEID        =   // "ipn:100.1"
+                        {
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
+                            .Service      = 1
+                        },
                     .LifeTime           = 10000
                 },
-            .CanBlkConfig           = 
+            .CanBlkConfig           =
                 {
                     {
                         .BlockType          = 1,
                         .BlockNum           = 1,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 2,
                         .BlockNum           = 2,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 3,
                         .BlockNum           = 3,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 4,
                         .BlockNum           = 4,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 5,
                         .BlockNum           = 5,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                 }
         },
@@ -100,55 +121,76 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .HopLimit               = 10,
             .LocalServiceNumber     = 2,
             .MaxBundlePayloadSize   = 15864,
-            .PriBlkConfig           =   
+            .PriBlkConfig           =
                 {
-                    .Version            = 7, 
-                    .CrcType            = 1, 
-                    .BundleProcFlags    = 4, 
-                    .DestEID            = "100.1", 
-                    .SrcEID             = "101.1", 
-                    .ReportToEID        = "100.1", 
+                    .Version            = 7,
+                    .CrcType            = 1,
+                    .BundleProcFlags    = 4,
+                    .DestEID            =    // ipn:"100.1"
+                        {
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
+                            .Service      = 1
+                        },
+                    .SrcEID             =   // "ipn:101.1",
+                        {
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 101,
+                            .Service      = 1
+                        },
+                    .ReportToEID        =   // "ipn:100.1"
+                        {
+                            .Scheme       = BPLIB_EID_SCHEME_IPN,
+                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                            .Allocator    = 0,
+                            .Node         = 100,
+                            .Service      = 1
+                        },
                     .LifeTime           = 10000
                 },
-            .CanBlkConfig           = 
+            .CanBlkConfig           =
                 {
                     {
                         .BlockType          = 1,
                         .BlockNum           = 1,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 2,
                         .BlockNum           = 2,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 3,
                         .BlockNum           = 3,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 4,
                         .BlockNum           = 4,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                     {
                         .BlockType          = 5,
                         .BlockNum           = 5,
                         .BlockProcFlags     = 1,
                         .CrcType            = 1,
-                        .Spare              = 0        
+                        .Spare              = 0
                     },
                 }
-        }  
+        }
     }
 };
 

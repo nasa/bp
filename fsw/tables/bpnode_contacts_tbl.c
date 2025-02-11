@@ -32,8 +32,23 @@ BPLib_CLA_ContactsTable_t ContactsTable =
 {
     .ContactSet = {
         {
-            .ContactID              = 0, /*Contact ID, uint32*/ 
-            .DestEIDs               = "100.1,101.2", /*Comma-separated list of Dest EIDs*/
+            .ContactID              = 0, /*Contact ID, uint32*/
+            .DestEIDs               = {{.Scheme       = BPLIB_EID_SCHEME_IPN,
+                                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                                        .MaxAllocator = 0,
+                                        .MinAllocator = 0,
+                                        .MaxNode      = 100, /* Destination EID 100.1 */
+                                        .MinNode      = 100,
+                                        .MaxService   = 1,
+                                        .MinService   = 1,},
+                                       {.Scheme       = BPLIB_EID_SCHEME_DTN,
+                                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                                        .MaxAllocator = 0,
+                                        .MinAllocator = 0,
+                                        .MaxNode      = 101, /* Destination EID 101.2 */
+                                        .MinNode      = 101,
+                                        .MaxService   = 2,
+                                        .MinService   = 2}},
             .CLAType                = 1, /*CLA Type, uint32 */
             .CLAddr                 = "127.0.0.1", /*CL ip address*/
             .PortNum                = 1001, /*Port Number, int32*/
