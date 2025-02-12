@@ -240,6 +240,17 @@ CFE_Status_t BPNode_AppInit(void)
     /* Zero out the global data structure */
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
+    /* Call Table Proxy Init Function Here to load default tables*/
+    BpStatus = BPA_TABLEP_TableInit();
+    if (BpStatus != CFE_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            (unsigned long)BpStatus);
+
+        return BpStatus;
+    }
+
     /* Initialize the FWP before using BPLib functions */
     BpStatus = BPLib_FWP_Init(Callbacks);
     if (BpStatus != BPLIB_SUCCESS)
@@ -353,17 +364,6 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /* Call Table Proxy Init Function Here to load default tables*/
-    BpStatus = BPA_TABLEP_TableInit();
-    if (BpStatus != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
-                            (unsigned long)BpStatus);
-
-        return BpStatus;
-    }
-
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
 
@@ -426,7 +426,7 @@ CFE_Status_t BPNode_AppInit(void)
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
-        if (BPNode_AppData.ChanTblPtr->Configs[i].AddAutomatically == true)
+        if (BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);

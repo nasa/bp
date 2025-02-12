@@ -93,20 +93,6 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
 
     }
 
-    /* Set shortcut pointers for easier usability of table data */
-    BPNode_AppData.AduTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_ADU_TBL_IDX].TablePtr;
-    BPNode_AppData.ChanTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CHAN_TBL_IDX].TablePtr;
-    BPNode_AppData.ContactsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CON_TBL_IDX].TablePtr;
-    BPNode_AppData.CrsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CRS_TBL_IDX].TablePtr;
-    BPNode_AppData.CustodianTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CSTDN_TBL_IDX].TablePtr;
-    BPNode_AppData.CustodyTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_CSTDY_TBL_IDX].TablePtr;
-    BPNode_AppData.MibPnTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_MIBN_TBL_IDX].TablePtr;
-    BPNode_AppData.MibPsTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_MIBS_TBL_IDX].TablePtr;
-    BPNode_AppData.ReportTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_REP_TBL_IDX].TablePtr;
-    BPNode_AppData.AuthTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_AUTH_TBL_IDX].TablePtr;
-    BPNode_AppData.LatTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_LATE_TBL_IDX].TablePtr;
-    BPNode_AppData.StorTblPtr = BPNode_AppData.TblNameParamsArr[BPNODE_STOR_TBL_IDX].TablePtr;
-
     return CFE_SUCCESS;  
 }
 
