@@ -38,7 +38,7 @@
 ** Function Definitions
 */
 
-BPNode_TblNameParams_t TblNameParamsArr0[] = 
+BPNode_TblNameParams_t TblNameParamsArr0[] =
 {
     {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_ADUP_ValidateConfigTbl},
     {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, (CFE_TBL_CallbackFuncPtr_t)BPA_TABLEP_PI_ValidateConfigs},
@@ -58,12 +58,12 @@ BPNode_TblNameParams_t TblNameParamsArr0[] =
 CFE_Status_t BPA_TABLEP_TableInit(void)
 {
     CFE_Status_t Status;
-     
-    BPNode_AppData.TblNameParamsArr = TblNameParamsArr0;        
-    
+
+    BPNode_AppData.TblNameParamsArr = TblNameParamsArr0;
+
     for (int i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
     {
-        Status = CFE_TBL_Register(&BPNode_AppData.TblNameParamsArr[i].TableHandle, BPNode_AppData.TblNameParamsArr[i].TableName, 
+        Status = CFE_TBL_Register(&BPNode_AppData.TblNameParamsArr[i].TableHandle, BPNode_AppData.TblNameParamsArr[i].TableName,
                 BPNode_AppData.TblNameParamsArr[i].TableSize, CFE_TBL_OPT_DEFAULT, BPNode_AppData.TblNameParamsArr[i].TblValidationFuncPtr);
         if (Status != CFE_SUCCESS)
         {
@@ -81,25 +81,25 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
         }
         /* Get table address */
         Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.TblNameParamsArr[i].TablePtr,
-                                            BPNode_AppData.TblNameParamsArr[i].TableHandle);  
+                                            BPNode_AppData.TblNameParamsArr[i].TableHandle);
         if (Status != CFE_TBL_INFO_UPDATED)
         {
             BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                         "Error Getting Table: %s Address, RC = 0x%08lX", BPNode_AppData.TblNameParamsArr[i].TableName, (unsigned long)Status);
             return Status;
-        }   
-        
+        }
+
         /* Set Table Handle to Node Configuration Here*/
 
     }
 
-    return CFE_SUCCESS;  
+    return CFE_SUCCESS;
 }
 
 CFE_Status_t BPA_TABLEP_TableUpdate(void)
 {
     CFE_Status_t Status;
-    
+
     for (int i = 0; i < BPNODE_NUMBER_OF_TABLES; i++)
     {
         /* Manage any pending table loads, validations, etc. */
@@ -107,7 +107,7 @@ CFE_Status_t BPA_TABLEP_TableUpdate(void)
 
         (void) CFE_TBL_Manage(BPNode_AppData.TblNameParamsArr[i].TableHandle);
 
-        Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.TblNameParamsArr[i].TablePtr, 
+        Status = CFE_TBL_GetAddress((void *) &BPNode_AppData.TblNameParamsArr[i].TablePtr,
                                               BPNode_AppData.TblNameParamsArr[i].TableHandle);
 
         if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
@@ -116,9 +116,9 @@ CFE_Status_t BPA_TABLEP_TableUpdate(void)
                                 "Error managing the table: %s on wakeup, Status=0x%08X", BPNode_AppData.TblNameParamsArr[i].TableName, Status);
             return Status;
         }
-        
+
         /* Set Table Handle to Node Configuration Here*/
-        
+
     }
 
     return CFE_SUCCESS;
