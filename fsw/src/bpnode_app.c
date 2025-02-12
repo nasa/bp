@@ -109,6 +109,10 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
 
+    /* Check if any bundles are in cache, routing them to an egreif able */
+    printf("BPNode Parent Task running wakeup cycle...\n");
+    BPLib_QM_ScanCache(&BPNode_AppData.BplibInst, 2);
+
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
     BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
 
