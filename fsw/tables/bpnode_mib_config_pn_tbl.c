@@ -63,4 +63,4 @@ BPLib_NC_MIBConfigPNTable_t MIBConfigPNTable = {
 **    3) a brief description of the contents of the a image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(MIBConfigPNTable, BPNODE.MIBConfigPNTable, MIB pre node Table, bpnode_mib_pn.tbl)
+CFE_TBL_FILEDEF(MIBConfigPNTable, BPNODE.MIBConfigPNTable, MIB per node Table, bpnode_mib_pn.tbl)
