@@ -35,6 +35,7 @@
 
 #include "bplib.h"
 #include "fwp.h"
+#include "bplib_cbor.h"
 
 /*
 ** Global Data
@@ -366,6 +367,9 @@ CFE_Status_t BPNode_AppInit(void)
 
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
+
+    /* Call CBOR initialization */
+    BPLib_CBOR_Init();
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
