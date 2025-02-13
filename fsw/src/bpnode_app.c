@@ -35,7 +35,6 @@
 
 #include "bplib.h"
 #include "fwp.h"
-#include "bplib_cbor.h"
 
 /*
 ** Global Data
