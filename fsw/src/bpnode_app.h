@@ -88,7 +88,7 @@ typedef struct
     CFE_SB_PipeId_t CommandPipe;            /**< \brief Pipe Id for command pipe */
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
-    BPNode_TblNameParams_t  *TblNameParamsArr;
+    BPA_ADUP_Table_t* AduProxyTablePtr;
 
     /* Telemetry HK Packet structures*/
     BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
@@ -104,7 +104,6 @@ typedef struct
     BPLib_Instance_t            BplibInst;
     uint8                       pool_mem[BPNODE_MEM_POOL_LEN];
 } BPNode_AppData_t;
-
 
 /*
 ** Global Data
