@@ -304,7 +304,7 @@ CFE_Status_t BPA_TABLEP_TableUpdate()
     return Status;
 }
 
-CFE_Status_t BPA_TABLEP_TableManage(char* TableName, void* TablePtr, CFE_TBL_Handle_t TableHandle)
+CFE_Status_t BPA_TABLEP_TableManage(const char* TableName, void* TablePtr, CFE_TBL_Handle_t TableHandle)
 {
     CFE_Status_t Status;
 
