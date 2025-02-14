@@ -47,7 +47,7 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
         /*
         ** Validate array length and that message IDs are all valid
         */
-       
+
         if (!CFE_SB_IsValidMsgId(TblDataPtr->Entries[i].SendToMsgId) ||
             TblDataPtr->Entries[i].NumRecvFrmMsgIds > BPNODE_MAX_CHAN_SUBSCRIPTION)
         {
@@ -60,7 +60,7 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
             {
                 return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
             }
-        }  
+        }
     }
 
     return CFE_SUCCESS;
@@ -93,10 +93,10 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_IN_ERR_EID, BPLib_EM_EventType_ERROR,
                                 "[ADU In #%d]: Failed to ingress an ADU. Error = %d.",
-                                ChanId, Status); 
+                                ChanId, Status);
         }
     }
-    else 
+    else
     {
         Status = BPLIB_ERROR;
 
@@ -104,7 +104,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
                             "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d",
                             ChanId, Size, BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize);
     }
-    
+
     return Status;
 }
 
@@ -115,8 +115,8 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
     size_t         AduSize;
 
     /* Get an ADU from PI */
-    Status = BPLib_PI_Egress(&BPNode_AppData.BplibInst, ChanId, 
-                            (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, 
+    Status = BPLib_PI_Egress(&BPNode_AppData.BplibInst, ChanId,
+                            (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload,
                             &AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
 
     if (Status == BPLIB_SUCCESS)
@@ -124,19 +124,19 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
         /* Add cFS header to ADU */
         if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
         {
-            CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), 
+            CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader),
                                         BPNode_AppData.AduOutData[ChanId].SendToMsgId);
-            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), 
+            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader),
                                                 AduSize + sizeof(CFE_MSG_TelemetryHeader_t));
 
             /* Send wrapped ADU onto Software Bus */
             CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), true);
         }
         /* Don't add cFS header, assume it has one already */
-        else 
+        else
         {
             /* Send ADU onto Software Bus */
-            CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, false);            
+            CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, false);
         }
 
         BPLib_AS_Increment(0, ADU_COUNT_DELIVERED, 1);
@@ -173,7 +173,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     if (AppState == BPLIB_NC_APP_STATE_STARTED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_ADD_STAT_ERR_EID, BPLib_EM_EventType_DEBUG,
-                            "Error with add-application directive, invalid AppState=%d for ChanId=%d", 
+                            "Error with add-application directive, invalid AppState=%d for ChanId=%d",
                             AppState,
                             ChanId);
 
@@ -202,7 +202,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].MaxBundlePayloadSize;
 
     BPNode_AppData.AduOutData[ChanId].AduWrapping = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduWrapping;
-    
+
     /* Set app state to added */
     BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_ADDED);
 
@@ -232,7 +232,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
         AppState != BPLIB_NC_APP_STATE_STOPPED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_START_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error with start-application directive, invalid AppState=%d for ChanId=%d", 
+                            "Error with start-application directive, invalid AppState=%d for ChanId=%d",
                             AppState,
                             ChanId);
 
@@ -247,14 +247,14 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_START_SUB_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x", 
+                                "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x",
                                 ChanId,
-                                Status, 
+                                Status,
                                 CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i]));
 
             return BPLIB_ERROR;
         }
-    } 
+    }
 
     /* Set app state to started */
     BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_STARTED);
@@ -284,7 +284,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
     if (AppState != BPLIB_NC_APP_STATE_STARTED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_STOP_STAT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error with stop-application directive, invalid AppState=%d for ChanId=%d", 
+                            "Error with stop-application directive, invalid AppState=%d for ChanId=%d",
                             AppState,
                             ChanId);
 
@@ -299,14 +299,14 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_STOP_UNSUB_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error unsubscribing from ADU on channel #%d, Error = %d, MsgId = 0x%x", 
+                                "Error unsubscribing from ADU on channel #%d, Error = %d, MsgId = 0x%x",
                                 ChanId,
-                                Status, 
+                                Status,
                                 CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i]));
 
             return BPLIB_ERROR;
         }
-    } 
+    }
 
     /* Set app state to stopped */
     BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_STOPPED);
@@ -338,7 +338,7 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
         AppState != BPLIB_NC_APP_STATE_STOPPED)
     {
         BPLib_EM_SendEvent(BPNODE_ADU_REM_STAT_ERR_EID, BPLib_EM_EventType_DEBUG,
-                            "Error with remove-application directive, invalid AppState=%d for ChanId=%d", 
+                            "Error with remove-application directive, invalid AppState=%d for ChanId=%d",
                             AppState,
                             ChanId);
 
@@ -350,5 +350,5 @@ BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
     /* Set app state to removed */
     BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_REMOVED);
 
-    return BPLIB_SUCCESS;    
+    return BPLIB_SUCCESS;
 }

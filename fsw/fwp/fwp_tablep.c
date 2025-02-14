@@ -48,7 +48,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                         (void*) BPNode_AppData.AduProxyTablePtr,
                                         BPNode_AppData.TableHandles[BPNODE_ADU_TBL_IDX]);
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the PI channel configuration table */
         Status = BPA_TABLEP_SingleTableInit("ChannelTable",
@@ -58,7 +58,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_CHAN_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the CLA contacts table */
         Status = BPA_TABLEP_SingleTableInit("ContactsTable",
@@ -68,7 +68,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_CON_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the ARP CRS table */
         Status = BPA_TABLEP_SingleTableInit("CRSTable",
@@ -78,7 +78,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_CRS_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the PDB custodian table */
         Status = BPA_TABLEP_SingleTableInit("CustodianTable",
@@ -88,7 +88,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_CSTDN_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the PDB custody table */
         Status = BPA_TABLEP_SingleTableInit("CustodyTable",
@@ -98,7 +98,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_CSTDY_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the NC MIB config per node table */
         Status = BPA_TABLEP_SingleTableInit("MIBConfigPNTable",
@@ -108,7 +108,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_MIBN_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the NC MIB config per source table */
         Status = BPA_TABLEP_SingleTableInit("MIBConfigPSTable",
@@ -118,7 +118,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_MIBS_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the PDB report to table */
         Status = BPA_TABLEP_SingleTableInit("ReportToTable",
@@ -128,7 +128,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_REP_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the PDB authorized sources table */
         Status = BPA_TABLEP_SingleTableInit("SrcAuthTable",
@@ -138,7 +138,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_AUTH_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Authorize the PDB source latency table */
         Status = BPA_TABLEP_SingleTableInit("SrcLatencyTable",
@@ -148,7 +148,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             BPNode_AppData.TableHandles[BPNODE_LATE_TBL_IDX]);
     }
 
-    if (Status == CFE_SUCCESS)
+    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
         /* Initialize the STOR storage table */
         Status = BPA_TABLEP_SingleTableInit("StorageTable",
