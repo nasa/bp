@@ -90,6 +90,8 @@ typedef struct
 
     BPA_ADUP_Table_t* AduProxyTablePtr;
 
+    CFE_TBL_Handle_t TableHandles[BPNODE_NUMBER_OF_TABLES];
+
     /* Telemetry HK Packet structures*/
     BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
     BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
