@@ -29,6 +29,7 @@
 #include "cfe.h"
 #include "bpnode_eventids.h"
 #include "bpnode_tbl.h"
+#include "bpnode_app.h"
 
 #define BPNODE_ADU_TBL_IDX      0
 #define BPNODE_CHAN_TBL_IDX     1
@@ -44,7 +45,11 @@
 #define BPNODE_STOR_TBL_IDX    11
 
 CFE_Status_t BPA_TABLEP_TableInit(void);
-CFE_Status_t BPA_TABLEP_TableUpdate(void);
+
+CFE_Status_t BPA_TABLEP_SingleTableInit(char* TableName, size_t Size, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void* TablePtr);
+
+CFE_Status_t BPA_TABLEP_TableUpdate(BPNode_TblNameParams_t* Tbl);
+
 BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
 
 /**
