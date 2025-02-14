@@ -50,7 +50,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, size_t Size, CFE_
 
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
 
-CFE_Status_t BPA_TABLEP_TableManage(char* TableName, void* TablePtr, CFE_TBL_Handle_t TableHandle);
+CFE_Status_t BPA_TABLEP_TableManage(const char* TableName, void* TablePtr, CFE_TBL_Handle_t TableHandle);
 
 BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
 

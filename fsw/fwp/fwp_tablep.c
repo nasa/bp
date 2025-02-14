@@ -161,7 +161,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
     return Status;
 }
 
-CFE_Status_t BPA_TABLEP_SingleTableInit(char* TableName, size_t Size, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void* TablePtr, CFE_TBL_Handle_t TableHandle)
+CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, size_t Size, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void* TablePtr, CFE_TBL_Handle_t TableHandle)
 {
     CFE_Status_t Status;
 
