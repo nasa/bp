@@ -184,24 +184,24 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     ** Set ADU proxy configurations
     */
 
-    BPNode_AppData.AduOutData[ChanId].SendToMsgId = BPNode_AppData.AduTblPtr->Entries[ChanId].SendToMsgId;
-    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = BPNode_AppData.AduTblPtr->Entries[ChanId].NumRecvFrmMsgIds;
+    BPNode_AppData.AduOutData[ChanId].SendToMsgId = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].SendToMsgId;
+    BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].NumRecvFrmMsgIds;
 
-    for (i = 0; i < BPNode_AppData.AduTblPtr->Entries[ChanId].NumRecvFrmMsgIds; i++)
+    for (i = 0; i < BPNode_AppData.AduProxyTablePtr->Entries[ChanId].NumRecvFrmMsgIds; i++)
     {
-        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = BPNode_AppData.AduTblPtr->Entries[ChanId].RecvFrmMsgIds[i];
+        BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].RecvFrmMsgIds[i];
     }
 
     /*
     ** Set channel configurations
     */
 
-    BPNode_AppData.AduState[ChanId].AddAutomatically = BPNode_AppData.ChanTblPtr->Configs[ChanId].AddAutomatically;
+    BPNode_AppData.AduState[ChanId].AddAutomatically = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AddAutomatically;
 
-    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPNode_AppData.ChanTblPtr->Configs[ChanId].AduUnwrapping;
-    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_AppData.ChanTblPtr->Configs[ChanId].MaxBundlePayloadSize;
+    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduUnwrapping;
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].MaxBundlePayloadSize;
 
-    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_AppData.ChanTblPtr->Configs[ChanId].AduWrapping;
+    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduWrapping;
     
     /* Set app state to added */
     BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_ADDED);
