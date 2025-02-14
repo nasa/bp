@@ -110,7 +110,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     uint8            TaskNum;
 
     /* Check if any bundles are in cache, routing them to an egreif able */
-    BPLib_QM_ScanCache(&BPNode_AppData.BplibInst, 2);
+    (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE / 2);
 
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
     BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
