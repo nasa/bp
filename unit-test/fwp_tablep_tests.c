@@ -182,7 +182,13 @@ void Test_BPA_TABLEP_SingleTableInit_GetAddress_Error(void)
                                 "Error Getting Table Address: %s, RC = 0x%08lX");
 }
 
-void Test_BPA_TABLEP_TableUpdate_Nominal(void)
+void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
+{
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
+    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableUpdate(), CFE_TBL_INFO_UPDATED);
+}
+
+void Test_BPA_TABLEP_TableUpdate_Success_Nominal(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
     UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableUpdate(), CFE_SUCCESS);
@@ -647,7 +653,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TABLEP_SingleTableInit_Load_Error);
     ADD_TEST(Test_BPA_TABLEP_SingleTableInit_GetAddress_Error);
 
-    ADD_TEST(Test_BPA_TABLEP_TableUpdate_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal);
+    ADD_TEST(Test_BPA_TABLEP_TableUpdate_Success_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Error);
 
     ADD_TEST(Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal);
