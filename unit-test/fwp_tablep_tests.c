@@ -74,6 +74,11 @@ void Test_BPA_TABLEP_TableInit_Error(void)
     uint16_t ExpectedStubCount;
     CFE_Status_t Status;
 
+    ExpectedStubCount = 0;
+
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
+
     for (ErrorLoop = 0; ErrorLoop < BPNODE_NUMBER_OF_TABLES; ErrorLoop++)
     {
         ExpectedStubCount += (ErrorLoop + 1);
@@ -188,6 +193,8 @@ void Test_BPA_TABLEP_TableUpdate_Error(void)
     uint8_t ErrorLoop;
     uint16_t ExpectedStubCount;
     CFE_Status_t Status;
+
+    ExpectedStubCount = 0;
 
     for (ErrorLoop = 0; ErrorLoop < BPNODE_NUMBER_OF_TABLES; ErrorLoop++)
     {

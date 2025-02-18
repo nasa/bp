@@ -190,7 +190,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, size_t Size, CFE_
             /* Get table address */
             Status = CFE_TBL_GetAddress((void **) &TablePtr, TableHandle);
 
-            if (Status != CFE_TBL_INFO_UPDATED)
+            if (Status != CFE_TBL_INFO_UPDATED && Status != CFE_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error Getting Table Address: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
