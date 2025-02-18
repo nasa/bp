@@ -143,11 +143,11 @@ void Test_FWP_ADUP_VerifyIncrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
 {
     UtAssert_STUB_COUNT(BPLib_AS_Increment, CallNum);
 
-    UtAssert_EQ(int16_t, EID.Scheme,       Context_BPLib_AS_Increment[CallNum - 1].EID.Scheme);
-    UtAssert_EQ(int16_t, EID.IpnSspFormat, Context_BPLib_AS_Increment[CallNum - 1].EID.IpnSspFormat);
-    UtAssert_EQ(int16_t, EID.Allocator,    Context_BPLib_AS_Increment[CallNum - 1].EID.Allocator);
-    UtAssert_EQ(int16_t, EID.Node,         Context_BPLib_AS_Increment[CallNum - 1].EID.Node);
-    UtAssert_EQ(int16_t, EID.Service,      Context_BPLib_AS_Increment[CallNum - 1].EID.Service);
+    UtAssert_EQ(int64_t, EID.Scheme,       Context_BPLib_AS_Increment[CallNum - 1].EID.Scheme);
+    UtAssert_EQ(int64_t, EID.IpnSspFormat, Context_BPLib_AS_Increment[CallNum - 1].EID.IpnSspFormat);
+    UtAssert_EQ(int64_t, EID.Allocator,    Context_BPLib_AS_Increment[CallNum - 1].EID.Allocator);
+    UtAssert_EQ(int64_t, EID.Node,         Context_BPLib_AS_Increment[CallNum - 1].EID.Node);
+    UtAssert_EQ(int64_t, EID.Service,      Context_BPLib_AS_Increment[CallNum - 1].EID.Service);
 
     if (Counter != (BPLib_AS_Counter_t) -1)
     {
@@ -164,11 +164,11 @@ void Test_FWP_ADUP_VerifyDecrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
 {
     UtAssert_STUB_COUNT(BPLib_AS_Decrement, CallNum);
 
-    UtAssert_EQ(int16_t, EID.Scheme,       Context_BPLib_AS_Increment[CallNum - 1].EID.Scheme);
-    UtAssert_EQ(int16_t, EID.IpnSspFormat, Context_BPLib_AS_Increment[CallNum - 1].EID.IpnSspFormat);
-    UtAssert_EQ(int16_t, EID.Allocator,    Context_BPLib_AS_Increment[CallNum - 1].EID.Allocator);
-    UtAssert_EQ(int16_t, EID.Node,         Context_BPLib_AS_Increment[CallNum - 1].EID.Node);
-    UtAssert_EQ(int16_t, EID.Service,      Context_BPLib_AS_Increment[CallNum - 1].EID.Service);
+    UtAssert_EQ(int64_t, EID.Scheme,       Context_BPLib_AS_Increment[CallNum - 1].EID.Scheme);
+    UtAssert_EQ(int64_t, EID.IpnSspFormat, Context_BPLib_AS_Increment[CallNum - 1].EID.IpnSspFormat);
+    UtAssert_EQ(int64_t, EID.Allocator,    Context_BPLib_AS_Increment[CallNum - 1].EID.Allocator);
+    UtAssert_EQ(int64_t, EID.Node,         Context_BPLib_AS_Increment[CallNum - 1].EID.Node);
+    UtAssert_EQ(int64_t, EID.Service,      Context_BPLib_AS_Increment[CallNum - 1].EID.Service);
 
     if (Counter != (BPLib_AS_Counter_t) -1)
     {
