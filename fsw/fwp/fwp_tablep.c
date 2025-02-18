@@ -204,8 +204,6 @@ CFE_Status_t BPA_TABLEP_TableUpdate()
 {
     CFE_Status_t Status;
 
-    Status = CFE_SUCCESS;
-
     /* Initialize the ADU proxy table */
     Status = BPA_TABLEP_TableManage("ADUProxyTable",
                                     (void*) BPNode_AppData.AduProxyTablePtr,
