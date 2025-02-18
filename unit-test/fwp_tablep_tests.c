@@ -52,44 +52,71 @@
 **********************************************************************************
 */
 
-BPNode_TblNameParams_t TblNameParamsArr_test[] =
-{
-    {"ADUProxyTable",      ADUP_CONFIG_TABLE_FILE,        0, sizeof(BPA_ADUP_Table_t),            NULL, NULL},
-    {"ChannelTable",       CHANNEL_TABLE_FILE,            0, sizeof(BPLib_PI_ChannelTable_t),     NULL, NULL},
-    {"ContactsTable",      CONTACTS_TABLE_FILE,           0, sizeof(BPLib_CLA_ContactsTable_t),   NULL, NULL},
-    {"CRSTable",           CRS_TABLE_FILE,                0, sizeof(BPLib_ARP_CRSTable_t),        NULL, NULL},
-    {"CustodianTable",     CUSTODIAN_TABLE_FILE,          0, sizeof(BPLib_PDB_CustodianTable_t),  NULL, NULL},
-    {"CustodyTable",       CUSTODY_TABLE_FILE,            0, sizeof(BPLib_PDB_CustodyTable_t),    NULL, NULL},
-    {"MIBConfigPNTable",   MIB_CONFIG_PN_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPNTable_t), NULL, NULL},
-    {"MIBConfigPSTable",   MIB_CONFIG_PS_TABLE_FILE,      0, sizeof(BPLib_NC_MIBConfigPSTable_t), NULL, NULL},
-    {"ReportToTable",      REPORTTO_TABLE_FILE,           0, sizeof(BPLib_PDB_ReportToTable_t),   NULL, NULL},
-    {"SrcAuthTable",       SRC_AUTH_TABLE_FILE,           0, sizeof(BPLib_PDB_SrcAuthTable_t),    NULL, NULL},
-    {"SrcLatencyTable",    SRC_LATENCY_TABLE_FILE,        0, sizeof(BPLib_PDB_SrcLatencyTable_t), NULL, NULL},
-    {"StorageTable",       STORAGE_TABLE_FILE,            0, sizeof(BPLib_STOR_StorageTable_t),   NULL, NULL}
-};
-
-void Test_BPA_TABLEP_TableInit_Nominal(void)
+void Test_BPA_TABLEP_TableInit_InfoUpdated_Nominal(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
-    UtAssert_INT32_EQ((int32) BPA_TABLEP_TableInit(), (int32) CFE_SUCCESS);
+    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableInit(), CFE_TBL_INFO_UPDATED);
 }
 
-void Test_BPA_TABLEP_TableInit_Fail_Register(void)
+void Test_BPA_TABLEP_TableInit_Success_Nominal(void)
+{
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
+    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableInit(), CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_TableInit_Error(void)
+{
+    uint8_t ErrorLoop;
+    uint16_t ExpectedStubCount;
+    CFE_Status_t Status;
+
+    for (ErrorLoop = 0; ErrorLoop < BPNODE_NUMBER_OF_TABLES; ErrorLoop++)
+    {
+        ExpectedStubCount += (ErrorLoop + 1);
+
+        /* Reset return values so only the n-th call fails */
+        UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
+
+        /* Make the n-th call fail */
+        UT_SetDeferredRetcode(UT_KEY(CFE_TBL_Register), ErrorLoop + 1, CFE_TBL_ERR_DUPLICATE_DIFF_SIZE);
+
+        /* Run the function under test */
+        Status = BPA_TABLEP_TableInit();
+
+        /* Verify the return code */
+        UtAssert_EQ(CFE_Status_t, Status, CFE_TBL_ERR_DUPLICATE_DIFF_SIZE);
+
+        /* Show that something is being called */
+        UtAssert_STUB_COUNT(CFE_TBL_Register, ExpectedStubCount);
+
+        /* Verify that the correct event was issued */
+        BPNode_Test_Verify_Event(ErrorLoop, BPNODE_TBL_REG_ERR_EID, "Error Registering Table: %s, RC = 0x%08lX");
+    }
+}
+
+void Test_BPA_TABLEP_SingleTableInit_Nominal(void)
+{
+
+}
+
+void Test_BPA_TABLEP_SingleTableInit_Error_Register(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_TBL_ERR_INVALID_OPTIONS);
     UtAssert_INT32_NEQ((int32) BPA_TABLEP_TableInit(), (int32) CFE_SUCCESS);
 }
 
-void Test_BPA_TABLEP_TableInit_Fail_Load(void)
+void Test_BPA_TABLEP_SingleTableInit_Error_Load(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_TBL_ERR_INVALID_OPTIONS);
     UtAssert_INT32_NEQ((int32) BPA_TABLEP_TableInit(), (int32) CFE_SUCCESS);
 }
 
-void Test_BPA_TABLEP_TableInit_Fail_GetAddress(void)
+void Test_BPA_TABLEP_SingleTableInit_Error_GetAddress(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
@@ -99,26 +126,33 @@ void Test_BPA_TABLEP_TableInit_Fail_GetAddress(void)
 
 void Test_BPA_TABLEP_TableUpdate_Nominal(void)
 {
-    BPNode_AppData.TblNameParamsArr = TblNameParamsArr_test;
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
     UtAssert_INT32_EQ((int32) BPA_TABLEP_TableUpdate(), (int32) CFE_SUCCESS);
 }
 
-void Test_BPA_TABLEP_TableUpdate_Nominal_Info_Updated(void)
+void Test_BPA_TABLEP_TableUpdate_Error(void)
 {
-    BPNode_AppData.TblNameParamsArr = TblNameParamsArr_test;
+
+}
+
+void Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal(void)
+{
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
     UtAssert_INT32_EQ((int32) BPA_TABLEP_TableUpdate(), (int32) CFE_SUCCESS);
 }
 
-void Test_BPA_TABLEP_TableUpdate_Fail(void)
+void Test_BPA_TABLEP_TableManage_Success_Nominal(void)
 {
-    BPNode_AppData.TblNameParamsArr = TblNameParamsArr_test;
-    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_ERR_INVALID_OPTIONS);
-    UtAssert_INT32_NEQ((int32) BPA_TABLEP_TableUpdate(), (int32) CFE_SUCCESS);
+
 }
 
 void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
+{
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Modified), CFE_SUCCESS);
+    UtAssert_INT32_EQ((int32) BPA_TABLEP_SingleTableUpdate(1), (int32) CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_SingleTableUpdate_Error(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Modified), CFE_SUCCESS);
     UtAssert_INT32_EQ((int32) BPA_TABLEP_SingleTableUpdate(1), (int32) CFE_SUCCESS);
@@ -504,13 +538,13 @@ void Test_BPA_TABLEP_STOR_StorageTblValidateFunc_Error(void)
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPA_TABLEP_TableInit_Nominal);
-    ADD_TEST(Test_BPA_TABLEP_TableInit_Fail_Register);
-    ADD_TEST(Test_BPA_TABLEP_TableInit_Fail_Load);
-    ADD_TEST(Test_BPA_TABLEP_TableInit_Fail_GetAddress);
+    ADD_TEST(Test_BPA_TABLEP_TableInit_Error_Register);
+    ADD_TEST(Test_BPA_TABLEP_TableInit_Error_Load);
+    ADD_TEST(Test_BPA_TABLEP_TableInit_Error_GetAddress);
 
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Nominal_Info_Updated);
-    ADD_TEST(Test_BPA_TABLEP_TableUpdate_Fail);
+    ADD_TEST(Test_BPA_TABLEP_TableUpdate_Error);
 
     ADD_TEST(Test_BPA_TABLEP_SingleTableUpdate_Nominal);
 
