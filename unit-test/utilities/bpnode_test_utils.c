@@ -184,7 +184,9 @@ void BPNode_UT_Setup(void)
 {
     UT_ResetState(0);
 
-    memset(&BPNode_AppData, 0, sizeof(BPNode_AppData_t));
+    memset((void*) &BPNode_AppData, 0, sizeof(BPNode_AppData_t));
+    memset((void*) &BPLib_FWP_ConfigPtrs, 0, sizeof(BPLib_FWP_ConfigPtrs_t));
+
     memset(context_BPLib_EM_SendEvent, 0, sizeof(BPLib_EM_SendEvent_context_t) * UT_MAX_SENDEVENT_DEPTH);
     memset(context_CFE_EVS_SendEvent, 0, sizeof(context_CFE_EVS_SendEvent));
     memset(Context_BPLib_Status, 0, sizeof(BPLib_Status_t) * UT_MAX_TRANSLATE_DEPTH);
@@ -209,6 +211,19 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPA_CFE_Status_Translate), UT_Handler_BPA_CFE_Status_Translate, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
+
+    BPNode_AppData.AduProxyTablePtr      = &TestAduTbl;
+    BPLib_FWP_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
+    BPLib_FWP_ConfigPtrs.ChanTblPtr      = &TestChanTbl;
+    BPLib_FWP_ConfigPtrs.ContactsTblPtr  = &TestContactsTbl;
+    BPLib_FWP_ConfigPtrs.CrsTblPtr       = &TestCrsTbl;
+    BPLib_FWP_ConfigPtrs.CustodianTblPtr = &TestCustodianTbl;
+    BPLib_FWP_ConfigPtrs.CustodyTblPtr   = &TestCustodyTbl;
+    BPLib_FWP_ConfigPtrs.LatTblPtr       = &TestLatencyTbl;
+    BPLib_FWP_ConfigPtrs.MibPnTblPtr     = &TestMibPnTbl;
+    BPLib_FWP_ConfigPtrs.MibPsTblPtr     = &TestMibPsTbl;
+    BPLib_FWP_ConfigPtrs.ReportTblPtr    = &TestReportTbl;
+    BPLib_FWP_ConfigPtrs.StorTblPtr      = &TestStorTbl;
 }
 
 /* Teardown function after every test */
