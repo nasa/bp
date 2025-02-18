@@ -29,7 +29,6 @@
 #include "cfe.h"
 #include "bpnode_eventids.h"
 #include "bpnode_tbl.h"
-#include "bpnode_app.h"
 
 #define BPNODE_ADU_TBL_IDX      0
 #define BPNODE_CHAN_TBL_IDX     1
