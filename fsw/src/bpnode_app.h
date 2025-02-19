@@ -55,28 +55,12 @@
 /* ====== */
 /* Macros */
 /* ====== */
+
 #define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
 #define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
 #define BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for ADU In exit semaphore take, in milliseconds */
 #define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
 #define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
-
-/*
-** Type Definitions
-*/
-
-/**
-** \brief Table Data
-*/
-typedef struct
-{
-    char                        TableName[OS_MAX_API_NAME];
-    char                        TableFileName[OS_MAX_PATH_LEN];
-    CFE_TBL_Handle_t            TableHandle;
-    uint32                      TableSize;
-    void*                       TablePtr;
-    CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
-} BPNode_TblNameParams_t;
 
 /**
 ** \brief Global Data
@@ -112,7 +96,6 @@ typedef struct
 */
 
 extern BPNode_AppData_t BPNode_AppData;
-
 
 /*
 ** Exported Functions

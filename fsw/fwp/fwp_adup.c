@@ -196,12 +196,12 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
     ** Set channel configurations
     */
 
-    BPNode_AppData.AduState[ChanId].AddAutomatically = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AddAutomatically;
+    BPNode_AppData.AduState[ChanId].AddAutomatically = BPNode_ConfigPtrs.ChanTblPtr->Configs[ChanId].AddAutomatically;
 
-    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduUnwrapping;
-    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].MaxBundlePayloadSize;
+    BPNode_AppData.AduInData[ChanId].AduUnwrapping = BPNode_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduUnwrapping;
+    BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_ConfigPtrs.ChanTblPtr->Configs[ChanId].MaxBundlePayloadSize;
 
-    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduWrapping;
+    BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_ConfigPtrs.ChanTblPtr->Configs[ChanId].AduWrapping;
 
     /* Set app state to added */
     BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_ADDED);

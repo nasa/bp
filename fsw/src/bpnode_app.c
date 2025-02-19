@@ -252,7 +252,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Initialize the FWP before using BPLib functions */
-    BpStatus = BPLib_FWP_Init(Callbacks);
+    BpStatus = BPLib_FWP_Init(&Callbacks, &BPNode_ConfigPtrs);
     if (BpStatus != BPLIB_SUCCESS)
     {
         CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
@@ -426,7 +426,7 @@ CFE_Status_t BPNode_AppInit(void)
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
-        if (BPLib_FWP_ConfigPtrs.ChanTblPtr->Configs[i].AddAutomatically == true)
+        if (BPNode_ConfigPtrs.ChanTblPtr->Configs[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);
