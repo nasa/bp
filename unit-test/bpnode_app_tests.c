@@ -36,7 +36,7 @@
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
-    BPNode_AppData.AduProxyTablePtr      = &TestAduTbl;
+    BPNode_AppData.AduProxyTablePtr   = &TestAduTbl;
     BPNode_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
     BPNode_ConfigPtrs.ChanTblPtr      = &TestChanTbl;
     BPNode_ConfigPtrs.ContactsTblPtr  = &TestContactsTbl;

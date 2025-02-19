@@ -212,7 +212,7 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
 
-    BPNode_AppData.AduProxyTablePtr      = &TestAduTbl;
+    BPNode_AppData.AduProxyTablePtr   = &TestAduTbl;
     BPNode_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
     BPNode_ConfigPtrs.ChanTblPtr      = &TestChanTbl;
     BPNode_ConfigPtrs.ContactsTblPtr  = &TestContactsTbl;
