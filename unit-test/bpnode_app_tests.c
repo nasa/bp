@@ -382,7 +382,7 @@ void Test_BPNode_AppInit_FailedTblInit(void)
 
 
 /* Test app initialization when FWP initialization fails */
-void Test_BPNode_AppInit_FailedFwpInit(void)
+void Test_BPNode_AppInit_FailedFwpInit_Callback(void)
 {
     UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CALLBACK_INIT_ERROR);
 
@@ -391,6 +391,19 @@ void Test_BPNode_AppInit_FailedFwpInit(void)
     UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
     UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, BPNODE_FWP_INIT_ERR_EID);
     UtAssert_STRINGBUF_EQ("BPNode: Failure initializing function callbacks, RC = 0x%08lX", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH,
+                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
+}
+
+/* Test app initialization when FWP initialization fails */
+void Test_BPNode_AppInit_FailedFwpInit_ConfigPtrs(void)
+{
+    UT_SetDeferredRetcode(UT_KEY(BPLib_FWP_Init), 1, BPLIB_FWP_CONFIG_PTRS_INIT_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_FWP_CONFIG_PTRS_INIT_ERROR);
+
+    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, 1);
+    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, BPNODE_FWP_INIT_ERR_EID);
+    UtAssert_STRINGBUF_EQ("BPNode: Failure initializing configuration pointers, RC = 0x%08lX", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH,
                             context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
@@ -570,7 +583,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedCommandSub);
     ADD_TEST(Test_BPNode_AppInit_FailedWakeupSub);
     ADD_TEST(Test_BPNode_AppInit_FailedTblInit);
-    ADD_TEST(Test_BPNode_AppInit_FailedFwpInit);
+    ADD_TEST(Test_BPNode_AppInit_FailedFwpInit_Callback);
+    ADD_TEST(Test_BPNode_AppInit_FailedFwpInit_ConfigPtrs);
     ADD_TEST(Test_BPNode_AppInit_FailedNCInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
