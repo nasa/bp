@@ -110,7 +110,7 @@ void Test_BPA_ADUP_In_Nominal(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
     
-    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
+    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1, 1);
     UtAssert_STUB_COUNT(BPLib_PI_Ingress, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -156,7 +156,7 @@ void Test_BPA_ADUP_In_IngressErr(void)
     UtAssert_STRINGBUF_EQ("[ADU In #%d]: Failed to ingress an ADU. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 
-    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_RECEIVED, 1, 1);
+    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1, 1);
     UtAssert_STUB_COUNT(BPLib_PI_Ingress, 1);
 }
 
@@ -167,7 +167,7 @@ void Test_BPA_ADUP_Out_Nominal(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
-    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
+    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1,  1);
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -181,7 +181,7 @@ void Test_BPA_ADUP_Out_Wrapping(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
-    Test_FWP_ADUP_VerifyIncrement(-1, ADU_COUNT_DELIVERED, 1,  1);
+    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1,  1);
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(CFE_MSG_SetMsgId, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
