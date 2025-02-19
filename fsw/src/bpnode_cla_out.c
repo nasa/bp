@@ -297,7 +297,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
         WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
         WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].BundleBuffer;
 
-        BPLib_AS_Increment(0, BUNDLE_COUNT_DELIVERED, 1);
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_COUNT_DELIVERED, 1);
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
