@@ -27,6 +27,8 @@
 #include "fwp_tablep.h"
 #include "utgenstub.h"
 
+BPLib_FWP_ConfigPtrs_t BPNode_ConfigPtrs;
+
 /*
  * ----------------------------------------------------
  * Generated stub function for BPA_TABLEP_ARP_CRSTblValidateFunc()
