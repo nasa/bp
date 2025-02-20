@@ -27,8 +27,6 @@
 #include "fwp_tablep.h"
 #include "utgenstub.h"
 
-BPLib_FWP_ConfigPtrs_t BPNode_ConfigPtrs;
-
 /*
  * ----------------------------------------------------
  * Generated stub function for BPA_TABLEP_ARP_CRSTblValidateFunc()
@@ -210,17 +208,18 @@ CFE_Status_t BPA_TABLEP_STOR_StorageTblValidateFunc(void *TblData)
  * Generated stub function for BPA_TABLEP_SingleTableInit()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TABLEP_SingleTableInit(const char *TableName, size_t Size,
-                                        CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void *TablePtr,
-                                        CFE_TBL_Handle_t TableHandle)
+CFE_Status_t BPA_TABLEP_SingleTableInit(const char *TableName, const char *TableFileName, size_t Size,
+                                        CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void **TablePtr,
+                                        CFE_TBL_Handle_t *TableHandle)
 {
     UT_GenStub_SetupReturnBuffer(BPA_TABLEP_SingleTableInit, CFE_Status_t);
 
     UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, const char *, TableName);
+    UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, const char *, TableFileName);
     UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, size_t, Size);
     UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, CFE_TBL_CallbackFuncPtr_t, TblValidationFuncPtr);
-    UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, void *, TablePtr);
-    UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, CFE_TBL_Handle_t, TableHandle);
+    UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, void **, TablePtr);
+    UT_GenStub_AddParam(BPA_TABLEP_SingleTableInit, CFE_TBL_Handle_t *, TableHandle);
 
     UT_GenStub_Execute(BPA_TABLEP_SingleTableInit, Basic, NULL);
 
@@ -262,12 +261,12 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
  * Generated stub function for BPA_TABLEP_TableManage()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TABLEP_TableManage(const char *TableName, void *TablePtr, CFE_TBL_Handle_t TableHandle)
+CFE_Status_t BPA_TABLEP_TableManage(const char *TableName, void **TablePtr, CFE_TBL_Handle_t TableHandle)
 {
     UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableManage, CFE_Status_t);
 
     UT_GenStub_AddParam(BPA_TABLEP_TableManage, const char *, TableName);
-    UT_GenStub_AddParam(BPA_TABLEP_TableManage, void *, TablePtr);
+    UT_GenStub_AddParam(BPA_TABLEP_TableManage, void **, TablePtr);
     UT_GenStub_AddParam(BPA_TABLEP_TableManage, CFE_TBL_Handle_t, TableHandle);
 
     UT_GenStub_Execute(BPA_TABLEP_TableManage, Basic, NULL);
