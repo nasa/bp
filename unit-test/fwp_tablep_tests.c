@@ -57,7 +57,7 @@ void Test_BPA_TABLEP_TableInit_InfoUpdated_Nominal(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
-    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableInit(), CFE_TBL_INFO_UPDATED);
+    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableInit(), CFE_SUCCESS);
 }
 
 void Test_BPA_TABLEP_TableInit_Success_Nominal(void)
@@ -106,13 +106,16 @@ void Test_BPA_TABLEP_TableInit_Error(void)
 void Test_BPA_TABLEP_SingleTableInit_Nominal(void)
 {
     CFE_Status_t Status;
+    CFE_TBL_Handle_t TestHandle;
+
+    TestHandle = 0;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
 
     /* Run the function under test */
-    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, 0);
+    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, &TestHandle);
 
     /* Verify the return code is as expected */
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
@@ -121,13 +124,16 @@ void Test_BPA_TABLEP_SingleTableInit_Nominal(void)
 void Test_BPA_TABLEP_SingleTableInit_Register_Error(void)
 {
     CFE_Status_t Status;
+    CFE_TBL_Handle_t TestHandle;
+
+    TestHandle = 0;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_TBL_ERR_INVALID_OPTIONS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
 
     /* Run the function under test */
-    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, 0);
+    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, &TestHandle);
 
     /* Verify the return code is as expected */
     UtAssert_EQ(CFE_Status_t, Status, CFE_TBL_ERR_INVALID_OPTIONS);
@@ -144,13 +150,16 @@ void Test_BPA_TABLEP_SingleTableInit_Register_Error(void)
 void Test_BPA_TABLEP_SingleTableInit_Load_Error(void)
 {
     CFE_Status_t Status;
+    CFE_TBL_Handle_t TestHandle;
+
+    TestHandle = 0;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_TBL_ERR_INVALID_OPTIONS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
 
     /* Run the function under test */
-    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, 0);
+    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, &TestHandle);
 
     /* Verify the return code is as expected */
     UtAssert_EQ(CFE_Status_t, Status, CFE_TBL_ERR_INVALID_OPTIONS);
@@ -166,13 +175,16 @@ void Test_BPA_TABLEP_SingleTableInit_Load_Error(void)
 void Test_BPA_TABLEP_SingleTableInit_GetAddress_Error(void)
 {
     CFE_Status_t Status;
+    CFE_TBL_Handle_t TestHandle;
+
+    TestHandle = 0;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Register), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Load), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_ERR_INVALID_OPTIONS);
 
     /* Run the function under test */
-    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, 0);
+    Status = BPA_TABLEP_SingleTableInit("Test", "TestFile", 1, NULL, NULL, &TestHandle);
 
     /* Verify the return code is as expected */
     UtAssert_EQ(CFE_Status_t, Status, CFE_TBL_ERR_INVALID_OPTIONS);
