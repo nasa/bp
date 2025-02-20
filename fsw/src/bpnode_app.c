@@ -240,19 +240,8 @@ CFE_Status_t BPNode_AppInit(void)
     /* Zero out the global data structure */
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
-    /* Call Table Proxy Init Function Here to load default tables*/
-    BpStatus = BPA_TABLEP_TableInit();
-    if (BpStatus != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
-                            (unsigned long)BpStatus);
-
-        return BpStatus;
-    }
-
     /* Initialize the FWP before using BPLib functions */
-    BpStatus = BPLib_FWP_Init(&Callbacks, &BPNode_ConfigPtrs);
+    BpStatus = BPLib_FWP_Init(&Callbacks);
     if (BpStatus != BPLIB_SUCCESS)
     {
         if (BpStatus == BPLIB_FWP_CALLBACK_INIT_ERROR)
@@ -263,15 +252,6 @@ CFE_Status_t BPNode_AppInit(void)
             /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
             CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
                                 "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
-                                (unsigned long) BpStatus);
-        }
-        else if (BpStatus == BPLIB_FWP_CONFIG_PTRS_INIT_ERROR)
-        {
-            CFE_ES_WriteToSysLog("BPNode: Failure initializing configuration pointers, RC = 0x%08lX\n",
-                                (unsigned long) BpStatus);
-
-            CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "BPNode: Failure initializing configuration pointers, RC = 0x%08lX",
                                 (unsigned long) BpStatus);
         }
 
@@ -288,6 +268,17 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
+    /* Call Table Proxy Init Function Here to load default tables*/
+    BpStatus = BPA_TABLEP_TableInit();
+    if (BpStatus != CFE_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            (unsigned long)BpStatus);
+
+        return BpStatus;
+    }
+
     BpStatus = BPLib_TIME_Init();
     if (BpStatus != BPLIB_SUCCESS)
     {
@@ -298,7 +289,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Initialize configurations and counters */
-    BpStatus = BPLib_NC_Init();
+    BpStatus = BPLib_NC_Init(&BPNode_ConfigPtrs);
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,

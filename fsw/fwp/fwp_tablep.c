@@ -195,7 +195,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
 
     if (Status != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(BPNODE_TBL_REG_ERR_EID, BPLib_EM_EventType_ERROR,
+        BPLib_EM_SendEvent(BPNODE_TBL_REG_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error Registering Table: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
     }
     else
@@ -205,7 +205,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
 
         if (Status != CFE_SUCCESS)
         {
-            CFE_EVS_SendEvent(BPNODE_TBL_LD_ERR_EID, BPLib_EM_EventType_ERROR,
+            BPLib_EM_SendEvent(BPNODE_TBL_LD_ERR_EID, BPLib_EM_EventType_ERROR,
                                 "Error Loading Table: %s, RC = 0x%08lX", TableFileName, (unsigned long)Status);
         }
         else
@@ -215,7 +215,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
 
             if (Status != CFE_TBL_INFO_UPDATED && Status != CFE_SUCCESS)
             {
-                CFE_EVS_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Error Getting Table Address: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
             }
         }
