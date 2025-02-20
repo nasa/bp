@@ -84,7 +84,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
             /* TODO remove header */
         }
 
-        BPLib_AS_Increment(0, ADU_COUNT_RECEIVED, 1);
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1);
 
         /* Pass ADU to PI */
         Status = BPLib_PI_Ingress(&BPNode_AppData.BplibInst, ChanId, AduPtr, Size);
@@ -139,7 +139,7 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
             CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, false);            
         }
 
-        BPLib_AS_Increment(0, ADU_COUNT_DELIVERED, 1);
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
     }
     /* Only report non-timeout errors */
     else if (Status != BPLIB_PI_TIMEOUT)
