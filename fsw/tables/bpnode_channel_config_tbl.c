@@ -76,36 +76,31 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                         .BlockType          = 1,
                         .BlockNum           = 1,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 2,
                         .BlockNum           = 2,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 3,
                         .BlockNum           = 3,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 4,
                         .BlockNum           = 4,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 5,
                         .BlockNum           = 5,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                 }
         },
@@ -157,36 +152,31 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                         .BlockType          = 1,
                         .BlockNum           = 1,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 2,
                         .BlockNum           = 2,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 3,
                         .BlockNum           = 3,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 4,
                         .BlockNum           = 4,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                     {
                         .BlockType          = 5,
                         .BlockNum           = 5,
                         .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .Spare              = 0
+                        .CrcType            = BPLib_CRC_Type_CRC16
                     },
                 }
         }
