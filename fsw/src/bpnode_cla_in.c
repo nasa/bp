@@ -289,7 +289,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     /* Ingress received bundle to bplib CLA */
     if (Status == CFE_SUCCESS && BPNode_AppData.ClaInData[ContId].CurrentBufferSize != 0)
     {
-        BPLib_AS_Increment(0, BUNDLE_COUNT_RECEIVED, 1);
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_COUNT_RECEIVED, 1);
 
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
