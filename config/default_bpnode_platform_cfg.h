@@ -122,6 +122,14 @@
 #define BPNODE_NUM_JOBS_PER_CYCLE           (40)
 
 /**
+ * \brief Number of bundles to enqueue for egress (from cache) during our wakeup
+ *        To prevent the generic worker job list from completely filling
+ *        (which allows us to receive new bundles/adus)
+ *        this number should be less than BPNODE_NUM_JOBS_PER_CYCLE
+ */
+#define BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN (BPNODE_NUM_JOBS_PER_CYCLE / 2)
+
+/**
  * \brief Size of BPLib's Memory Pool, in bytes
  */
 #define BPNODE_MEM_POOL_LEN               (16834u)
