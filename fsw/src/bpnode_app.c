@@ -244,16 +244,13 @@ CFE_Status_t BPNode_AppInit(void)
     BpStatus = BPLib_FWP_Init(&Callbacks);
     if (BpStatus != BPLIB_SUCCESS)
     {
-        if (BpStatus == BPLIB_FWP_CALLBACK_INIT_ERROR)
-        {
-            CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
+        CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
                                 (unsigned long) BpStatus);
 
-            /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
-            CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
-                                (unsigned long) BpStatus);
-        }
+        /* Use CFE_EVS_SendEvent() rather than BPLib_EM_SendEvent() since callbacks weren't initialized */
+        CFE_EVS_SendEvent(BPNODE_FWP_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "BPNode: Failure initializing function callbacks, RC = 0x%08lX",
+                            (unsigned long) BpStatus);
 
         return BpStatus;
     }
