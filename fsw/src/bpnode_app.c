@@ -109,6 +109,9 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
 
+    /* Check if any bundles are in cache, routing them to an egreif able */
+    (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
+
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
     BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
 
@@ -366,6 +369,9 @@ CFE_Status_t BPNode_AppInit(void)
 
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
+
+    /* Call CBOR initialization */
+    BPLib_CBOR_Init();
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();

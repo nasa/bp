@@ -29,7 +29,7 @@ add_cfe_coverage_stubs("bpnode_internal"
 )
 
 # Link with the cfe core stubs and unit test assert libs
-target_link_libraries(coverage-bpnode_internal-stubs 
+target_link_libraries(coverage-bpnode_internal-stubs
                           ut_core_api_stubs 
                           ut_assert
                           coverage-bplib-stubs
