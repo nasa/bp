@@ -44,15 +44,15 @@
 
 #define BPNODE_MAX_CHAN_SUBSCRIPTION     10     /**< \brief Max number of message IDs one channel can subscribe to */
 
-/** 
+/**
 ** \brief State configurations needed for ADU ingest/output
 */
-typedef struct 
+typedef struct
 {
     bool AddAutomatically;
 } BPA_ADUP_State_t;
 
-/** 
+/**
 ** \brief ADU Proxy Config Table Entry
 */
 typedef struct
@@ -62,7 +62,7 @@ typedef struct
     CFE_SB_MsgId_t RecvFrmMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
 } BPA_ADUP_Config_t ;
 
-/** 
+/**
 ** \brief ADU Proxy Config Table
 */
 typedef struct
@@ -83,9 +83,9 @@ typedef struct
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] TblData ADU Proxy Configuration Table pointer
- * 
+ *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  *  \retval BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE Invalid table parameter
@@ -100,10 +100,10 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
  *
  *  \par Assumptions, External Events, and Notes:
  *       - The pointer type is void to allow implementations with different pointer types
- * 
+ *
  *  \param[in] AduPtr Pointer to the ADU
  *  \param[in] ChanId Channel ID
- * 
+ *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Ingest was successful
  */
@@ -118,10 +118,10 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID
  *  \param[in] Timeout Total time to pend on channel out queue (in milliseconds)
- * 
+ *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful
  */
@@ -135,9 +135,9 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
- * 
+ *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
@@ -151,9 +151,9 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
- * 
+ *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
@@ -167,9 +167,9 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
- * 
+ *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
@@ -183,9 +183,9 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ChanId Channel ID corresponding to an ADU Task ID
- * 
+ *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */

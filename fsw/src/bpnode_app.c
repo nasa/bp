@@ -244,7 +244,7 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_PSP_MemSet(&BPNode_AppData, 0, sizeof(BPNode_AppData));
 
     /* Initialize the FWP before using BPLib functions */
-    BpStatus = BPLib_FWP_Init(Callbacks);
+    BpStatus = BPLib_FWP_Init(&Callbacks);
     if (BpStatus != BPLIB_SUCCESS)
     {
         CFE_ES_WriteToSysLog("BPNode: Failure initializing function callbacks, RC = 0x%08lX\n",
@@ -268,6 +268,17 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
+    /* Call Table Proxy Init Function Here to load default tables*/
+    BpStatus = BPA_TABLEP_TableInit();
+    if (BpStatus != CFE_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            (unsigned long)BpStatus);
+
+        return BpStatus;
+    }
+
     BpStatus = BPLib_TIME_Init();
     if (BpStatus != BPLIB_SUCCESS)
     {
@@ -278,7 +289,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Initialize configurations and counters */
-    BpStatus = BPLib_NC_Init();
+    BpStatus = BPLib_NC_Init(&BPNode_ConfigPtrs);
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
@@ -356,17 +367,6 @@ CFE_Status_t BPNode_AppInit(void)
         return Status;
     }
 
-    /* Call Table Proxy Init Function Here to load default tables*/
-    BpStatus = BPA_TABLEP_TableInit();
-    if (BpStatus != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
-                            (unsigned long)BpStatus);
-
-        return BpStatus;
-    }
-
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
 
@@ -432,7 +432,7 @@ CFE_Status_t BPNode_AppInit(void)
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
-        if (BPNode_AppData.ChanTblPtr->Configs[i].AddAutomatically == true)
+        if (BPNode_ConfigPtrs.ChanTblPtr->Configs[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);
