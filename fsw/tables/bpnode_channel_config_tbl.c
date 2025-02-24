@@ -41,7 +41,6 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .MaxBundlePayloadSize   = 15864,
             .PriBlkConfig           =
                 {
-                    .Version            = 7,
                     .CrcType            = BPLib_CRC_Type_CRC16,
                     .BundleProcFlags    = 4,
                     .DestEID            =    // "ipn:100.1"
@@ -117,7 +116,6 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .MaxBundlePayloadSize   = 15864,
             .PriBlkConfig           =
                 {
-                    .Version            = 7,
                     .CrcType            = BPLib_CRC_Type_CRC16,
                     .BundleProcFlags    = 4,
                     .DestEID            =    // ipn:"100.1"
