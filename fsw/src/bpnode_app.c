@@ -371,7 +371,16 @@ CFE_Status_t BPNode_AppInit(void)
     BPA_TLMP_Init();
 
     /* Call CBOR initialization */
-    BPLib_CBOR_Init();
+    Status = BPLib_CBOR_Init();
+
+    if (Status != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CBOR_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error Initializing CBOR CODEC, RC = 0x%08lX",
+                            (unsigned long)Status);
+
+        return Status;
+    }
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
