@@ -26,9 +26,17 @@
 #ifndef FWP_TABLEP_H
 #define FWP_TABLEP_H
 
+/* ======== */
+/* Includes */
+/* ======== */
+
 #include "cfe.h"
 #include "bpnode_eventids.h"
 #include "bpnode_tbl.h"
+
+/* ====== */
+/* Macros */
+/* ====== */
 
 #define BPNODE_ADU_TBL_IDX      0
 #define BPNODE_CHAN_TBL_IDX     1
@@ -43,8 +51,24 @@
 #define BPNODE_LATE_TBL_IDX    10
 #define BPNODE_STOR_TBL_IDX    11
 
+/* =========== */
+/* Global Data */
+/* =========== */
+
+extern BPLib_FWP_ConfigPtrs_t BPNode_ConfigPtrs;
+
+/* =================== */
+/* Function Prototypes */
+/* =================== */
+
 CFE_Status_t BPA_TABLEP_TableInit(void);
+
+CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* TableFileName, size_t Size, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void** TablePtr, CFE_TBL_Handle_t* TableHandle);
+
 CFE_Status_t BPA_TABLEP_TableUpdate(void);
+
+CFE_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle);
+
 BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
 
 /**

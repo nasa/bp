@@ -55,28 +55,12 @@
 /* ====== */
 /* Macros */
 /* ====== */
+
 #define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
 #define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
 #define BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for ADU In exit semaphore take, in milliseconds */
 #define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
 #define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
-
-/*
-** Type Definitions
-*/
-
-/**
-** \brief Table Data
-*/
-typedef struct
-{
-    char                        TableName[OS_MAX_API_NAME];
-    char                        TableFileName[OS_MAX_PATH_LEN];
-    CFE_TBL_Handle_t            TableHandle;
-    uint32                      TableSize;
-    void*                       TablePtr;
-    CFE_TBL_CallbackFuncPtr_t   TblValidationFuncPtr;
-} BPNode_TblNameParams_t;
 
 /**
 ** \brief Global Data
@@ -88,7 +72,9 @@ typedef struct
     CFE_SB_PipeId_t CommandPipe;            /**< \brief Pipe Id for command pipe */
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
-    BPNode_TblNameParams_t  *TblNameParamsArr;
+    BPA_ADUP_Table_t* AduProxyTablePtr;
+
+    CFE_TBL_Handle_t TableHandles[BPNODE_NUMBER_OF_TABLES];
 
     /* Telemetry HK Packet structures*/
     BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
@@ -103,28 +89,13 @@ typedef struct
     /* BPLib Instance State */
     BPLib_Instance_t            BplibInst;
     uint8                       pool_mem[BPNODE_MEM_POOL_LEN];
-
-    BPA_ADUP_Table_t            *AduTblPtr;
-    BPLib_PI_ChannelTable_t     *ChanTblPtr;
-    BPLib_CLA_ContactsTable_t   *ContactsTblPtr;
-    BPLib_ARP_CRSTable_t        *CrsTblPtr;
-    BPLib_PDB_CustodianTable_t  *CustodianTblPtr;
-    BPLib_PDB_CustodyTable_t    *CustodyTblPtr;
-    BPLib_NC_MIBConfigPNTable_t *MibPnTblPtr;
-    BPLib_NC_MIBConfigPSTable_t *MibPsTblPtr;
-    BPLib_PDB_ReportToTable_t   *ReportTblPtr;
-    BPLib_PDB_SrcAuthTable_t    *AuthTblPtr;
-    BPLib_PDB_SrcLatencyTable_t *LatTblPtr;
-    BPLib_STOR_StorageTable_t   *StorTblPtr;
 } BPNode_AppData_t;
-
 
 /*
 ** Global Data
 */
 
 extern BPNode_AppData_t BPNode_AppData;
-
 
 /*
 ** Exported Functions
