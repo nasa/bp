@@ -173,13 +173,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Call Table Proxy to update tables*/
-    Status = BPA_TABLEP_TableUpdate();
-    if (Status != CFE_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                    "Error Updating Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
-    }
+    BpStatus = BPLib_NC_TableWakeUp();
 
     /* Check for pending commands */
     do
