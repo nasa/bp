@@ -173,7 +173,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Call NC to update tables*/
-    BPLib_NC_TableWakeUp();
+    BPLib_NC_TableUpdate();
 
     /* Check for pending commands */
     do
