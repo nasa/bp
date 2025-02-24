@@ -222,6 +222,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
         .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit,
         /* Table Proxy */
+        .BPA_TABLEP_TableUpdate       = BPA_TABLEP_TableUpdate,
         .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
         /* Event Proxy */
         .BPA_EVP_Init = BPA_EVP_Init,
