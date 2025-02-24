@@ -73,33 +73,33 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                 {
                     {
                         .BlockType          = 1,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 1,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 2,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 2,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 3,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 3,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 4,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 4,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 5,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 5,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                 }
         },
@@ -148,33 +148,33 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                 {
                     {
                         .BlockType          = 1,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 1,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 2,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 2,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 3,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 3,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 4,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 4,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 5,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 5,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = BPLib_CRC_Type_CRC16
+                        .BlockProcFlags     = 1
                     },
                 }
         }
