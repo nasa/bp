@@ -265,18 +265,6 @@ void Test_BPA_TABLEP_TableManage_Success_Nominal(void)
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
 }
 
-void Test_BPA_TABLEP_SingleTableUpdate_Nominal(void)
-{
-    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Modified), CFE_SUCCESS);
-    UtAssert_INT32_EQ((int32) BPA_TABLEP_SingleTableUpdate(1), (int32) CFE_SUCCESS);
-}
-
-void Test_BPA_TABLEP_SingleTableUpdate_Error(void)
-{
-    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_Modified), CFE_SUCCESS);
-    UtAssert_INT32_EQ((int32) BPA_TABLEP_SingleTableUpdate(1), (int32) CFE_SUCCESS);
-}
-
 void Test_BPA_TABLEP_PI_ValidateConfigs_Nominal(void)
 {
     CFE_Status_t Status;
@@ -671,9 +659,6 @@ void UtTest_Setup(void)
 
     ADD_TEST(Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableManage_Success_Nominal);
-
-    ADD_TEST(Test_BPA_TABLEP_SingleTableUpdate_Nominal);
-    ADD_TEST(Test_BPA_TABLEP_SingleTableUpdate_Error);
 
     ADD_TEST(Test_BPA_TABLEP_PI_ValidateConfigs_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PI_ValidateConfigs_Error);

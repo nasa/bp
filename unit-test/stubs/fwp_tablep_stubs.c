@@ -234,22 +234,6 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char *TableName, const char *Table
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPA_TABLEP_SingleTableUpdate()
- * ----------------------------------------------------
- */
-BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle)
-{
-    UT_GenStub_SetupReturnBuffer(BPA_TABLEP_SingleTableUpdate, BPLib_Status_t);
-
-    UT_GenStub_AddParam(BPA_TABLEP_SingleTableUpdate, CFE_TBL_Handle_t, TblHandle);
-
-    UT_GenStub_Execute(BPA_TABLEP_SingleTableUpdate, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPA_TABLEP_SingleTableUpdate, BPLib_Status_t);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPA_TABLEP_TableInit()
  * ----------------------------------------------------
  */

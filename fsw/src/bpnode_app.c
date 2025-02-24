@@ -172,8 +172,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
                             "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
-    /* Call Table Proxy to update tables*/
-    BpStatus = BPLib_NC_TableWakeUp();
+    /* Call NC to update tables*/
+    BPLib_NC_TableWakeUp();
 
     /* Check for pending commands */
     do
@@ -217,7 +217,6 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit,
         /* Table Proxy */
         .BPA_TABLEP_TableUpdate       = BPA_TABLEP_TableUpdate,
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
         /* Event Proxy */
         .BPA_EVP_Init = BPA_EVP_Init,
         .BPA_EVP_SendEvent = BPA_EVP_SendEvent,

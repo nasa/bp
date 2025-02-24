@@ -69,8 +69,6 @@ BPLib_Status_t BPA_TABLEP_TableUpdate(BPLib_NC_TableType_t TableType, void** Tbl
 
 BPLib_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle);
 
-BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle);
-
 /**
  * \brief     Wrapper to translate return from BPLib_PI_ValidateConfigs into a CFE_Statuts_t type
  * \details   Translate the BPLib_Status_t-type return status from BPLib_PI_ValidateConfigs()
