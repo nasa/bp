@@ -48,6 +48,15 @@ CFE_Status_t BPA_TABLEP_TableInit(void);
 
 CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* TableFileName, size_t Size, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void** TablePtr, CFE_TBL_Handle_t* TableHandle);
 
+/**
+  * \brief      Refresh or update the table pointer
+  * \param[in]  TableType (uint8) Indicates the type of table desired to update
+  * \param[out] TblPtr (void**) Pointer to table pointer to be updated/refreshed
+  * \return     Execution status
+  * \retval     BPLIB_SUCCESS: Table pointer was refreshed; table wasn't modified
+  * \retval     BPLIB_TBL_UPDATED: Table pointer was refreshed; table was modified
+  * \retval     BPLIB_ERROR: Unrecognized table type provided
+  */
 BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void** TblPtr);
 
 BPLib_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle);

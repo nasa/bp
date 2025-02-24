@@ -228,6 +228,8 @@ BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void** TblPtr)
 {
     BPLib_Status_t Status;
 
+    Status = BPLIB_ERROR;
+
     switch (TableType)
     {
         case CHANNEL_CONFIG:
