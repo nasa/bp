@@ -31,7 +31,7 @@
 /* Global Data */
 /* =========== */
 
-BPLib_FWP_ConfigPtrs_t BPNode_ConfigPtrs;
+BPLib_NC_ConfigPtrs_t BPNode_ConfigPtrs;
 
 /*
  * ----------------------------------------------------

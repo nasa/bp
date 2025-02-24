@@ -187,7 +187,7 @@ void BPNode_UT_Setup(void)
     UT_ResetState(0);
 
     memset((void*) &BPNode_AppData, 0, sizeof(BPNode_AppData_t));
-    memset((void*) &BPNode_ConfigPtrs, 0, sizeof(BPLib_FWP_ConfigPtrs_t));
+    memset((void*) &BPNode_ConfigPtrs, 0, sizeof(BPLib_NC_ConfigPtrs_t));
 
     memset(context_BPLib_EM_SendEvent, 0, sizeof(BPLib_EM_SendEvent_context_t) * UT_MAX_SENDEVENT_DEPTH);
     memset(context_CFE_EVS_SendEvent, 0, sizeof(context_CFE_EVS_SendEvent));

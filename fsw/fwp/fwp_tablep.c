@@ -37,7 +37,7 @@
 /* Globals */
 /* ======= */
 
-BPLib_FWP_ConfigPtrs_t BPNode_ConfigPtrs;
+BPLib_NC_ConfigPtrs_t BPNode_ConfigPtrs;
 
 /* ==================== */
 /* Function Definitions */
@@ -224,7 +224,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
     return Status;
 }
 
-BPLib_Status_t BPA_TABLEP_TableUpdate(BPLib_NC_TableType_t TableType, void** TblPtr)
+BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void** TblPtr)
 {
     BPLib_Status_t Status;
 
