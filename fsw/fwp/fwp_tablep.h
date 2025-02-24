@@ -65,7 +65,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void);
 
 CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* TableFileName, size_t Size, CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr, void** TablePtr, CFE_TBL_Handle_t* TableHandle);
 
-BPLib_Status_t BPA_TABLEP_TableUpdate(void);
+BPLib_Status_t BPA_TABLEP_TableUpdate(BPLib_NC_TableType_t TableType, void** TblPtr);
 
 BPLib_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle);
 
