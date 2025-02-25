@@ -59,13 +59,11 @@ BPLib_PDB_SrcLatencyTable_t TestLatencyTbl;
 BPLib_STOR_StorageTable_t   TestStorTbl;
 
 #define UT_MAX_CFE_SENDEVENT_DEPTH 10
-#define UT_MAX_TRANSLATE_DEPTH     10
-#define UT_MAX_TABLE_TYPE_DEPTH    13
+#define UT_MAX_TRANSLATE_DEPTH     13
 
 CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[UT_MAX_CFE_SENDEVENT_DEPTH];
 BPLib_Status_t Context_BPLib_Status[UT_MAX_TRANSLATE_DEPTH];
 CFE_Status_t Context_CFE_Status[UT_MAX_TRANSLATE_DEPTH];
-uint8 Context_TableType[UT_MAX_TABLE_TYPE_DEPTH];
 
 /*
 ** Function Definitions
@@ -133,25 +131,6 @@ void UT_Handler_BPA_CFE_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey, c
     }
 }
 
-void UT_Handler_BPA_TABLEP_TableUpdate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
-{
-    uint16 CallCount;
-    uint16 idx;
-
-    CallCount = UT_GetStubCount(UT_KEY(BPA_TABLEP_TableUpdate));
-
-    if (CallCount > UT_MAX_TABLE_TYPE_DEPTH)
-    {
-        UtAssert_Failed("BPA_TABLEP_TableUpdate UT depth %u exceeded: %u, increase UT_MAX_TABLE_TYPE_DEPTH",
-                        UT_MAX_TABLE_TYPE_DEPTH, CallCount);
-    }
-    else
-    {
-        idx = CallCount - 1;
-        Context_TableType[idx] = UT_Hook_GetArgValueByName(Context, "TableType", uint8);
-    }
-}
-
 void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText)
 {
     /* Check the string */
@@ -202,11 +181,6 @@ void Test_FWP_ADUP_VerifyDecrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
     }
 }
 
-void BPNode_Test_TABLEP_TableUpdate(uint8 CallNum, uint8 TableType)
-{
-    UtAssert_EQ(uint8, Context_TableType[CallNum], TableType);
-}
-
 /* Setup function prior to every test */
 void BPNode_UT_Setup(void)
 {
@@ -239,7 +213,6 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPA_CFE_Status_Translate), UT_Handler_BPA_CFE_Status_Translate, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
-    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableUpdate), UT_Handler_BPA_TABLEP_TableUpdate, NULL);
 
     BPNode_AppData.AduProxyTablePtr   = &TestAduTbl;
     BPNode_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
