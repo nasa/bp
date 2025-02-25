@@ -69,6 +69,7 @@ typedef struct
 extern CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[];
 extern BPLib_Status_t Context_BPLib_Status[];
 extern CFE_Status_t Context_CFE_Status[];
+extern uint8 Context_TableType[];
 
 extern BPA_ADUP_Table_t            TestAduTbl;
 extern BPLib_PI_ChannelTable_t     TestChanTbl;
@@ -104,6 +105,9 @@ void UT_Handler_BPA_BPLib_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey,
 /* Handler to capture arguments passed to BPA_CFE_Status_Translate */
 void UT_Handler_BPA_CFE_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context);
 
+/* Handler to capture arguments to BPA_TABLEP_TableUpdate */
+void UT_Handler_BPA_TABLEP_TableUpdate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context);
+
 /* Verify values given when BPLib_EM_SendEvent is called */
 void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText);
 
@@ -112,6 +116,9 @@ void Test_FWP_ADUP_VerifyIncrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
 
 /* Verify values given when BPLib_AS_Decrement is called, match what's expected */
 void Test_FWP_ADUP_VerifyDecrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum);
+
+/* Verify values given to BPA_TABLEP_TableUpdate */
+void BPNode_Test_TABLEP_TableUpdate(uint8 CallNum, uint8 TableType);
 
 /* Unit test case set up */
 void BPNode_UT_Setup(void);
