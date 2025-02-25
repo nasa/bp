@@ -26,7 +26,6 @@
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "bpnode_tbl.h"
 
-
 BPLib_PI_ChannelTable_t ChannelTable = {
     .Configs = {
         {
@@ -42,8 +41,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .MaxBundlePayloadSize   = 15864,
             .PriBlkConfig           =
                 {
-                    .Version            = 7,
-                    .CrcType            = 1,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
                     .BundleProcFlags    = 4,
                     .DestEID            =    // "ipn:100.1"
                         {
@@ -69,44 +67,39 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                             .Node         = 100,
                             .Service      = 1
                         },
-                    .LifeTime           = 10000
+                    .Lifetime           = 10000
                 },
             .CanBlkConfig           =
                 {
                     {
                         .BlockType          = 1,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 1,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 2,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 2,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 3,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 3,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 4,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 4,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 5,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 5,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                 }
         },
@@ -123,8 +116,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .MaxBundlePayloadSize   = 15864,
             .PriBlkConfig           =
                 {
-                    .Version            = 7,
-                    .CrcType            = 1,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
                     .BundleProcFlags    = 4,
                     .DestEID            =    // ipn:"100.1"
                         {
@@ -150,44 +142,39 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                             .Node         = 100,
                             .Service      = 1
                         },
-                    .LifeTime           = 10000
+                    .Lifetime           = 10000
                 },
             .CanBlkConfig           =
                 {
                     {
                         .BlockType          = 1,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 1,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 2,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 2,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 3,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 3,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 4,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 4,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                     {
                         .BlockType          = 5,
+                        .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 5,
-                        .BlockProcFlags     = 1,
-                        .CrcType            = 1,
-                        .Spare              = 0
+                        .BlockProcFlags     = 1
                     },
                 }
         }
