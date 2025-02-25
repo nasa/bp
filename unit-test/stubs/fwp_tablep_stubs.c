@@ -251,9 +251,9 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
  * Generated stub function for BPA_TABLEP_TableManage()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TABLEP_TableManage(const char *TableName, void **TablePtr, CFE_TBL_Handle_t TableHandle)
+BPLib_Status_t BPA_TABLEP_TableManage(const char *TableName, void **TablePtr, CFE_TBL_Handle_t TableHandle)
 {
-    UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableManage, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableManage, BPLib_Status_t);
 
     UT_GenStub_AddParam(BPA_TABLEP_TableManage, const char *, TableName);
     UT_GenStub_AddParam(BPA_TABLEP_TableManage, void **, TablePtr);
@@ -261,7 +261,7 @@ CFE_Status_t BPA_TABLEP_TableManage(const char *TableName, void **TablePtr, CFE_
 
     UT_GenStub_Execute(BPA_TABLEP_TableManage, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPA_TABLEP_TableManage, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_TABLEP_TableManage, BPLib_Status_t);
 }
 
 /*
@@ -269,11 +269,14 @@ CFE_Status_t BPA_TABLEP_TableManage(const char *TableName, void **TablePtr, CFE_
  * Generated stub function for BPA_TABLEP_TableUpdate()
  * ----------------------------------------------------
  */
-CFE_Status_t BPA_TABLEP_TableUpdate(void)
+BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void **TblPtr)
 {
-    UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableUpdate, CFE_Status_t);
+    UT_GenStub_SetupReturnBuffer(BPA_TABLEP_TableUpdate, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_TABLEP_TableUpdate, uint8, TableType);
+    UT_GenStub_AddParam(BPA_TABLEP_TableUpdate, void **, TblPtr);
 
     UT_GenStub_Execute(BPA_TABLEP_TableUpdate, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPA_TABLEP_TableUpdate, CFE_Status_t);
+    return UT_GenStub_GetReturnValue(BPA_TABLEP_TableUpdate, BPLib_Status_t);
 }
