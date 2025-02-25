@@ -202,7 +202,7 @@ void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPA_CFE_Status_Translate), BPLIB_TBL_UPDATED);
 
-    for (TableType = CHANNEL_CONFIG; TableType <= STORAGE; TableType++)
+    for (TableType = CHANNEL_CONFIG; TableType <= ADU_PROXY_CONFIG; TableType++)
     {
         /* Run the function under test */
         Status = BPA_TABLEP_TableUpdate(TableType, NULL);
@@ -222,7 +222,7 @@ void Test_BPA_TABLEP_TableUpdate_Success_Nominal(void)
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
 
-    for (TableType = CHANNEL_CONFIG; TableType <= STORAGE; TableType++)
+    for (TableType = CHANNEL_CONFIG; TableType <= ADU_PROXY_CONFIG; TableType++)
     {
         Status = BPA_TABLEP_TableUpdate(TableType, NULL);
 
