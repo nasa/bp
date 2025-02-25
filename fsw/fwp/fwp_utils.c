@@ -35,17 +35,17 @@ BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)
     /* Default to indicating that the status is unknown */
     Status = BPLIB_UNKNOWN;
 
-    if (CFE_Status & CFE_SEVERITY_ERROR)
-    {
-        Status = BPLIB_ERROR;
-    }
-    else if (CFE_Status == CFE_SUCCESS)
+    if (CFE_Status == CFE_SUCCESS)
     {
         Status = BPLIB_SUCCESS;
     }
     else if (CFE_Status == CFE_TBL_INFO_UPDATED)
     {
         Status = BPLIB_TBL_UPDATED;
+    }
+    else if (CFE_Status & CFE_SEVERITY_ERROR)
+    {
+        Status = BPLIB_ERROR;
     }
 
     return Status;
