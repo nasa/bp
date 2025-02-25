@@ -73,6 +73,17 @@ void Test_BPA_CFE_Error_Status_Translate(void)
     UtAssert_LTEQ(BPLib_Status_t, BPLib_Status, BPLIB_ERROR);
 }
 
+void Test_BPA_CFE_TblUpdate_Status_Translate(void)
+{
+    BPLib_Status_t BPLib_Status;
+
+    /* Convert cFE error-type return code into a BPLib table-update-type return code */
+    BPLib_Status = BPA_CFE_Status_Translate(CFE_TBL_INFO_UPDATED);
+
+    /* Verify the return code is a table update type */
+    UtAssert_EQ(BPLib_Status_t, BPLib_Status, BPLIB_TBL_UPDATED);
+}
+
 void Test_BPA_CFE_Info_Status_Translate(void)
 {
     BPLib_Status_t BPLib_Status;
@@ -91,5 +102,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_BPLib_Error_Status_Translate);
     ADD_TEST(Test_BPA_CFE_Success_Status_Translate);
     ADD_TEST(Test_BPA_CFE_Error_Status_Translate);
+    ADD_TEST(Test_BPA_CFE_TblUpdate_Status_Translate);
     ADD_TEST(Test_BPA_CFE_Info_Status_Translate);
 }
