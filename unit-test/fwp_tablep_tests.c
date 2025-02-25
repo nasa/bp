@@ -196,47 +196,37 @@ void Test_BPA_TABLEP_SingleTableInit_GetAddress_Error(void)
 
 void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
 {
+    uint8 TableType;
+    BPLib_Status_t Status;
+
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
-    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableUpdate(), CFE_TBL_INFO_UPDATED);
+
+    for (TableType = CHANNEL_CONFIG; TableType <= STORAGE; TableType++)
+    {
+        Status = BPA_TABLEP_TableUpdate(TableType, NULL);
+
+        UtAssert_EQ(BPLib_Status_t, Status, BPLIB_TBL_UPDATED);
+    }
 }
 
 void Test_BPA_TABLEP_TableUpdate_Success_Nominal(void)
 {
+    uint8 TableType;
+    BPLib_Status_t Status;
+
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
-    UtAssert_EQ(CFE_Status_t, BPA_TABLEP_TableUpdate(), CFE_SUCCESS);
+
+    for (TableType = CHANNEL_CONFIG; TableType <= STORAGE; TableType++)
+    {
+        Status = BPA_TABLEP_TableUpdate(TableType, NULL);
+
+        UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
+    }
 }
 
 void Test_BPA_TABLEP_TableUpdate_Error(void)
 {
-    uint8_t ErrorLoop;
-    uint16_t ExpectedStubCount;
-    CFE_Status_t Status;
-
-    ExpectedStubCount = 0;
-
-    for (ErrorLoop = 0; ErrorLoop < BPNODE_NUMBER_OF_TABLES; ErrorLoop++)
-    {
-        ExpectedStubCount += (ErrorLoop + 1);
-
-        /* Reset return values so only the n-th call fails */
-        UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
-
-        /* Make the n-th call fail */
-        UT_SetDeferredRetcode(UT_KEY(CFE_TBL_GetAddress), ErrorLoop + 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
-
-        /* Run the function under test */
-        Status = BPA_TABLEP_TableUpdate();
-
-        /* Verify the return code */
-        UtAssert_EQ(CFE_Status_t, Status, CFE_ES_ERR_RESOURCEID_NOT_VALID);
-
-        /* Show that something is being called */
-        UtAssert_STUB_COUNT(CFE_TBL_GetAddress, ExpectedStubCount);
-
-        /* Verify that the correct event was issued */
-        BPNode_Test_Verify_Event(ErrorLoop, BPNODE_TBL_MNG_ERR_EID,
-                                    "Error managing the table: %s on wakeup, Status=0x%08X");
-    }
+    UtAssert_EQ(BPLib_Status_t, BPA_TABLEP_TableUpdate(BPNODE_NUMBER_OF_TABLES + 1, NULL), BPLIB_ERROR);
 }
 
 void Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal(void)
@@ -263,6 +253,24 @@ void Test_BPA_TABLEP_TableManage_Success_Nominal(void)
 
     /* Verify return code */
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPA_TABLEP_TableManage_Error(void)
+{
+    BPLib_Status_t Status;
+
+    /* Reset return values so only the n-th call fails */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_ES_ERR_RESOURCEID_NOT_VALID);
+
+    /* Run the function under test */
+    Status = BPA_TABLEP_TableManage("Test", NULL, 0);
+
+    /* Verify the return code */
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_ERROR);
+
+    /* Verify that the correct event was issued */
+    BPNode_Test_Verify_Event(0, BPNODE_TBL_MNG_ERR_EID,
+                                "Error managing the table: %s on wakeup, Status=0x%08X");
 }
 
 void Test_BPA_TABLEP_PI_ValidateConfigs_Nominal(void)
@@ -647,49 +655,36 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TABLEP_TableInit_InfoUpdated_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableInit_Success_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableInit_Error);
-
     ADD_TEST(Test_BPA_TABLEP_SingleTableInit_Nominal);
     ADD_TEST(Test_BPA_TABLEP_SingleTableInit_Register_Error);
     ADD_TEST(Test_BPA_TABLEP_SingleTableInit_Load_Error);
     ADD_TEST(Test_BPA_TABLEP_SingleTableInit_GetAddress_Error);
-
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Success_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableUpdate_Error);
-
     ADD_TEST(Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal);
     ADD_TEST(Test_BPA_TABLEP_TableManage_Success_Nominal);
-
+    ADD_TEST(Test_BPA_TABLEP_TableManage_Error);
     ADD_TEST(Test_BPA_TABLEP_PI_ValidateConfigs_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PI_ValidateConfigs_Error);
-
     ADD_TEST(Test_BPA_TABLEP_CLA_ContactsTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_CLA_ContactsTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_ARP_CRSTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_ARP_CRSTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_PDB_CustodianAuthTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PDB_CustodianAuthTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_PDB_CustodyAuthTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PDB_CustodyAuthTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_NC_MIBConfigPSTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_NC_MIBConfigPSTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_PDB_ReportToAuthTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PDB_ReportToAuthTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_PDB_SrcAuthTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PDB_SrcAuthTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_PDB_SrcLatencyTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_PDB_SrcLatencyTblValidateFunc_Error);
-
     ADD_TEST(Test_BPA_TABLEP_STOR_StorageTblValidateFunc_Nominal);
     ADD_TEST(Test_BPA_TABLEP_STOR_StorageTblValidateFunc_Error);
 }
