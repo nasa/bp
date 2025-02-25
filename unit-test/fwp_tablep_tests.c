@@ -200,12 +200,18 @@ void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
     BPLib_Status_t Status;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_CFE_Status_Translate), BPLIB_TBL_UPDATED);
 
     for (TableType = CHANNEL_CONFIG; TableType <= STORAGE; TableType++)
     {
+        /* Run the function under test */
         Status = BPA_TABLEP_TableUpdate(TableType, NULL);
 
+        /* Verify that the function returns the expected status */
         UtAssert_EQ(BPLib_Status_t, Status, BPLIB_TBL_UPDATED);
+
+        /* Show that the translation function got the correct input */
+        UtAssert_EQ(CFE_Status_t, Context_CFE_Status[TableType], CFE_TBL_INFO_UPDATED);
     }
 }
 
@@ -233,13 +239,18 @@ void Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal(void)
 {
     CFE_Status_t Status;
 
+    /* Force the function under test to return a table update status */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_CFE_Status_Translate), BPLIB_TBL_UPDATED);
 
     /* Run function under test */
     Status = BPA_TABLEP_TableManage("Test", NULL, 0);
 
     /* Verify return code */
-    UtAssert_EQ(CFE_Status_t, Status, CFE_TBL_INFO_UPDATED);
+    UtAssert_EQ(CFE_Status_t, Status, BPLIB_TBL_UPDATED);
+
+    /* Verify the code given to the translation function */
+    UtAssert_EQ(CFE_Status_t, Context_CFE_Status[0], CFE_TBL_INFO_UPDATED);
 }
 
 void Test_BPA_TABLEP_TableManage_Success_Nominal(void)
@@ -259,14 +270,18 @@ void Test_BPA_TABLEP_TableManage_Error(void)
 {
     BPLib_Status_t Status;
 
-    /* Reset return values so only the n-th call fails */
+    /* Force function under test to return an error */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_ES_ERR_RESOURCEID_NOT_VALID);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_CFE_Status_Translate), BPLIB_ERROR);
 
     /* Run the function under test */
     Status = BPA_TABLEP_TableManage("Test", NULL, 0);
 
     /* Verify the return code */
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_ERROR);
+
+    /* Verify the code given to the translation function */
+    UtAssert_EQ(CFE_Status_t, Context_CFE_Status[0], CFE_ES_ERR_RESOURCEID_NOT_VALID);
 
     /* Verify that the correct event was issued */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_MNG_ERR_EID,
