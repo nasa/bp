@@ -37,7 +37,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .AduUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
-            .LocalServiceNumber     = 2,
+            .LocalServiceNumber     = BPLIB_TEMPORARY_EID_SERVICE_NUM_FOR_CHANNEL_0_ROUTES,
             .MaxBundlePayloadSize   = 15864,
             .PriBlkConfig           =
                 {
@@ -112,7 +112,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .AduUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
-            .LocalServiceNumber     = 2,
+            .LocalServiceNumber     = BPLIB_TEMPORARY_EID_SERVICE_NUM_FOR_CHANNEL_1_ROUTES,
             .MaxBundlePayloadSize   = 15864,
             .PriBlkConfig           =
                 {
