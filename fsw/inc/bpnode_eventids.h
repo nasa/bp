@@ -142,5 +142,6 @@
 #define BPNODE_MEM_INIT_ERR_EID                 112
 #define BPNODE_ADU_OUT_PI_OUT_ERR_EID           113
 #define BPNODE_ADU_OUT_PI_IN_ERR_EID            114
+#define BPNODE_TBL_UPDATE_INF_EID               115
 
 #endif /* BPNODE_EVENTS_H */
