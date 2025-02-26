@@ -175,6 +175,16 @@ CFE_Status_t BPNode_WakeupProcess(void)
     /* Call NC to update tables*/
     BPLib_NC_TableUpdate();
 
+    /* Update the ADUP table individually since it's owned by BPNode */
+    BpStatus = BPA_TABLEP_TableUpdate(ADU_PROXY_CONFIG, (void**) &BPNode_AppData.AduProxyTablePtr);
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
+    {
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error managing the table: ADUProxyTable on wakeup, Status=0x%08X", BpStatus);
+
+        Status = BPA_BPLib_Status_Translate(BpStatus);
+    }
+
     /* Check for pending commands */
     do
     {
