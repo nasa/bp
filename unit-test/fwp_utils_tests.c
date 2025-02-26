@@ -89,10 +89,10 @@ void Test_BPA_CFE_Info_Status_Translate(void)
     BPLib_Status_t BPLib_Status;
 
     /* Convert cFE info-type return code into a BPLib error-type return code */
-    BPLib_Status = BPA_CFE_Status_Translate(CFE_STATUS_NO_COUNTER_INCREMENT);
+    BPLib_Status = BPA_CFE_Status_Translate(CFE_ES_CDS_ALREADY_EXISTS);
 
     /* Verify the return code is an error type, accounting for different types of errors */
-    UtAssert_LTEQ(BPLib_Status_t, BPLib_Status, BPLIB_ERROR);
+    UtAssert_LTEQ(BPLib_Status_t, BPLib_Status, BPLIB_UNKNOWN);
 }
 
 /* Register the test cases to execute with the unit test tool */
