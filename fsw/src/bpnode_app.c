@@ -173,7 +173,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Call NC to update tables*/
-    BPLib_NC_TableUpdate();
+    BpStatus = BPLib_NC_TableUpdate();
+    Status   = BPA_BPLib_Status_Translate(BpStatus);
 
     /* Update the ADUP table individually since it's owned by BPNode */
     BpStatus = BPA_TABLEP_TableUpdate(ADU_PROXY_CONFIG, (void**) &BPNode_AppData.AduProxyTablePtr);
@@ -192,7 +193,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Check for pending commands */
-    do
+    while (Status == CFE_SUCCESS)
     {
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
 
@@ -200,8 +201,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         {
             BPA_DP_TaskPipe(BufPtr);
         }
-
-    } while (Status == CFE_SUCCESS);
+    }
 
     /* Not an error case */
     if (Status == CFE_SB_NO_MESSAGE)

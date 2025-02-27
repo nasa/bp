@@ -260,13 +260,21 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
 {
     CFE_Status_t Status;
 
+    /* Force a successful table update */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); /* Exit receive buffer loop after 1 run */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_TableUpdate), BPLIB_TBL_UPDATED);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
 
+    /* Exit receive buffer loop after 1 run */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    /* Run function under test */
     Status = BPNode_WakeupProcess();
 
+    /* Verify a successful wake up */
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
 
+    /* Confirm that the table updating issued an event */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_UPDATE_INF_EID,
                                 "Updated ADU Proxy Configuration table");
 }
@@ -275,11 +283,18 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 {
     CFE_Status_t Status;
 
+    /* Force the table updates to return success codes */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); /* Exit receive buffer loop after 1 run */
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_TableUpdate), BPLIB_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
 
+    /* Exit receive buffer loop after 1 run */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    /* Run the function under test */
     Status = BPNode_WakeupProcess();
 
+    /* Check for a successfully return code */
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
 }
 
@@ -288,6 +303,7 @@ void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
     CFE_Status_t Status;
 
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_STATUS_NOT_IMPLEMENTED);
 
     Status = BPNode_WakeupProcess();
 
@@ -295,6 +311,9 @@ void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
 
     BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
                                 "Error managing the table: ADUProxyTable on wakeup, Status=0x%08X");
+
+    /* Show that the receive buffer command wasn't ever reached */
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
 }
 
 /* Test app initialization in nominal case */
