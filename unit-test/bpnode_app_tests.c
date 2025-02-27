@@ -261,6 +261,7 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
     CFE_Status_t Status;
 
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); /* Exit receive buffer loop after 1 run */
 
     Status = BPNode_WakeupProcess();
 
@@ -275,6 +276,7 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
     CFE_Status_t Status;
 
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE); /* Exit receive buffer loop after 1 run */
 
     Status = BPNode_WakeupProcess();
 
@@ -569,15 +571,16 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppMain_FailedInit);
     ADD_TEST(Test_BPNode_AppMain_WakeupRecvd);
     ADD_TEST(Test_BPNode_AppMain_WakeupErr);
-    ADD_TEST(Test_BPNode_AppMain_CommandRecvd);
     ADD_TEST(Test_BPNode_AppMain_CommandErr);
-
+    ADD_TEST(Test_BPNode_AppMain_CommandRecvd);
     ADD_TEST(Test_BPNode_WakeupProcess_CommandRecvd);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
-    ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
-
+    ADD_TEST(Test_BPNode_WakeupProcess_TableUpdate_Nominal);
+    ADD_TEST(Test_BPNode_WakeupProcess_TableSuccess_Nominal);
+    ADD_TEST(Test_BPNode_WakeupProcess_TableUpdate_Error);
     ADD_TEST(Test_BPNode_AppInit_Nominal);
     ADD_TEST(Test_BPNode_AppInit_FailedEvs);
     ADD_TEST(Test_BPNode_AppInit_FailedCmdPipeCreate);
@@ -589,13 +592,12 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedNCInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
+    ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
+    ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
+    ADD_TEST(Test_BPNode_AppExit_Nominal);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
     ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
-    ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
-    ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
     ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
-
-    ADD_TEST(Test_BPNode_AppExit_Nominal);
 }
