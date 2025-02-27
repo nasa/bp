@@ -256,6 +256,45 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
+void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
+{
+    CFE_Status_t Status;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
+
+    Status = BPNode_WakeupProcess();
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+
+    BPNode_Test_Verify_Event(0, BPNODE_TBL_UPDATE_INF_EID,
+                                "Updated ADU Proxy Configuration table");
+}
+
+void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
+{
+    CFE_Status_t Status;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
+
+    Status = BPNode_WakeupProcess();
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
+{
+    CFE_Status_t Status;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
+
+    Status = BPNode_WakeupProcess();
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_STATUS_NOT_IMPLEMENTED);
+
+    BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
+                                "Error managing the table: ADUProxyTable on wakeup, Status=0x%08X");
+}
+
 /* Test app initialization in nominal case */
 void Test_BPNode_AppInit_Nominal(void)
 {
