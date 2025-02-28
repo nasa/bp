@@ -17,3 +17,22 @@
  * limitations under the License.
  *
  */
+
+/* ======== */
+/* Includes */
+/* ======== */
+
+#include "fwp_clap.h"
+
+/* =================== */
+/* Function Prototypes */
+/* =================== */
+
+BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
+{
+    BPLib_Status_t Status;
+
+    Status = BPLIB_SUCCESS;
+
+    return Status;
+}

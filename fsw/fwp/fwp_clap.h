@@ -21,4 +21,16 @@
 #ifndef FWP_CLAP_H
 #define FWP_CLAP_H
 
+/* ======== */
+/* Includes */
+/* ======== */
+
+#include "bplib_cla.h"
+
+/* =================== */
+/* Function Prototypes */
+/* =================== */
+
+BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo);
+
 #endif /* FWP_CLAP_H */
