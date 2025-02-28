@@ -88,8 +88,6 @@
 #define BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID       58
 #define BPNODE_CLA_IN_INIT_INF_EID              59
 #define BPNODE_CLA_IN_EXIT_CRIT_EID             60
-#define BPNODE_CLA_IN_NO_ID_ERR_EID             61
-#define BPNODE_CLA_IN_INV_ID_ERR_EID            62
 #define BPNODE_CLA_IN_CR_PIPE_ERR_EID           63
 #define BPNODE_CLA_IN_SUB_PIPE_ERR_EID          64
 #define BPNODE_CLA_IN_UNK_EXIT_CRIT_EID         65

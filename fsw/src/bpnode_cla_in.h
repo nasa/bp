@@ -98,23 +98,6 @@ typedef struct
 int32 BPNode_ClaInCreateTasks(void);
 
 /**
- * \brief Initialize provided CLA In task
- *
- *  \par Description
- *       Initialize provided CLA In task
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- * 
- *  \param[in] ChanId Pointer to channel ID to set
- *
- *  \return Validation status
- *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
- *  \retval OSAL or cFE error code
- */
-int32 BPNode_ClaIn_TaskInit(uint8 *ChanId);
-
-/**
  * \brief CLA In Main Task
  *
  *  \par Description

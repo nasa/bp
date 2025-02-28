@@ -26,11 +26,24 @@
 /* ======== */
 
 #include "bplib_cla.h"
+#include "cfe.h"
+#include "bpnode_eventids.h"
+#include "bpnode_app.h"
 
 /* =================== */
 /* Function Prototypes */
 /* =================== */
 
+/**
+ * \brief     Configure the given convergence layer, BPA Storage output queues, rate limit for
+ *            sending and receiving bundles, the destination LTP engine ID (if LTP CL), and TCPCLP
+ *            session (if TCPCLP for the given contact)
+ * \note      As of right now, this function only sets up the port, IP address, and flow direction
+ * \param[in] ContactInfo (BPLib_CLA_ContactsSet_t) Information about the contact to initialize
+ * \return    Execution status
+ * \retval    BPLIB_SUCCESS: Successful execution
+ * \retval    BPLIB_ERROR: A I/O driver API call failed operation
+ */
 BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo);
 
 #endif /* FWP_CLAP_H */
