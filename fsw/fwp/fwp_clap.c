@@ -112,3 +112,63 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
 
     return Status;
 }
+
+BPLib_Status_t BPLib_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo)
+{
+    // if (Status == BPLIB_SUCCESS)
+    // {
+    //     /* Set I/O to running */
+    //     PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactInfo.ContactID].PspLocation,
+    //                                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
+
+    //     if (PspStatus != CFE_PSP_SUCCESS)
+    //     {
+    //         BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
+    //                             "[CLA In #%d]: Couldn't set I/O state to running. Error = %d",
+    //                             ContactInfo.ContactID, PspStatus);
+
+    //         Status = BPLIB_ERROR;
+    //     }
+    // }
+
+    /* --------------------------------------------- */
+
+    // /* Start performance log */
+    // BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
+
+    // /* Notify main task that child task is running */
+    // BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[*ContId].PerfId);
+    // Status = OS_BinSemGive(BPNode_AppData.ClaInData[*ContId].InitSemId);
+    // BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
+
+    // if (Status != OS_SUCCESS)
+    // {
+    //     BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
+    //                       "[CLA In #%d]: Failed to give init semaphore. Error = %d",
+    //                       *ContId, Status);
+    //     return Status;
+    // }
+
+    // BPNode_AppData.ClaInData[*ContId].RunStatus = CFE_ES_RunStatus_APP_RUN;
+
+    // BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
+    //                   "[CLA In #%d]: Child Task Initialized.", *ContId);
+}
+
+BPLib_Status_t BPA_CLAP_ContactStop(void)
+{
+    BPLib_Status_t Status;
+
+    Status = BPLIB_SUCCESS;
+
+    return Status;
+}
+
+BPLib_Status_t BPA_CLAP_ContactTeardown(void)
+{
+    BPLib_Status_t Status;
+
+    Status = BPLIB_SUCCESS;
+
+    return Status;
+}

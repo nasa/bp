@@ -35,15 +35,48 @@
 /* =================== */
 
 /**
- * \brief     Configure the given convergence layer, BPA Storage output queues, rate limit for
- *            sending and receiving bundles, the destination LTP engine ID (if LTP CL), and TCPCLP
- *            session (if TCPCLP for the given contact)
- * \note      As of right now, this function only sets up the port, IP address, and flow direction
- * \param[in] ContactInfo (BPLib_CLA_ContactsSet_t) Information about the contact to initialize
- * \return    Execution status
- * \retval    BPLIB_SUCCESS: Successful execution
- * \retval    BPLIB_ERROR: A I/O driver API call failed operation
- */
+  * \brief     Configure the given convergence layer, BPA Storage output queues, rate limit for
+  *            sending and receiving bundles, the destination LTP engine ID (if LTP CL), and TCPCLP
+  *            session (if TCPCLP for the given contact)
+  * \note      As of right now, this function only sets up the port, IP address, and flow direction
+  * \param[in] ContactInfo (BPLib_CLA_ContactsSet_t) Information about the contact to initialize
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_ERROR: A I/O driver API call failed operation
+  */
 BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo);
+
+/**
+  * \brief     Start transferring bundles between underlying network and BI
+  * \note      TODO
+  * \param[in] TODO
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_ERROR: TODO
+  */
+BPLib_Status_t BPA_CLAP_ContactStart(void);
+
+/**
+  * \brief     Send any CRS and custody signals under construction, stop transferring bundles to and from CL,
+  *            request CL cancel transfers in progress, stop requesting BI for output queue bundles, and if
+  *            LTP, request LTP cancel each active session and notify BI of complete and incomplete bundle
+  *            transmissions
+  * \note      TODO
+  * \param[in] TODO
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_ERROR: TODO
+  */
+BPLib_Status_t BPA_CLAP_ContactStop(void);
+
+/**
+  * \brief     Disestablish CLA, free all CLA resources, discard output queue, and delete custody timers
+  * \note      TODO
+  * \param[in] TODO
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_ERROR: TODO
+  */
+BPLib_Status_t BPA_CLAP_ContactTeardown(void);
 
 #endif /* FWP_CLAP_H */
