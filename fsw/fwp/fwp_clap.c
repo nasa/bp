@@ -113,7 +113,7 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
     return Status;
 }
 
-BPLib_Status_t BPLib_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo)
+BPLib_Status_t BPA_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo)
 {
     // if (Status == BPLIB_SUCCESS)
     // {
