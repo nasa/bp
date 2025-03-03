@@ -38,7 +38,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .AduUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
-            .LocalServiceNumber     = BPLIB_TEMPORARY_EID_SERVICE_NUM_FOR_CHANNEL_0_ROUTES,
+            .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0,
             .MaxBundlePayloadSize   = 15864,
             .CrcType                = BPLib_CRC_Type_CRC16,
             .BundleProcFlags        = 4,
@@ -47,10 +47,10 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Scheme         = BPLIB_EID_SCHEME_IPN,
                     .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
                     .Allocator      = 0,
-                    .Node           = BPLIB_TEMPORARY_EID_NODE_NUM_FOR_CONTACT_ROUTES,
-                    .Service        = BPLIB_TEMPORARY_EID_SERVICE_NUM_FOR_CONTACT_ROUTES
+                    .Node           = BPNODE_EID_NODE_NUM_FOR_CONTACT_0,
+                    .Service        = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_0
                 },
-            .ReportToEID            =   // "ipn:100.1"
+            .ReportToEID            =
                 {
                     .Scheme         = BPLIB_EID_SCHEME_IPN,
                     .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
@@ -104,7 +104,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .AduUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
-            .LocalServiceNumber     = BPLIB_TEMPORARY_EID_SERVICE_NUM_FOR_CHANNEL_1_ROUTES,
+            .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1,
             .MaxBundlePayloadSize   = 15864,
             .CrcType                = BPLib_CRC_Type_CRC16,
             .BundleProcFlags        = 4,
@@ -113,10 +113,10 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Scheme         = BPLIB_EID_SCHEME_IPN,
                     .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
                     .Allocator      = 0,
-                    .Node           = BPLIB_TEMPORARY_EID_NODE_NUM_FOR_CHANNEL_ROUTES,
-                    .Service        = BPLIB_TEMPORARY_EID_SERVICE_NUM_FOR_CHANNEL_1_ROUTES
+                    .Node           = BPLIB_LOCAL_EID_NODE_NUM,
+                    .Service        = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1
                 },
-            .ReportToEID            =   // "ipn:100.1"
+            .ReportToEID            =
                 {
                     .Scheme         = BPLIB_EID_SCHEME_IPN,
                     .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
