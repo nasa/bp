@@ -99,7 +99,7 @@ void Test_BPA_TABLEP_TableInit_Error(void)
         UtAssert_STUB_COUNT(CFE_TBL_Register, ExpectedStubCount);
 
         /* Verify that the correct event was issued */
-        BPNode_Test_Verify_Event(ErrorLoop, BPNODE_TBL_REG_ERR_EID, "Error Registering Table: %s, RC = 0x%08lX");
+        BPNode_Test_Verify_Event(ErrorLoop, BPNODE_TBL_REG_ERR_EID, "Error Registering Configuration: %s, RC = 0x%08lX");
     }
 }
 
@@ -140,7 +140,7 @@ void Test_BPA_TABLEP_SingleTableInit_Register_Error(void)
 
     /* Verify the event issued is as expected */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_REG_ERR_EID,
-                                "Error Registering Table: %s, RC = 0x%08lX");
+                                "Error Registering Configuration: %s, RC = 0x%08lX");
 
     /* Show that no other TBL function was run */
     UtAssert_STUB_COUNT(CFE_TBL_Load, 0);
@@ -166,7 +166,7 @@ void Test_BPA_TABLEP_SingleTableInit_Load_Error(void)
 
     /* Verify the event issued is as expected */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_LD_ERR_EID,
-                                "Error Loading Table: %s, RC = 0x%08lX");
+                                "Error Loading Configuration: %s, RC = 0x%08lX");
 
     /* Show that no other TBL function was run */
     UtAssert_STUB_COUNT(CFE_TBL_GetAddress, 0);
@@ -196,35 +196,35 @@ void Test_BPA_TABLEP_SingleTableInit_GetAddress_Error(void)
 
 void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
 {
-    uint8 TableType;
+    uint8 ConfigType;
     BPLib_Status_t Status;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPA_CFE_Status_Translate), BPLIB_TBL_UPDATED);
 
-    for (TableType = BPLIB_CHANNEL; TableType <= BPLIB_ADU_PROXY; TableType++)
+    for (ConfigType = BPLIB_CHANNEL; ConfigType <= BPLIB_ADU_PROXY; ConfigType++)
     {
         /* Run the function under test */
-        Status = BPA_TABLEP_TableUpdate(TableType, NULL);
+        Status = BPA_TABLEP_TableUpdate(ConfigType, NULL);
 
         /* Verify that the function returns the expected status */
         UtAssert_EQ(BPLib_Status_t, Status, BPLIB_TBL_UPDATED);
 
         /* Show that the translation function got the correct input */
-        UtAssert_EQ(CFE_Status_t, Context_CFE_Status[TableType], CFE_TBL_INFO_UPDATED);
+        UtAssert_EQ(CFE_Status_t, Context_CFE_Status[ConfigType], CFE_TBL_INFO_UPDATED);
     }
 }
 
 void Test_BPA_TABLEP_TableUpdate_Success_Nominal(void)
 {
-    uint8 TableType;
+    uint8 ConfigType;
     BPLib_Status_t Status;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_SUCCESS);
 
-    for (TableType = BPLIB_CHANNEL; TableType <= BPLIB_ADU_PROXY; TableType++)
+    for (ConfigType = BPLIB_CHANNEL; ConfigType <= BPLIB_ADU_PROXY; ConfigType++)
     {
-        Status = BPA_TABLEP_TableUpdate(TableType, NULL);
+        Status = BPA_TABLEP_TableUpdate(ConfigType, NULL);
 
         UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
     }
