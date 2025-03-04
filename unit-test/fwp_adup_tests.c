@@ -233,7 +233,7 @@ void Test_BPA_ADUP_AddApplication_Nominal(void)
     TestChanTbl.Configs[ChanId].MaxBundlePayloadSize = 1234;
 
     BPNode_AppData.AduProxyTablePtr = &TestAduTbl;
-    BPNode_ConfigPtrs.ChanTblPtr = &TestChanTbl;
+    BPNode_ConfigPtrs.ChanConfigPtr = &TestChanTbl;
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_REMOVED);
 

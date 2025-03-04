@@ -36,18 +36,18 @@
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
-    BPNode_AppData.AduProxyTablePtr   = &TestAduTbl;
-    BPNode_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
-    BPNode_ConfigPtrs.ChanTblPtr      = &TestChanTbl;
-    BPNode_ConfigPtrs.ContactsTblPtr  = &TestContactsTbl;
-    BPNode_ConfigPtrs.CrsTblPtr       = &TestCrsTbl;
-    BPNode_ConfigPtrs.CustodianTblPtr = &TestCustodianTbl;
-    BPNode_ConfigPtrs.CustodyTblPtr   = &TestCustodyTbl;
-    BPNode_ConfigPtrs.LatTblPtr       = &TestLatencyTbl;
-    BPNode_ConfigPtrs.MibPnTblPtr     = &TestMibPnTbl;
-    BPNode_ConfigPtrs.MibPsTblPtr     = &TestMibPsTbl;
-    BPNode_ConfigPtrs.ReportTblPtr    = &TestReportTbl;
-    BPNode_ConfigPtrs.StorTblPtr      = &TestStorTbl;
+    BPNode_AppData.AduProxyTablePtr      = &TestAduTbl;
+    BPNode_ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
+    BPNode_ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
+    BPNode_ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
+    BPNode_ConfigPtrs.CrsConfigPtr       = &TestCrsTbl;
+    BPNode_ConfigPtrs.CustodianConfigPtr = &TestCustodianTbl;
+    BPNode_ConfigPtrs.CustodyConfigPtr   = &TestCustodyTbl;
+    BPNode_ConfigPtrs.LatConfigPtr       = &TestLatencyTbl;
+    BPNode_ConfigPtrs.MibPnConfigPtr     = &TestMibPnTbl;
+    BPNode_ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
+    BPNode_ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
+    BPNode_ConfigPtrs.StorConfigPtr      = &TestStorTbl;
 }
 
 
