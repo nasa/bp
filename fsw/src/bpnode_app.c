@@ -173,7 +173,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Call NC to update configurations*/
-    BpStatus = BPLib_NC_TableUpdate();
+    BpStatus = BPLib_NC_ConfigUpdate();
     Status   = BPA_BPLib_Status_Translate(BpStatus);
 
     /* Update the ADUP configuration individually since it's owned by BPNode */

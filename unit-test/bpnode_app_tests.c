@@ -194,7 +194,7 @@ void Test_BPNode_WakeupProcess_FailSem(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(BPLib_NC_TableUpdate, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
 
     /* Verify events */
@@ -216,7 +216,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(BPLib_NC_TableUpdate, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
@@ -262,7 +262,7 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
 
     /* Force a successful configuration update */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_TableUpdate), BPLIB_TBL_UPDATED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_TBL_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
 
     /* Exit receive buffer loop after 1 run */
@@ -285,7 +285,7 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 
     /* Force the configuration updates to return success codes */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
-    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_TableUpdate), BPLIB_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
 
     /* Exit receive buffer loop after 1 run */
