@@ -177,7 +177,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     Status   = BPA_BPLib_Status_Translate(BpStatus);
 
     /* Update the ADUP configuration individually since it's owned by BPNode */
-    BpStatus = BPA_TABLEP_TableUpdate(ADU_PROXY_CONFIG, (void**) &BPNode_AppData.AduProxyTablePtr);
+    BpStatus = BPA_TABLEP_TableUpdate(BPLIB_ADU_PROXY, (void**) &BPNode_AppData.AduProxyTablePtr);
     if (BpStatus == BPLIB_TBL_UPDATED)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_UPDATE_INF_EID,

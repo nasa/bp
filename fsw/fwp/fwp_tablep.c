@@ -54,7 +54,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                         sizeof(BPA_ADUP_Table_t),
                                         (CFE_TBL_CallbackFuncPtr_t) BPA_ADUP_ValidateConfigTbl,
                                         (void**) &BPNode_AppData.AduProxyTablePtr,
-                                        &BPNode_AppData.TableHandles[ADU_PROXY_CONFIG]);
+                                        &BPNode_AppData.TableHandles[BPLIB_ADU_PROXY]);
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
@@ -64,7 +64,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_PI_ChannelTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PI_ValidateConfigs,
                                             (void**) &BPNode_ConfigPtrs.ChanTblPtr,
-                                            &BPNode_AppData.TableHandles[CHANNEL_CONFIG]);
+                                            &BPNode_AppData.TableHandles[BPLIB_CHANNEL]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -75,7 +75,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_CLA_ContactsTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_CLA_ContactsTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.ContactsTblPtr,
-                                            &BPNode_AppData.TableHandles[CONTACTS]);
+                                            &BPNode_AppData.TableHandles[BPLIB_CONTACTS]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -86,7 +86,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_ARP_CRSTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_ARP_CRSTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.CrsTblPtr,
-                                            &BPNode_AppData.TableHandles[COMPRESSED_REPORTING]);
+                                            &BPNode_AppData.TableHandles[BPLIB_COMPRESSED_REPORTING]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -97,7 +97,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_PDB_CustodianTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_CustodianAuthTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.CustodianTblPtr,
-                                            &BPNode_AppData.TableHandles[CUSTODIAN_AUTH_POLICY]);
+                                            &BPNode_AppData.TableHandles[BPLIB_CUSTODIAN_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -108,7 +108,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_PDB_CustodyTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_CustodyAuthTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.CustodyTblPtr,
-                                            &BPNode_AppData.TableHandles[CUSTODY_AUTH_POLICY]);
+                                            &BPNode_AppData.TableHandles[BPLIB_CUSTODY_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -119,7 +119,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_NC_MIBConfigPNTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPNTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.MibPnTblPtr,
-                                            &BPNode_AppData.TableHandles[MIB_CONFIG_PER_NODE]);
+                                            &BPNode_AppData.TableHandles[BPLIB_MIB_PER_NODE]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -130,7 +130,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_NC_MIBConfigPSTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPSTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.MibPsTblPtr,
-                                            &BPNode_AppData.TableHandles[MIB_CONFIG_PER_SRC]);
+                                            &BPNode_AppData.TableHandles[BPLIB_MIB_PER_SRC]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -141,7 +141,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_PDB_ReportToTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_ReportToAuthTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.ReportTblPtr,
-                                            &BPNode_AppData.TableHandles[REPORT_TO_EID_AUTH_POLICY]);
+                                            &BPNode_AppData.TableHandles[BPLIB_REPORT_TO_EID_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -152,7 +152,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_PDB_SrcAuthTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_SrcAuthTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.AuthTblPtr,
-                                            &BPNode_AppData.TableHandles[SRC_AUTH_POLICY]);
+                                            &BPNode_AppData.TableHandles[BPLIB_SRC_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -163,7 +163,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_PDB_SrcLatencyTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_SrcLatencyTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.LatTblPtr,
-                                            &BPNode_AppData.TableHandles[SRC_LATENCY_POLICY]);
+                                            &BPNode_AppData.TableHandles[BPLIB_SRC_LATENCY_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
@@ -174,7 +174,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             sizeof(BPLib_STOR_StorageTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_STOR_StorageTblValidateFunc,
                                             (void**) &BPNode_ConfigPtrs.StorTblPtr,
-                                            &BPNode_AppData.TableHandles[STORAGE]);
+                                            &BPNode_AppData.TableHandles[BPLIB_STORAGE]);
     }
 
     if (Status == CFE_TBL_INFO_UPDATED)
@@ -232,76 +232,76 @@ BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void** TblPtr)
 
     switch (TableType)
     {
-        case CHANNEL_CONFIG:
+        case BPLIB_CHANNEL:
             Status = BPA_TABLEP_TableManage("ChannelTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[CHANNEL_CONFIG]);
+                                            BPNode_AppData.TableHandles[BPLIB_CHANNEL]);
 
             break;
-        case CONTACTS:
+        case BPLIB_CONTACTS:
             Status = BPA_TABLEP_TableManage("ContactsTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[CONTACTS]);
+                                            BPNode_AppData.TableHandles[BPLIB_CONTACTS]);
 
             break;
-        case COMPRESSED_REPORTING:
+        case BPLIB_COMPRESSED_REPORTING:
             Status = BPA_TABLEP_TableManage("CRSTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[COMPRESSED_REPORTING]);
+                                            BPNode_AppData.TableHandles[BPLIB_COMPRESSED_REPORTING]);
 
             break;
-        case CUSTODIAN_AUTH_POLICY:
+        case BPLIB_CUSTODIAN_AUTH_POLICY:
             Status = BPA_TABLEP_TableManage("CustodianTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[CUSTODIAN_AUTH_POLICY]);
+                                            BPNode_AppData.TableHandles[BPLIB_CUSTODIAN_AUTH_POLICY]);
 
             break;
-        case CUSTODY_AUTH_POLICY:
+        case BPLIB_CUSTODY_AUTH_POLICY:
             Status = BPA_TABLEP_TableManage("CustodyTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[CUSTODY_AUTH_POLICY]);
+                                            BPNode_AppData.TableHandles[BPLIB_CUSTODY_AUTH_POLICY]);
 
             break;
-        case MIB_CONFIG_PER_NODE:
+        case BPLIB_MIB_PER_NODE:
             Status = BPA_TABLEP_TableManage("MIBConfigPNTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[MIB_CONFIG_PER_NODE]);
+                                            BPNode_AppData.TableHandles[BPLIB_MIB_PER_NODE]);
 
             break;
-        case MIB_CONFIG_PER_SRC:
+        case BPLIB_MIB_PER_SRC:
             Status = BPA_TABLEP_TableManage("MIBConfigPSTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[MIB_CONFIG_PER_SRC]);
+                                            BPNode_AppData.TableHandles[BPLIB_MIB_PER_SRC]);
 
             break;
-        case REPORT_TO_EID_AUTH_POLICY:
+        case BPLIB_REPORT_TO_EID_AUTH_POLICY:
             Status = BPA_TABLEP_TableManage("ReportToTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[REPORT_TO_EID_AUTH_POLICY]);
+                                            BPNode_AppData.TableHandles[BPLIB_REPORT_TO_EID_AUTH_POLICY]);
 
             break;
-        case SRC_AUTH_POLICY:
+        case BPLIB_SRC_AUTH_POLICY:
             Status = BPA_TABLEP_TableManage("SrcAuthTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[SRC_AUTH_POLICY]);
+                                            BPNode_AppData.TableHandles[BPLIB_SRC_AUTH_POLICY]);
 
             break;
-        case SRC_LATENCY_POLICY:
+        case BPLIB_SRC_LATENCY_POLICY:
             Status = BPA_TABLEP_TableManage("SrcLatencyTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[SRC_LATENCY_POLICY]);
+                                            BPNode_AppData.TableHandles[BPLIB_SRC_LATENCY_POLICY]);
 
             break;
-        case STORAGE:
+        case BPLIB_STORAGE:
             Status = BPA_TABLEP_TableManage("StorageTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[STORAGE]);
+                                            BPNode_AppData.TableHandles[BPLIB_STORAGE]);
 
             break;
-        case ADU_PROXY_CONFIG:
+        case BPLIB_ADU_PROXY:
             Status = BPA_TABLEP_TableManage("ADUProxyTable",
                                             TblPtr,
-                                            BPNode_AppData.TableHandles[ADU_PROXY_CONFIG]);
+                                            BPNode_AppData.TableHandles[BPLIB_ADU_PROXY]);
 
             break;
     }
