@@ -42,7 +42,7 @@
   * \param[in] ContactInfo (BPLib_CLA_ContactsSet_t) Information about the contact to initialize
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_ERROR: A I/O driver API call failed operation
+  * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   */
 BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo);
 
@@ -52,9 +52,12 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo);
   * \param[in] TODO
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_ERROR: TODO
+  * \retval    BPLIB_CLA_UNKNOWN_CONTACT: Provided contact ID does not match a contact ID in the Contacts Configuration
+  * \retval    BPLIB_CLA_INCORRECT_STATE: The intended run state for the contact with the provided contact ID was incompatible with the
+  *                                       current run state of the contact
+  * \retval    BPLIB_IO_ERROR: A I/O driver API call failed operation
   */
-BPLib_Status_t BPA_CLAP_ContactStart(void);
+BPLib_Status_t BPA_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo);
 
 /**
   * \brief     Send any CRS and custody signals under construction, stop transferring bundles to and from CL,

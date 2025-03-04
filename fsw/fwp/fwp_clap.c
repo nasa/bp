@@ -43,11 +43,12 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
 
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[CLA In #%d]: Couldn't find I/O driver. Error = %d",
-                            ContactInfo.ContactId, PspStatus);
+        BPLib_EM_SendEvent(BPNODE_CLAP_IO_FIND_NAME_DBG_EID, BPLib_EM_EventType_ERROR,
+                            "[Contact ID #%d]: Couldn't find I/O driver. Error = %d",
+                            ContactInfo.ContactId,
+                            PspStatus);
 
-        Status = BPLIB_ERROR;
+        Status = BPLIB_CLA_IO_ERROR;
     }
 
     if (Status == BPLIB_SUCCESS)
@@ -64,11 +65,12 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
 
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Couldn't set port number configuration. Error = %d",
-                                ContactInfo.ContactId, PspStatus);
+            BPLib_EM_SendEvent(BPNODE_CLAP_IO_PORT_DBG_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Couldn't set port number configuration. Error = %d",
+                                ContactInfo.ContactId,
+                                PspStatus);
 
-            Status = BPLIB_ERROR;
+            Status = BPLIB_CLA_IO_ERROR;
         }
     }
 
@@ -83,17 +85,18 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
 
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Couldn't set IP address configuration. Error = %d",
-                                ContactInfo.ContactId, PspStatus);
+            BPLib_EM_SendEvent(BPNODE_CLAP_IO_IP_DBG_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Couldn't set IP address configuration. Error = %d",
+                                ContactInfo.ContactId,
+                                PspStatus);
 
-            Status = BPLIB_ERROR;
+            Status = BPLIB_CLA_IO_ERROR;
         }
     }
 
     if (Status == BPLIB_SUCCESS)
     {
-        OS_printf("[CLA In #%d]: Receiving on %s:%d\n", ContactInfo.ContactId, ContactInfo.CLAddr, ContactInfo.PortNum);
+        OS_printf("[Contact ID #%d]: Setup on %s:%d\n", ContactInfo.ContactId, ContactInfo.CLAddr, ContactInfo.PortNum);
 
         /* Set direction to input only */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactInfo.ContactId].PspLocation,
@@ -102,11 +105,12 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
 
         if (PspStatus != CFE_PSP_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Couldn't set I/O direction to input. Error = %d",
-                                ContactInfo.ContactId, PspStatus);
+            BPLib_EM_SendEvent(BPNODE_CLAP_IO_DIR_DBG_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Couldn't set I/O direction to input. Error = %d",
+                                ContactInfo.ContactId,
+                                PspStatus);
 
-            Status = BPLIB_ERROR;
+            Status = BPLIB_CLA_IO_ERROR;
         }
     }
 
@@ -115,44 +119,68 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo)
 
 BPLib_Status_t BPA_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo)
 {
-    // if (Status == BPLIB_SUCCESS)
-    // {
-    //     /* Set I/O to running */
-    //     PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactInfo.ContactId].PspLocation,
-    //                                             CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
+    int32_t OtherStatus;
+    BPLib_Status_t Status;
+    BPLib_CLA_ContactRunState_t RunState;
 
-    //     if (PspStatus != CFE_PSP_SUCCESS)
-    //     {
-    //         BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-    //                             "[CLA In #%d]: Couldn't set I/O state to running. Error = %d",
-    //                             ContactInfo.ContactId, PspStatus);
+    /* Default to success */
+    Status = BPLIB_SUCCESS;
 
-    //         Status = BPLIB_ERROR;
-    //     }
-    // }
+    /* Verify that the contact is in the correct state before starting it */
+    RunState = BPLib_CLA_GetContactRunState(ContactInfo.ContactId);
+    if (RunState != BPLIB_CLA_TORNDOWN)
+    {
+        /* Set I/O to running */
+        OtherStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactInfo.ContactId].PspLocation,
+                                                CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(true));
 
-    /* --------------------------------------------- */
+        if (OtherStatus != CFE_PSP_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLAP_IO_SET_RUN_DBG_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Couldn't set I/O state to running. Error = %d",
+                                ContactInfo.ContactId,
+                                OtherStatus);
 
-    // /* Start performance log */
-    // BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
+            Status = BPLIB_CLA_IO_ERROR;
+        }
 
-    // /* Notify main task that child task is running */
-    // BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[*ContId].PerfId);
-    // Status = OS_BinSemGive(BPNode_AppData.ClaInData[*ContId].InitSemId);
-    // BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[*ContId].PerfId);
+        if (Status == BPLIB_SUCCESS)
+        {
+            /* Start performance log */
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContactInfo.ContactId].PerfId);
 
-    // if (Status != OS_SUCCESS)
-    // {
-    //     BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID, BPLib_EM_EventType_ERROR,
-    //                       "[CLA In #%d]: Failed to give init semaphore. Error = %d",
-    //                       *ContId, Status);
-    //     return Status;
-    // }
+            /* Notify main task that child task is running */
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactInfo.ContactId].PerfId);
+            OtherStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactInfo.ContactId].InitSemId);
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContactInfo.ContactId].PerfId);
 
-    // BPNode_AppData.ClaInData[*ContId].RunStatus = CFE_ES_RunStatus_APP_RUN;
+            if (OtherStatus != OS_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLAP_INIT_SEM_DBG_EID, BPLib_EM_EventType_ERROR,
+                                    "[Contact ID #%d]: Failed to give init semaphore. Error = %d",
+                                    ContactInfo.ContactId,
+                                    OtherStatus);
 
-    // BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
-    //                   "[CLA In #%d]: Child Task Initialized.", *ContId);
+                Status = BPLIB_CLA_INIT_SEM_ERROR;
+            }
+        }
+
+        if (Status == BPLIB_SUCCESS)
+        {
+            /* Set the run state to started */
+            Status = BPLib_CLA_SetContactRunState(ContactInfo.ContactId, BPLIB_CLA_STARTED);
+        }
+    }
+    else
+    {
+        Status = BPLIB_CLA_INCORRECT_STATE;
+
+        BPLib_EM_SendEvent(BPNODE_CLAP_INIT_STATE_DBG_EID, BPLib_EM_EventType_ERROR,
+                            "[CLA In #%d]: Task must be setup before starting",
+                            ContactInfo.ContactId);
+    }
+
+    return Status;
 }
 
 BPLib_Status_t BPA_CLAP_ContactStop(void)

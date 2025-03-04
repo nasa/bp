@@ -60,19 +60,18 @@
 */
 typedef struct
 {
-    CFE_ES_TaskId_t                 TaskId;
-    osal_id_t                       InitSemId;
-    osal_id_t                       WakeupSemId;
-    osal_id_t                       ExitSemId;
-    uint32                          PerfId;
-    uint32                          RunStatus;
-    bool                            IngressServiceEnabled;
+    CFE_ES_TaskId_t              TaskId;
+    osal_id_t                    InitSemId;
+    osal_id_t                    WakeupSemId;
+    osal_id_t                    ExitSemId;
+    uint32                       PerfId;
+    bool                         IngressServiceEnabled;
 
     /* IODriver usock_intf related*/
-    CFE_PSP_IODriver_Direction_t    Dir;
-    CFE_PSP_IODriver_Location_t     PspLocation;
-    size_t                          CurrentBufferSize;
-    uint8_t                         BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+    CFE_PSP_IODriver_Direction_t Dir;
+    CFE_PSP_IODriver_Location_t  PspLocation;
+    size_t                       CurrentBufferSize;
+    uint8_t                      BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
         
 } BPNode_ClaInData_t;
 
