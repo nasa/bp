@@ -32,7 +32,7 @@
 #include "fwp_tablep.h"
 #include "fwp_dp.h"
 
-/* Handler to set table pointers to test tables */
+/* Handler to set configuration pointers to test configurations */
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
@@ -260,7 +260,7 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
 {
     CFE_Status_t Status;
 
-    /* Force a successful table update */
+    /* Force a successful configuration update */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_TableUpdate), BPLIB_TBL_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
@@ -274,16 +274,16 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
     /* Verify a successful wake up */
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
 
-    /* Confirm that the table updating issued an event */
+    /* Confirm that the configuration updating issued an event */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_UPDATE_INF_EID,
-                                "Updated ADU Proxy Configuration table");
+                                "Updated ADU Proxy Configuration configuration");
 }
 
 void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 {
     CFE_Status_t Status;
 
-    /* Force the table updates to return success codes */
+    /* Force the configuration updates to return success codes */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_TableUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
@@ -310,7 +310,7 @@ void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
     UtAssert_EQ(CFE_Status_t, Status, CFE_STATUS_NOT_IMPLEMENTED);
 
     BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
-                                "Error managing the table: ADUProxyTable on wakeup, Status=0x%08X");
+                                "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X");
 
     /* Show that the receive buffer command wasn't ever reached */
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
@@ -403,7 +403,7 @@ void Test_BPNode_AppInit_FailedWakeupSub(void)
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
-/* Test app initialization after failure to register table */
+/* Test app initialization after failure to register configuration */
 void Test_BPNode_AppInit_FailedTblInit(void)
 {
     /* Failure to call BPA_TABLEP_TableInit() */
@@ -413,7 +413,7 @@ void Test_BPNode_AppInit_FailedTblInit(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Getting Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_STRINGBUF_EQ("Error getting configuration from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 

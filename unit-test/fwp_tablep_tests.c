@@ -191,7 +191,7 @@ void Test_BPA_TABLEP_SingleTableInit_GetAddress_Error(void)
 
     /* Verify the event issued is as expected */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
-                                "Error Getting Table Address: %s, RC = 0x%08lX");
+                                "Error Getting Configuration Address: %s, RC = 0x%08lX");
 }
 
 void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
@@ -239,7 +239,7 @@ void Test_BPA_TABLEP_TableManage_InfoUpdated_Nominal(void)
 {
     CFE_Status_t Status;
 
-    /* Force the function under test to return a table update status */
+    /* Force the function under test to return a configuration update status */
     UT_SetDefaultReturnValue(UT_KEY(CFE_TBL_GetAddress), CFE_TBL_INFO_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPA_CFE_Status_Translate), BPLIB_TBL_UPDATED);
 
@@ -285,7 +285,7 @@ void Test_BPA_TABLEP_TableManage_Error(void)
 
     /* Verify that the correct event was issued */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_MNG_ERR_EID,
-                                "Error managing the table: %s on wakeup, Status=0x%08X");
+                                "Error managing the configuration: %s on wakeup, Status=0x%08X");
 }
 
 void Test_BPA_TABLEP_PI_ValidateConfigs_Nominal(void)

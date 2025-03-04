@@ -172,22 +172,22 @@ CFE_Status_t BPNode_WakeupProcess(void)
                             "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
-    /* Call NC to update tables*/
+    /* Call NC to update configurations*/
     BpStatus = BPLib_NC_TableUpdate();
     Status   = BPA_BPLib_Status_Translate(BpStatus);
 
-    /* Update the ADUP table individually since it's owned by BPNode */
+    /* Update the ADUP configuration individually since it's owned by BPNode */
     BpStatus = BPA_TABLEP_TableUpdate(ADU_PROXY_CONFIG, (void**) &BPNode_AppData.AduProxyTablePtr);
     if (BpStatus == BPLIB_TBL_UPDATED)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_UPDATE_INF_EID,
                             BPLib_EM_EventType_INFORMATION,
-                            "Updated ADU Proxy Configuration table");
+                            "Updated ADU Proxy Configuration configuration");
     }
     else if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error managing the table: ADUProxyTable on wakeup, Status=0x%08X", BpStatus);
+                            "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X", BpStatus);
 
         Status = BPA_BPLib_Status_Translate(BpStatus);
     }
@@ -278,12 +278,12 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
-    /* Call Table Proxy Init Function Here to load default tables*/
+    /* Call Table Proxy Init Function Here to load default configurations*/
     BpStatus = BPA_TABLEP_TableInit();
     if (BpStatus != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            "Error getting configuration from Table Proxy, RC = 0x%08lX",
                             (unsigned long)BpStatus);
 
         return BpStatus;

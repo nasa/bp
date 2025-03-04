@@ -44,7 +44,7 @@
 ** Global Data
 */
 
-/* Test table data */
+/* Test configuration data */
 BPA_ADUP_Table_t            TestAduTbl;
 BPLib_PI_ChannelTable_t     TestChanTbl;
 BPLib_CLA_ContactsTable_t   TestContactsTbl;
