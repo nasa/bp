@@ -253,14 +253,9 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
 
     if (Status == BPLIB_SUCCESS)
     {
-        Status = BPLib_CLA_SetContactRunState(ContactId, BPLIB_CLA_SETUP);
-
-        if (Status == BPLIB_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
-                                "[Contact ID #%d]: CLA in set up",
-                                ContactId);
-        }
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
+                            "[Contact ID #%d]: CLA in set up",
+                            ContactId);
     }
 
     return Status;
