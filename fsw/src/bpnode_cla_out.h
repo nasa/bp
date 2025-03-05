@@ -100,7 +100,7 @@ typedef struct
 int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
 
 /**
-  * \brief     Set up the CLA out task
+  * \brief     Set up a CLA out task
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \param[in] PortNum (int32) If the task is using UDP, this is the port number
@@ -114,9 +114,9 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
   */
  BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
 
- /**
-  * \brief     Start up the CLA Out task
-  * \note      Create the CLA Out child tasks and signal to the main task that
+/**
+  * \brief     Start up a CLA Out task
+  * \note      Create a CLA Out child tasks and signal to the main task that
   *            the task is running
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
