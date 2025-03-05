@@ -108,7 +108,6 @@ int32 BPNode_ClaInCreateTasks(void);
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
-  * \retval    BPLIB_CLA_INCORRECT_STATE: From BPLib_CLA_SetContactRunState()
   */
 BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
 
