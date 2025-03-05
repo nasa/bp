@@ -67,7 +67,6 @@ typedef struct
     osal_id_t                       WakeupSemId;
     osal_id_t                       ExitSemId;
     uint32                          PerfId;
-    uint32                          RunStatus;
     bool                            EgressServiceEnabled;
 
     /* IODriver usock_intf related*/
@@ -75,7 +74,6 @@ typedef struct
     CFE_PSP_IODriver_Location_t     PspLocation;
     size_t                          CurrentBufferSize;
     uint8_t                         BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
-
 } BPNode_ClaOutData_t;
 
 
