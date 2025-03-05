@@ -176,7 +176,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint16_t ContactId, int32 PortNum, char* IpAd
         }
     }
 
-    if (Status == BPLIB_SUCCESS)    
+    if (Status == BPLIB_SUCCESS)
     {
         /* Configure IP Address */
         snprintf(Str, sizeof(Str), "IpAddr=%s", IpAddr);
@@ -278,7 +278,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst, ContId, 
+        BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst, ContId,
                                     BPNode_AppData.ClaOutData[ContId].BundleBuffer,
                                     &BPNode_AppData.ClaOutData[ContId].CurrentBufferSize,
                                     BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
