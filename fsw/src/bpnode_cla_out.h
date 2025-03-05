@@ -57,7 +57,7 @@
 ** Type Definitions
 */
 
-/** 
+/**
 ** \brief CLA Out Task Data
 */
 typedef struct
@@ -75,7 +75,7 @@ typedef struct
     CFE_PSP_IODriver_Location_t     PspLocation;
     size_t                          CurrentBufferSize;
     uint8_t                         BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
-        
+
 } BPNode_ClaOutData_t;
 
 
@@ -84,20 +84,20 @@ typedef struct
 */
 
 /**
- * \brief Create CLA Out Task(s)
+ * \brief Process Bundle Output to CLA
  *
  *  \par Description
- *       Initialize semaphores, then create the child task(s)
+ *       Receive the bundle from Bundle Interface and send the bundle to CL.
  *
  *  \par Assumptions, External Events, and Notes:
- *       - Note: This is the only function in this file called by the main task, all other
- *         functions are called by the child task(s)
+ *       None
  *
- *  \return Validation status
+ *  \param[in] ContId Contact ID
+ *
+ *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
- *  \retval OSAL or cFE error code
  */
-int32 BPNode_ClaOutCreateTasks(void);
+int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
 
 /**
   * \brief     Set up the CLA out task
@@ -113,7 +113,36 @@ int32 BPNode_ClaOutCreateTasks(void);
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
   * \retval    BPLIB_CLA_INCORRECT_STATE: From BPLib_CLA_SetContactRunState()
   */
-BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+
+/**
+ * \brief Create CLA Out Task(s)
+ *
+ *  \par Description
+ *       Initialize semaphores, then create the child task(s)
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       - Note: This is the only function in this file called by the main task, all other
+ *         functions are called by the child task(s)
+ *
+ *  \return Validation status
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ *  \retval OSAL or cFE error code
+ */
+int32 BPNode_ClaOut_Start(uint32_t ContactId);
+
+/**
+ * \brief Exit provided CLA Out task
+ *
+ *  \par Description
+ *       Exit CLA Out task gracefully
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \param[in] ContId Contact ID for this task
+ */
+void BPNode_ClaOut_TaskExit(uint8 ContId);
 
 /**
  * \brief CLA Out Main Task
@@ -125,35 +154,6 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
  *       None
  */
 void BPNode_ClaOut_AppMain(void);
-
-/**
- * \brief Exit provided CLA Out task
- *
- *  \par Description
- *       Exit CLA Out task gracefully
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- * 
- *  \param[in] ContId Contact ID for this task
- */
-void BPNode_ClaOut_TaskExit(uint8 ContId);
-
-/**
- * \brief Process Bundle Output to CLA
- *
- *  \par Description
- *       Receive the bundle from Bundle Interface and send the bundle to CL. 
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- *
- *  \param[in] ContId Contact ID
- * 
- *  \return Execution status, see \ref CFEReturnCodes
- *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
- */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
 
 #endif /* BPNODE_CLA_OUT_H */
 
