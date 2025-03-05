@@ -116,10 +116,18 @@
  */
 #define BPNODE_NUM_GEN_WRKR_TASKS         (1)
 
+
+/** 
+ * @defgroup Performance configurations
+ * \brief    Note that adjusting these macros can radically change the performance of the
+ *           system.
+ * @{
+ */
+
 /**
  * \brief Number of generic worker jobs to process per cycle
  */
-#define BPNODE_NUM_JOBS_PER_CYCLE           (40)
+#define BPNODE_NUM_JOBS_PER_CYCLE           (1000)
 
 /**
  * \brief Number of bundles to enqueue for egress (from cache) during our wakeup
@@ -132,16 +140,24 @@
 /**
  * \brief Size of BPLib's Memory Pool, in bytes
  */
-#define BPNODE_MEM_POOL_LEN               (16834u)
-
-/**
- * \brief Maximum number of simultaneous active BPLib generic worker jobs
-*/
-#define BPNODE_MAX_JOBS                   (256U)
+#define BPNODE_MEM_POOL_LEN               (8000000u)
 
 /**
  * \brief Maximum number of simultaneous unsorted BPLib generic worker jobs
  */
-#define BPNODE_MAX_UNSORTED_JOBS          (1024U)
+#define BPNODE_MAX_UNSORTED_JOBS          (2048u)
+
+/**
+ *  \brief Maximum number of bundles to forward per wakeup 
+ */
+#define BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE  (200u)
+
+/** 
+ * \brief Maximum number of bundles to receive per wakeup 
+ */
+#define BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE  (200u)           
+
+
+/** @} */
 
 #endif /* BPNODE_PLATFORM_CFG_H */
