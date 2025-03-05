@@ -44,34 +44,17 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint32
     return Status;
 }
 
-BPLib_Status_t BPA_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo)
+BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId)
 {
-    int32_t OtherStatus;
     BPLib_Status_t Status;
-    BPLib_CLA_ContactRunState_t RunState;
 
-    /* Default to success */
-    Status = BPLIB_SUCCESS;
+    /* Start CLA In */
+    Status = BPNode_ClaIn_Start(ContactId);
 
-    /* Verify that the contact is in the correct state before starting it */
-    RunState = BPLib_CLA_GetContactRunState(ContactInfo.ContactId);
-    if (RunState != BPLIB_CLA_TORNDOWN)
+    if (Status == BPLIB_SUCCESS)
     {
-
-
-        if (Status == BPLIB_SUCCESS)
-        {
-            /* Set the run state to started */
-            Status = BPLib_CLA_SetContactRunState(ContactInfo.ContactId, BPLIB_CLA_STARTED);
-        }
-    }
-    else
-    {
-        Status = BPLIB_CLA_INCORRECT_STATE;
-
-        BPLib_EM_SendEvent(BPNODE_CLAP_INIT_STATE_DBG_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact ID #%d]: Task must be setup before starting",
-                            ContactInfo.ContactId);
+        /* Start CLA Out */
+        Status = BPLNode_ClaOut_Start(ContactId);
     }
 
     return Status;

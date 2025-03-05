@@ -59,7 +59,7 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint32
   *                                       current run state of the contact
   * \retval    BPLIB_IO_ERROR: A I/O driver API call failed operation
   */
-BPLib_Status_t BPA_CLAP_ContactStart(BPLib_CLA_ContactsSet_t ContactInfo);
+BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId);
 
 /**
   * \brief     Send any CRS and custody signals under construction, stop transferring bundles to and from CL,
