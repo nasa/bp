@@ -28,6 +28,7 @@
 
 BPLib_PI_ChannelTable_t ChannelTable = {
     .Configs = {
+        /* Channel 0 */
         {
             .AddAutomatically       = true,
             .RequestCustody         = false,
@@ -37,38 +38,27 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .AduUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
-            .LocalServiceNumber     = 2,
+            .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0,
             .MaxBundlePayloadSize   = 15864,
-            .PriBlkConfig           =
+            .CrcType                = BPLib_CRC_Type_CRC16,
+            .BundleProcFlags        = 4,
+            .DestEID                =
                 {
-                    .CrcType            = BPLib_CRC_Type_CRC16,
-                    .BundleProcFlags    = 4,
-                    .DestEID            =    // "ipn:100.1"
-                        {
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Allocator    = 0,
-                            .Node         = 100,
-                            .Service      = 1
-                        },
-                    .SrcEID             =   // "ipn:101.1",
-                        {
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Allocator    = 0,
-                            .Node         = 101,
-                            .Service      = 1
-                        },
-                    .ReportToEID        =   // "ipn:100.1"
-                        {
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Allocator    = 0,
-                            .Node         = 100,
-                            .Service      = 1
-                        },
-                    .Lifetime           = 10000
+                    .Scheme         = BPLIB_EID_SCHEME_IPN,
+                    .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                    .Allocator      = 0,
+                    .Node           = BPNODE_EID_NODE_NUM_FOR_CONTACT_0,
+                    .Service        = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_0
                 },
+            .ReportToEID            =
+                {
+                    .Scheme         = BPLIB_EID_SCHEME_IPN,
+                    .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                    .Allocator      = 0,
+                    .Node           = 100,
+                    .Service        = 1
+                },
+            .Lifetime               = 10000,
             .CanBlkConfig           =
                 {
                     {
@@ -103,6 +93,8 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     },
                 }
         },
+
+        /* Channel 1 */
         {
             .AddAutomatically       = false,
             .RequestCustody         = false,
@@ -112,38 +104,27 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .AduUnwrapping          = false,
             .RegState               = 0,
             .HopLimit               = 10,
-            .LocalServiceNumber     = 2,
+            .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1,
             .MaxBundlePayloadSize   = 15864,
-            .PriBlkConfig           =
+            .CrcType                = BPLib_CRC_Type_CRC16,
+            .BundleProcFlags        = 4,
+            .DestEID                =
                 {
-                    .CrcType            = BPLib_CRC_Type_CRC16,
-                    .BundleProcFlags    = 4,
-                    .DestEID            =    // ipn:"100.1"
-                        {
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Allocator    = 0,
-                            .Node         = 100,
-                            .Service      = 1
-                        },
-                    .SrcEID             =   // "ipn:101.1",
-                        {
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Allocator    = 0,
-                            .Node         = 101,
-                            .Service      = 1
-                        },
-                    .ReportToEID        =   // "ipn:100.1"
-                        {
-                            .Scheme       = BPLIB_EID_SCHEME_IPN,
-                            .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                            .Allocator    = 0,
-                            .Node         = 100,
-                            .Service      = 1
-                        },
-                    .Lifetime           = 10000
+                    .Scheme         = BPLIB_EID_SCHEME_IPN,
+                    .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                    .Allocator      = 0,
+                    .Node           = BPLIB_LOCAL_EID_NODE_NUM,
+                    .Service        = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1
                 },
+            .ReportToEID            =
+                {
+                    .Scheme         = BPLIB_EID_SCHEME_IPN,
+                    .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                    .Allocator      = 0,
+                    .Node           = 100,
+                    .Service        = 1
+                },
+            .Lifetime               = 10000,
             .CanBlkConfig           =
                 {
                     {
