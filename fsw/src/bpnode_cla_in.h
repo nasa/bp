@@ -97,21 +97,6 @@ typedef struct
 int32 BPNode_ClaInCreateTasks(void);
 
 /**
- * \brief Initialize provided CLA In task
- *
- *  \par Description
- *       Initialize provided CLA In task
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- * 
- *  \param[in] ChanId Pointer to channel ID to set
- *
- *  \return Validation status
- *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
- *  \retval OSAL or cFE error code
- */
-/**
   * \brief     Set up the CLA in task
   * \param[in] ContactId (uint16_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info

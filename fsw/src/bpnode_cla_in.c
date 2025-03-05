@@ -140,7 +140,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact ID #%d]: Couldn't find CLA in I/O driver. Error = %d",
+                            "[Contact ID #%d]: Couldn't find CLA In I/O driver. Error = %d",
                             ContactId,
                             PspStatus);
 
@@ -162,7 +162,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't set CLA in port number configuration. Error = %d",
+                                "[Contact ID #%d]: Couldn't configure CLA In port number. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -181,7 +181,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't configure IP address for CLA in. Error = %d",
+                                "[Contact ID #%d]: Couldn't configure IP address for CLA In. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -189,7 +189,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
         }
         else
         {
-            OS_printf("[Contact ID #%d]: Receiving on %s:%d\n", ContactId, IpAddr, PortNum);
+            OS_printf("[Contact ID #%d]: CLA In receiving on %s:%d\n", ContactId, IpAddr, PortNum);
         }
     }
 #endif
@@ -204,7 +204,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't set CLA in I/O direction to input. Error = %d",
+                                "[Contact ID #%d]: Couldn't set CLA In I/O direction to input. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -222,7 +222,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Couldn't set CLA in I/O state to running. Error = %d",
+                                "[Contact ID #%d]: Couldn't set CLA In I/O state to running. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -242,10 +242,10 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
 
         if (OsStatus != OS_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_GIVE_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Failed to give CLA in init semaphore. Error = %d",
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Failed to give CLA In init semaphore. Error = %d",
                                 ContactId,
-                                Status);
+                                OsStatus);
 
             Status = BPLIB_CLA_INIT_SEM_ERROR;
         }
@@ -254,7 +254,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
     if (Status == BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
-                            "[Contact ID #%d]: CLA in set up",
+                            "[Contact ID #%d]: CLA In set up",
                             ContactId);
     }
 
