@@ -97,6 +97,37 @@ typedef struct
 int32 BPNode_ClaInCreateTasks(void);
 
 /**
+ * \brief Initialize provided CLA In task
+ *
+ *  \par Description
+ *       Initialize provided CLA In task
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] ChanId Pointer to channel ID to set
+ *
+ *  \return Validation status
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ *  \retval OSAL or cFE error code
+ */
+/**
+  * \brief     Set up the CLA in task
+  * \param[in] ContactId (uint16_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \param[in] PortNum (int32) If the task is using UDP, this is the port number
+  *                            gathered from the Contacts Configuration
+  * \param[in] IpAddr (char*) If the task is using UDP, this is the IP address
+  *                           gathered from the Contacts Configuration
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
+  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
+  * \retval    BPLIB_CLA_INCORRECT_STATE: From BPLib_CLA_SetContactRunState()
+  */
+BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+
+/**
  * \brief CLA In Main Task
  *
  *  \par Description
