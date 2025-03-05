@@ -40,11 +40,13 @@
   *            session (if TCPCLP for the given contact)
   * \note      As of right now, this function only sets up the port, IP address, and flow direction
   * \param[in] ContactInfo (BPLib_CLA_ContactsSet_t) Information about the contact to initialize
+  * \param[in] ContactId (uint16_t) Index into the various contact info tracking arrays that corresponds
+  *                                 to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   */
-BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo);
+BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint16_t ContactId);
 
 /**
   * \brief     Start transferring bundles between underlying network and BI
