@@ -227,7 +227,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
 }
 
 /* Create all CLA Out child task(s) */
-int32 BPNode_ClaOutCreateTasks(void)
+int32 BPNode_ClaOut_Start(uint32_t ContactId)
 {
     int32  Status;
     uint8  i;
