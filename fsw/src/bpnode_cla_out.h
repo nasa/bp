@@ -111,25 +111,24 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
-  * \retval    BPLIB_CLA_INCORRECT_STATE: From BPLib_CLA_SetContactRunState()
   */
  BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
 
-/**
- * \brief Create CLA Out Task(s)
- *
- *  \par Description
- *       Initialize semaphores, then create the child task(s)
- *
- *  \par Assumptions, External Events, and Notes:
- *       - Note: This is the only function in this file called by the main task, all other
- *         functions are called by the child task(s)
- *
- *  \return Validation status
- *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
- *  \retval OSAL or cFE error code
- */
-int32 BPNode_ClaOut_Start(uint32_t ContactId);
+ /**
+  * \brief     Start up the CLA Out task
+  * \note      Create the CLA Out child tasks and signal to the main task that
+  *            the task is running
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Initialization semaphore either wasn't
+  *                                      created or the timed take timed out
+  * \retval    BPLIB_CLA_WAKEUP_SEM_ERROR: Wake up semaphore wasn't created
+  * \retval    BPLIB_CLA_EXIT_SEM_ERROR: Exit semaphore wasn't created
+  * \retval    BPLIB_CLA_TASK_CREATE_ERROR: Task wasn't created
+  */
+BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId);
 
 /**
  * \brief Exit provided CLA Out task
