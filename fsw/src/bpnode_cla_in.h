@@ -81,6 +81,38 @@ typedef struct
 */
 
 /**
+ * \brief Process Bundle Input from CLA
+ *
+ *  \par Description
+ *       Receive and process candidate bundle (bundle or control message) from CLA
+ *       and pass the bundle to Bundle Interface. 
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \param[in] ContId Contact ID
+ * 
+ *  \return Execution status, see \ref CFEReturnCodes
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ */
+int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId);
+
+/**
+  * \brief     Set up the CLA in task
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \param[in] PortNum (int32) If the task is using UDP, this is the port number
+  *                            gathered from the Contacts Configuration
+  * \param[in] IpAddr (char*) If the task is using UDP, this is the IP address
+  *                           gathered from the Contacts Configuration
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
+  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
+  */
+ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+
+/**
  * \brief Create CLA In Task(s)
  *
  *  \par Description
@@ -97,32 +129,6 @@ typedef struct
 int32 BPNode_ClaInCreateTasks(void);
 
 /**
-  * \brief     Set up the CLA in task
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
-  * \param[in] PortNum (int32) If the task is using UDP, this is the port number
-  *                            gathered from the Contacts Configuration
-  * \param[in] IpAddr (char*) If the task is using UDP, this is the IP address
-  *                           gathered from the Contacts Configuration
-  * \return    Execution status
-  * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
-  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
-  */
-BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
-
-/**
- * \brief CLA In Main Task
- *
- *  \par Description
- *       CLA In task main loop. Receive bundles from CLs and pass them to Bundle Interface.
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- */
-void BPNode_ClaIn_AppMain(void);
-
-/**
  * \brief Exit provided CLA In task
  *
  *  \par Description
@@ -136,21 +142,15 @@ void BPNode_ClaIn_AppMain(void);
 void BPNode_ClaIn_TaskExit(uint8 ContId);
 
 /**
- * \brief Process Bundle Input from CLA
+ * \brief CLA In Main Task
  *
  *  \par Description
- *       Receive and process candidate bundle (bundle or control message) from CLA
- *       and pass the bundle to Bundle Interface. 
+ *       CLA In task main loop. Receive bundles from CLs and pass them to Bundle Interface.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- *
- *  \param[in] ContId Contact ID
- * 
- *  \return Execution status, see \ref CFEReturnCodes
- *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId);
+void BPNode_ClaIn_AppMain(void);
 
 #endif /* BPNODE_CLA_IN_H */
 
