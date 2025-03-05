@@ -231,93 +231,116 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
     return Status;
 }
 
-/* Create all CLA In child task(s) */
-int32 BPNode_ClaInCreateTasks(void)
+BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId)
 {
-    int32  Status;
-    uint8  i;
-    char   NameBuff[OS_MAX_API_NAME];
-    uint16 TaskPriority;
+    BPLib_Status_t             Status;
+    CFE_Status_t               CFE_Status;
+    int32                      OsStatus;
+    char                       NameBuff[OS_MAX_API_NAME];
+    CFE_ES_TaskPriority_Atom_t TaskPriority;
 
-    /* Create all of the CLA In task(s) */
-    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    Status = BPLIB_SUCCESS;
+
+    /* Create init semaphore so main task knows when child initialized */
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, ContactId);
+    OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaInData[ContactId].InitSemId, NameBuff, 0, 0);
+
+    if (OsStatus != OS_SUCCESS)
     {
-        /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].InitSemId, NameBuff, 0, 0);
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[Contact ID #%d]: Failed to create CLA In init semaphore, %s. Error = %d.",
+                            ContactId,
+                            NameBuff,
+                            OsStatus);
 
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Failed to create initialization semaphore, %s. Error = %d.",
-                                i,
-                                NameBuff,
-                                Status);
+        Status = BPLIB_CLA_INIT_SEM_ERROR;
+    }
 
-            return Status;
-        }
-
+    if (Status == BPLIB_SUCCESS)
+    {
         /* Create wakeup semaphore so main task can control workflow */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].WakeupSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_IN_SEM_BASE_NAME, ContactId);
+        OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaInData[ContactId].WakeupSemId, NameBuff, 0, 0);
 
-        if (Status != OS_SUCCESS)
+        if (OsStatus != OS_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
-                                i,
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Failed to create CLA In wakeup semaphore, %s. Error = %d.",
+                                ContactId,
                                 NameBuff,
-                                Status);
+                                OsStatus);
 
-            return Status;
-        }
-
-        /* Create exit semaphore so main task knows when child finished shutdown */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.ClaInData[i].ExitSemId, NameBuff, 0, 0);
-
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "[CLA In #%d]: Failed to create exit semaphore. Error = %d.",
-                        i, Status);
-            return Status;
-        }
-
-        /* Create child task */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_BASE_NAME, i);
-        TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + i;
-
-        Status = CFE_ES_CreateChildTask(&BPNode_AppData.ClaInData[i].TaskId,
-                                NameBuff, BPNode_ClaIn_AppMain,
-                                0, BPNODE_CLA_IN_STACK_SIZE, TaskPriority, 0);
-
-        if (Status != CFE_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[CLA In #%d]: Failed to create child task. Error = %d.",
-                            i, Status);
-            return Status;
-        }
-
-        /* Enable ingress */
-        BPNode_AppData.ClaInData[i].IngressServiceEnabled = true;
-
-        /* Verify initialization by trying to take the init semaphore */
-        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        Status = OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].InitSemId, BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC);
-        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
-
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[CLA In #%d]: Task not running. Init Sem Error = %d.",
-                            i, Status);
-            return Status;
+            Status = BPLIB_CLA_WAKEUP_SEM_ERROR;
         }
     }
 
-    return CFE_SUCCESS;
+    if (Status == BPLIB_SUCCESS)
+    {
+        /* Create exit semaphore so main task knows when child finished shutdown */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, ContactId);
+        OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaInData[ContactId].ExitSemId, NameBuff, 0, 0);
+
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Failed to create CLA In exit semaphore. Error = %d.",
+                                ContactId,
+                                OsStatus);
+
+            Status = BPLIB_CLA_EXIT_SEM_ERROR;
+        }
+    }
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        /* Create child task */
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_BASE_NAME, ContactId);
+        TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + ContactId;
+
+        CFE_Status = CFE_ES_CreateChildTask(&BPNode_AppData.ClaInData[ContactId].TaskId,
+                                            NameBuff,
+                                            BPNode_ClaIn_AppMain,
+                                            0,
+                                            BPNODE_CLA_IN_STACK_SIZE,
+                                            TaskPriority,
+                                            0);
+
+        if (CFE_Status != CFE_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Failed to create CLA In child task. Error = %d.",
+                                ContactId,
+                                CFE_Status);
+
+            Status = BPLIB_CLA_TASK_CREATE_ERROR;
+        }
+    }
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        /* Verify initialization by trying to take the init semaphore */
+        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+        OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContactId].InitSemId, BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
+
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: CLA In task not running. Init Sem Error = %d.",
+                                ContactId,
+                                OsStatus);
+
+            Status = BPLIB_CLA_INIT_SEM_ERROR;
+        }
+    }
+
+    if (Status == BPLIB_SUCCESS)
+    {
+        /* Enable ingress */
+        BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = true;
+    }
+
+    return Status;
 }
 
 /* Exit child task */
