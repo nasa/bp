@@ -98,7 +98,7 @@ int32 BPNode_ClaInCreateTasks(void);
 
 /**
   * \brief     Set up the CLA in task
-  * \param[in] ContactId (uint16_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \param[in] PortNum (int32) If the task is using UDP, this is the port number
   *                            gathered from the Contacts Configuration

@@ -128,7 +128,7 @@ int32 BPNode_ClaOutCreateTasks(void)
     return CFE_SUCCESS;
 }
 
-BPLib_Status_t BPNode_ClaOut_Setup(uint16_t ContactId, int32 PortNum, char* IpAddr)
+BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr)
 {
     BPLib_Status_t  Status;
     int32           PspStatus;

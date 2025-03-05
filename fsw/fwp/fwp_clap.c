@@ -28,7 +28,7 @@
 /* Function Prototypes */
 /* =================== */
 
-BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint16_t ContactId)
+BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint32_t ContactId)
 {
     BPLib_Status_t Status;
 

@@ -101,7 +101,7 @@ int32 BPNode_ClaOutCreateTasks(void);
 
 /**
   * \brief     Set up the CLA out task
-  * \param[in] ContactId (uint16_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \param[in] PortNum (int32) If the task is using UDP, this is the port number
   *                            gathered from the Contacts Configuration
@@ -113,7 +113,7 @@ int32 BPNode_ClaOutCreateTasks(void);
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
   * \retval    BPLIB_CLA_INCORRECT_STATE: From BPLib_CLA_SetContactRunState()
   */
-BPLib_Status_t BPNode_ClaOut_Setup(uint16_t ContactId, int32 PortNum, char* IpAddr);
+BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
 
 /**
  * \brief CLA Out Main Task
