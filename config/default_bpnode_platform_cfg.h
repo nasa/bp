@@ -145,7 +145,7 @@
 /**
  * \brief Maximum number of simultaneous unsorted BPLib generic worker jobs
  */
-#define BPNODE_MAX_UNSORTED_JOBS          (2048u)
+#define BPNODE_MAX_UNSORTED_JOBS          (1024u)
 
 /**
  *  \brief Maximum number of bundles to forward per wakeup 
