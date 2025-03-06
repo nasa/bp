@@ -216,13 +216,33 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
+    UtAssert_STUB_COUNT(BPLib_TIME_MaintenanceActivities, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error doing time maintenance activities, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
+
+/* Test wakeup process after failing NC Update */
+void Test_BPNode_WakeupProcess_FailNCUpdate(void)
+{
+    /* Fail BPLib NC Update */
+    UT_SetDeferredRetcode(UT_KEY(BPLib_NC_ConfigUpdate), 1, BPLIB_ERROR);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
+    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
+    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
+    UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_CFG_UPDATE_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Error updating NC NodeConfig on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
+}
+
 
 /* Test wakeup process after receiving null buffer */
 void Test_BPNode_WakeupProcess_NullBuf(void)
@@ -619,4 +639,5 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
 }

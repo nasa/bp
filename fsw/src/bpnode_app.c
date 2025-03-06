@@ -172,10 +172,14 @@ CFE_Status_t BPNode_WakeupProcess(void)
                             "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
-    /* Call NC to update configurations*/
+    /* Call NC to update configurations */
     BpStatus = BPLib_NC_ConfigUpdate();
-    Status   = BPA_BPLib_Status_Translate(BpStatus);
-    // Check Status?
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        printf("STATUS %d\n", BpStatus);
+        BPLib_EM_SendEvent(BPNODE_NC_CFG_UPDATE_ERR_EID, BPLib_EM_EventType_ERROR,
+            "Error updating NC NodeConfig on wakeup, Status=0x%08X", BpStatus);
+    }
 
     /* Update the ADUP configuration individually since it's owned by BPNode */
     BpStatus = BPA_TABLEP_TableUpdate(BPLIB_ADU_PROXY, (void**) &BPNode_AppData.AduProxyTablePtr);
