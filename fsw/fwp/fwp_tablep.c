@@ -224,7 +224,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
     return Status;
 }
 
-BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void** TblPtr)
+BPLib_Status_t BPA_TABLEP_TableUpdate(uint8_t TableType, void** TblPtr)
 {
     BPLib_Status_t Status;
 

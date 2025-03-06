@@ -50,14 +50,14 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
 
 /**
   * \brief      Refresh or update the configuration pointer
-  * \param[in]  TableType (uint8) Indicates the type of configuration desired to update
+  * \param[in]  TableType (uint8_t) Indicates the type of configuration desired to update
   * \param[out] TblPtr (void**) Pointer to configuration pointer to be updated/refreshed
   * \return     Execution status
   * \retval     BPLIB_SUCCESS: Configuration pointer was refreshed; configuration wasn't modified
   * \retval     BPLIB_TBL_UPDATED: Configuration pointer was refreshed; configuration was modified
   * \retval     BPLIB_ERROR: Unrecognized configuration type provided
   */
-BPLib_Status_t BPA_TABLEP_TableUpdate(uint8 TableType, void** TblPtr);
+BPLib_Status_t BPA_TABLEP_TableUpdate(uint8_t TableType, void** TblPtr);
 
 BPLib_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle);
 
