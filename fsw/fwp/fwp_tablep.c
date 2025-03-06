@@ -196,7 +196,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
     if (Status != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_REG_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Registering Configuration: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
+                            "Error Registering Table: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
     }
     else
     {
@@ -206,7 +206,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_TBL_LD_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error Loading Configuration: %s, RC = 0x%08lX", TableFileName, (unsigned long)Status);
+                                "Error Loading Table: %s, RC = 0x%08lX", TableFileName, (unsigned long)Status);
         }
         else
         {
@@ -216,7 +216,7 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
             if (Status != CFE_TBL_INFO_UPDATED && Status != CFE_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error Getting Configuration Address: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
+                                    "Error Getting Table Address: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
             }
         }
     }
@@ -320,7 +320,7 @@ BPLib_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CF
     if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_MNG_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error managing the configuration: %s on wakeup, Status=0x%08X", TableName, Status);
+                            "Error managing the Table: %s on wakeup, Status=0x%08X", TableName, Status);
     }
 
     return BPA_CFE_Status_Translate(Status);
