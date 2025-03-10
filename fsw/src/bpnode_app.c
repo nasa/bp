@@ -191,7 +191,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Check for pending commands */
-    while (Status == CFE_SUCCESS)
+    do
     {
         Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
 
@@ -199,7 +199,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         {
             BPA_DP_TaskPipe(BufPtr);
         }
-    }
+    } while (Status == CFE_SUCCESS);
 
     /* Not an error case */
     if (Status == CFE_SB_NO_MESSAGE)
