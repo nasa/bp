@@ -51,7 +51,8 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint32
 /**
   * \brief     Start transferring bundles between underlying network and BI
   * \note      TODO
-  * \param[in] TODO
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
+  *                                 to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_UNKNOWN_CONTACT: Provided contact ID does not match a contact ID in the Contacts Configuration
@@ -67,17 +68,19 @@ BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId);
   *            LTP, request LTP cancel each active session and notify BI of complete and incomplete bundle
   *            transmissions
   * \note      TODO
-  * \param[in] TODO
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
+  *                                 to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_ERROR: TODO
   */
-BPLib_Status_t BPA_CLAP_ContactStop(void);
+BPLib_Status_t BPA_CLAP_ContactStop(uint32_t ContactId);
 
 /**
   * \brief     Disestablish CLA, free all CLA resources, discard output queue, and delete custody timers
   * \note      TODO
-  * \param[in] TODO
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
+  *                                 to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_ERROR: TODO
