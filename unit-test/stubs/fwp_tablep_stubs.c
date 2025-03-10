@@ -27,12 +27,6 @@
 #include "fwp_tablep.h"
 #include "utgenstub.h"
 
-/* =========== */
-/* Global Data */
-/* =========== */
-
-BPLib_NC_ConfigPtrs_t BPNode_ConfigPtrs;
-
 /*
  * ----------------------------------------------------
  * Generated stub function for BPA_TABLEP_ARP_CRSTblValidateFunc()
