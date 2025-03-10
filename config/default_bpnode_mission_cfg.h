@@ -46,4 +46,24 @@
     #define BPNODE_CLA_PSP_DRIVER_NAME          "unsock_intf"       /*IODriver unsock_intf driver name*/
 #endif
 
+/**
+ * \brief Default EID Service Number to egress bundles over channel 0
+ */
+#define BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0 42
+
+/**
+ * \brief Default EID Service Number to egress bundles over channel 1
+ */
+#define BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1 53
+
+/**
+ * \brief Default EID Node Number to egress bundles to contact 0
+ */
+#define BPNODE_EID_NODE_NUM_FOR_CONTACT_0 200
+
+/**
+ * \brief Default EID Service Number to egress bundles to contact 0
+ */
+#define BPNODE_EID_SERVICE_NUM_FOR_CONTACT_0 64
+
 #endif /* BPNODE_MISSION_CFG_H */
