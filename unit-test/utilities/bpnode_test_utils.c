@@ -44,7 +44,7 @@
 ** Global Data
 */
 
-/* Test table data */
+/* Test configuration data */
 BPA_ADUP_Table_t            TestAduTbl;
 BPLib_PI_ChannelTable_t     TestChanTbl;
 BPLib_CLA_ContactsTable_t   TestContactsTbl;
@@ -59,7 +59,7 @@ BPLib_PDB_SrcLatencyTable_t TestLatencyTbl;
 BPLib_STOR_StorageTable_t   TestStorTbl;
 
 #define UT_MAX_CFE_SENDEVENT_DEPTH 10
-#define UT_MAX_TRANSLATE_DEPTH     10
+#define UT_MAX_TRANSLATE_DEPTH     13
 
 CFE_EVS_SendEvent_context_t context_CFE_EVS_SendEvent[UT_MAX_CFE_SENDEVENT_DEPTH];
 BPLib_Status_t Context_BPLib_Status[UT_MAX_TRANSLATE_DEPTH];
@@ -187,7 +187,7 @@ void BPNode_UT_Setup(void)
     UT_ResetState(0);
 
     memset((void*) &BPNode_AppData, 0, sizeof(BPNode_AppData_t));
-    memset((void*) &BPNode_ConfigPtrs, 0, sizeof(BPLib_FWP_ConfigPtrs_t));
+    memset((void*) &BPNode_AppData.ConfigPtrs, 0, sizeof(BPLib_NC_ConfigPtrs_t));
 
     memset(context_BPLib_EM_SendEvent, 0, sizeof(BPLib_EM_SendEvent_context_t) * UT_MAX_SENDEVENT_DEPTH);
     memset(context_CFE_EVS_SendEvent, 0, sizeof(context_CFE_EVS_SendEvent));
@@ -214,18 +214,18 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
 
-    BPNode_AppData.AduProxyTablePtr   = &TestAduTbl;
-    BPNode_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
-    BPNode_ConfigPtrs.ChanTblPtr      = &TestChanTbl;
-    BPNode_ConfigPtrs.ContactsTblPtr  = &TestContactsTbl;
-    BPNode_ConfigPtrs.CrsTblPtr       = &TestCrsTbl;
-    BPNode_ConfigPtrs.CustodianTblPtr = &TestCustodianTbl;
-    BPNode_ConfigPtrs.CustodyTblPtr   = &TestCustodyTbl;
-    BPNode_ConfigPtrs.LatTblPtr       = &TestLatencyTbl;
-    BPNode_ConfigPtrs.MibPnTblPtr     = &TestMibPnTbl;
-    BPNode_ConfigPtrs.MibPsTblPtr     = &TestMibPsTbl;
-    BPNode_ConfigPtrs.ReportTblPtr    = &TestReportTbl;
-    BPNode_ConfigPtrs.StorTblPtr      = &TestStorTbl;
+    BPNode_AppData.AduProxyTablePtr                     = &TestAduTbl;
+    BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
+    BPNode_AppData.ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
+    BPNode_AppData.ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
+    BPNode_AppData.ConfigPtrs.CrsConfigPtr       = &TestCrsTbl;
+    BPNode_AppData.ConfigPtrs.CustodianConfigPtr = &TestCustodianTbl;
+    BPNode_AppData.ConfigPtrs.CustodyConfigPtr   = &TestCustodyTbl;
+    BPNode_AppData.ConfigPtrs.LatConfigPtr       = &TestLatencyTbl;
+    BPNode_AppData.ConfigPtrs.MibPnConfigPtr     = &TestMibPnTbl;
+    BPNode_AppData.ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
+    BPNode_AppData.ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
+    BPNode_AppData.ConfigPtrs.StorConfigPtr      = &TestStorTbl;
 }
 
 /* Teardown function after every test */

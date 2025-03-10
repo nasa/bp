@@ -72,6 +72,7 @@ typedef struct
     CFE_SB_PipeId_t CommandPipe;            /**< \brief Pipe Id for command pipe */
     CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
 
+    BPLib_NC_ConfigPtrs_t ConfigPtrs;
     BPA_ADUP_Table_t* AduProxyTablePtr;
 
     CFE_TBL_Handle_t TableHandles[BPNODE_NUMBER_OF_TABLES];

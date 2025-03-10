@@ -104,6 +104,9 @@ void UT_Handler_BPA_BPLib_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey,
 /* Handler to capture arguments passed to BPA_CFE_Status_Translate */
 void UT_Handler_BPA_CFE_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context);
 
+/* Handler to capture arguments to BPA_TABLEP_TableUpdate */
+void UT_Handler_BPA_TABLEP_TableUpdate(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context);
+
 /* Verify values given when BPLib_EM_SendEvent is called */
 void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText);
 
