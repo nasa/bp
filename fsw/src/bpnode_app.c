@@ -103,11 +103,14 @@ void BPNode_AppMain(void)
 /* Perform wakeup processing */
 CFE_Status_t BPNode_WakeupProcess(void)
 {
-    CFE_Status_t     Status;
-    BPLib_Status_t   BpStatus;
-    int32            OsStatus;
-    CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8            TaskNum;
+    CFE_Status_t                Status;
+    BPLib_Status_t              BpStatus;
+    int32                       OsStatus;
+    CFE_SB_Buffer_t*            BufPtr;
+    uint8                       ContactNum;
+    BPLib_CLA_ContactRunState_t RunState;
+
+    BufPtr = NULL;
 
     /* Check if any bundles are in cache, routing them to an egreif able */
     (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
@@ -116,49 +119,53 @@ CFE_Status_t BPNode_WakeupProcess(void)
     BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
 
     /* Wake up the ADU In and ADU Out tasks */
-    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CHANNELS; ContactNum++)
     {
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[TaskNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
+        RunState = BPLib_CLA_GetContactRunState(ContactNum);
+        if (RunState == BPLIB_CLA_STARTED)
         {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
-                                OsStatus);
-        }
+            OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[ContactNum].WakeupSemId);
+            if (OsStatus != OS_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                    BPLib_EM_EventType_ERROR,
+                                    "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
+                                    ContactNum,
+                                    OsStatus);
+            }
 
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
-                                OsStatus);
+            OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[ContactNum].WakeupSemId);
+            if (OsStatus != OS_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                    BPLib_EM_EventType_ERROR,
+                                    "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
+                                    ContactNum,
+                                    OsStatus);
+            }
         }
     }
 
     /* Wake up the CLA In and CLA Out tasks */
-    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CONTACTS; TaskNum++)
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
     {
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
+                                "[Contact ID #%d] Could not wake up CLA In task, RC = %d",
+                                ContactNum,
                                 OsStatus);
         }
 
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
+                                "[Contact ID #%d] Could not wake up CLA Out task, RC = %d",
+                                ContactNum,
                                 OsStatus);
         }
     }
