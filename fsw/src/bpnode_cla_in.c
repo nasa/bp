@@ -344,25 +344,26 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId)
 }
 
 /* Exit child task */
-void BPNode_ClaIn_TaskExit(uint8 ContId)
+void BPNode_ClaIn_Stop(uint32_t ContactId)
 {
     /* Set I/O to stop running */
-    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation,
-                            CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
+                                    CFE_PSP_IODriver_SET_RUNNING,
+                                    CFE_PSP_IODriver_U32ARG(false));
 
     BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
-                      "[CLA In #%d]: Terminating Task. RunStatus = %d.",
-                      ContId, BPNode_AppData.ClaInData[ContId].RunStatus);
+                        "[Contact ID #%d]: Terminating CLA In task",
+                        ContactId);
 
     /* In case event services is not working, add a message to the system log */
-    CFE_ES_WriteToSysLog("[CLA In #%d]: Terminating Task. RunStatus = %d.\n",
-                         ContId, BPNode_AppData.ClaInData[ContId].RunStatus);
+    CFE_ES_WriteToSysLog("[Contact ID #%d]: Terminating CLA In task",
+                            ContactId);
 
     /* Exit the perf log */
-    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
 
     /* Signal to the main task that the child task has exited */
-    (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContId].ExitSemId);
+    (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

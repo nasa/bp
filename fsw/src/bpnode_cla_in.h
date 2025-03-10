@@ -129,17 +129,19 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId);
 BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId);
 
 /**
- * \brief Exit provided CLA In task
- *
- *  \par Description
- *       Exit CLA In task gracefully
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- * 
- *  \param[in] ContId Contacts ID for this task
- */
-void BPNode_ClaIn_TaskExit(uint8 ContId);
+  * \brief     Stop up a CLA In task
+  * \note      Signal 
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Initialization semaphore either wasn't
+  *                                      created or the timed take timed out
+  * \retval    BPLIB_CLA_WAKEUP_SEM_ERROR: Wake up semaphore wasn't created
+  * \retval    BPLIB_CLA_EXIT_SEM_ERROR: Exit semaphore wasn't created
+  * \retval    BPLIB_CLA_TASK_CREATE_ERROR: Task wasn't created
+  */
+void BPNode_ClaIn_Stop(uint32_t ContactId);
 
 /**
  * \brief CLA In Main Task
