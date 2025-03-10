@@ -239,7 +239,7 @@ void Test_BPNode_WakeupProcess_FailNCUpdate(void)
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_CFG_UPDATE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error updating NC NodeConfig on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_STRINGBUF_EQ("Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 

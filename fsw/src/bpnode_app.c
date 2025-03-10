@@ -186,9 +186,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X", BpStatus);
-
-        Status = BPA_BPLib_Status_Translate(BpStatus);
+                            "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X",
+                            BpStatus);
     }
 
     /* Check for pending commands */
