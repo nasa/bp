@@ -32,22 +32,22 @@
 #include "fwp_tablep.h"
 #include "fwp_dp.h"
 
-/* Handler to set table pointers to test tables */
+/* Handler to set configuration pointers to test configurations */
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
-    BPNode_AppData.AduProxyTablePtr   = &TestAduTbl;
-    BPNode_ConfigPtrs.AuthTblPtr      = &TestAuthTbl;
-    BPNode_ConfigPtrs.ChanTblPtr      = &TestChanTbl;
-    BPNode_ConfigPtrs.ContactsTblPtr  = &TestContactsTbl;
-    BPNode_ConfigPtrs.CrsTblPtr       = &TestCrsTbl;
-    BPNode_ConfigPtrs.CustodianTblPtr = &TestCustodianTbl;
-    BPNode_ConfigPtrs.CustodyTblPtr   = &TestCustodyTbl;
-    BPNode_ConfigPtrs.LatTblPtr       = &TestLatencyTbl;
-    BPNode_ConfigPtrs.MibPnTblPtr     = &TestMibPnTbl;
-    BPNode_ConfigPtrs.MibPsTblPtr     = &TestMibPsTbl;
-    BPNode_ConfigPtrs.ReportTblPtr    = &TestReportTbl;
-    BPNode_ConfigPtrs.StorTblPtr      = &TestStorTbl;
+    BPNode_AppData.AduProxyTablePtr                     = &TestAduTbl;
+    BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
+    BPNode_AppData.ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
+    BPNode_AppData.ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
+    BPNode_AppData.ConfigPtrs.CrsConfigPtr       = &TestCrsTbl;
+    BPNode_AppData.ConfigPtrs.CustodianConfigPtr = &TestCustodianTbl;
+    BPNode_AppData.ConfigPtrs.CustodyConfigPtr   = &TestCustodyTbl;
+    BPNode_AppData.ConfigPtrs.LatConfigPtr       = &TestLatencyTbl;
+    BPNode_AppData.ConfigPtrs.MibPnConfigPtr     = &TestMibPnTbl;
+    BPNode_AppData.ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
+    BPNode_AppData.ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
+    BPNode_AppData.ConfigPtrs.StorConfigPtr      = &TestStorTbl;
 }
 
 
@@ -194,7 +194,7 @@ void Test_BPNode_WakeupProcess_FailSem(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
+    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
 
     /* Verify events */
@@ -216,7 +216,7 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(BPA_TABLEP_TableUpdate, 1);
+    UtAssert_STUB_COUNT(BPLib_TIME_MaintenanceActivities, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
@@ -224,28 +224,26 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
-
-/* Test wakeup process after getting an updated table */
-void Test_BPNode_WakeupProcess_FailedTblUpdate(void)
+/* Test wakeup process after failing NC Update */
+void Test_BPNode_WakeupProcess_FailNCUpdate(void)
 {
-    CFE_SB_Buffer_t  Buf;
-    CFE_SB_Buffer_t *BufPtr = &Buf;
-
-    /* Successful receipt of one command */
+    /* Fail BPLib NC Update */
+    UT_SetDeferredRetcode(UT_KEY(BPLib_NC_ConfigUpdate), 1, BPLIB_ERROR);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
-    UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
 
-    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), CFE_TBL_ERR_INVALID_HANDLE);
-    UtAssert_INT32_NEQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
+    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Updating Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_CFG_UPDATE_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Error managing configurations on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
+
 
 /* Test wakeup process after receiving null buffer */
 void Test_BPNode_WakeupProcess_NullBuf(void)
@@ -277,6 +275,66 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
+{
+    CFE_Status_t Status;
+
+    /* Force a successful configuration update */
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_TBL_UPDATED);
+
+    /* Exit receive buffer loop after 1 run */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    /* Run function under test */
+    Status = BPNode_WakeupProcess();
+
+    /* Verify a successful wake up */
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+
+    /* Confirm that no events were issued */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
+{
+    CFE_Status_t Status;
+
+    /* Force the configuration updates to return success codes */
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
+
+    /* Exit receive buffer loop after 1 run */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    /* Run the function under test */
+    Status = BPNode_WakeupProcess();
+
+    /* Check for a successfully return code */
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+}
+
+void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
+{
+    CFE_Status_t Status;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
+
+    /* Exit receive buffer loop after first run */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_NO_MESSAGE);
+
+    Status = BPNode_WakeupProcess();
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+
+    BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
+                                "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X");
+
+    /* Show that the receive buffer was checked even after table error */
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
 }
 
 /* Test app initialization in nominal case */
@@ -366,7 +424,7 @@ void Test_BPNode_AppInit_FailedWakeupSub(void)
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
-/* Test app initialization after failure to register table */
+/* Test app initialization after failure to register configuration */
 void Test_BPNode_AppInit_FailedTblInit(void)
 {
     /* Failure to call BPA_TABLEP_TableInit() */
@@ -376,7 +434,7 @@ void Test_BPNode_AppInit_FailedTblInit(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TBL_ADDR_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Getting Table from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_STRINGBUF_EQ("Error getting configuration from Table Proxy, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -553,16 +611,16 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppMain_FailedInit);
     ADD_TEST(Test_BPNode_AppMain_WakeupRecvd);
     ADD_TEST(Test_BPNode_AppMain_WakeupErr);
-    ADD_TEST(Test_BPNode_AppMain_CommandRecvd);
     ADD_TEST(Test_BPNode_AppMain_CommandErr);
-
+    ADD_TEST(Test_BPNode_AppMain_CommandRecvd);
     ADD_TEST(Test_BPNode_WakeupProcess_CommandRecvd);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
-    ADD_TEST(Test_BPNode_WakeupProcess_FailedTblUpdate);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
-    ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
-
+    ADD_TEST(Test_BPNode_WakeupProcess_TableUpdate_Nominal);
+    ADD_TEST(Test_BPNode_WakeupProcess_TableSuccess_Nominal);
+    ADD_TEST(Test_BPNode_WakeupProcess_TableUpdate_Error);
     ADD_TEST(Test_BPNode_AppInit_Nominal);
     ADD_TEST(Test_BPNode_AppInit_FailedEvs);
     ADD_TEST(Test_BPNode_AppInit_FailedCmdPipeCreate);
@@ -574,13 +632,13 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedNCInit);
     ADD_TEST(Test_BPNode_AppInit_FailedAduInTasks);
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
+    ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
+    ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
+    ADD_TEST(Test_BPNode_AppExit_Nominal);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
     ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
-    ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
-    ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
     ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
-
-    ADD_TEST(Test_BPNode_AppExit_Nominal);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
 }

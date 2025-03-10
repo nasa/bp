@@ -33,148 +33,142 @@
 #include "bpnode_utils.h"
 #include "bpnode_app.h"
 
-/* ======= */
-/* Globals */
-/* ======= */
-
-BPLib_FWP_ConfigPtrs_t BPNode_ConfigPtrs;
-
 /* ==================== */
 /* Function Definitions */
 /* ==================== */
 
-/* Initialize table proxy, load default tables */
+/* Initialize Table Proxy, load default configurations */
 CFE_Status_t BPA_TABLEP_TableInit(void)
 {
     CFE_Status_t Status;
 
-    /* Initialize the ADU proxy table */
+    /* Initialize the ADU proxy configuration */
     Status = BPA_TABLEP_SingleTableInit("ADUProxyTable",
                                         ADUP_CONFIG_TABLE_FILE,
                                         sizeof(BPA_ADUP_Table_t),
                                         (CFE_TBL_CallbackFuncPtr_t) BPA_ADUP_ValidateConfigTbl,
                                         (void**) &BPNode_AppData.AduProxyTablePtr,
-                                        &BPNode_AppData.TableHandles[BPNODE_ADU_TBL_IDX]);
+                                        &BPNode_AppData.TableHandles[BPLIB_ADU_PROXY]);
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the PI channel configuration table */
+        /* Initialize the PI channel configuration */
         Status = BPA_TABLEP_SingleTableInit("ChannelTable",
                                             CHANNEL_TABLE_FILE,
                                             sizeof(BPLib_PI_ChannelTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PI_ValidateConfigs,
-                                            (void**) &BPNode_ConfigPtrs.ChanTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_CHAN_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.ChanConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_CHANNEL]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the CLA contacts table */
+        /* Initialize the CLA contacts configuration */
         Status = BPA_TABLEP_SingleTableInit("ContactsTable",
                                             CONTACTS_TABLE_FILE,
                                             sizeof(BPLib_CLA_ContactsTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_CLA_ContactsTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.ContactsTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_CON_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.ContactsConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_CONTACTS]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the ARP CRS table */
+        /* Initialize the ARP CRS configuration */
         Status = BPA_TABLEP_SingleTableInit("CRSTable",
                                             CRS_TABLE_FILE,
                                             sizeof(BPLib_ARP_CRSTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_ARP_CRSTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.CrsTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_CRS_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.CrsConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_COMPRESSED_REPORTING]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the PDB custodian table */
+        /* Initialize the PDB custodian configuration */
         Status = BPA_TABLEP_SingleTableInit("CustodianTable",
                                             CUSTODIAN_TABLE_FILE,
                                             sizeof(BPLib_PDB_CustodianTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_CustodianAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.CustodianTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_CSTDN_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.CustodianConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_CUSTODIAN_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the PDB custody table */
+        /* Initialize the PDB custody configuration */
         Status = BPA_TABLEP_SingleTableInit("CustodyTable",
                                             CUSTODY_TABLE_FILE,
                                             sizeof(BPLib_PDB_CustodyTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_CustodyAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.CustodyTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_CSTDY_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.CustodyConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_CUSTODY_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the NC MIB config per node table */
+        /* Initialize the NC MIB config per node configuration */
         Status = BPA_TABLEP_SingleTableInit("MIBConfigPNTable",
                                             MIB_CONFIG_PN_TABLE_FILE,
                                             sizeof(BPLib_NC_MIBConfigPNTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPNTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.MibPnTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_MIBN_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.MibPnConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_MIB_PER_NODE]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the NC MIB config per source table */
+        /* Initialize the NC MIB config per source configuration */
         Status = BPA_TABLEP_SingleTableInit("MIBConfigPSTable",
                                             MIB_CONFIG_PS_TABLE_FILE,
                                             sizeof(BPLib_NC_MIBConfigPSTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPSTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.MibPsTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_MIBS_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.MibPsConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_MIB_PER_SRC]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the PDB report to table */
+        /* Initialize the PDB report to configuration */
         Status = BPA_TABLEP_SingleTableInit("ReportToTable",
                                             REPORTTO_TABLE_FILE,
                                             sizeof(BPLib_PDB_ReportToTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_ReportToAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.ReportTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_REP_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.ReportConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_REPORT_TO_EID_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the PDB authorized sources table */
+        /* Initialize the PDB authorized sources configuration */
         Status = BPA_TABLEP_SingleTableInit("SrcAuthTable",
                                             SRC_AUTH_TABLE_FILE,
                                             sizeof(BPLib_PDB_SrcAuthTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_SrcAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.AuthTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_AUTH_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.AuthConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_SRC_AUTH_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Authorize the PDB source latency table */
+        /* Authorize the PDB source latency configuration */
         Status = BPA_TABLEP_SingleTableInit("SrcLatencyTable",
                                             SRC_LATENCY_TABLE_FILE,
                                             sizeof(BPLib_PDB_SrcLatencyTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_SrcLatencyTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.LatTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_LATE_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.LatConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_SRC_LATENCY_POLICY]);
     }
 
     if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
     {
-        /* Initialize the STOR storage table */
+        /* Initialize the STOR storage configuration */
         Status = BPA_TABLEP_SingleTableInit("StorageTable",
                                             STORAGE_TABLE_FILE,
                                             sizeof(BPLib_STOR_StorageTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_STOR_StorageTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.StorTblPtr,
-                                            &BPNode_AppData.TableHandles[BPNODE_STOR_TBL_IDX]);
+                                            (void**) &BPNode_AppData.ConfigPtrs.StorConfigPtr,
+                                            &BPNode_AppData.TableHandles[BPLIB_STORAGE]);
     }
 
     if (Status == CFE_TBL_INFO_UPDATED)
@@ -189,34 +183,34 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
 {
     CFE_Status_t Status;
 
-    /* Register table */
+    /* Register configuration */
     Status = CFE_TBL_Register(TableHandle, TableName, Size,
                                 CFE_TBL_OPT_DEFAULT, TblValidationFuncPtr);
 
     if (Status != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_REG_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Registering Table: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
+                            "Error registering configuration: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
     }
     else
     {
-        /* Load table */
+        /* Load configuration */
         Status = CFE_TBL_Load(*TableHandle, CFE_TBL_SRC_FILE, TableFileName);
 
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_TBL_LD_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "Error Loading Table: %s, RC = 0x%08lX", TableFileName, (unsigned long)Status);
+                                "Error loading configuration: %s, RC = 0x%08lX", TableFileName, (unsigned long)Status);
         }
         else
         {
-            /* Get table address */
+            /* Get configuration address */
             Status = CFE_TBL_GetAddress(TablePtr, *TableHandle);
 
             if (Status != CFE_TBL_INFO_UPDATED && Status != CFE_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Error Getting Table Address: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
+                                    "Error getting configuration address: %s, RC = 0x%08lX", TableName, (unsigned long)Status);
             }
         }
     }
@@ -224,109 +218,92 @@ CFE_Status_t BPA_TABLEP_SingleTableInit(const char* TableName, const char* Table
     return Status;
 }
 
-CFE_Status_t BPA_TABLEP_TableUpdate()
+BPLib_Status_t BPA_TABLEP_TableUpdate(uint8_t TableType, void** TblPtr)
 {
-    CFE_Status_t Status;
+    BPLib_Status_t Status;
 
-    /* Initialize the ADU proxy table */
-    Status = BPA_TABLEP_TableManage("ADUProxyTable",
-                                    (void**) &BPNode_AppData.AduProxyTablePtr,
-                                    BPNode_AppData.TableHandles[BPNODE_ADU_TBL_IDX]);
+    Status = BPLIB_ERROR;
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
+    switch (TableType)
     {
-        /* Initialize the PI channel configuration table */
-        Status = BPA_TABLEP_TableManage("ChannelTable",
-                                        (void**) &BPNode_ConfigPtrs.ChanTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_CHAN_TBL_IDX]);
-    }
+        case BPLIB_CHANNEL:
+            Status = BPA_TABLEP_TableManage("ChannelTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_CHANNEL]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the CLA contacts table */
-        Status = BPA_TABLEP_TableManage("ContactsTable",
-                                        (void**) &BPNode_ConfigPtrs.ContactsTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_CON_TBL_IDX]);
-    }
+            break;
+        case BPLIB_CONTACTS:
+            Status = BPA_TABLEP_TableManage("ContactsTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_CONTACTS]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the ARP CRS table */
-        Status = BPA_TABLEP_TableManage("CRSTable",
-                                        (void**) &BPNode_ConfigPtrs.CrsTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_CRS_TBL_IDX]);
-    }
+            break;
+        case BPLIB_COMPRESSED_REPORTING:
+            Status = BPA_TABLEP_TableManage("CRSTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_COMPRESSED_REPORTING]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the PDB custodian table */
-        Status = BPA_TABLEP_TableManage("CustodianTable",
-                                        (void**) &BPNode_ConfigPtrs.CustodianTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_CSTDN_TBL_IDX]);
-    }
+            break;
+        case BPLIB_CUSTODIAN_AUTH_POLICY:
+            Status = BPA_TABLEP_TableManage("CustodianTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_CUSTODIAN_AUTH_POLICY]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the PDB custody table */
-        Status = BPA_TABLEP_TableManage("CustodyTable",
-                                        (void**) &BPNode_ConfigPtrs.CustodyTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_CSTDY_TBL_IDX]);
-    }
+            break;
+        case BPLIB_CUSTODY_AUTH_POLICY:
+            Status = BPA_TABLEP_TableManage("CustodyTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_CUSTODY_AUTH_POLICY]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the NC MIB config per node table */
-        Status = BPA_TABLEP_TableManage("MIBConfigPNTable",
-                                        (void**) &BPNode_ConfigPtrs.MibPnTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_MIBN_TBL_IDX]);
-    }
+            break;
+        case BPLIB_MIB_PER_NODE:
+            Status = BPA_TABLEP_TableManage("MIBConfigPNTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_MIB_PER_NODE]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the NC MIB config per source table */
-        Status = BPA_TABLEP_TableManage("MIBConfigPSTable",
-                                        (void**) &BPNode_ConfigPtrs.MibPsTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_MIBS_TBL_IDX]);
-    }
+            break;
+        case BPLIB_MIB_PER_SRC:
+            Status = BPA_TABLEP_TableManage("MIBConfigPSTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_MIB_PER_SRC]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the PDB report to table */
-        Status = BPA_TABLEP_TableManage("ReportToTable",
-                                        (void**) &BPNode_ConfigPtrs.ReportTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_REP_TBL_IDX]);
-    }
+            break;
+        case BPLIB_REPORT_TO_EID_AUTH_POLICY:
+            Status = BPA_TABLEP_TableManage("ReportToTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_REPORT_TO_EID_AUTH_POLICY]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the PDB authorized sources table */
-        Status = BPA_TABLEP_TableManage("SrcAuthTable",
-                                        (void**) &BPNode_ConfigPtrs.AuthTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_AUTH_TBL_IDX]);
-    }
+            break;
+        case BPLIB_SRC_AUTH_POLICY:
+            Status = BPA_TABLEP_TableManage("SrcAuthTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_SRC_AUTH_POLICY]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Authorize the PDB source latency table */
-        Status = BPA_TABLEP_TableManage("SrcLatencyTable",
-                                        (void**) &BPNode_ConfigPtrs.LatTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_LATE_TBL_IDX]);
-    }
+            break;
+        case BPLIB_SRC_LATENCY_POLICY:
+            Status = BPA_TABLEP_TableManage("SrcLatencyTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_SRC_LATENCY_POLICY]);
 
-    if (Status == CFE_SUCCESS || Status == CFE_TBL_INFO_UPDATED)
-    {
-        /* Initialize the STOR storage table */
-        Status = BPA_TABLEP_TableManage("StorageTable",
-                                        (void**) &BPNode_ConfigPtrs.StorTblPtr,
-                                        BPNode_AppData.TableHandles[BPNODE_STOR_TBL_IDX]);
-    }
+            break;
+        case BPLIB_STORAGE:
+            Status = BPA_TABLEP_TableManage("StorageTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_STORAGE]);
 
-    /* TODO: Set Table Handle to Node Configuration */
+            break;
+        case BPLIB_ADU_PROXY:
+            Status = BPA_TABLEP_TableManage("ADUProxyTable",
+                                            TblPtr,
+                                            BPNode_AppData.TableHandles[BPLIB_ADU_PROXY]);
+
+            break;
+    }
 
     return Status;
 }
 
-CFE_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle)
+BPLib_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_TBL_Handle_t TableHandle)
 {
     CFE_Status_t Status;
 
@@ -337,13 +314,11 @@ CFE_Status_t BPA_TABLEP_TableManage(const char* TableName, void** TablePtr, CFE_
     if (Status != CFE_SUCCESS && Status != CFE_TBL_INFO_UPDATED)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_MNG_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error managing the table: %s on wakeup, Status=0x%08X", TableName, Status);
+                            "Error managing the configuration: %s on wakeup, Status=0x%08X", TableName, Status);
     }
 
-    return Status;
+    return BPA_CFE_Status_Translate(Status);
 }
-
-BPLib_Status_t BPA_TABLEP_SingleTableUpdate(CFE_TBL_Handle_t TblHandle) { return BPA_CFE_Status_Translate(CFE_TBL_Modified(TblHandle)); }
 
 CFE_Status_t BPA_TABLEP_PI_ValidateConfigs(void* TblData)                { return BPA_BPLib_Status_Translate(BPLib_PI_ValidateConfigs(TblData)); }
 CFE_Status_t BPA_TABLEP_CLA_ContactsTblValidateFunc(void* TblData)       { return BPA_BPLib_Status_Translate(BPLib_CLA_ContactsTblValidateFunc(TblData)); }
