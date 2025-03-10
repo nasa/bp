@@ -30,14 +30,25 @@
 
 BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)
 { 
-    if (CFE_Status & CFE_SEVERITY_ERROR)
+    BPLib_Status_t Status;
+
+    Status = BPLIB_UNKNOWN;
+
+    if ((uint32_t) CFE_Status == (uint32_t) CFE_TBL_INFO_UPDATED)
     {
-        return BPLIB_ERROR;
+        Status = BPLIB_TBL_UPDATED;
     }
-    else
+    else if (((uint32_t) CFE_Status >= (uint32_t) CFE_SEVERITY_SUCCESS) &&
+             ((uint32_t) CFE_Status <  (uint32_t) CFE_SEVERITY_INFO))
     {
-        return BPLIB_SUCCESS;
+        Status = BPLIB_SUCCESS;
     }
+    else if ((uint32_t) CFE_Status >= (uint32_t) CFE_SEVERITY_ERROR)
+    {
+        Status = BPLIB_ERROR;
+    }
+
+    return Status;
 }
 
 CFE_Status_t BPA_BPLib_Status_Translate(BPLib_Status_t BPLib_Status)
