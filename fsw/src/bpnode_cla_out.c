@@ -344,7 +344,8 @@ void BPNode_ClaOut_Stop(uint32_t ContactId)
 {
     /* Set I/O to stop running */
     (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
-                            CFE_PSP_IODriver_SET_RUNNING, CFE_PSP_IODriver_U32ARG(false));
+                                    CFE_PSP_IODriver_SET_RUNNING,
+                                    CFE_PSP_IODriver_U32ARG(false));
 
     BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "[Contact ID #%d]: Terminating CLA Out task",
