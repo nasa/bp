@@ -297,7 +297,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Initialize configurations and counters */
-    BpStatus = BPLib_NC_Init(&BPNode_AppData.BPNode_ConfigPtrs);
+    BpStatus = BPLib_NC_Init(&BPNode_AppData.ConfigPtrs);
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
@@ -437,7 +437,7 @@ CFE_Status_t BPNode_AppInit(void)
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
-        if (BPNode_AppData.BPNode_ConfigPtrs.ChanConfigPtr->Configs[i].AddAutomatically == true)
+        if (BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);
