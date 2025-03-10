@@ -239,7 +239,7 @@ void Test_BPNode_WakeupProcess_FailNCUpdate(void)
     UtAssert_STUB_COUNT(OS_BinSemGive, BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CHANNELS + BPLIB_MAX_NUM_CONTACTS + BPLIB_MAX_NUM_CONTACTS);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_CFG_UPDATE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_STRINGBUF_EQ("Error managing configurations on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -294,9 +294,8 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
     /* Verify a successful wake up */
     UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
 
-    /* Confirm that the configuration updating issued an event */
-    BPNode_Test_Verify_Event(0, BPNODE_TBL_UPDATE_INF_EID,
-                                "Updated ADU Proxy Configuration configuration");
+    /* Confirm that no events were issued */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
@@ -325,15 +324,18 @@ void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_STATUS_NOT_IMPLEMENTED);
 
+    /* Exit receive buffer loop after 1 run */
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
     Status = BPNode_WakeupProcess();
 
-    UtAssert_EQ(CFE_Status_t, Status, CFE_STATUS_NOT_IMPLEMENTED);
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
 
     BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
                                 "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X");
 
-    /* Show that the receive buffer command wasn't ever reached */
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 0);
+    /* Show that the receive buffer was checked even after table error */
+    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
 }
 
 /* Test app initialization in nominal case */
