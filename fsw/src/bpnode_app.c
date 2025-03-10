@@ -174,7 +174,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
     /* Call NC to update configurations */
     BpStatus = BPLib_NC_ConfigUpdate();
-    if (BpStatus != BPLIB_SUCCESS)
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
     {
         BPLib_EM_SendEvent(BPNODE_NC_CFG_UPDATE_ERR_EID, BPLib_EM_EventType_ERROR,
                             "Error managing configurations on wakeup, Status=0x%08X",
