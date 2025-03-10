@@ -176,9 +176,9 @@ CFE_Status_t BPNode_WakeupProcess(void)
     BpStatus = BPLib_NC_ConfigUpdate();
     if (BpStatus != BPLIB_SUCCESS)
     {
-        printf("STATUS %d\n", BpStatus);
         BPLib_EM_SendEvent(BPNODE_NC_CFG_UPDATE_ERR_EID, BPLib_EM_EventType_ERROR,
-            "Error updating NC NodeConfig on wakeup, Status=0x%08X", BpStatus);
+                            "Error managing configurations on wakeup, Status=0x%08X",
+                            BpStatus);
     }
 
     /* Update the ADUP configuration individually since it's owned by BPNode */
