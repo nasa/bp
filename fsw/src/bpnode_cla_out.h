@@ -129,17 +129,13 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
 BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId);
 
 /**
- * \brief Exit provided CLA Out task
- *
- *  \par Description
- *       Exit CLA Out task gracefully
- *
- *  \par Assumptions, External Events, and Notes:
- *       None
- *
- *  \param[in] ContId Contact ID for this task
- */
-void BPNode_ClaOut_TaskExit(uint8 ContId);
+  * \brief     Stop a CLA Out task
+  * \note      Gracefully stops contact
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    void
+  */
+void BPNode_ClaOut_Stop(uint32_t ContactId);
 
 /**
  * \brief CLA Out Main Task
