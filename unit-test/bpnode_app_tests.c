@@ -230,6 +230,7 @@ void Test_BPNode_WakeupProcess_FailNCUpdate(void)
     /* Fail BPLib NC Update */
     UT_SetDeferredRetcode(UT_KEY(BPLib_NC_ConfigUpdate), 1, BPLIB_ERROR);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+    UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
 
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
@@ -283,7 +284,6 @@ void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
     /* Force a successful configuration update */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_TBL_UPDATED);
-    UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
 
     /* Exit receive buffer loop after 1 run */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
