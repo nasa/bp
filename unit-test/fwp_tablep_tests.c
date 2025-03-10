@@ -99,7 +99,7 @@ void Test_BPA_TABLEP_TableInit_Error(void)
         UtAssert_STUB_COUNT(CFE_TBL_Register, ExpectedStubCount);
 
         /* Verify that the correct event was issued */
-        BPNode_Test_Verify_Event(ErrorLoop, BPNODE_TBL_REG_ERR_EID, "Error Registering Configuration: %s, RC = 0x%08lX");
+        BPNode_Test_Verify_Event(ErrorLoop, BPNODE_TBL_REG_ERR_EID, "Error registering configuration: %s, RC = 0x%08lX");
     }
 }
 
@@ -140,7 +140,7 @@ void Test_BPA_TABLEP_SingleTableInit_Register_Error(void)
 
     /* Verify the event issued is as expected */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_REG_ERR_EID,
-                                "Error Registering Configuration: %s, RC = 0x%08lX");
+                                "Error registering configuration: %s, RC = 0x%08lX");
 
     /* Show that no other TBL function was run */
     UtAssert_STUB_COUNT(CFE_TBL_Load, 0);
@@ -166,7 +166,7 @@ void Test_BPA_TABLEP_SingleTableInit_Load_Error(void)
 
     /* Verify the event issued is as expected */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_LD_ERR_EID,
-                                "Error Loading Configuration: %s, RC = 0x%08lX");
+                                "Error loading configuration: %s, RC = 0x%08lX");
 
     /* Show that no other TBL function was run */
     UtAssert_STUB_COUNT(CFE_TBL_GetAddress, 0);
@@ -191,7 +191,7 @@ void Test_BPA_TABLEP_SingleTableInit_GetAddress_Error(void)
 
     /* Verify the event issued is as expected */
     BPNode_Test_Verify_Event(0, BPNODE_TBL_ADDR_ERR_EID,
-                                "Error Getting Configuration Address: %s, RC = 0x%08lX");
+                                "Error getting configuration address: %s, RC = 0x%08lX");
 }
 
 void Test_BPA_TABLEP_TableUpdate_InfoUpdated_Nominal(void)
