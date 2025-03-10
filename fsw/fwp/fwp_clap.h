@@ -70,11 +70,9 @@ BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId);
   * \note      TODO
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
   *                                 to that contact's info
-  * \return    Execution status
-  * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_ERROR: TODO
+  * \return    void
   */
-BPLib_Status_t BPA_CLAP_ContactStop(uint32_t ContactId);
+void BPA_CLAP_ContactStop(uint32_t ContactId);
 
 /**
   * \brief     Disestablish CLA, free all CLA resources, discard output queue, and delete custody timers

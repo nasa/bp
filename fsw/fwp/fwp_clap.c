@@ -60,25 +60,12 @@ BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId)
     return Status;
 }
 
-BPLib_Status_t BPA_CLAP_ContactStop(uint32_t ContactId)
+void BPA_CLAP_ContactStop(uint32_t ContactId)
 {
-    BPLib_Status_t InStatus;
-    BPLib_Status_t OutStatus;
-    BPLib_Status_t Status;
+    BPNode_ClaIn_Stop(ContactId);
+    BPNode_ClaOut_Stop(ContactId);
 
-    InStatus  = BPNode_ClaIn_Stop(ContactId);
-    OutStatus = BPNode_ClaOut_Stop(ContactId);
-
-    if (InStatus == BPLIB_SUCCESS && OutStatus == BPLIB_SUCCESS)
-    {
-        Status = BPLIB_SUCCESS;
-    }
-    else
-    {
-        Status = BPLIB_ERROR;
-    }
-
-    return Status;
+    return;
 }
 
 BPLib_Status_t BPA_CLAP_ContactTeardown(void)
