@@ -322,10 +322,9 @@ void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
-    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_NO_MESSAGE);
 
-    /* Exit receive buffer loop after 1 run */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+    /* Exit receive buffer loop after first run */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_NO_MESSAGE);
 
     Status = BPNode_WakeupProcess();
 
