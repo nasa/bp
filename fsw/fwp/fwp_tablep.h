@@ -34,12 +34,6 @@
 #include "bpnode_eventids.h"
 #include "bpnode_tbl.h"
 
-/* =========== */
-/* Global Data */
-/* =========== */
-
-extern BPLib_NC_ConfigPtrs_t BPNode_ConfigPtrs;
-
 /* =================== */
 /* Function Prototypes */
 /* =================== */

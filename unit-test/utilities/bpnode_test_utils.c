@@ -187,7 +187,7 @@ void BPNode_UT_Setup(void)
     UT_ResetState(0);
 
     memset((void*) &BPNode_AppData, 0, sizeof(BPNode_AppData_t));
-    memset((void*) &BPNode_ConfigPtrs, 0, sizeof(BPLib_NC_ConfigPtrs_t));
+    memset((void*) &BPNode_AppData.BPNode_ConfigPtrs, 0, sizeof(BPLib_NC_ConfigPtrs_t));
 
     memset(context_BPLib_EM_SendEvent, 0, sizeof(BPLib_EM_SendEvent_context_t) * UT_MAX_SENDEVENT_DEPTH);
     memset(context_CFE_EVS_SendEvent, 0, sizeof(context_CFE_EVS_SendEvent));
@@ -214,18 +214,18 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
 
-    BPNode_AppData.AduProxyTablePtr      = &TestAduTbl;
-    BPNode_ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
-    BPNode_ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
-    BPNode_ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
-    BPNode_ConfigPtrs.CrsConfigPtr       = &TestCrsTbl;
-    BPNode_ConfigPtrs.CustodianConfigPtr = &TestCustodianTbl;
-    BPNode_ConfigPtrs.CustodyConfigPtr   = &TestCustodyTbl;
-    BPNode_ConfigPtrs.LatConfigPtr       = &TestLatencyTbl;
-    BPNode_ConfigPtrs.MibPnConfigPtr     = &TestMibPnTbl;
-    BPNode_ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
-    BPNode_ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
-    BPNode_ConfigPtrs.StorConfigPtr      = &TestStorTbl;
+    BPNode_AppData.AduProxyTablePtr                     = &TestAduTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.CrsConfigPtr       = &TestCrsTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.CustodianConfigPtr = &TestCustodianTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.CustodyConfigPtr   = &TestCustodyTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.LatConfigPtr       = &TestLatencyTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.MibPnConfigPtr     = &TestMibPnTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
+    BPNode_AppData.BPNode_ConfigPtrs.StorConfigPtr      = &TestStorTbl;
 }
 
 /* Teardown function after every test */

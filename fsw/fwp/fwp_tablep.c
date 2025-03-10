@@ -33,12 +33,6 @@
 #include "bpnode_utils.h"
 #include "bpnode_app.h"
 
-/* ======= */
-/* Globals */
-/* ======= */
-
-BPLib_NC_ConfigPtrs_t BPNode_ConfigPtrs;
-
 /* ==================== */
 /* Function Definitions */
 /* ==================== */
@@ -63,7 +57,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             CHANNEL_TABLE_FILE,
                                             sizeof(BPLib_PI_ChannelTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PI_ValidateConfigs,
-                                            (void**) &BPNode_ConfigPtrs.ChanConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.ChanConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_CHANNEL]);
     }
 
@@ -74,7 +68,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             CONTACTS_TABLE_FILE,
                                             sizeof(BPLib_CLA_ContactsTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_CLA_ContactsTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.ContactsConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.ContactsConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_CONTACTS]);
     }
 
@@ -85,7 +79,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             CRS_TABLE_FILE,
                                             sizeof(BPLib_ARP_CRSTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_ARP_CRSTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.CrsConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.CrsConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_COMPRESSED_REPORTING]);
     }
 
@@ -96,7 +90,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             CUSTODIAN_TABLE_FILE,
                                             sizeof(BPLib_PDB_CustodianTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_CustodianAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.CustodianConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.CustodianConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_CUSTODIAN_AUTH_POLICY]);
     }
 
@@ -107,7 +101,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             CUSTODY_TABLE_FILE,
                                             sizeof(BPLib_PDB_CustodyTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_CustodyAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.CustodyConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.CustodyConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_CUSTODY_AUTH_POLICY]);
     }
 
@@ -118,7 +112,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             MIB_CONFIG_PN_TABLE_FILE,
                                             sizeof(BPLib_NC_MIBConfigPNTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPNTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.MibPnConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.MibPnConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_MIB_PER_NODE]);
     }
 
@@ -129,7 +123,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             MIB_CONFIG_PS_TABLE_FILE,
                                             sizeof(BPLib_NC_MIBConfigPSTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPSTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.MibPsConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.MibPsConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_MIB_PER_SRC]);
     }
 
@@ -140,7 +134,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             REPORTTO_TABLE_FILE,
                                             sizeof(BPLib_PDB_ReportToTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_ReportToAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.ReportConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.ReportConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_REPORT_TO_EID_AUTH_POLICY]);
     }
 
@@ -151,7 +145,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             SRC_AUTH_TABLE_FILE,
                                             sizeof(BPLib_PDB_SrcAuthTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_SrcAuthTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.AuthConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.AuthConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_SRC_AUTH_POLICY]);
     }
 
@@ -162,7 +156,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             SRC_LATENCY_TABLE_FILE,
                                             sizeof(BPLib_PDB_SrcLatencyTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_PDB_SrcLatencyTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.LatConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.LatConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_SRC_LATENCY_POLICY]);
     }
 
@@ -173,7 +167,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
                                             STORAGE_TABLE_FILE,
                                             sizeof(BPLib_STOR_StorageTable_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_STOR_StorageTblValidateFunc,
-                                            (void**) &BPNode_ConfigPtrs.StorConfigPtr,
+                                            (void**) &BPNode_AppData.BPNode_ConfigPtrs.StorConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_STORAGE]);
     }
 
