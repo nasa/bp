@@ -305,7 +305,6 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
     /* Force the configuration updates to return success codes */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
-    UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
 
     /* Exit receive buffer loop after 1 run */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
@@ -321,8 +320,9 @@ void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
 {
     CFE_Status_t Status;
 
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
-    UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_STATUS_NOT_IMPLEMENTED);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_NO_MESSAGE);
 
     /* Exit receive buffer loop after 1 run */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
