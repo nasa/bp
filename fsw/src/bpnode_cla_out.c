@@ -105,7 +105,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact Id #%d]: Couldn't find CLA Out I/O driver. Error = %d",
+                            "[Contact ID #%d]: Couldn't find CLA Out I/O driver. Error = %d",
                             ContactId,
                             PspStatus);
 
@@ -371,66 +371,82 @@ void BPNode_ClaOut_Stop(uint32_t ContactId)
 void BPNode_ClaOut_AppMain(void)
 {
     int32                       OsStatus;
-    int32                       BPNodeStatus;
+    CFE_Status_t                CFE_Status;
+    CFE_ES_TaskId_t             TaskId;
     uint32                      BundlesForwarded;
     uint32                      ContactId;
     BPLib_CLA_ContactRunState_t RunState;
 
-    /* Find a contact that is started */
-    for (ContactId = 0; BPLib_CLA_GetContactRunState(ContactId) == BPLIB_CLA_STARTED; ContactId++);
-
-    if (ContactId != BPLIB_MAX_NUM_CONTACTS)
+    CFE_Status = CFE_ES_GetTaskID(&TaskId);
+    if (CFE_Status != CFE_SUCCESS)
     {
-        /* Indicate that this contact ID is no longer available for other tasks */
-        (void) BPLib_CLA_SetContactRunState(ContactId, BPLIB_CLA_RUNNING);
-
-        /* CLA Out task loop */
-        do
-        {
-            BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContactId].PerfId);
-            OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].WakeupSemId, BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC);
-            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContactId].PerfId);
-
-            if (OsStatus == OS_SUCCESS)
-            {
-                if (BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled)
-                {
-                    BundlesForwarded = 0;
-
-                    do
-                    {
-                        BPNodeStatus = BPNode_ClaOut_ProcessBundleOutput(ContactId);
-                        if (BPNodeStatus == CFE_SUCCESS)
-                        {
-                            BundlesForwarded++;
-                        }
-                    } while ((BPNodeStatus == CFE_SUCCESS) && (BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE));
-                }
-            }
-            else if (OsStatus == OS_SEM_TIMEOUT)
-            {
-                BPLib_EM_SendEvent(BPNODE_CLA_OUT_SEM_TK_TIMEOUT_INF_EID,
-                                    BPLib_EM_EventType_INFORMATION,
-                                    "[Contact ID #%d]: CLA Out task timed out while waiting for the wakeup semaphore",
-                                    ContactId);
-            }
-            else
-            {
-                BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
-                                    BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: CLA Out task failed to take wakeup semaphore, RC = %d",
-                                    ContactId,
-                                    OsStatus);
-            }
-
-            RunState = BPLib_CLA_GetContactRunState(ContactId);
-        } while (RunState == BPLIB_CLA_RUNNING);
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_NO_ID_ERR_EID,
+                            BPLib_EM_EventType_ERROR,
+                            "[Contact ID #?]: Failed to get task ID. Error = %d",
+                            CFE_Status);
     }
     else
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_OUT_NO_STARTD_CONTS_ERR_EID,
-                            BPLib_EM_EventType_ERROR,
-                            "[Contact ID #?] Could not find a CLA Out task to process bundles with");
+        /* Find a contact whose task ID matches the calling task */
+        for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
+        {
+            if (BPNode_AppData.ClaOutData[ContactId].TaskId == TaskId)
+            {
+                /* Break to preserve ContactId */
+                break;
+            }
+        }
+
+        if (ContactId != BPLIB_MAX_NUM_CONTACTS)
+        {
+            /* CLA Out task loop */
+            do
+            { /* At least one loop will always occur, even if you start the contact, then quickly stop it */
+                BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContactId].PerfId);
+                OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].WakeupSemId, BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC);
+                BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContactId].PerfId);
+
+                if (OsStatus == OS_SUCCESS)
+                {
+                    if (BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled)
+                    {
+                        BundlesForwarded = 0;
+
+                        do
+                        {
+                            CFE_Status = BPNode_ClaOut_ProcessBundleOutput(ContactId);
+                            if (CFE_Status == CFE_SUCCESS)
+                            {
+                                BundlesForwarded++;
+                            }
+                        } while ((CFE_Status == CFE_SUCCESS) && (BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE));
+                    }
+                }
+                else if (OsStatus == OS_SEM_TIMEOUT)
+                {
+                    BPLib_EM_SendEvent(BPNODE_CLA_OUT_SEM_TK_TIMEOUT_INF_EID,
+                                        BPLib_EM_EventType_INFORMATION,
+                                        "[Contact ID #%d]: CLA Out task timed out while waiting for the wakeup semaphore",
+                                        ContactId);
+                }
+                else
+                {
+                    BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
+                                        BPLib_EM_EventType_ERROR,
+                                        "[Contact ID #%d]: CLA Out task failed to take wakeup semaphore, RC = %d",
+                                        ContactId,
+                                        OsStatus);
+                }
+
+                RunState = BPLib_CLA_GetContactRunState(ContactId);
+            } while (RunState == BPLIB_CLA_STARTED);
+        }
+        else
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_INV_ID_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[Contact ID #?] Could not find a CLA Out task to process bundles with");
+        }
     }
 
     return;
