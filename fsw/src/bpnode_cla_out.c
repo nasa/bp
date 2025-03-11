@@ -382,7 +382,7 @@ void BPNode_ClaOut_AppMain(void)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_NO_ID_ERR_EID,
                             BPLib_EM_EventType_ERROR,
-                            "[Contact ID #?]: Failed to get task ID. Error = %d",
+                            "[Contact ID #?]: Failed to get CLA Out task ID. Error = %d",
                             CFE_Status);
     }
     else
@@ -392,7 +392,7 @@ void BPNode_ClaOut_AppMain(void)
         {
             if (BPNode_AppData.ClaOutData[ContactId].TaskId == TaskId)
             {
-                /* Break to preserve ContactId */
+                /* break to preserve ContactId */
                 break;
             }
         }
