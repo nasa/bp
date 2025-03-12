@@ -348,6 +348,16 @@ void BPNode_ClaIn_Stop(uint32_t ContactId)
     return;
 }
 
+void BPNode_ClaIn_Teardown(uint32_t ContactId)
+{
+    /* Set I/O to stop running */
+    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
+                                    CFE_PSP_IODriver_SET_RUNNING,
+                                    CFE_PSP_IODriver_U32ARG(false));
+
+    return;
+}
+
 /* Main loop for CLA In task(s) */
 void BPNode_ClaIn_AppMain(void)
 {

@@ -138,6 +138,14 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId);
 void BPNode_ClaIn_Stop(uint32_t ContactId);
 
 /**
+  * \brief     Teardown a CLA In task
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    void
+  */
+void BPNode_ClaIn_Teardown(uint32_t ContactId);
+
+/**
  * \brief CLA In Main Task
  *
  *  \par Description
