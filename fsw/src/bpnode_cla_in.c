@@ -320,8 +320,15 @@ void BPNode_ClaIn_Start(uint32_t ContactId)
     return;
 }
 
-/* Exit child task */
 void BPNode_ClaIn_Stop(uint32_t ContactId)
+{
+    /* Disable ingress */
+    BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
+
+    return;
+}
+
+void BPNode_ClaIn_Teardown(uint32_t ContactId)
 {
     /* Set I/O to stop running */
     (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
@@ -344,16 +351,6 @@ void BPNode_ClaIn_Stop(uint32_t ContactId)
 
     /* Stop execution */
     CFE_ES_ExitChildTask();
-
-    return;
-}
-
-void BPNode_ClaIn_Teardown(uint32_t ContactId)
-{
-    /* Set I/O to stop running */
-    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
-                                    CFE_PSP_IODriver_SET_RUNNING,
-                                    CFE_PSP_IODriver_U32ARG(false));
 
     return;
 }
