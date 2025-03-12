@@ -88,7 +88,7 @@ int32 BPNode_GenWorkerCreateTasks(void)
 
         /* Create child task */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_GEN_WRKR_BASE_NAME, i);
-        TaskPriority = BPNODE_ADU_IN_PRIORITY_BASE + i;
+        TaskPriority = BPNODE_GEN_WRKR_PRIORITY_BASE + i;
 
         Status = CFE_ES_CreateChildTask(&BPNode_AppData.GenWorkerData[i].TaskId,
                                 NameBuff, BPNode_GenWorker_AppMain,

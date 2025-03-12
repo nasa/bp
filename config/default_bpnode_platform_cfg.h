@@ -43,6 +43,21 @@
 #include "bplib.h"
 
 /**
+ * \brief Number of generic worker tasks to run
+ *        Note: This should be set to the number of available CPU cores, having multiple
+ *              generic worker tasks is only beneficial if there's more than one core.
+ *              Until the cFE/OSAL supports spawning child tasks onto alternate CPU
+ *              cores, it is recommended to keep this set to 1.
+ */
+#define BPNODE_NUM_GEN_WRKR_TASKS         (1)
+
+
+/** 
+ * @defgroup Child task stack sizes
+ * @{
+ */
+
+/**
  * \brief ADU In Task stack size 
  */
 #define BPNODE_ADU_IN_STACK_SIZE  (8192u)   
@@ -51,18 +66,6 @@
  * \brief ADU Out Task stack size 
  */
 #define BPNODE_ADU_OUT_STACK_SIZE (8192u)
-
-/**
- * \brief ADU In Task priority base 
- *          The channel ID is added to the base value to get the final task priority
- */
-#define BPNODE_ADU_IN_PRIORITY_BASE  (100u)
-
-/**
- * \brief ADU Out Task priority base 
- *          The channel ID is added to the base value to get the final task priority
- */
-#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_ADU_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
 
 /**
  * \brief CLA In Task stack size 
@@ -75,46 +78,11 @@
 #define BPNODE_CLA_OUT_STACK_SIZE (32768u)
 
 /**
- * \brief CLA In Task priority base 
- *          The Contact ID is added to the base value to get the final task priority
- */
-#define BPNODE_CLA_IN_PRIORITY_BASE  (100u)
-
-/**
- * \brief CLA Out Task priority base 
- *          The Contact ID is added to the base value to get the final task priority
- */
-#define BPNODE_CLA_OUT_PRIORITY_BASE (BPNODE_CLA_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CONTACTS)
-
-/**
- * \brief Number of milliseconds to wait when trying to take a semaphore
- */
-#define BPNODE_SEM_WAIT_MSEC    (2000u)
-
-/**
- * \brief Maximum number of CLA/CL contacts allowed at once
- */
-#define BPNODE_MAX_NUM_CONTACTS         10
-
-/**
  * \brief Generic Worker Task stack size 
  */
 #define BPNODE_GEN_WRKR_STACK_SIZE (8192u)
 
-/**
- * \brief Generic Worker Task priority base 
- *          The worker ID is added to the base value to get the final task priority
- */
-#define BPNODE_GEN_WRKR_PRIORITY_BASE  (100u)
-
-/**
- * \brief Number of generic worker tasks to run
- *        Note: This should be set to the number of available CPU cores, having multiple
- *              generic worker tasks is only beneficial if there's more than one core.
- *              Until the cFE/OSAL supports spawning child tasks onto alternate CPU
- *              cores, it is recommended to keep this set to 1.
- */
-#define BPNODE_NUM_GEN_WRKR_TASKS         (1)
+/** @} */
 
 
 /** 
@@ -157,7 +125,50 @@
  */
 #define BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE  (200u)           
 
+/** @} */
+
+
+/** 
+ * @defgroup Child task priorities
+ * \brief    These are listed in the order of their relative priorities. Generic workers
+ *           have first priority since moving the bundles through BPNode is top priority.
+ *           Out tasks have a higher priority than In tasks so that memory can be freed up
+ *           for new incoming bundles. ADU tasks have higher priority than CLA tasks to
+ *           prioritize delivering ADUs to their final destination.
+ * @{
+ */
+
+ /**
+ * \brief Generic Worker Task priority base 
+ *          The worker ID is added to the base value to get the final task priority
+ */
+#define BPNODE_GEN_WRKR_PRIORITY_BASE  (100u)
+
+/**
+ * \brief ADU Out Task priority base 
+ *          The channel ID is added to the base value to get the final task priority
+ */
+#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_GEN_WRKR_PRIORITY_BASE + BPNODE_NUM_GEN_WRKR_TASKS)
+
+/**
+ * \brief CLA Out Task priority base 
+ *          The Contact ID is added to the base value to get the final task priority
+ */
+#define BPNODE_CLA_OUT_PRIORITY_BASE (BPNODE_ADU_OUT_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
+
+ /**
+ * \brief ADU In Task priority base 
+ *          The channel ID is added to the base value to get the final task priority
+ */
+#define BPNODE_ADU_IN_PRIORITY_BASE  (BPNODE_CLA_OUT_PRIORITY_BASE + BPLIB_MAX_NUM_CONTACTS)
+
+/**
+ * \brief CLA In Task priority base 
+ *          The Contact ID is added to the base value to get the final task priority
+ */
+#define BPNODE_CLA_IN_PRIORITY_BASE  (BPNODE_ADU_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
 
 /** @} */
+
 
 #endif /* BPNODE_PLATFORM_CFG_H */

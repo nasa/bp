@@ -331,7 +331,7 @@ void Test_BPNode_ClaIn_TaskInit_RunErr(void)
 /* Test BPNode_ClaIn_TaskInit when init semaphore give fails */
 void Test_BPNode_ClaIn_TaskInit_GiveSemErr(void)
 {
-    uint8 ContId = BPNODE_MAX_NUM_CONTACTS;
+    uint8 ContId = BPLIB_MAX_NUM_CONTACTS;
     uint8 ExpContId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
