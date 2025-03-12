@@ -68,11 +68,10 @@ void BPA_CLAP_ContactStop(uint32_t ContactId)
     return;
 }
 
-BPLib_Status_t BPA_CLAP_ContactTeardown(void)
+void BPA_CLAP_ContactTeardown(uint32_t ContactId)
 {
-    BPLib_Status_t Status;
+    BPNode_ClaIn_Teardown(ContactId);
+    BPNode_ClaOut_Teardown(ContactId);
 
-    Status = BPLIB_SUCCESS;
-
-    return Status;
+    return;
 }

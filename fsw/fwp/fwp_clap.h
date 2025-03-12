@@ -83,6 +83,6 @@ void BPA_CLAP_ContactStop(uint32_t ContactId);
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_ERROR: TODO
   */
-BPLib_Status_t BPA_CLAP_ContactTeardown(void);
+void BPA_CLAP_ContactTeardown(uint32_t ContactId);
 
 #endif /* FWP_CLAP_H */

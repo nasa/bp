@@ -138,6 +138,14 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId);
 void BPNode_ClaOut_Stop(uint32_t ContactId);
 
 /**
+  * \brief     Teardown a CLA Out task
+  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    void
+  */
+void BPNode_ClaOut_Teardown(uint32_t ContactId);
+
+/**
  * \brief CLA Out Main Task
  *
  *  \par Description
