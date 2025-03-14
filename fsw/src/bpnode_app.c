@@ -172,13 +172,22 @@ CFE_Status_t BPNode_WakeupProcess(void)
                             "Error doing time maintenance activities, RC = %d", BpStatus);
     }
 
-    /* Call Table Proxy to update tables*/
-    Status = BPA_TABLEP_TableUpdate();
-    if (Status != CFE_SUCCESS)
+    /* Call NC to update configurations */
+    BpStatus = BPLib_NC_ConfigUpdate();
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
+    {
+        BPLib_EM_SendEvent(BPNODE_NC_CFG_UPDATE_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error managing configurations on wakeup, Status=0x%08X",
+                            BpStatus);
+    }
+
+    /* Update the ADUP configuration individually since it's owned by BPNode */
+    BpStatus = BPA_TABLEP_TableUpdate(BPLIB_ADU_PROXY, (void**) &BPNode_AppData.AduProxyTablePtr);
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                    "Error Updating Table from Table Proxy, RC = 0x%08lX", (unsigned long)Status);
-        return Status;
+                            "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X",
+                            BpStatus);
     }
 
     /* Check for pending commands */
@@ -190,7 +199,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
         {
             BPA_DP_TaskPipe(BufPtr);
         }
-
     } while (Status == CFE_SUCCESS);
 
     /* Not an error case */
@@ -222,7 +230,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_PERFLOGP_Entry = BPA_PERFLOGP_Entry,
         .BPA_PERFLOGP_Exit = BPA_PERFLOGP_Exit,
         /* Table Proxy */
-        .BPA_TABLEP_SingleTableUpdate = BPA_TABLEP_SingleTableUpdate,
+        .BPA_TABLEP_TableUpdate       = BPA_TABLEP_TableUpdate,
         /* Event Proxy */
         .BPA_EVP_Init = BPA_EVP_Init,
         .BPA_EVP_SendEvent = BPA_EVP_SendEvent,
@@ -268,12 +276,12 @@ CFE_Status_t BPNode_AppInit(void)
         return BpStatus;
     }
 
-    /* Call Table Proxy Init Function Here to load default tables*/
+    /* Call Table Proxy Init Function Here to load default configurations*/
     BpStatus = BPA_TABLEP_TableInit();
     if (BpStatus != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Getting Table from Table Proxy, RC = 0x%08lX",
+                            "Error getting configuration from Table Proxy, RC = 0x%08lX",
                             (unsigned long)BpStatus);
 
         return BpStatus;
@@ -289,7 +297,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Initialize configurations and counters */
-    BpStatus = BPLib_NC_Init(&BPNode_ConfigPtrs);
+    BpStatus = BPLib_NC_Init(&BPNode_AppData.ConfigPtrs);
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_NC_AS_INIT_ERR_EID, BPLib_EM_EventType_ERROR,
@@ -429,7 +437,7 @@ CFE_Status_t BPNode_AppInit(void)
     /* Add and start all applications set to be loaded at startup */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
-        if (BPNode_ConfigPtrs.ChanTblPtr->Configs[i].AddAutomatically == true)
+        if (BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
             (void) BPA_ADUP_AddApplication(i);
