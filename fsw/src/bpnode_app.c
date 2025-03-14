@@ -52,7 +52,6 @@ void BPNode_AppMain(void)
 {
     CFE_Status_t     Status;
     CFE_SB_Buffer_t *BufPtr;
-    uint32_t         ContactId;
 
     /* Create the first Performance Log entry */
     BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
