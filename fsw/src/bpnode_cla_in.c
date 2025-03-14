@@ -352,23 +352,6 @@ void BPNode_ClaIn_Teardown(uint32_t ContactId)
                                     CFE_PSP_IODriver_SET_RUNNING,
                                     CFE_PSP_IODriver_U32ARG(false));
 
-    BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
-                        "[Contact ID #%d]: Terminating CLA In task",
-                        ContactId);
-
-    /* In case event services is not working, add a message to the system log */
-    CFE_ES_WriteToSysLog("[Contact ID #%d]: Terminating CLA In task",
-                            ContactId);
-
-    /* Exit the perf log */
-    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
-
-    /* Signal to the main task that the child task has exited */
-    (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
-
-    /* Stop execution */
-    CFE_ES_ExitChildTask();
-
     return;
 }
 
@@ -403,6 +386,9 @@ void BPNode_ClaIn_AppMain(void)
 
         if (ContactId != BPLIB_MAX_NUM_CONTACTS)
         {
+            /* Confirm initialization with give on init semaphore */
+            (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].InitSemId);
+
             do
             {
                 /* Attempt to take the wakeup semaphore */
@@ -443,7 +429,13 @@ void BPNode_ClaIn_AppMain(void)
                 }
 
                 RunState = BPLib_CLA_GetContactRunState(ContactId);
-            } while (RunState == BPLIB_CLA_STARTED);
+            } while (RunState != BPLIB_CLA_EXITED);
+
+            /* Teardown CLA In task, in case that hasn't been done already */
+            BPNode_ClaIn_Teardown(ContactId);
+
+            /* Confirm exit with give on exit semaphore */
+            (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
         }
         else
         {

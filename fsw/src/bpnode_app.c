@@ -52,6 +52,7 @@ void BPNode_AppMain(void)
 {
     CFE_Status_t     Status;
     CFE_SB_Buffer_t *BufPtr;
+    uint32_t         ContactId;
 
     /* Create the first Performance Log entry */
     BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
@@ -488,7 +489,8 @@ CFE_Status_t BPNode_AppInit(void)
 /* Exit app */
 void BPNode_AppExit(void)
 {
-    uint8 i;
+    uint8    i;
+    uint32_t ContactId;
 
     BPLib_EM_SendEvent(BPNODE_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "App terminating, error = %d", BPNode_AppData.RunStatus);
@@ -503,10 +505,10 @@ void BPNode_AppExit(void)
     }
 
     /* Signal to CLA child tasks to exit */
-    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        /* Exit all CLA child tasks upon exit */
+        BPLib_CLA_SetContactRunState(ContactId, BPLIB_CLA_EXITED);
     }
 
     /* Signal to generic worker tasks to exit */
