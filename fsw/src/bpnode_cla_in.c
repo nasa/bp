@@ -83,8 +83,10 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
             if (BpStatus != BPLIB_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                  "[CLA In #%d]: Failed to ingress bundle. Error = %d",
-                                  ContId, Status);
+                                  "[Contact ID #%d]: Failed to ingress bundle. Error = %d",
+                                  ContId,
+                                  Status);
+
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
         }

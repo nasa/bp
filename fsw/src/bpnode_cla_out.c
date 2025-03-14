@@ -58,8 +58,10 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
         if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
-                               "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
-                               ContId, Status);
+                               "[Contact ID #%d]: Failed to get bundle for egress. Error = %d",
+                               ContId,
+                               Status);
+
             return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
     }
