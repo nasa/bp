@@ -50,24 +50,17 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint32
 
 /**
   * \brief     Start transferring bundles between underlying network and BI
-  * \note      TODO
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
   *                                 to that contact's info
-  * \return    Execution status
-  * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_CLA_UNKNOWN_CONTACT: Provided contact ID does not match a contact ID in the Contacts Configuration
-  * \retval    BPLIB_CLA_INCORRECT_STATE: The intended run state for the contact with the provided contact ID was incompatible with the
-  *                                       current run state of the contact
-  * \retval    BPLIB_IO_ERROR: A I/O driver API call failed operation
+  * \return    void
   */
-BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId);
+void BPA_CLAP_ContactStart(uint32_t ContactId);
 
 /**
   * \brief     Send any CRS and custody signals under construction, stop transferring bundles to and from CL,
   *            request CL cancel transfers in progress, stop requesting BI for output queue bundles, and if
   *            LTP, request LTP cancel each active session and notify BI of complete and incomplete bundle
   *            transmissions
-  * \note      TODO
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
   *                                 to that contact's info
   * \return    void
@@ -76,12 +69,9 @@ void BPA_CLAP_ContactStop(uint32_t ContactId);
 
 /**
   * \brief     Disestablish CLA, free all CLA resources, discard output queue, and delete custody timers
-  * \note      TODO
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
   *                                 to that contact's info
-  * \return    Execution status
-  * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_ERROR: TODO
+  * \return    void
   */
 void BPA_CLAP_ContactTeardown(uint32_t ContactId);
 

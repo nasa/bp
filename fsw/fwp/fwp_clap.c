@@ -44,20 +44,13 @@ BPLib_Status_t BPA_CLAP_ContactSetup(BPLib_CLA_ContactsSet_t ContactInfo, uint32
     return Status;
 }
 
-BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId)
+void BPA_CLAP_ContactStart(uint32_t ContactId)
 {
-    BPLib_Status_t Status;
-
     /* Start CLA In */
-    Status = BPNode_ClaIn_Start(ContactId);
+    BPNode_ClaIn_Start(ContactId);
+    BPNode_ClaOut_Start(ContactId);
 
-    if (Status == BPLIB_SUCCESS)
-    {
-        /* Start CLA Out */
-        Status = BPNode_ClaOut_Start(ContactId);
-    }
-
-    return Status;
+    return;
 }
 
 void BPA_CLAP_ContactStop(uint32_t ContactId)
