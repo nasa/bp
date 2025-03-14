@@ -165,4 +165,3 @@ void BPNode_ClaIn_Teardown(uint32_t ContactId);
 void BPNode_ClaIn_AppMain(void);
 
 #endif /* BPNODE_CLA_IN_H */
-
