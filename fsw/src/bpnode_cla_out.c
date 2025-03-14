@@ -523,7 +523,9 @@ void BPNode_ClaOut_AppMain(void)
 
         if (ContactId != BPLIB_MAX_NUM_CONTACTS)
         {
-            /* CLA Out task loop */
+            /* Confirm initialization with give on init semaphore */
+            (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].InitSemId);
+            
             do
             { /* At least one loop will always occur, even if you start the contact, then quickly stop it */
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContactId].PerfId);
@@ -563,7 +565,13 @@ void BPNode_ClaOut_AppMain(void)
                 }
 
                 RunState = BPLib_CLA_GetContactRunState(ContactId);
-            } while (RunState == BPLIB_CLA_STARTED);
+            } while (RunState != BPLIB_CLA_EXITED);
+
+            /* Teardown CLA Out task, in case that hasn't been done already */
+            BPNode_ClaOut_Teardown(ContactId);
+
+            /* Confirm exit with give on exit semaphore */
+            (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].ExitSemId);
         }
         else
         {
