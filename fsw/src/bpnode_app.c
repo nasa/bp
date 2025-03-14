@@ -145,28 +145,24 @@ CFE_Status_t BPNode_WakeupProcess(void)
     /* Wake up the CLA In and CLA Out tasks */
     for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
     {
-        RunState = BPLib_CLA_GetContactRunState(ContactNum);
-        if (RunState == BPLIB_CLA_STARTED)
-        {   
-            OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
-            if (OsStatus != OS_SUCCESS)
-            {
-                BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                    BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d] Could not wake up CLA In task, RC = %d",
-                                    ContactNum,
-                                    OsStatus);
-            }
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d] Could not wake up CLA In task, RC = %d",
+                                ContactNum,
+                                OsStatus);
+        }
 
-            OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
-            if (OsStatus != OS_SUCCESS)
-            {
-                BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                    BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d] Could not wake up CLA Out task, RC = %d",
-                                    ContactNum,
-                                    OsStatus);
-            }
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d] Could not wake up CLA Out task, RC = %d",
+                                ContactNum,
+                                OsStatus);
         }
     }
 
