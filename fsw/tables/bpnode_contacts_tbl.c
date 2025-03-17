@@ -32,7 +32,6 @@ BPLib_CLA_ContactsTable_t ContactsTable =
 {
     .ContactSet = {
         {
-            .ContactID              = 0, /*Contact ID, uint32*/
             .DestEIDs               = {{
                                         .Scheme       = BPLIB_EID_SCHEME_IPN,
                                         .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
