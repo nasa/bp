@@ -108,7 +108,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
     int32                       OsStatus;
     CFE_SB_Buffer_t*            BufPtr;
     uint8                       ContactNum;
-    BPLib_CLA_ContactRunState_t RunState;
 
     BufPtr = NULL;
 

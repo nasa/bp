@@ -216,7 +216,6 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
 {
     BPLib_Status_t  Status;
     int32           PspStatus;
-    int32           OsStatus;
     char            Str[100];
 
     Status = BPLIB_SUCCESS;
