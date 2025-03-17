@@ -34,6 +34,8 @@
 #include "bpnode_msgids.h"
 #include "bpnode_msg.h"
 
+#include "bplib_nc_directives.h"
+
 /* ==================== */
 /* Function Definitions */
 /* ==================== */
