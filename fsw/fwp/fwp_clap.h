@@ -47,7 +47,7 @@
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   */
- BPLib_Status_t BPA_CLAP_ContactSetup(int32_t PortNum, char* CLAddr, uint32_t ContactId);
+BPLib_Status_t BPA_CLAP_ContactSetup(int32_t PortNum, char* CLAddr, uint32_t ContactId);
 
 /**
   * \brief     Start transferring bundles between underlying network and BI
