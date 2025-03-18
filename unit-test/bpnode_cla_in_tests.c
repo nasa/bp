@@ -362,6 +362,12 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
 
+    /* 
+    ** Getting rid of handler registered at init here since it's not needed and because 
+    ** otherwise it complains about getting called too much
+    */
+    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), NULL, NULL);
+
     BPNode_AppData.ClaInData[ContId].TaskId = TaskId;
     BPNode_AppData.ClaInData[ContId].IngressServiceEnabled = true;
 
@@ -382,6 +388,12 @@ void Test_BPNode_ClaIn_AppMain_MaxBundles(void)
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+
+    /* 
+    ** Getting rid of handler registered at init here since it's not needed and because 
+    ** otherwise it complains about getting called too much
+    */
+    UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), NULL, NULL);
 
     BPNode_AppData.ClaInData[ContId].TaskId = TaskId;
     BPNode_AppData.ClaInData[ContId].IngressServiceEnabled = true;
