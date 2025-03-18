@@ -31,8 +31,7 @@
 */
 
 #include "cfe.h"
-#include "fwp.h"
-
+#include "fwp_adup.h"
 
 /*
 ** Macro Definitions
