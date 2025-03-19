@@ -19,6 +19,7 @@ set(APP_SRC_FILES
   fsw/fwp/fwp_dp.c
   fsw/fwp/fwp_tlmp.c
   fsw/fwp/fwp_utils.c
+  fsw/fwp/fwp_clap.c
 )
 
 set(APP_TABLE_FILES
