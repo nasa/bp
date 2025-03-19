@@ -104,6 +104,7 @@
 #define BPNODE_CLA_IN_NO_ID_ERR_EID             73
 #define BPNODE_CLA_IN_INV_ID_ERR_EID            74
 #define BPNODE_CLA_IN_SEM_TK_TIMEOUT_INF_EID    75
+#define BPNODE_CLA_IN_SETUP_INF_EID             76
 
 /*
 #define BPNODE_CLA_IN_INIT_SEM_TK_ERR_EID       76
@@ -128,6 +129,7 @@
 #define BPNODE_CLA_OUT_NO_ID_ERR_EID            93
 #define BPNODE_CLA_OUT_SEM_TK_TIMEOUT_INF_EID   94
 #define BPNODE_CLA_OUT_INV_ID_ERR_EID           95
+#define BPNODE_CLA_OUT_SETUP_INF_EID            96
 
 /*
 #define BPNODE_CLA_OUT_INIT_SEM_TK_ERR_EID      96
