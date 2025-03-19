@@ -124,7 +124,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void);
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
   */
- BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
 
 /**
   * \brief     Start up a CLA In task
