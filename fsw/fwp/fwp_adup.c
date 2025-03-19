@@ -119,15 +119,15 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
                             (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload,
                             &AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
 
-    if (AduSize == 0 || AduSize > BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES)
-    {
-        Status = BPLIB_BUF_LEN_ERROR;
-    }
-    
     if (Status == BPLIB_SUCCESS)
     {
+        /* AduSize seems wrong, return length error */
+        if (AduSize == 0 || AduSize > BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES)
+        {
+            Status = BPLIB_BUF_LEN_ERROR;
+        }        
         /* Add cFS header to ADU */
-        if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
+        else if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
         {
             CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader),
                                         BPNode_AppData.AduOutData[ChanId].SendToMsgId);
@@ -136,15 +136,15 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 
             /* Send wrapped ADU onto Software Bus */
             CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), true);
+            BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
         }
         /* Don't add cFS header, assume it has one already */
         else
         {
             /* Send ADU onto Software Bus */
             CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, false);
-        }
-
-        BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
+            BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
+        }     
     }
     /* Only report non-timeout errors */
     else if (Status != BPLIB_PI_TIMEOUT)
