@@ -119,6 +119,11 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
                             (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload,
                             &AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
 
+    if (AduSize == 0 || AduSize > BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES)
+    {
+        Status = BPLIB_BUF_LEN_ERROR;
+    }
+    
     if (Status == BPLIB_SUCCESS)
     {
         /* Add cFS header to ADU */
