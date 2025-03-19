@@ -28,17 +28,17 @@
 /* Function Prototypes */
 /* =================== */
 
-BPLib_Status_t BPA_CLAP_ContactSetup(int32_t ClaInPortNum, char* ClaInAddr, int32_t ClaOutPortNum, char* ClaOutAddr, uint32_t ContactId)
+BPLib_Status_t BPA_CLAP_ContactSetup(uint32_t ContactId, BPLib_CLA_ContactsSet_t ContactInfo)
 {
     BPLib_Status_t Status;
 
     /* Initialize CLA in */
-    Status = BPNode_ClaIn_Setup(ContactId, ClaInPortNum, ClaInAddr);
+    Status = BPNode_ClaIn_Setup(ContactId, ContactInfo.ClaInPortNum, ContactInfo.ClaInAddr);
 
     if (Status == BPLIB_SUCCESS)
     {
         /* Initialize CLA out */
-        Status = BPNode_ClaOut_Setup(ContactId, ClaOutPortNum, ClaOutAddr);
+        Status = BPNode_ClaOut_Setup(ContactId, ContactInfo.ClaOutPortNum, ContactInfo.ClaOutAddr);
     }
 
     return Status;
