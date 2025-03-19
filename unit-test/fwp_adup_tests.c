@@ -164,6 +164,9 @@ void Test_BPA_ADUP_In_IngressErr(void)
 void Test_BPA_ADUP_Out_Nominal(void)
 {
     uint8_t ChanId = 0;
+    size_t SizeVal = BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES;
+
+    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
@@ -176,6 +179,9 @@ void Test_BPA_ADUP_Out_Nominal(void)
 void Test_BPA_ADUP_Out_Wrapping(void)
 {
     uint8_t ChanId = 0;
+    size_t SizeVal = BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES;
+
+    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
 
     BPNode_AppData.AduOutData[ChanId].AduWrapping = true;
 
