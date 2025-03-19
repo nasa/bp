@@ -354,6 +354,7 @@ void BPNode_ClaOut_AppMain(void)
 {
     int32                       OsStatus;
     CFE_Status_t                CFE_Status;
+    BPLib_Status_t              Status;
     CFE_ES_TaskId_t             TaskId;
     uint32                      BundlesForwarded;
     uint32                      ContactId;
@@ -422,8 +423,8 @@ void BPNode_ClaOut_AppMain(void)
                                         OsStatus);
                 }
 
-                RunState = BPLib_CLA_GetContactRunState(ContactId);
-            } while (RunState != BPLIB_CLA_EXITED);
+                Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
+            } while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS);
 
             /* Teardown CLA Out task, in case that hasn't been done already */
             BPNode_ClaOut_Teardown(ContactId);
