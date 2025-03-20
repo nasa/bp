@@ -28,7 +28,7 @@
 #include "bplib.h"
 
 
-BPLib_CLA_ContactsTable_t ContactsTable = 
+BPLib_CLA_ContactsTable_t ContactsTable =
 {
     .ContactSet = {
         {
@@ -54,14 +54,14 @@ BPLib_CLA_ContactsTable_t ContactsTable =
             .ClaInAddr              = "0.0.0.0",
             .ClaOutAddr             = "127.0.0.1", /* CL ip address */
             .ClaInPortNum           = 4501, /* Port Number, int32 */
-            .ClaOutPortNum          = 4501, 
+            .ClaOutPortNum          = 4501,
             .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
             .SendBytePerCycle       = 101, /*Maximum bytes to send per wakeup, uint32*/
             .ReceiveBytePerCycle    = 200, /*Maximum bytes to receive per wakeup, uint32*/
             .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
             .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
             .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
-        },            
+        },
     }
 };
 
@@ -72,4 +72,4 @@ BPLib_CLA_ContactsTable_t ContactsTable =
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, bpnode_contacts.tbl) 
+CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, bpnode_contacts.tbl)
