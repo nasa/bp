@@ -131,6 +131,19 @@ void UT_Handler_BPA_CFE_Status_Translate(void *UserObj, UT_EntryKey_t FuncKey, c
     }
 }
 
+void UT_Handler_BPLib_PI_Egress(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
+{
+    size_t *AduSize = UT_Hook_GetArgValueByName(Context, "AduSize", size_t *);
+    int32 Status;
+
+    UT_Stub_GetInt32StatusCode(Context, &Status);
+
+    if (Status >= 0)
+    {
+        UT_Stub_CopyToLocal(UT_KEY(BPLib_PI_Egress), AduSize, sizeof(size_t));
+    }
+}
+
 void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText)
 {
     /* Check the string */
@@ -213,8 +226,9 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPA_CFE_Status_Translate), UT_Handler_BPA_CFE_Status_Translate, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPLib_PI_Egress), UT_Handler_BPLib_PI_Egress, NULL);
 
-    BPNode_AppData.AduProxyTablePtr                     = &TestAduTbl;
+    BPNode_AppData.AduProxyTablePtr              = &TestAduTbl;
     BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
     BPNode_AppData.ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
     BPNode_AppData.ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
