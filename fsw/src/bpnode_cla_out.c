@@ -280,7 +280,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
         }
         else
         {
-            OS_printf("[Contact ID #%d]: CLA Out receiving on %s:%d\n", ContactId, IpAddr, PortNum);
+            OS_printf("[Contact ID #%d]: CLA Out sending on %s:%d\n", ContactId, IpAddr, PortNum);
         }
     }
 #endif
