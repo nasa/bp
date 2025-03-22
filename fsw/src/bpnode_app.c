@@ -110,10 +110,10 @@ CFE_Status_t BPNode_WakeupProcess(void)
     uint8            TaskNum;
 
     /* Check if any bundles are in cache, routing them to an egress route */
-    (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
+    //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
 
-    /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
-    BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
+    /* Wake up the Generic Worker Tasks */
+
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)

@@ -125,6 +125,7 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     CFE_ES_TaskId_t TaskId;
     int32           Status;
     uint8           i;
+    BPLib_Status_t BpStatus;
 
     /* Get the task ID of currently running child task */
     Status = CFE_ES_GetTaskID(&TaskId);
@@ -155,6 +156,14 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
 
     BPNode_AppData.GenWorkerData[*WorkerId].PerfId = BPNODE_GEN_WRKR_PERF_ID_BASE + *WorkerId;
 
+    /* Register the worker with BPLib */
+    BpStatus = BPLib_QM_RegisterWorker(&BPNode_AppData.BplibInst, &BPNode_AppData.GenWorkerData[*WorkerId].BPLibWorkerId);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        fprintf(stderr, "Failed to Register BPLib Worker\n");
+        return -1; // Change to event message
+    }
+
     /* Notify main task that child task is running */
     Status = OS_BinSemGive(BPNode_AppData.GenWorkerData[*WorkerId].InitSemId);
 
@@ -182,6 +191,8 @@ void BPNode_GenWorker_AppMain(void)
 {
     int32 Status;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
+    size_t JobsRun;
+    BPLib_Status_t BpStatus;
 
     /* Perform task-specific initialization */
     Status = BPNode_GenWorker_TaskInit(&WorkerId);
@@ -211,10 +222,29 @@ void BPNode_GenWorker_AppMain(void)
     /* Generic Worker task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.GenWorkerData[WorkerId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        /* Take semaphore from main task */
-        BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-        BPLib_QM_RunJob(&BPNode_AppData.BplibInst, BPNODE_GEN_WRKR_SLEEP_MSEC);
-        BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+        JobsRun = 0;
+        do
+        {
+            BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+            BpStatus = BPLib_QM_WorkerRunJob(&BPNode_AppData.BplibInst, BPNode_AppData.GenWorkerData[WorkerId].BPLibWorkerId,
+                BPNODE_GEN_WRKR_SLEEP_MSEC);
+            BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+            if (BpStatus == BPLIB_SUCCESS)
+            {
+                JobsRun++;
+            }
+            else if (BpStatus == BPLIB_TIMEOUT)
+            {
+                /* No need to do anything here */
+                printf("Job timeout\n");
+            }
+            else
+            {
+                // ERROR EVENT MSG
+                fprintf(stderr, "Generic Worker Error\n");
+                break;
+            }
+        } while (false);
     }
 
     /* Exit gracefully */
