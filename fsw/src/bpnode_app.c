@@ -109,8 +109,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
 
-    /* Check if any bundles are in cache, routing them to an egress route */
-    //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
 
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
@@ -220,6 +218,9 @@ CFE_Status_t BPNode_WakeupProcess(void)
         Status = CFE_SUCCESS;
     }
 
+    /* Scan CACHE for a maxiumum of N jobs or elapsed time of X mills */
+    /* Check if any bundles are in cache, routing them to an egress route */
+    //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
     OS_TaskDelay(800);
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
 

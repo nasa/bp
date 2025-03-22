@@ -231,10 +231,10 @@ void BPNode_AduOut_AppMain(void)
         Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].WakeupSemId, BPNODE_ADU_OUT_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduOutData[ChanId].PerfId);
 
+
         if (Status == OS_SUCCESS)
         {
             AdusEgressed = 0;
-
             do
             {
                 AppState = BPLib_NC_GetAppState(ChanId);
@@ -242,12 +242,26 @@ void BPNode_AduOut_AppMain(void)
                 {
                     /* Poll bundle from PI out queue */
                     BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
+                    if (BpStatus == BPLIB_SUCCESS)
+                    {
+                        AdusEgressed++;
+                    }
+                    else if (BpStatus == BPLIB_TIMEOUT)
+                    {
+                        /* This is ok */
+                    }
+                    else
+                    {
+                        // Event message
+                        break;
+                    }
                 }
-
-                AdusEgressed++;
-
-            } while (BpStatus == BPLIB_SUCCESS && AdusEgressed < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE); // THIS ONE IS THE PROBLEM
-            //} while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+                else
+                {
+                    /* By breaking, we avoid busy-polling NC_GetAppState() */
+                    break;
+                }
+            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
