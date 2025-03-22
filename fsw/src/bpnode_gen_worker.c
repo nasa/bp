@@ -250,7 +250,7 @@ void BPNode_GenWorker_AppMain(void)
                     fprintf(stderr, "Generic Worker Error\n");
                     break;
                 }
-            } while (false);
+            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {

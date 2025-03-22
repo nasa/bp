@@ -112,6 +112,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
     /* Check if any bundles are in cache, routing them to an egress route */
     //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
 
+    BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
+
     /* Wake up the Generic Worker Tasks */
     for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
     {
@@ -217,6 +219,9 @@ CFE_Status_t BPNode_WakeupProcess(void)
     {
         Status = CFE_SUCCESS;
     }
+
+    OS_TaskDelay(800);
+    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
 
     return Status;
 }
