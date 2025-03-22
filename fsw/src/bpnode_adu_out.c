@@ -246,7 +246,8 @@ void BPNode_AduOut_AppMain(void)
 
                 AdusEgressed++;
 
-            } while (BpStatus == BPLIB_SUCCESS && AdusEgressed < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
+            } while (BpStatus == BPLIB_SUCCESS && AdusEgressed < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE); // THIS ONE IS THE PROBLEM
+            //} while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {

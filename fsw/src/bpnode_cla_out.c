@@ -367,7 +367,8 @@ void BPNode_ClaOut_AppMain(void)
                     {
                         BundlesForwarded++;
                     }
-                } while ((Status == CFE_SUCCESS) && (BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE));
+                //} while ((Status == CFE_SUCCESS) && (BundlesForwarded < BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE));
+                } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
             }
         }
         else if (Status == OS_SEM_TIMEOUT)

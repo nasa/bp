@@ -242,7 +242,7 @@ void BPNode_GenWorker_AppMain(void)
                 else if (BpStatus == BPLIB_TIMEOUT)
                 {
                     /* No need to do anything here */
-                    printf("Job timeout\n");
+                    //printf("Job timeout\n");
                 }
                 else
                 {
@@ -251,6 +251,7 @@ void BPNode_GenWorker_AppMain(void)
                     break;
                 }
             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+            printf("Jobs Run This Cycle: %lu\n", JobsRun);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {

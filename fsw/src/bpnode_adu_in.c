@@ -266,8 +266,8 @@ void BPNode_AduIn_AppMain(void)
                     {
                         AdusIngested++;
                     }
-
-                } while (Status == BPLIB_SUCCESS && AdusIngested < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
+                //} while (Status == BPLIB_SUCCESS && AdusIngested < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
+                } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
             }
             else
             {
