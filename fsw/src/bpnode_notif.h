@@ -52,4 +52,3 @@ bool BPNode_NotifIsSet(BPNode_Notif_t* Event);
 int32 BPNode_NotifWait(BPNode_Notif_t* Event, int32 TimeoutMs);
 
 #endif /* BPNODE_NOTIF_H */
- 

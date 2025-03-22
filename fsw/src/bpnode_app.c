@@ -113,7 +113,18 @@ CFE_Status_t BPNode_WakeupProcess(void)
     //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
 
     /* Wake up the Generic Worker Tasks */
-
+    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        } 
+    }
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)

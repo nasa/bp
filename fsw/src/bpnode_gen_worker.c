@@ -222,29 +222,52 @@ void BPNode_GenWorker_AppMain(void)
     /* Generic Worker task loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.GenWorkerData[WorkerId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
-        JobsRun = 0;
-        do
+        BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].WakeupSemId, BPNODE_GEN_WRKR_SEM_WAKEUP_WAIT_MSEC);
+        BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+
+        if (Status == OS_SUCCESS)
         {
-            BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-            BpStatus = BPLib_QM_WorkerRunJob(&BPNode_AppData.BplibInst, BPNode_AppData.GenWorkerData[WorkerId].BPLibWorkerId,
-                BPNODE_GEN_WRKR_SLEEP_MSEC);
-            BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-            if (BpStatus == BPLIB_SUCCESS)
+            JobsRun = 0;
+            do
             {
-                JobsRun++;
-            }
-            else if (BpStatus == BPLIB_TIMEOUT)
-            {
-                /* No need to do anything here */
-                printf("Job timeout\n");
-            }
-            else
-            {
-                // ERROR EVENT MSG
-                fprintf(stderr, "Generic Worker Error\n");
-                break;
-            }
-        } while (false);
+                BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+                BpStatus = BPLib_QM_WorkerRunJob(&BPNode_AppData.BplibInst, BPNode_AppData.GenWorkerData[WorkerId].BPLibWorkerId,
+                    BPNODE_GEN_WRKR_SLEEP_MSEC);
+                BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
+                if (BpStatus == BPLIB_SUCCESS)
+                {
+                    JobsRun++;
+                }
+                else if (BpStatus == BPLIB_TIMEOUT)
+                {
+                    /* No need to do anything here */
+                    printf("Job timeout\n");
+                }
+                else
+                {
+                    // ERROR EVENT MSG
+                    fprintf(stderr, "Generic Worker Error\n");
+                    break;
+                }
+            } while (false);
+        }
+        else if (Status == OS_SEM_TIMEOUT)
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID,
+                                BPLib_EM_EventType_INFORMATION,
+                                "[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore",
+                                WorkerId);
+        }
+        else
+        {
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[Generic Worker #%d]: Failed to take wakeup semaphore, RC = %d",
+                                WorkerId,
+                                Status);
+        }
+        
     }
 
     /* Exit gracefully */
