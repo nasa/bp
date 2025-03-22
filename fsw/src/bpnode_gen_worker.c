@@ -267,7 +267,6 @@ void BPNode_GenWorker_AppMain(void)
                                 WorkerId,
                                 Status);
         }
-        
     }
 
     /* Exit gracefully */

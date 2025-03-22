@@ -227,6 +227,7 @@ CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
     BPLib_Status_t BpStatus;
+    int32 NotifStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
     uint8 i;
@@ -389,6 +390,13 @@ CFE_Status_t BPNode_AppInit(void)
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
 
+    /* Create Child Task Notifications */
+    NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStopWorkNotif, BPNODE_CHILD_STOPWORKNOTIF_NAME);
+    if (NotifStatus != BPNODE_NOTIF_SUCCESS)
+    {
+        return NotifStatus;
+    }
+
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
 
@@ -406,7 +414,6 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
-
 
     /* Create CLA In child tasks */
     Status = BPNode_ClaInCreateTasks();
@@ -496,6 +503,13 @@ void BPNode_AppExit(void)
                         "App terminating, error = %d", BPNode_AppData.RunStatus);
 
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
+
+    /* Signal for the children to stop work - This needs to be done here because
+    ** cFS sends the child terminate signal from another thread, which
+    ** creates the potential for a deadlock waiting on the child semaphores in the
+    ** logic below.
+    */
+    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
 
     /* Signal to ADU child tasks to exit */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)

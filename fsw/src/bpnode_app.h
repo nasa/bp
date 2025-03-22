@@ -48,6 +48,7 @@
 #include "bpnode_cla_in.h"
 #include "bpnode_cla_out.h"
 #include "bpnode_gen_worker.h"
+#include "bpnode_notif.h"
 #include "fwp.h"
 
 #include "bplib.h"
@@ -61,6 +62,7 @@
 #define BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for ADU In exit semaphore take, in milliseconds */
 #define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
 #define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
+#define BPNODE_CHILD_STOPWORKNOTIF_NAME     "BPNODE_CHLDSTOP"
 
 /**
 ** \brief Global Data
@@ -82,10 +84,11 @@ typedef struct
     BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
     BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
 
+    /* Child Task State */
     BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
     BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */
-
     BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */
+    BPNode_Notif_t ChildStopWorkNotif; /**< \Shared notification for stopping child task work */
 
     /* BPLib Instance State */
     BPLib_Instance_t            BplibInst;
