@@ -223,6 +223,7 @@ void Test_BPNode_GenWorker_AppMain_Nominal(void)
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
 
     BPNode_AppData.GenWorkerData[WorkerId].TaskId = TaskId;
 
@@ -232,6 +233,7 @@ void Test_BPNode_GenWorker_AppMain_Nominal(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(BPLib_QM_WorkerRunJob, 1);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
 }
 
 /* Test BPNode_GenWorker_AppMain when initialization failed but channel ID is known */
