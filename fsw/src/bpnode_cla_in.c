@@ -68,11 +68,11 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
     {
         BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_COUNT_RECEIVED, 1);
 
-
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst, ContId, BPNode_AppData.ClaInData[ContId].BundleBuffer,
-                                   BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);
+        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst, ContId, 
+                                    BPNode_AppData.ClaInData[ContId].BundleBuffer,
+                                    BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -85,7 +85,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
                                   "[Contact ID #%d]: Failed to ingress bundle. Error = %d",
                                   ContId,
-                                  Status);
+                                  BpStatus);
 
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }

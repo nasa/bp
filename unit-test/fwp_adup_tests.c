@@ -164,6 +164,9 @@ void Test_BPA_ADUP_In_IngressErr(void)
 void Test_BPA_ADUP_Out_Nominal(void)
 {
     uint8_t ChanId = 0;
+    size_t SizeVal = BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES;
+
+    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
@@ -172,10 +175,39 @@ void Test_BPA_ADUP_Out_Nominal(void)
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
+/* Test BPA_ADUP_Out when the AduSize doesn't get set correctly */
+void Test_BPA_ADUP_Out_SizeZero(void)
+{
+    uint8_t ChanId = 0;
+    size_t SizeVal = 0;
+
+    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
+
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_BUF_LEN_ERROR);
+    
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+}
+
+/* Test BPA_ADUP_Out when the AduSize doesn't get set correctly */
+void Test_BPA_ADUP_Out_SizeTooBig(void)
+{
+    uint8_t ChanId = 0;
+    size_t SizeVal = BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES + 1;
+
+    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
+
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_BUF_LEN_ERROR);
+    
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+}
+
 /* Test BPA_ADUP_Out when wrapping is true */
 void Test_BPA_ADUP_Out_Wrapping(void)
 {
     uint8_t ChanId = 0;
+    size_t SizeVal = BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES;
+
+    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
 
     BPNode_AppData.AduOutData[ChanId].AduWrapping = true;
 
@@ -475,6 +507,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_ADUP_In_IngressErr);
 
     ADD_TEST(Test_BPA_ADUP_Out_Nominal);
+    ADD_TEST(Test_BPA_ADUP_Out_SizeZero);
+    ADD_TEST(Test_BPA_ADUP_Out_SizeTooBig);
     ADD_TEST(Test_BPA_ADUP_Out_Wrapping);
     ADD_TEST(Test_BPA_ADUP_Out_EgressErr);
     ADD_TEST(Test_BPA_ADUP_Out_Timeout);

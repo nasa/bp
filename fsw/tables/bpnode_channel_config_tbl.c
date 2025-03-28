@@ -62,34 +62,34 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .CanBlkConfig           =
                 {
                     {
-                        .BlockType          = 1,
+                        .BlockType          = BPLib_BlockType_Payload,
                         .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 1,
-                        .BlockProcFlags     = 1
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 2,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 2,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 3,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 3,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 4,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 4,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 5,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 5,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                 }
         },
@@ -128,34 +128,34 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .CanBlkConfig           =
                 {
                     {
-                        .BlockType          = 1,
+                        .BlockType          = BPLib_BlockType_Payload,
                         .CrcType            = BPLib_CRC_Type_CRC16,
                         .BlockNum           = 1,
-                        .BlockProcFlags     = 1
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 2,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 2,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 3,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 3,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 4,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 4,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                     {
-                        .BlockType          = 5,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 5,
-                        .BlockProcFlags     = 1
+                        .BlockType          = BPLib_BlockType_Reserved,
+                        .CrcType            = BPLib_CRC_Type_None,
+                        .BlockNum           = 0,
+                        .BlockProcFlags     = 0
                     },
                 }
         }

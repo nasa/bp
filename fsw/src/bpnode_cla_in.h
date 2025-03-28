@@ -34,6 +34,7 @@
 #include "iodriver_base.h"
 #include "iodriver_packet_io.h"
 #include "bplib.h"
+#include "bpnode_platform_cfg.h"
 
 
 /*
@@ -45,11 +46,10 @@
 #define BPNODE_CLA_IN_SLEEP_MSEC             (1000u)         /** \brief Sleep time */
 #define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC (250u)          /** \brief Bundle processing Sleep time */
 #define BPNODE_CLA_PSP_INPUT_SUBCHANNEL      (1u)            /** \brief IODriver unsock_intf input subchannel*/
-#define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (3072u)         /** \brief IODriver buffer size*/
+#define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (4096)          /** \brief IODriver buffer size*/
 #define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)         /** \brief Wait time for init semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)         /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
-#define BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE  (10u)           /** \brief Maximum number of bundles to receive per wakeup */
 
 /*
 ** Type Definitions
