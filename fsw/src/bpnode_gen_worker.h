@@ -58,7 +58,7 @@ typedef struct
     osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
-    int             BPLibWorkerId; // Should I make this 32-bit? It isn't in BPLib right now
+    int32           BPLibWorkerId;
 } BPNode_GenWorkerData_t;
 
 
