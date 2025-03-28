@@ -327,6 +327,9 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
 
     if (Status == BPLIB_SUCCESS)
     {
+        /* Disable ingress by default */
+        BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
+
         BPLib_EM_SendEvent(BPNODE_CLA_IN_SETUP_INF_EID,
                             BPLib_EM_EventType_INFORMATION,
                             "[Contact ID #%d]: CLA In set up",

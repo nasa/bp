@@ -322,6 +322,9 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
 
     if (Status == BPLIB_SUCCESS)
     {
+        /* Disable egress by default */
+        BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = false;
+
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_SETUP_INF_EID, BPLib_EM_EventType_INFORMATION,
                             "[Contact ID #%d]: CLA Out set up",
                             ContactId);
