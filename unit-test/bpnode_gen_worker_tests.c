@@ -231,7 +231,7 @@ void Test_BPNode_GenWorker_AppMain_Nominal(void)
     UtAssert_UINT32_EQ(BPNode_AppData.GenWorkerData[WorkerId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(BPLib_QM_RunJob, 1);
+    UtAssert_STUB_COUNT(BPLib_QM_WorkerRunJob, 1);
 }
 
 /* Test BPNode_GenWorker_AppMain when initialization failed but channel ID is known */
