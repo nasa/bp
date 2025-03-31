@@ -42,4 +42,13 @@
 #define CFE_MISSION_BPNODE_STORAGE_HK_TLM_TOPICID               0x3A
 #define CFE_MISSION_BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_TOPICID  0x3B
 
+/* ADU Egress IDs */
+
+/* 
+** The ADU configuration table can be configured to wrap egressing bundles in a cFE
+** telemetry header with the following message ID. Other missions may choose to override
+** this value or to not use it entirely by configuring the table differently
+*/
+#define CFE_MISSION_BPNODE_ADU_OUT_SEND_TO_TLM_TOPICID          0xA0
+
 #endif /* BPNODE_TOPICIDS_H */
