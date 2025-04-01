@@ -239,9 +239,6 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
 
         if (Status == BPLIB_SUCCESS)
         {
-            /* Disable egress by default */
-            BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = false;
-
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[Contact ID #%d]: CLA Out child task initialized",
@@ -324,9 +321,6 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId)
 
     Status = BPLIB_SUCCESS;
 
-    /* Enable egress */
-    BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = true;
-
     /* Set I/O to running */
     PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
                                             CFE_PSP_IODriver_SET_RUNNING,
@@ -347,9 +341,6 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId)
 
 void BPNode_ClaOut_Stop(uint32_t ContactId)
 {
-    /* Disable egress */
-    BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = false;
-
     /* Set I/O to stop running */
     (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
                                     CFE_PSP_IODriver_SET_RUNNING,

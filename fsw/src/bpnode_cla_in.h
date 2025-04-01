@@ -65,7 +65,6 @@ typedef struct
     osal_id_t                    WakeupSemId;
     osal_id_t                    ExitSemId;
     uint32                       PerfId;
-    bool                         IngressServiceEnabled;
 
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t Dir;

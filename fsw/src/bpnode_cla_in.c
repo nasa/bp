@@ -247,9 +247,6 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
 
         if (Status == BPLIB_SUCCESS)
         {
-            /* Disable ingress by default */
-            BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
-
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[Contact ID #%d]: CLA In child task initialized",
@@ -332,9 +329,6 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId)
 
     Status = BPLIB_SUCCESS;
 
-    /* Enable ingress */
-    BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = true;
-
     /* Set I/O to running */
     PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
                                             CFE_PSP_IODriver_SET_RUNNING,
@@ -355,9 +349,6 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId)
 
 void BPNode_ClaIn_Stop(uint32_t ContactId)
 {
-    /* Disable ingress */
-    BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
-
     /* Set I/O to stop running */
     (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
                                     CFE_PSP_IODriver_SET_RUNNING,

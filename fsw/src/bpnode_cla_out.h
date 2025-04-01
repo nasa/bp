@@ -67,7 +67,6 @@ typedef struct
     osal_id_t                       WakeupSemId;
     osal_id_t                       ExitSemId;
     uint32                          PerfId;
-    bool                            EgressServiceEnabled;
 
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t    Dir;
@@ -99,6 +98,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
 
 /**
   * \brief     Initialize a CLA Out task
+  * \note      Egress is disabled by default
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    Execution status
