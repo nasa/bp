@@ -83,7 +83,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             if (BpStatus != BPLIB_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                  "[Contact ID #%d]: Failed to ingress bundle. Error = %d",
+                                  "[CLA In #%d]: Failed to ingress bundle. Error = %d",
                                   ContId,
                                   BpStatus);
 
@@ -120,7 +120,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't find CLA In I/O driver. Error = %d",
+                                "[CLA In #%d]: Couldn't find I/O driver. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -140,7 +140,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             if (PspStatus != CFE_PSP_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: Couldn't set CLA In I/O direction to input. Error = %d",
+                                    "[CLA In #%d]: Couldn't set I/O direction to input. Error = %d",
                                     ContactId,
                                     PspStatus);
 
@@ -157,7 +157,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             if (OsStatus != OS_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: Failed to create CLA In init semaphore, %s. Error = %d",
+                                    "[CLA In #%d]: Failed to create init semaphore, %s. Error = %d",
                                     ContactId,
                                     NameBuff,
                                     OsStatus);
@@ -175,7 +175,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             if (OsStatus != OS_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: Failed to create CLA In wakeup semaphore, %s. Error = %d",
+                                    "[CLA In #%d]: Failed to create wakeup semaphore, %s. Error = %d",
                                     ContactId,
                                     NameBuff,
                                     OsStatus);
@@ -193,7 +193,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             if (OsStatus != OS_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: Failed to create CLA In exit semaphore, %s. Error = %d",
+                                    "[CLA In #%d]: Failed to create exit semaphore, %s. Error = %d",
                                     ContactId,
                                     NameBuff,
                                     OsStatus);
@@ -219,7 +219,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             if (CFE_Status != CFE_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: Failed to create CLA In child task. Error = %d",
+                                    "[CLA In #%d]: Failed to create child task. Error = %d",
                                     ContactId,
                                     Status);
 
@@ -237,7 +237,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             if (OsStatus != OS_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[Contact ID #%d]: CLA In task not running. Error = %d",
+                                    "[CLA In #%d]: Task not running. Error = %d",
                                     ContactId,
                                     OsStatus);
 
@@ -249,7 +249,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
-                                "[Contact ID #%d]: CLA In child task initialized",
+                                "[CLA In #%d]: Child task initialized",
                                 ContactId);
         }
         else
@@ -280,7 +280,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact ID #%d]: Couldn't configure CLA In port number. Error = %d",
+                            "[CLA In #%d]: Couldn't configure port number. Error = %d",
                             ContactId,
                             PspStatus);
 
@@ -298,7 +298,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't configure IP address for CLA In. Error = %d",
+                                "[CLA In #%d]: Couldn't configure IP address. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -306,18 +306,10 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
         }
         else
         {
-            OS_printf("[Contact ID #%d]: CLA In receiving on %s:%d\n", ContactId, IpAddr, PortNum);
+            OS_printf("[CLA In #%d]: Receiving on %s:%d\n", ContactId, IpAddr, PortNum);
         }
     }
 #endif
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_SETUP_INF_EID,
-                            BPLib_EM_EventType_INFORMATION,
-                            "[Contact ID #%d]: CLA In set up",
-                            ContactId);
-    }
 
     return Status;
 }
@@ -337,7 +329,7 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId)
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact ID #%d]: Couldn't set CLA In I/O state to running. Error = %d",
+                            "[CLA In #%d]: Couldn't set I/O state to running. Error = %d",
                             ContactId,
                             PspStatus);
 
@@ -385,7 +377,7 @@ void BPNode_ClaIn_AppMain(void)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_NO_ID_ERR_EID,
                             BPLib_EM_EventType_ERROR,
-                            "[Contact ID #?]: Failed to get CLA In task ID. Error = %d",
+                            "[CLA In #?]: Failed to get task ID. Error = %d",
                             CFE_Status);
     }
     else
@@ -432,14 +424,14 @@ void BPNode_ClaIn_AppMain(void)
                 {
                     BPLib_EM_SendEvent(BPNODE_CLA_IN_SEM_TK_TIMEOUT_INF_EID,
                                         BPLib_EM_EventType_INFORMATION,
-                                        "[Contact ID #%d]: CLA In task timed out while waiting for the wakeup semaphore",
+                                        "[CLA In #%d]: Wakeup semaphore wait timed out",
                                         ContactId);
                 }
                 else
                 {
                     BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID,
                                         BPLib_EM_EventType_ERROR,
-                                        "[Contact ID #%d]: CLA In task failed to take wakeup semaphore, RC = %d",
+                                        "[CLA In #%d]: Wakeup semaphore take failed, RC = %d",
                                         ContactId,
                                         OsStatus);
                 }
@@ -457,7 +449,7 @@ void BPNode_ClaIn_AppMain(void)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INV_ID_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[Contact ID #?] Could not find a CLA In task to process bundles with");
+                                "[CLA In #?] Could not find a task to process bundles with");
         }
     }
 
