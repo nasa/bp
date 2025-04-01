@@ -54,9 +54,11 @@ BPLib_Status_t BPA_CLAP_ContactSetup(uint32_t ContactId, BPLib_CLA_ContactsSet_t
   * \brief     Start transferring bundles between underlying network and BI
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking arrays that corresponds
   *                                 to that contact's info
-  * \return    void
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_IO_ERROR: A UDP conntection couldn't be set to running
   */
-void BPA_CLAP_ContactStart(uint32_t ContactId);
+BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId);
 
 /**
   * \brief     Send any CRS and custody signals under construction, stop transferring bundles to and from CL,

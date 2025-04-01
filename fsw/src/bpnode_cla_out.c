@@ -304,24 +304,6 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
 
     if (Status == BPLIB_SUCCESS)
     {
-        /* Set I/O to running */
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
-                                                CFE_PSP_IODriver_SET_RUNNING,
-                                                CFE_PSP_IODriver_U32ARG(true));
-
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't set CLA Out I/O state to running. Error = %d",
-                                ContactId,
-                                PspStatus);
-
-            Status = BPLIB_CLA_IO_ERROR;
-        }
-    }
-
-    if (Status == BPLIB_SUCCESS)
-    {
         /* Disable egress by default */
         BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = false;
 
@@ -333,12 +315,32 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
     return Status;
 }
 
-void BPNode_ClaOut_Start(uint32_t ContactId)
+BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId)
 {
+    int32 PspStatus;
+    BPLib_Status_t Status;
+
+    Status = BPLIB_SUCCESS;
+
     /* Enable egress */
     BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = true;
 
-    return;
+    /* Set I/O to running */
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
+                                            CFE_PSP_IODriver_SET_RUNNING,
+                                            CFE_PSP_IODriver_U32ARG(true));
+
+    if (PspStatus != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[Contact ID #%d]: Couldn't set CLA Out I/O state to running. Error = %d",
+                            ContactId,
+                            PspStatus);
+
+        Status = BPLIB_CLA_IO_ERROR;
+    }
+
+    return Status;
 }
 
 void BPNode_ClaOut_Stop(uint32_t ContactId)

@@ -132,9 +132,11 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void);
   *            the task is running
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
-  * \return    void
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_IO_ERROR: UDP conntection couldn't be set to running
   */
-void BPNode_ClaOut_Start(uint32_t ContactId);
+BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId);
 
 /**
   * \brief     Stop a CLA Out task
