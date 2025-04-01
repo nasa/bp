@@ -34,7 +34,7 @@
 */
 
 /* Receive bundles from network CL and forward ingress bundles to CLA  */
-int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
+int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
     int32                               Status = CFE_PSP_SUCCESS;
@@ -101,7 +101,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
     int32          OsStatus;
     int32          PspStatus;
     CFE_Status_t   CFE_Status;
-    uint32_t       ContactId;
+    uint32         ContactId;
     char           NameBuff[OS_MAX_API_NAME];
     uint16         TaskPriority;
 
@@ -262,7 +262,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
     return Status;
 }
 
-BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr)
+BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
 {
     BPLib_Status_t  Status;
     int32           PspStatus;
@@ -322,7 +322,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
     return Status;
 }
 
-BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId)
+BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId)
 {
     int32 PspStatus;
     BPLib_Status_t Status;
@@ -347,7 +347,7 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId)
     return Status;
 }
 
-void BPNode_ClaIn_Stop(uint32_t ContactId)
+void BPNode_ClaIn_Stop(uint32 ContactId)
 {
     /* Set I/O to stop running */
     (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
@@ -357,7 +357,7 @@ void BPNode_ClaIn_Stop(uint32_t ContactId)
     return;
 }
 
-void BPNode_ClaIn_Teardown(uint32_t ContactId)
+void BPNode_ClaIn_Teardown(uint32 ContactId)
 {
     /*
     ** Disestablish CLA

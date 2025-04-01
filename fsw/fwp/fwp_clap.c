@@ -28,7 +28,7 @@
 /* Function Prototypes */
 /* =================== */
 
-BPLib_Status_t BPA_CLAP_ContactSetup(uint32_t ContactId, BPLib_CLA_ContactsSet_t ContactInfo)
+BPLib_Status_t BPA_CLAP_ContactSetup(uint32 ContactId, BPLib_CLA_ContactsSet_t ContactInfo)
 {
     BPLib_Status_t Status;
 
@@ -44,7 +44,7 @@ BPLib_Status_t BPA_CLAP_ContactSetup(uint32_t ContactId, BPLib_CLA_ContactsSet_t
     return Status;
 }
 
-BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId)
+BPLib_Status_t BPA_CLAP_ContactStart(uint32 ContactId)
 {
     BPLib_Status_t Status;
 
@@ -59,7 +59,7 @@ BPLib_Status_t BPA_CLAP_ContactStart(uint32_t ContactId)
     return Status;
 }
 
-void BPA_CLAP_ContactStop(uint32_t ContactId)
+void BPA_CLAP_ContactStop(uint32 ContactId)
 {
     BPNode_ClaIn_Stop(ContactId);
     BPNode_ClaOut_Stop(ContactId);
@@ -67,7 +67,7 @@ void BPA_CLAP_ContactStop(uint32_t ContactId)
     return;
 }
 
-void BPA_CLAP_ContactTeardown(uint32_t ContactId)
+void BPA_CLAP_ContactTeardown(uint32 ContactId)
 {
     BPNode_ClaIn_Teardown(ContactId);
     BPNode_ClaOut_Teardown(ContactId);

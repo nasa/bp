@@ -72,7 +72,7 @@ typedef struct
     CFE_PSP_IODriver_Direction_t    Dir;
     CFE_PSP_IODriver_Location_t     PspLocation;
     size_t                          CurrentBufferSize;
-    uint8_t                         BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
+    uint8                           BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
 } BPNode_ClaOutData_t;
 
 
@@ -94,13 +94,11 @@ typedef struct
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId);
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId);
 
 /**
-  * \brief     Initialize a CLA Out task
+  * \brief     Create all CLA Out tasks
   * \note      Egress is disabled by default
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Initialization semaphore either wasn't
@@ -113,7 +111,7 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void);
 
 /**
   * \brief     Set up a CLA out task
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \param[in] PortNum (int32) If the task is using UDP, this is the port number
   *                            gathered from the Contacts Configuration
@@ -123,37 +121,37 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void);
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   */
- BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+ BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr);
 
 /**
   * \brief     Start up a CLA Out task
   * \note      Create a CLA Out child tasks and signal to the main task that
   *            the task is running
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
+  *                               arrays that corresponds to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: UDP conntection couldn't be set to running
   */
-BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId);
+BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId);
 
 /**
   * \brief     Stop a CLA Out task
   * \note      Gracefully stops contact
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    void
   */
-void BPNode_ClaOut_Stop(uint32_t ContactId);
+void BPNode_ClaOut_Stop(uint32 ContactId);
 
 /**
   * \brief     Teardown a CLA Out task
   * \note      Nothing is implemented as of right now
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    void
   */
-void BPNode_ClaOut_Teardown(uint32_t ContactId);
+void BPNode_ClaOut_Teardown(uint32 ContactId);
 
 /**
  * \brief CLA Out Main Task

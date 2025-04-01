@@ -107,7 +107,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     BPLib_Status_t              BpStatus;
     int32                       OsStatus;
     CFE_SB_Buffer_t*            BufPtr;
-    uint8                       ContactNum;
+    uint32                      ContactNum;
 
     BufPtr = NULL;
 
@@ -486,8 +486,8 @@ CFE_Status_t BPNode_AppInit(void)
 /* Exit app */
 void BPNode_AppExit(void)
 {
-    uint8    i;
-    uint32_t ContactId;
+    uint8  i;
+    uint32 ContactId;
 
     BPLib_EM_SendEvent(BPNODE_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "App terminating, error = %d", BPNode_AppData.RunStatus);

@@ -36,7 +36,7 @@
 */
 
 /* Receive bundles from CLA and send egress bundles to network CL */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
 {
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
     int32                                Status = CFE_PSP_SUCCESS;
@@ -95,7 +95,7 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
     BPLib_Status_t Status;
     int32          OsStatus;
     int32          PspStatus;
-    uint32_t       ContactId;
+    uint32         ContactId;
     char           NameBuff[OS_MAX_API_NAME];
     uint16         TaskPriority;
 
@@ -254,7 +254,7 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
     return Status;
 }
 
-BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr)
+BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
 {
     BPLib_Status_t  Status;
     int32           PspStatus;
@@ -314,7 +314,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
     return Status;
 }
 
-BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId)
+BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId)
 {
     int32 PspStatus;
     BPLib_Status_t Status;
@@ -339,7 +339,7 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32_t ContactId)
     return Status;
 }
 
-void BPNode_ClaOut_Stop(uint32_t ContactId)
+void BPNode_ClaOut_Stop(uint32 ContactId)
 {
     /* Set I/O to stop running */
     (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
@@ -349,7 +349,7 @@ void BPNode_ClaOut_Stop(uint32_t ContactId)
     return;
 }
 
-void BPNode_ClaOut_Teardown(uint32_t ContactId)
+void BPNode_ClaOut_Teardown(uint32 ContactId)
 {
     /*
     ** Disestablish CLA (notify that ACK isn't coming)

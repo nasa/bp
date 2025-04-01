@@ -70,7 +70,7 @@ typedef struct
     CFE_PSP_IODriver_Direction_t Dir;
     CFE_PSP_IODriver_Location_t  PspLocation;
     size_t                       CurrentBufferSize;
-    uint8_t                      BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+    uint8                        BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
 
 } BPNode_ClaInData_t;
 
@@ -94,12 +94,10 @@ typedef struct
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId);
+int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId);
 
 /**
-  * \brief     Initialize a CLA In task
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
+  * \brief     Create all CLA In tasks
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_INIT_SEM_ERROR: Initialization semaphore either wasn't
@@ -112,7 +110,7 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void);
 
 /**
   * \brief     Set up a CLA In task
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \param[in] PortNum (int32) If the task is using UDP, this is the port number
   *                            gathered from the Contacts Configuration
@@ -122,37 +120,37 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void);
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   */
-BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
+BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr);
 
 /**
   * \brief     Start up a CLA In task
   * \note      Create a CLA In child tasks and signal to the main task that
   *            the task is running
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: UDP conntection couldn't be set to running
   */
-BPLib_Status_t BPNode_ClaIn_Start(uint32_t ContactId);
+BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId);
 
 /**
   * \brief     Stop up a CLA In task
   * \note      Signal the exiting of the task with the exit semaphore
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    void
   */
-void BPNode_ClaIn_Stop(uint32_t ContactId);
+void BPNode_ClaIn_Stop(uint32 ContactId);
 
 /**
   * \brief     Teardown a CLA In task
   * \note      Nothing is implemented as of right now
-  * \param[in] ContactId (uint32_t) Index into the various contact info tracking
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    void
   */
-void BPNode_ClaIn_Teardown(uint32_t ContactId);
+void BPNode_ClaIn_Teardown(uint32 ContactId);
 
 /**
  * \brief CLA In Main Task
