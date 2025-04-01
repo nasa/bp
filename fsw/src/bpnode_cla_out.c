@@ -365,6 +365,7 @@ void BPNode_ClaOut_AppMain(void)
     uint32                      ContactId;
     BPLib_CLA_ContactRunState_t RunState;
 
+    /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
     if (CFE_Status != CFE_SUCCESS)
     {
@@ -385,11 +386,13 @@ void BPNode_ClaOut_AppMain(void)
             }
         }
 
+        /* Only move toward processing bundles if the task ID has an associated contact ID */
         if (ContactId != BPLIB_MAX_NUM_CONTACTS)
         {
             /* Confirm initialization with give on init semaphore */
             (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].InitSemId);
 
+            /* The contact task must not be exited */
             Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
             while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
             {
@@ -400,6 +403,7 @@ void BPNode_ClaOut_AppMain(void)
 
                 if (OsStatus == OS_SUCCESS)
                 {
+                    /* Ingress bundles only when the contact has been started */
                     if (RunState == BPLIB_CLA_STARTED)
                     {
                         BundlesForwarded = 0;
@@ -418,18 +422,19 @@ void BPNode_ClaOut_AppMain(void)
                 {
                     BPLib_EM_SendEvent(BPNODE_CLA_OUT_SEM_TK_TIMEOUT_INF_EID,
                                         BPLib_EM_EventType_INFORMATION,
-                                        "[Contact ID #%d]: CLA Out task timed out while waiting for the wakeup semaphore",
+                                        "[CLA Out #%d]: Wakeup semaphore wait timed out",
                                         ContactId);
                 }
                 else
                 {
                     BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
                                         BPLib_EM_EventType_ERROR,
-                                        "[Contact ID #%d]: CLA Out task failed to take wakeup semaphore, RC = %d",
+                                        "[CLA Out #%d]: Wakeup semaphore take failed, RC = %d",
                                         ContactId,
                                         OsStatus);
                 }
 
+                /* Update run state of the contact task */
                 Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
             }
 
