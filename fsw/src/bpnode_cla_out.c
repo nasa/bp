@@ -122,6 +122,9 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
 
         if (Status == BPLIB_SUCCESS)
         {
+            BPNode_AppData.ClaOutData[ContactId].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
+            BPNode_AppData.ClaOutData[ContactId].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
+
             /* Set direction to output only */
             PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
                                                     CFE_PSP_IODriver_SET_DIRECTION,
@@ -131,6 +134,7 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "[CLA Out #%d]: Couldn't set I/O direction to output. Error = %d",
+                                    ContactId,
                                     PspStatus);
 
                 Status = BPLIB_CLA_IO_ERROR;
@@ -139,9 +143,6 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
 
         if (Status == BPLIB_SUCCESS)
         {
-            BPNode_AppData.ClaOutData[ContactId].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
-            BPNode_AppData.ClaOutData[ContactId].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
-
             /* Create init semaphore so main task knows when child initialized */
             snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactId);
             OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactId].InitSemId, NameBuff, 0, 0);
