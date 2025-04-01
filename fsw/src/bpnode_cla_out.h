@@ -149,6 +149,7 @@ void BPNode_ClaOut_Stop(uint32_t ContactId);
 
 /**
   * \brief     Teardown a CLA Out task
+  * \note      Nothing is implemented as of right now
   * \param[in] ContactId (uint32_t) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
   * \return    void
