@@ -406,15 +406,17 @@ void BPNode_ClaOut_AppMain(void)
             /* Confirm initialization with give on init semaphore */
             (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].InitSemId);
 
-            do
-            { /* At least one loop will always occur, even if you start the contact, then quickly stop it */
+            Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
+            while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
+            {
+                /* Attempt to take the wake up semaphore */
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContactId].PerfId);
                 OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].WakeupSemId, BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC);
                 BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContactId].PerfId);
 
                 if (OsStatus == OS_SUCCESS)
                 {
-                    if (BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled)
+                    if (RunState == BPLIB_CLA_STARTED)
                     {
                         BundlesForwarded = 0;
 
@@ -445,7 +447,7 @@ void BPNode_ClaOut_AppMain(void)
                 }
 
                 Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
-            } while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS);
+            }
 
             /* Teardown CLA Out task, in case that hasn't been done already */
             BPNode_ClaOut_Teardown(ContactId);

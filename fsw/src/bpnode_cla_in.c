@@ -413,7 +413,8 @@ void BPNode_ClaIn_AppMain(void)
             /* Confirm initialization with give on init semaphore */
             (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].InitSemId);
 
-            do
+            Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
+            while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
             {
                 /* Attempt to take the wakeup semaphore */
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
@@ -422,7 +423,7 @@ void BPNode_ClaIn_AppMain(void)
 
                 if (OsStatus == OS_SUCCESS)
                 {
-                    if (BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled)
+                    if (RunState == BPLIB_CLA_STARTED)
                     {
                         BundlesReceived = 0;
 
@@ -453,7 +454,7 @@ void BPNode_ClaIn_AppMain(void)
                 }
 
                 Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
-            } while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS);
+            }
 
             /* Teardown CLA In task, in case that hasn't been done already */
             BPNode_ClaIn_Teardown(ContactId);
