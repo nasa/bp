@@ -94,6 +94,7 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
 {
     BPLib_Status_t Status;
     int32          OsStatus;
+    int32          PspStatus;
     uint32_t       ContactId;
     char           NameBuff[OS_MAX_API_NAME];
     uint16         TaskPriority;
@@ -103,19 +104,58 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
     /* Create all of the CLA Out task(s) */
     for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactId);
-        OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactId].InitSemId, NameBuff, 0, 0);
+        BPNode_AppData.ClaOutData[ContactId].PerfId = BPNODE_CLA_OUT_PERF_ID_BASE + ContactId;
 
-        if (OsStatus != OS_SUCCESS)
+        /* Get PSP module ID for either the Unix or UDP socket driver */
+        PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME,
+                                                &BPNode_AppData.ClaOutData[ContactId].PspLocation.PspModuleId);
+
+        if (PspStatus != CFE_PSP_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Failed to create CLA Out init semaphore, %s. Error = %d",
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Couldn't find CLA Out I/O driver. Error = %d",
                                 ContactId,
-                                NameBuff,
-                                OsStatus);
+                                PspStatus);
 
-            Status = BPLIB_CLA_INIT_SEM_ERROR;
+            Status = BPLIB_CLA_IO_ERROR;
+        }
+
+        if (Status == BPLIB_SUCCESS)
+        {
+            /* Set direction to output only */
+            PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
+                                                    CFE_PSP_IODriver_SET_DIRECTION,
+                                                    CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
+
+            if (PspStatus != CFE_PSP_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "[Contact ID #%d]: Couldn't set CLA Out I/O direction to output. Error = %d",
+                                    PspStatus);
+
+                Status = BPLIB_CLA_IO_ERROR;
+            }
+        }
+
+        if (Status == BPLIB_SUCCESS)
+        {
+            BPNode_AppData.ClaOutData[ContactId].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
+            BPNode_AppData.ClaOutData[ContactId].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
+
+            /* Create init semaphore so main task knows when child initialized */
+            snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactId);
+            OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactId].InitSemId, NameBuff, 0, 0);
+
+            if (OsStatus != OS_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "[Contact ID #%d]: Failed to create CLA Out init semaphore, %s. Error = %d",
+                                    ContactId,
+                                    NameBuff,
+                                    OsStatus);
+
+                Status = BPLIB_CLA_INIT_SEM_ERROR;
+            }
         }
 
         if (Status == BPLIB_SUCCESS)
@@ -199,6 +239,9 @@ BPLib_Status_t BPNode_ClaOutCreateTasks(void)
 
         if (Status == BPLIB_SUCCESS)
         {
+            /* Disable egress by default */
+            BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = false;
+
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[Contact ID #%d]: CLA Out child task initialized",
@@ -221,44 +264,23 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
     char            Str[100];
 
     Status = BPLIB_SUCCESS;
-    BPNode_AppData.ClaOutData[ContactId].PerfId = BPNODE_CLA_OUT_PERF_ID_BASE + ContactId;
 
-    /* Get PSP module ID for either the Unix or UDP socket driver */
-    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME,
-                                            &BPNode_AppData.ClaOutData[ContactId].PspLocation.PspModuleId);
+#ifdef BPNODE_CLA_UDP_DRIVER
+    /* Configure Port Number */
+    snprintf(Str, sizeof(Str), "port=%d", PortNum);
+
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
+                                            CFE_PSP_IODriver_SET_CONFIGURATION,
+                                            CFE_PSP_IODriver_CONST_STR(Str));
 
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_OUT_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact ID #%d]: Couldn't find CLA Out I/O driver. Error = %d",
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[Contact ID #%d]: Couldn't configure CLA Out port number. Error = %d",
                             ContactId,
                             PspStatus);
 
         Status = BPLIB_CLA_IO_ERROR;
-    }
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        BPNode_AppData.ClaOutData[ContactId].PspLocation.SubsystemId  = 2 - (CFE_PSP_GetProcessorId() & 1);
-        BPNode_AppData.ClaOutData[ContactId].PspLocation.SubchannelId = BPNODE_CLA_PSP_OUTPUT_SUBCHANNEL;
-
-    #ifdef BPNODE_CLA_UDP_DRIVER
-        /* Configure Port Number */
-        snprintf(Str, sizeof(Str), "port=%d", PortNum);
-
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
-                                                CFE_PSP_IODriver_SET_CONFIGURATION,
-                                                CFE_PSP_IODriver_CONST_STR(Str));
-
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't configure CLA Out port number. Error = %d",
-                                ContactId,
-                                PspStatus);
-
-            Status = BPLIB_CLA_IO_ERROR;
-        }
     }
 
     if (Status == BPLIB_SUCCESS)
@@ -287,26 +309,6 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32_t ContactId, int32 PortNum, char* IpAd
 
     if (Status == BPLIB_SUCCESS)
     {
-        /* Set direction to output only */
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
-                                                CFE_PSP_IODriver_SET_DIRECTION,
-                                                CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_OUTPUT_ONLY));
-
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't set CLA Out I/O direction to output. Error = %d",
-                                PspStatus);
-
-            Status = BPLIB_CLA_IO_ERROR;
-        }
-    }
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        /* Disable egress by default */
-        BPNode_AppData.ClaOutData[ContactId].EgressServiceEnabled = false;
-
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_SETUP_INF_EID, BPLib_EM_EventType_INFORMATION,
                             "[Contact ID #%d]: CLA Out set up",
                             ContactId);
@@ -358,8 +360,8 @@ void BPNode_ClaOut_Stop(uint32_t ContactId)
 
 void BPNode_ClaOut_Teardown(uint32_t ContactId)
 {
-    /* 
-    ** Disestablish CLA
+    /*
+    ** Disestablish CLA (notify that ACK isn't coming)
     ** Free all CLA resources
     ** Discard output queue
     ** Delete custody timers
@@ -403,7 +405,7 @@ void BPNode_ClaOut_AppMain(void)
         {
             /* Confirm initialization with give on init semaphore */
             (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].InitSemId);
-            
+
             do
             { /* At least one loop will always occur, even if you start the contact, then quickly stop it */
                 BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContactId].PerfId);

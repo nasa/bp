@@ -55,7 +55,7 @@
 ** Type Definitions
 */
 
-/** 
+/**
 ** \brief CLA In Task Data
 */
 typedef struct
@@ -72,7 +72,7 @@ typedef struct
     CFE_PSP_IODriver_Location_t  PspLocation;
     size_t                       CurrentBufferSize;
     uint8_t                      BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
-        
+
 } BPNode_ClaInData_t;
 
 
@@ -85,13 +85,13 @@ typedef struct
  *
  *  \par Description
  *       Receive and process candidate bundle (bundle or control message) from CLA
- *       and pass the bundle to Bundle Interface. 
+ *       and pass the bundle to Bundle Interface.
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
  *
  *  \param[in] ContId Contact ID
- * 
+ *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
@@ -122,7 +122,6 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void);
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
-  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Unsuccessful call to OS_BinSemGive
   */
 BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAddr);
 

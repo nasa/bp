@@ -70,7 +70,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint8 ContId)
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst, ContId, 
+        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst, ContId,
                                     BPNode_AppData.ClaInData[ContId].BundleBuffer,
                                     BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);
 
@@ -99,6 +99,8 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
 {
     BPLib_Status_t Status;
     int32          OsStatus;
+    int32          PspStatus;
+    CFE_Status_t   CFE_Status;
     uint32_t       ContactId;
     char           NameBuff[OS_MAX_API_NAME];
     uint16         TaskPriority;
@@ -108,19 +110,60 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
     /* Create all of the CLA In task(s) */
     for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        /* Create init semaphore so main task knows when child initialized */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, ContactId);
-        OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaInData[ContactId].InitSemId, NameBuff, 0, 0);
+        /* Set performance ID */
+        BPNode_AppData.ClaInData[ContactId].PerfId = BPNODE_CLA_IN_PERF_ID_BASE + ContactId;
 
-        if (OsStatus != OS_SUCCESS)
+        /* Get PSP module ID for either the Unix or UDP socket driver */
+        PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME,
+                                                &BPNode_AppData.ClaInData[ContactId].PspLocation.PspModuleId);
+
+        if (PspStatus != CFE_PSP_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Failed to create CLA In init semaphore, %s. Error = %d",
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[Contact ID #%d]: Couldn't find CLA In I/O driver. Error = %d",
                                 ContactId,
-                                NameBuff,
-                                OsStatus);
+                                PspStatus);
 
-            Status = BPLIB_CLA_INIT_SEM_ERROR;
+            Status = BPLIB_CLA_IO_ERROR;
+        }
+
+        if (Status == BPLIB_SUCCESS)
+        {
+            BPNode_AppData.ClaInData[ContactId].PspLocation.SubsystemId  = 1 + (CFE_PSP_GetProcessorId() & 1);
+            BPNode_AppData.ClaInData[ContactId].PspLocation.SubchannelId = BPNODE_CLA_PSP_INPUT_SUBCHANNEL;
+
+            /* Set direction to input only */
+            PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
+                                                    CFE_PSP_IODriver_SET_DIRECTION,
+                                                    CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_INPUT_ONLY));
+
+            if (PspStatus != CFE_PSP_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "[Contact ID #%d]: Couldn't set CLA In I/O direction to input. Error = %d",
+                                    ContactId,
+                                    PspStatus);
+
+                Status = BPLIB_CLA_IO_ERROR;
+            }
+        }
+
+        if (Status == BPLIB_SUCCESS)
+        {
+            /* Create init semaphore so main task knows when child initialized */
+            snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, ContactId);
+            OsStatus = OS_BinSemCreate(&BPNode_AppData.ClaInData[ContactId].InitSemId, NameBuff, 0, 0);
+
+            if (OsStatus != OS_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "[Contact ID #%d]: Failed to create CLA In init semaphore, %s. Error = %d",
+                                    ContactId,
+                                    NameBuff,
+                                    OsStatus);
+
+                Status = BPLIB_CLA_INIT_SEM_ERROR;
+            }
         }
 
         if (Status == BPLIB_SUCCESS)
@@ -165,15 +208,15 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
             snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_BASE_NAME, ContactId);
             TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + ContactId;
 
-            Status = CFE_ES_CreateChildTask(&BPNode_AppData.ClaInData[ContactId].TaskId,
-                                            NameBuff,
-                                            BPNode_ClaIn_AppMain,
-                                            0,
-                                            BPNODE_CLA_IN_STACK_SIZE,
-                                            TaskPriority,
-                                            0);
+            CFE_Status = CFE_ES_CreateChildTask(&BPNode_AppData.ClaInData[ContactId].TaskId,
+                                                NameBuff,
+                                                BPNode_ClaIn_AppMain,
+                                                0,
+                                                BPNODE_CLA_IN_STACK_SIZE,
+                                                TaskPriority,
+                                                0);
 
-            if (Status != CFE_SUCCESS)
+            if (CFE_Status != CFE_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "[Contact ID #%d]: Failed to create CLA In child task. Error = %d",
@@ -204,6 +247,9 @@ BPLib_Status_t BPNode_ClaInCreateTasks(void)
 
         if (Status == BPLIB_SUCCESS)
         {
+            /* Disable ingress by default */
+            BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
+
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[Contact ID #%d]: CLA In child task initialized",
@@ -226,43 +272,22 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
     char            Str[100];
 
     Status = BPLIB_SUCCESS;
-    BPNode_AppData.ClaInData[ContactId].PerfId = BPNODE_CLA_IN_PERF_ID_BASE + ContactId;
 
-    /* Get PSP module ID for either the Unix or UDP socket driver */
-    PspStatus = CFE_PSP_IODriver_FindByName(BPNODE_CLA_PSP_DRIVER_NAME,
-                                            &BPNode_AppData.ClaInData[ContactId].PspLocation.PspModuleId);
+#ifdef BPNODE_CLA_UDP_DRIVER
+    /* Configure Port Number */
+    snprintf(Str, sizeof(Str), "port=%d", PortNum);
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
+                                            CFE_PSP_IODriver_SET_CONFIGURATION,
+                                            CFE_PSP_IODriver_CONST_STR(Str));
 
     if (PspStatus != CFE_PSP_SUCCESS)
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_FIND_NAME_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[Contact ID #%d]: Couldn't find CLA In I/O driver. Error = %d",
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[Contact ID #%d]: Couldn't configure CLA In port number. Error = %d",
                             ContactId,
                             PspStatus);
 
         Status = BPLIB_CLA_IO_ERROR;
-    }
-
-    if (Status == CFE_SUCCESS)
-    {
-        BPNode_AppData.ClaInData[ContactId].PspLocation.SubsystemId  = 1 + (CFE_PSP_GetProcessorId() & 1);
-        BPNode_AppData.ClaInData[ContactId].PspLocation.SubchannelId = BPNODE_CLA_PSP_INPUT_SUBCHANNEL;
-
-#ifdef BPNODE_CLA_UDP_DRIVER
-        /* Configure Port Number */
-        snprintf(Str, sizeof(Str), "port=%d", PortNum);
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
-                                                CFE_PSP_IODriver_SET_CONFIGURATION,
-                                                CFE_PSP_IODriver_CONST_STR(Str));
-
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't configure CLA In port number. Error = %d",
-                                ContactId,
-                                PspStatus);
-
-            Status = BPLIB_CLA_IO_ERROR;
-        }
     }
 
     if (Status == BPLIB_SUCCESS)
@@ -291,27 +316,6 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32_t ContactId, int32 PortNum, char* IpAdd
 
     if (Status == BPLIB_SUCCESS)
     {
-        /* Set direction to input only */
-        PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
-                                                CFE_PSP_IODriver_SET_DIRECTION,
-                                                CFE_PSP_IODriver_U32ARG(CFE_PSP_IODriver_Direction_INPUT_ONLY));
-
-        if (PspStatus != CFE_PSP_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_DIR_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[Contact ID #%d]: Couldn't set CLA In I/O direction to input. Error = %d",
-                                ContactId,
-                                PspStatus);
-
-            Status = BPLIB_CLA_IO_ERROR;
-        }
-    }
-
-    if (Status == BPLIB_SUCCESS)
-    {
-        /* Disable ingress by default */
-        BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
-
         BPLib_EM_SendEvent(BPNODE_CLA_IN_SETUP_INF_EID,
                             BPLib_EM_EventType_INFORMATION,
                             "[Contact ID #%d]: CLA In set up",
@@ -364,7 +368,7 @@ void BPNode_ClaIn_Stop(uint32_t ContactId)
 
 void BPNode_ClaIn_Teardown(uint32_t ContactId)
 {
-    /* 
+    /*
     ** Disestablish CLA
     ** Free all CLA resources
     ** Discard output queue
