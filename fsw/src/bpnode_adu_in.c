@@ -261,12 +261,19 @@ void BPNode_AduIn_AppMain(void)
                     {
                         Status = BPA_ADUP_In((void *) BufPtr, ChanId);
                     }
+                    else if (Status == CFE_SB_TIME_OUT)
+                    {
+                        /* This is ok, not a break condition */
+                    }
+                    else
+                    {
+                        break;
+                    }
 
                     if (Status == BPLIB_SUCCESS)
                     {
                         AdusIngested++;
                     }
-                //} while (Status == BPLIB_SUCCESS && AdusIngested < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
                 } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
             }
             else

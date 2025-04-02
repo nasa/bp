@@ -231,7 +231,6 @@ void BPNode_AduOut_AppMain(void)
         Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].WakeupSemId, BPNODE_ADU_OUT_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduOutData[ChanId].PerfId);
 
-
         if (Status == OS_SUCCESS)
         {
             AdusEgressed = 0;
@@ -246,9 +245,9 @@ void BPNode_AduOut_AppMain(void)
                     {
                         AdusEgressed++;
                     }
-                    else if (BpStatus == BPLIB_TIMEOUT)
+                    else if (BpStatus == BPLIB_PI_TIMEOUT)
                     {
-                        /* This is ok */
+                        /* This is ok, don't need to break */
                     }
                     else
                     {
