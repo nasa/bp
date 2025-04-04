@@ -531,13 +531,13 @@ void BPNode_ClaOut_DeleteSems(uint32 ContactId)
 {
     CFE_Status_t Status;
 
-    Status = OS_BinSemDelete(&BPNode_AppData.ClaOutData[ContactId].InitSemId);
+    Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].InitSemId);
     if (Status == CFE_SUCCESS)
     {
-        Status = OS_BinSemDelete(&BPNode_AppData.ClaOutData[ContactId].WakeupSemId);
+        Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].WakeupSemId);
         if (Status == CFE_SUCCESS)
         {
-            Status = OS_BinSemDelete(&BPNode_AppData.ClaOutData[ContactId].ExitSemId);
+            Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].ExitSemId);
             if (Status != CFE_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID,
