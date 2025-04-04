@@ -98,16 +98,25 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId);
 
 /**
   * \brief     Create all CLA Out tasks
-  * \note      Egress is disabled by default
   * \return    Execution status
-  * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_CLA_INIT_SEM_ERROR: Initialization semaphore either wasn't
-  *                                      created or the timed take timed out
-  * \retval    BPLIB_CLA_WAKEUP_SEM_ERROR: Wake up semaphore wasn't created
-  * \retval    BPLIB_CLA_EXIT_SEM_ERROR: Exit semaphore wasn't created
-  * \retval    BPLIB_CLA_TASK_CREATE_ERROR: Task wasn't created
+  * \retval    CFE_SUCCESS: Successful execution
+  * \retval    OS errors from OS_BinSemCreate
+  * \retval    OS errors from OS_BinSemTimedWait
+  * \retval    CFE errors from CFE_ES_CreateChildTask
   */
-BPLib_Status_t BPNode_ClaOutCreateTasks(void);
+CFE_Status_t BPNode_ClaOutCreateTasks(void);
+
+/**
+  * \brief     Initialize a CLA Out task
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    Execution status
+  * \retval    CFE_SUCCESS: Successful execution
+  * \retval    PSP errors from CFE_PSP_IODriver_FindByName
+  * \retval    PSP errors from CFE_PSP_IODriver_Command
+  * \retval    OS errors from OS_BinSemGive
+  */
+ CFE_Status_t BPNode_ClaOut_TaskInit(uint32 ContactId);
 
 /**
   * \brief     Set up a CLA out task
