@@ -145,13 +145,13 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
 BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId);
 
 /**
-  * \brief     Stop up a CLA In task
-  * \note      Signal the exiting of the task with the exit semaphore
+  * \brief     Stop a CLA In task
   * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
-  * \return    void
+  * \return    Execution status
+  * \retval    PSP errors from CFE_PSP_IODriver_Command
   */
-void BPNode_ClaIn_Stop(uint32 ContactId);
+int32 BPNode_ClaIn_Stop(uint32 ContactId);
 
 /**
   * \brief     Teardown a CLA In task

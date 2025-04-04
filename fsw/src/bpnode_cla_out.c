@@ -341,14 +341,24 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId)
     return Status;
 }
 
-void BPNode_ClaOut_Stop(uint32 ContactId)
+int32 BPNode_ClaOut_Stop(uint32 ContactId)
 {
-    /* Set I/O to stop running */
-    (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
-                                    CFE_PSP_IODriver_SET_RUNNING,
-                                    CFE_PSP_IODriver_U32ARG(false));
+    int32 Status;
 
-    return;
+    /* Set I/O to stop running */
+    Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
+                                        CFE_PSP_IODriver_SET_RUNNING,
+                                        CFE_PSP_IODriver_U32ARG(false));
+
+    if (Status != CFE_PSP_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_SET_RUN_ERR_EID,
+                            BPLib_EM_EventType_ERROR,
+                            "[CLA Out]: Could not set I/O to stop running",
+                            ContactId);
+    }
+
+    return Status;
 }
 
 void BPNode_ClaOut_Teardown(uint32 ContactId)

@@ -146,12 +146,12 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId);
 
 /**
   * \brief     Stop a CLA Out task
-  * \note      Gracefully stops contact
   * \param[in] ContactId (uint32) Index into the various contact info tracking
   *                                 arrays that corresponds to that contact's info
-  * \return    void
+  * \return    Execution status
+  * \retval    PSP errors from CFE_PSP_IODriver_Command
   */
-void BPNode_ClaOut_Stop(uint32 ContactId);
+int32 BPNode_ClaOut_Stop(uint32 ContactId);
 
 /**
   * \brief     Teardown a CLA Out task
