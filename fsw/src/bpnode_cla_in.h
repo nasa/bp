@@ -163,4 +163,16 @@ void BPNode_ClaIn_Teardown(uint32 ContactId);
  */
 void BPNode_ClaIn_AppMain(void);
 
+/** \brief Exit provided CLA In task
+ *
+ *  \par Description
+ *       Exit CLA In task gracefully
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] ContactId Contacts ID for this task
+ */
+void BPNode_ClaIn_TaskExit(uint32 ContactId);
+
 #endif /* BPNODE_CLA_IN_H */
