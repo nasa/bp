@@ -26,11 +26,11 @@
 #include "cfe.h"
 #include "fwp_adup.h"
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "dtn_msgids.h"
+#include "bpnode_msgids.h"
 
 BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
     {
-        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(DTN_ADU_OUT_SEND_TO_MID),
+        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(BPNODE_ADU_OUT_SEND_TO_MID),
         .NumRecvFrmMsgIds = 3,
         .RecvFrmMsgIds = {  
             CFE_SB_MSGID_WRAP_VALUE(0x080A),                /* CFE_SB_STATS */ 
@@ -39,7 +39,7 @@ BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
         }
     },
     {
-        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(DTN_ADU_OUT_SEND_TO_MID),
+        .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(BPNODE_ADU_OUT_SEND_TO_MID),
         .NumRecvFrmMsgIds = 1,
         .RecvFrmMsgIds = {
             CFE_SB_MSGID_WRAP_VALUE(0x0806),                /* CFE_TIME_DIAG_HK */ 

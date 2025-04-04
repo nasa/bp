@@ -196,7 +196,6 @@ void BPNode_AduOut_AppMain(void)
     BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
-    uint32 AdusEgressed;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -231,10 +230,8 @@ void BPNode_AduOut_AppMain(void)
         Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].WakeupSemId, BPNODE_ADU_OUT_SEM_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduOutData[ChanId].PerfId);
 
-
         if (Status == OS_SUCCESS)
         {
-            AdusEgressed = 0;
             do
             {
                 AppState = BPLib_NC_GetAppState(ChanId);
@@ -244,11 +241,11 @@ void BPNode_AduOut_AppMain(void)
                     BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
                     if (BpStatus == BPLIB_SUCCESS)
                     {
-                        AdusEgressed++;
+                        /* Success */
                     }
-                    else if (BpStatus == BPLIB_TIMEOUT)
+                    else if (BpStatus == BPLIB_PI_TIMEOUT)
                     {
-                        /* This is ok */
+                        /* This is ok, don't need to break */
                     }
                     else
                     {

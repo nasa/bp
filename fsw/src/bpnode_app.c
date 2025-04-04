@@ -398,7 +398,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     /* Create Child Task Notifications */
     NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStopWorkNotif, BPNODE_CHILD_STOPWORKNOTIF_NAME);
-    if (NotifStatus != BPNODE_NOTIF_SUCCESS)
+    if (NotifStatus != OS_SUCCESS)
     {
         return NotifStatus;
     }
@@ -562,6 +562,9 @@ void BPNode_AppExit(void)
         (void) OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].ExitSemId, BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
+
+    /* Cleanup Notifications */
+    BPNode_NotifDestroy(&BPNode_AppData.ChildStopWorkNotif);
 
     /* Cleanup QM and MEM */
     BPLib_QM_QueueTableDestroy(&BPNode_AppData.BplibInst);

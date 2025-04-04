@@ -26,11 +26,6 @@
 #ifndef BPNODE_NOTIF_H
 #define BPNODE_NOTIF_H
 
-#define BPNODE_NOTIF_SUCCESS      0L
-#define BPNODE_NOTIF_TIMEOUT      -1L
-#define BPNODE_NOTIF_OS_ERR       -2L
-#define BPNODE_NOTIF_NULL_PTR_ERR -3L
-
 #include "cfe.h"
 
 typedef struct BPNode_Notif
@@ -49,6 +44,6 @@ void BPNode_NotifClear(BPNode_Notif_t* Event);
 
 bool BPNode_NotifIsSet(BPNode_Notif_t* Event);
 
-int32 BPNode_NotifWait(BPNode_Notif_t* Event, int32 TimeoutMs);
+//int32 BPNode_NotifWait(BPNode_Notif_t* Event, int32 TimeoutMs);
 
 #endif /* BPNODE_NOTIF_H */

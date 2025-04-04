@@ -160,8 +160,10 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     BpStatus = BPLib_QM_RegisterWorker(&BPNode_AppData.BplibInst, &BPNode_AppData.GenWorkerData[*WorkerId].BPLibWorkerId);
     if (BpStatus != BPLIB_SUCCESS)
     {
-        fprintf(stderr, "Failed to Register BPLib Worker\n");
-        return -1; // Change to event message
+        BPLib_EM_SendEvent(BPNODE_GEN_WRKR_REGISTER_ERR_EID, BPLib_EM_EventType_ERROR,
+            "[Generic Worker #%d]: Failed to register worker with BPLbi. BPLibStatus = %d",
+            *WorkerId, BpStatus);
+        return BpStatus;
     }
 
     /* Notify main task that child task is running */
@@ -191,7 +193,7 @@ void BPNode_GenWorker_AppMain(void)
 {
     int32 Status;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
-    size_t JobsRun;
+    //size_t JobsRun;
     BPLib_Status_t BpStatus;
 
     /* Perform task-specific initialization */
@@ -228,7 +230,7 @@ void BPNode_GenWorker_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            JobsRun = 0;
+            //JobsRun = 0;
             do
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
@@ -237,21 +239,23 @@ void BPNode_GenWorker_AppMain(void)
                 BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
                 if (BpStatus == BPLIB_SUCCESS)
                 {
-                    JobsRun++;
+                    //JobsRun++;
                 }
                 else if (BpStatus == BPLIB_TIMEOUT)
                 {
                     /* No need to do anything here */
-                    //printf("Job timeout\n");
                 }
                 else
                 {
-                    // ERROR EVENT MSG
-                    fprintf(stderr, "Generic Worker Error\n");
+                    BPLib_EM_SendEvent(BPNODE_GEN_WRKR_TASKRUN_ERR_EID,
+                        BPLib_EM_EventType_INFORMATION,
+                        "[Generic Worker #%d]: Failed to run job, BPLib RC = %d",
+                        WorkerId, BpStatus);
                     break;
                 }
             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
-            printf("Jobs Run This Control Cycle: %lu\n", JobsRun);
+            // Very useful print for diagnosing performance
+            //printf("Jobs Run This Control Cycle: %lu\n", JobsRun);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
