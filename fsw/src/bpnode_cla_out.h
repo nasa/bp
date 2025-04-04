@@ -151,7 +151,7 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId);
   * \return    Execution status
   * \retval    PSP errors from CFE_PSP_IODriver_Command
   */
-int32 BPNode_ClaOut_Stop(uint32 ContactId);
+BPLib_Status_t BPNode_ClaOut_Stop(uint32 ContactId);
 
 /**
   * \brief     Teardown a CLA Out task

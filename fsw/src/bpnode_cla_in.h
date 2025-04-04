@@ -137,27 +137,28 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
   * \note      Create a CLA In child tasks and signal to the main task that
   *            the task is running
   * \param[in] ContactId (uint32) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
+  *                               arrays that corresponds to that contact's info
   * \return    Execution status
   * \retval    BPLIB_SUCCESS: Successful execution
-  * \retval    BPLIB_CLA_IO_ERROR: UDP conntection couldn't be set to running
+  * \retval    BPLIB_CLA_IO_ERROR: UDP connection couldn't be set to running
   */
 BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId);
 
 /**
   * \brief     Stop a CLA In task
   * \param[in] ContactId (uint32) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
+  *                               arrays that corresponds to that contact's info
   * \return    Execution status
-  * \retval    PSP errors from CFE_PSP_IODriver_Command
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_IO_ERROR: Something went wrong while running CFE_PSP_IODriver_Command
   */
-int32 BPNode_ClaIn_Stop(uint32 ContactId);
+BPLib_Status_t BPNode_ClaIn_Stop(uint32 ContactId);
 
 /**
   * \brief     Teardown a CLA In task
   * \note      Nothing is implemented as of right now
   * \param[in] ContactId (uint32) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
+  *                               arrays that corresponds to that contact's info
   * \return    void
   */
 void BPNode_ClaIn_Teardown(uint32 ContactId);

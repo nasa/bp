@@ -345,21 +345,27 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId)
     return Status;
 }
 
-int32 BPNode_ClaIn_Stop(uint32 ContactId)
+BPLib_Status_t BPNode_ClaIn_Stop(uint32 ContactId)
 {
-    int32 Status;
+    BPLib_Status_t Status;
+    int32 PspStatus;
+
+    Status = BPLIB_SUCCESS;
 
     /* Set I/O to stop running */
-    Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
-                                        CFE_PSP_IODriver_SET_RUNNING,
-                                        CFE_PSP_IODriver_U32ARG(false));
+    PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
+                                            CFE_PSP_IODriver_SET_RUNNING,
+                                            CFE_PSP_IODriver_U32ARG(false));
 
-    if (Status != CFE_PSP_SUCCESS)
+    if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID,
                             BPLib_EM_EventType_ERROR,
-                            "[CLA In #%d] Could not set I/O to stop running",
-                            ContactId);
+                            "[CLA In #%d]: Couldn't set I/O state to stop. Error = %d",
+                            ContactId,
+                            PspStatus);
+
+        Status = BPLIB_CLA_IO_ERROR;
     }
 
     return Status;
