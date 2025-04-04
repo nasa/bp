@@ -251,7 +251,8 @@ void BPNode_GenWorker_AppMain(void)
                     break;
                 }
             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
-            printf("Jobs Run This Control Cycle: %lu\n", JobsRun);
+            // Very useful print for diagnosing performance
+            //printf("Jobs Run This Control Cycle: %lu\n", JobsRun);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
