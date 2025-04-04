@@ -66,10 +66,12 @@ BPLib_Status_t BPA_CLAP_ContactStart(uint32 ContactId);
   *            LTP, request LTP cancel each active session and notify BI of complete and incomplete bundle
   *            transmissions
   * \param[in] ContactId (uint32) Index into the various contact info tracking arrays that corresponds
-  *                                 to that contact's info
-  * \return    void
+  *                               to that contact's info
+  * \return    Execution status
+  * \retval    BPLIB_SUCCESS: Successful execution
+  * \retval    BPLIB_CLA_IO_ERROR: Something went wrong while running CFE_PSP_IODriver_Command
   */
-void BPA_CLAP_ContactStop(uint32 ContactId);
+BPLib_Status_t BPA_CLAP_ContactStop(uint32 ContactId);
 
 /**
   * \brief     Disestablish CLA, free all CLA resources, discard output queue, and delete custody timers
