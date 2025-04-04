@@ -205,7 +205,6 @@ void BPNode_AduIn_AppMain(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
-    uint32 AdusIngested;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduIn_TaskInit(&ChanId);
@@ -244,8 +243,6 @@ void BPNode_AduIn_AppMain(void)
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
-                AdusIngested = 0;
-
                 /* Check for ADUs to ingest */
                 do
                 {
@@ -268,11 +265,6 @@ void BPNode_AduIn_AppMain(void)
                     else
                     {
                         break;
-                    }
-
-                    if (Status == BPLIB_SUCCESS)
-                    {
-                        AdusIngested++;
                     }
                 } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
             }

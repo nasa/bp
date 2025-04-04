@@ -191,7 +191,7 @@ void BPNode_GenWorker_AppMain(void)
 {
     int32 Status;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
-    size_t JobsRun;
+    //size_t JobsRun;
     BPLib_Status_t BpStatus;
 
     /* Perform task-specific initialization */
@@ -228,7 +228,7 @@ void BPNode_GenWorker_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            JobsRun = 0;
+            //JobsRun = 0;
             do
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
@@ -237,12 +237,11 @@ void BPNode_GenWorker_AppMain(void)
                 BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
                 if (BpStatus == BPLIB_SUCCESS)
                 {
-                    JobsRun++;
+                    //JobsRun++;
                 }
                 else if (BpStatus == BPLIB_TIMEOUT)
                 {
                     /* No need to do anything here */
-                    //printf("Job timeout\n");
                 }
                 else
                 {
