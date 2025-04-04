@@ -114,7 +114,7 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Failed to create init semaphore, %s. Error = %d",
+                                "Failed to create init semaphore, %s, for CLA In #%d. Error = %d",
                                 ContactId,
                                 NameBuff,
                                 Status);
@@ -131,7 +131,7 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
             if (Status != OS_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[CLA In #%d]: Failed to create wakeup semaphore, %s. Error = %d",
+                                    "Failed to create wakeup semaphore, %s, for CLA In #%d. Error = %d",
                                     ContactId,
                                     NameBuff,
                                     Status);
@@ -148,7 +148,7 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
                 if (Status != OS_SUCCESS)
                 {
                     BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                        "[CLA In #%d]: Failed to create exit semaphore, %s. Error = %d",
+                                        "Failed to create exit semaphore, %s, for CLA In #%d. Error = %d",
                                         ContactId,
                                         NameBuff,
                                         Status);
@@ -173,7 +173,7 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
                     if (Status != CFE_SUCCESS)
                     {
                         BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                                            "[CLA In #%d]: Failed to create child task. Error = %d",
+                                            "Failed to create child task for CLA In #%d. Error = %d",
                                             ContactId,
                                             Status);
 
@@ -190,7 +190,7 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
                         if (Status != OS_SUCCESS)
                         {
                             BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                                "[CLA In #%d]: Task not running. Error = %d",
+                                                "CLA In task #%d not running. Init Sem Error = %d.",
                                                 ContactId,
                                                 Status);
 

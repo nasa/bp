@@ -109,9 +109,9 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
         if (Status != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA Out #%d]: Failed to create init semaphore, %s. Error = %d",
-                                ContactId,
+                                "Failed to create init semaphore, %s, for CLA Out #%d. Error = %d",
                                 NameBuff,
+                                ContactId,
                                 Status);
 
             /* Stop creating tasks and return error code */
@@ -126,7 +126,7 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
             if (Status != OS_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[CLA Out #%d]: Failed to create wakeup semaphore, %s. Error = %d",
+                                    "Failed to create wakeup semaphore, %s, for CLA Out #%d. Error = %d",
                                     ContactId,
                                     NameBuff,
                                     Status);
@@ -143,7 +143,7 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
                 if (Status != OS_SUCCESS)
                 {
                     BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                        "[CLA Out #%d]: Failed to create exit semaphore, %s. Error = %d",
+                                        "Failed to create exit semaphore, %s, for CLA Out #%d. Error = %d",
                                         ContactId,
                                         NameBuff,
                                         Status);
@@ -168,7 +168,7 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
                     if (Status != CFE_SUCCESS)
                     {
                         BPLib_EM_SendEvent(BPNODE_CLA_OUT_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                                            "[CLA Out #%d]: Failed to create child task. Error = %d",
+                                            "Failed to create child task for CLA Out #%d. Error = %d",
                                             ContactId,
                                             Status);
 
