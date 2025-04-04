@@ -160,8 +160,10 @@ int32 BPNode_GenWorker_TaskInit(uint8 *WorkerId)
     BpStatus = BPLib_QM_RegisterWorker(&BPNode_AppData.BplibInst, &BPNode_AppData.GenWorkerData[*WorkerId].BPLibWorkerId);
     if (BpStatus != BPLIB_SUCCESS)
     {
-        fprintf(stderr, "Failed to Register BPLib Worker\n");
-        return -1; // Change to event message
+        BPLib_EM_SendEvent(BPNODE_GEN_WRKR_REGISTER_ERR_EID, BPLib_EM_EventType_ERROR,
+            "[Generic Worker #%d]: Failed to register worker with BPLbi. BPLibStatus = %d",
+            *WorkerId, BpStatus);
+        return BpStatus;
     }
 
     /* Notify main task that child task is running */
@@ -245,8 +247,10 @@ void BPNode_GenWorker_AppMain(void)
                 }
                 else
                 {
-                    // ERROR EVENT MSG
-                    fprintf(stderr, "Generic Worker Error\n");
+                    BPLib_EM_SendEvent(BPNODE_GEN_WRKR_TASKRUN_ERR_EID,
+                        BPLib_EM_EventType_INFORMATION,
+                        "[Generic Worker #%d]: Failed to run job, BPLib RC = %d",
+                        WorkerId, BpStatus);
                     break;
                 }
             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
