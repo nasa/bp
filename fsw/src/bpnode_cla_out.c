@@ -282,7 +282,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_PORT_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[CLA Out #%d]: Couldn't configure port number. Error = %d",
+                            "Couldn't configure port number for CLA Out #%d. Error = %d",
                             ContactId,
                             PspStatus);
 
@@ -300,7 +300,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr
         if (PspStatus != CFE_PSP_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_IP_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA Out #%d]: Couldn't configure IP address. Error = %d",
+                                "Couldn't configure IP address for CLA Out #%d. Error = %d",
                                 ContactId,
                                 PspStatus);
 
@@ -308,7 +308,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr
         }
         else
         {
-            OS_printf("[CLA Out #%d]: Sending on %s:%d\n", ContactId, IpAddr, PortNum);
+            OS_printf("CLA Out #%d sending on %s:%d\n", ContactId, IpAddr, PortNum);
         }
     }
 #endif
@@ -331,7 +331,7 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId)
     if (PspStatus != CFE_PSP_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_SET_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "[CLA Out #%d]: Couldn't set CLA Out I/O state to running. Error = %d",
+                            "Couldn't set I/O state for CLA Out #%d to running. Error = %d",
                             ContactId,
                             PspStatus);
 
@@ -357,7 +357,7 @@ BPLib_Status_t BPNode_ClaOut_Stop(uint32 ContactId)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_CFG_SET_RUN_ERR_EID,
                             BPLib_EM_EventType_ERROR,
-                            "[CLA Out #%d]: Couldn't set I/O state to stop. Error = %d",
+                            "Couldn't set I/O state to stop for CLA Out #%d. Error = %d",
                             ContactId,
                             PspStatus);
 
