@@ -36,13 +36,15 @@
 */
 
 /* Test BPNode_NotifInit when everything succeeds */
-void Test_BPNode_NotifInit_NullInputError(void)
+void Test_BPNode_NotifInit_Nominal(void)
 {
-    UtAssert_INT32_EQ(BPNode_NotifInit(NULL, NULL), BPNODE_NOTIF_NULL_PTR_ERR);
+    BPNode_Notif_t Notif;
+
+    UtAssert_INT32_EQ(BPNode_NotifInit(&Notif, "NotifName"), OS_SUCCESS);
 }
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
-    ADD_TEST(Test_BPNode_NotifInit_NullInputError);
+    ADD_TEST(Test_BPNode_NotifInit_Nominal);
 }

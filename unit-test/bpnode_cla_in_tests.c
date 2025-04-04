@@ -545,7 +545,6 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
 
     BPNode_AppData.ClaInData[ContId].TaskId = TaskId;
     BPNode_AppData.ClaInData[ContId].IngressServiceEnabled = true;
@@ -558,7 +557,7 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount + 1);
-    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 0);
 }
 
 /* Test BPNode_ClaIn_TaskExit in nominal shutdown */

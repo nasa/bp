@@ -531,7 +531,6 @@ void Test_BPNode_ClaOut_AppMain_FailedProcBundle(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(BPNode_ClaOut_ProcessBundleOutput), 1, CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
 
     BPNode_AppData.ClaOutData[ContId].TaskId = TaskId;
     BPNode_AppData.ClaOutData[ContId].EgressServiceEnabled = true;
@@ -542,7 +541,7 @@ void Test_BPNode_ClaOut_AppMain_FailedProcBundle(void)
     UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3);
-    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 0);
 }
 
 /* Test BPNode_ClaOut_TaskExit in nominal shutdown */
