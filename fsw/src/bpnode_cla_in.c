@@ -506,8 +506,44 @@ void BPNode_ClaIn_TaskExit(uint32 ContactId)
     /* Confirm exit with give on exit semaphore */
     (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
 
+    /* Return semaphores */
+    BPNode_ClaIn_DeleteSems(ContactId);
+
     /* Stop execution */
     CFE_ES_ExitChildTask();
 
     return;
+}
+
+void BPNode_ClaIn_DeleteSems(uint32 ContactId)
+{
+    CFE_Status_t Status;
+
+    Status = OS_BinSemDelete(&BPNode_AppData.ClaInData[ContactId].InitSemId);
+    if (Status == CFE_SUCCESS)
+    {
+        Status = OS_BinSemDelete(&BPNode_AppData.ClaInData[ContactId].WakeupSemId);
+        if (Status == CFE_SUCCESS)
+        {
+            Status = OS_BinSemDelete(&BPNode_AppData.ClaInData[ContactId].ExitSemId);
+            if (Status != CFE_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID,
+                                    BPLib_EM_EventType_ERROR,
+                                    "Could not delete exit semaphore");
+            }
+        }
+        else
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Could not delete wake up semaphore");
+        }
+    }
+    else
+    {
+        BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID,
+                            BPLib_EM_EventType_ERROR,
+                            "Could not delete init semaphore");
+    }
 }

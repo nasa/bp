@@ -185,4 +185,12 @@ void BPNode_ClaOut_AppMain(void);
  */
 void BPNode_ClaOut_TaskExit(uint32 ContactId);
 
+/**
+  * \brief     Delete semaphores associated with the task with the given contact ID
+  * \param[in] ContactId (uint32) Index into the various contact info tracking
+  *                                 arrays that corresponds to that contact's info
+  * \return    void
+  */
+void BPNode_ClaOut_DeleteSems(uint32 ContactId);
+
 #endif /* BPNODE_CLA_OUT_H */
