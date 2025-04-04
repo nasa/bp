@@ -444,12 +444,6 @@ void BPNode_ClaIn_AppMain(void)
                 /* Update run state of the contact task */
                 Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
             }
-
-            /* Teardown CLA In task, in case that hasn't been done already */
-            BPNode_ClaIn_Teardown(ContactId);
-
-            /* Confirm exit with give on exit semaphore */
-            (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
         }
         else
         {
@@ -458,6 +452,39 @@ void BPNode_ClaIn_AppMain(void)
                                 "[CLA In #?] Could not find a task to process bundles with");
         }
     }
+
+    /* Exit gracefully */
+    BPNode_ClaIn_TaskExit(ContactId);
+
+    return;
+}
+
+void BPNode_ClaIn_TaskExit(uint32 ContactId)
+{
+    BPLib_CLA_ContactRunState_t RunState;
+
+    /* Teardown CLA In task, in case that hasn't been done already */
+    BPNode_ClaIn_Teardown(ContactId);
+
+    (void) BPLib_CLA_GetContactRunState(ContactId, &RunState);
+    BPLib_EM_SendEvent(BPNODE_CLA_IN_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
+                        "[CLA In #%d]: Terminating Task. Run state = %d.",
+                        ContactId,
+                        RunState);
+
+    /* In case event services is not working, add a message to the system log */
+    CFE_ES_WriteToSysLog("[CLA In #%d]: Terminating Task. Run state = %d.",
+                            ContactId,
+                            RunState);
+
+    /* Exit the perf log */
+    BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
+
+    /* Confirm exit with give on exit semaphore */
+    (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
+
+    /* Stop execution */
+    CFE_ES_ExitChildTask();
 
     return;
 }
