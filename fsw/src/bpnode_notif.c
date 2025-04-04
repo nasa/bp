@@ -22,15 +22,8 @@
 
 int32 BPNode_NotifInit(BPNode_Notif_t* Notif, const char* NotifName)
 {
-    int32 status;
-
     Notif->IsSet = false;
-    status = OS_CondVarCreate(&Notif->CondVar, NotifName, 0);
-    if (status != OS_SUCCESS)
-    {
-        return status;
-    }
-    return status;
+    return OS_CondVarCreate(&Notif->CondVar, NotifName, 0);
 }
 
 void BPNode_NotifDestroy(BPNode_Notif_t* Notif)

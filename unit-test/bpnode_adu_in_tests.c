@@ -263,6 +263,8 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, false);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
 
@@ -276,6 +278,7 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPA_ADUP_In, 1);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 2);
 }
 
 
@@ -293,6 +296,7 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE, true);
 
     for (i = 0; i < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE; i++)
     {
@@ -309,6 +313,7 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
     UtAssert_STUB_COUNT(BPA_ADUP_In, BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
 }
 
 void Test_BPNode_AduIn_AppMain_TakeSemErr(void)
@@ -390,9 +395,11 @@ void Test_BPNode_AduIn_AppMain_NullBuf(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, false);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
 
@@ -405,6 +412,7 @@ void Test_BPNode_AduIn_AppMain_NullBuf(void)
     UtAssert_STUB_COUNT(OS_TaskDelay, 0);
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPA_ADUP_In, 0);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
 }
 
 /* Test BPNode_AduIn_AppMain when initialization failed but channel ID is known */
