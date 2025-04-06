@@ -43,8 +43,51 @@ void Test_BPNode_NotifInit_Nominal(void)
     UtAssert_INT32_EQ(BPNode_NotifInit(&Notif, "NotifName"), OS_SUCCESS);
 }
 
+/* Test BPNode_NotifDestroy succeeds (doesn't crash) */
+void Test_BPNode_NotifDestroy_Nominal(void)
+{
+    BPNode_Notif_t Notif;
+    BPNode_NotifDestroy(&Notif);
+}
+
+/* Test BPNode_NotifSet sets the internal flag */
+void Test_BPNode_NotifSet_Nominal(void)
+{
+    BPNode_Notif_t Notif;
+    Notif.IsSet = false;
+
+    BPNode_NotifSet(&Notif);
+    UtAssert_BOOL_TRUE(Notif.IsSet);
+} 
+
+/* Test BPNode_NotifClear clears the internal flag */
+void Test_BPNode_NotifClear_Nominal(void)
+{
+    BPNode_Notif_t Notif;
+    Notif.IsSet = true;
+
+    BPNode_NotifClear(&Notif);
+    UtAssert_BOOL_FALSE(Notif.IsSet);
+} 
+
+/* Test BPNode_NotifIsSet returns the correct flag state */
+void Test_BPNode_NotifIsSet_Nominal(void)
+{
+    BPNode_Notif_t Notif;
+
+    Notif.IsSet = true;
+    UtAssert_BOOL_TRUE(BPNode_NotifIsSet(&Notif));
+
+    Notif.IsSet = false;
+    UtAssert_BOOL_FALSE(BPNode_NotifIsSet(&Notif));
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_NotifInit_Nominal);
+    ADD_TEST(Test_BPNode_NotifDestroy_Nominal);
+    ADD_TEST(Test_BPNode_NotifSet_Nominal);
+    ADD_TEST(Test_BPNode_NotifClear_Nominal);
+    ADD_TEST(Test_BPNode_NotifIsSet_Nominal);
 }
