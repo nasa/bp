@@ -108,6 +108,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
+    //size_t           BundlesDiscarded;
 
 
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
@@ -223,6 +224,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
     OS_TaskDelay(800);
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
+    // Needs GarbageCollect
 
     return Status;
 }
