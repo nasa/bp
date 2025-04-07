@@ -108,9 +108,13 @@ CFE_Status_t BPNode_WakeupProcess(void)
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
+    size_t           BundlesDiscarded;
 
     /* Check if any bundles are in cache, routing them to an egress route */
     (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
+
+    /* Garbage Collect */
+    (void) BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
 
     /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
     BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
