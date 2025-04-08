@@ -504,8 +504,11 @@ void BPNode_AppExit(void)
     /* Signal to CLA child tasks to exit */
     for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        /* Exit all CLA child tasks upon exit */
-        BPLib_CLA_SetContactRunState(ContactId, BPLIB_CLA_EXITED);
+        /*
+        ** Exit all CLA child tasks. Upon exit, return ignored
+        ** since contact IDs are all but guaranteed to be valid
+        */
+        (void) BPLib_CLA_SetContactExited(ContactId);
     }
 
     /* Signal to generic worker tasks to exit */
