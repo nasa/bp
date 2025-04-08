@@ -226,7 +226,7 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
     }
     else
     {
-        BPNode_AppData.ClaInData[ContactId].PspLocation.SubsystemId  = 1 + (CFE_PSP_GetProcessorId() & 1);
+        BPNode_AppData.ClaInData[ContactId].PspLocation.SubsystemId = 1 + (CFE_PSP_GetProcessorId() & 1);
 
         /* Set direction to input only */
         Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
