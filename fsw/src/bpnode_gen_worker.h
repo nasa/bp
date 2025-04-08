@@ -58,6 +58,7 @@ typedef struct
     osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
+    int32           BPLibWorkerId;
 } BPNode_GenWorkerData_t;
 
 
