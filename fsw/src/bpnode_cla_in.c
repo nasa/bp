@@ -322,7 +322,6 @@ void BPNode_ClaIn_AppMain(void)
     int32 Status;
     uint8 ContId = BPLIB_MAX_NUM_CONTACTS; /* Set to garbage value */
 
-    uint32 BundlesReceived = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_ClaIn_TaskInit(&ContId);
@@ -361,15 +360,19 @@ void BPNode_ClaIn_AppMain(void)
         {
             if (BPNode_AppData.ClaInData[ContId].IngressServiceEnabled)
             {
-                BundlesReceived = 0;
                 do
                 {
                     Status = BPNode_ClaIn_ProcessBundleInput(ContId);
                     if (Status == CFE_SUCCESS)
                     {
-                        BundlesReceived++;
+                        /* Increment a counter */
                     }
-                } while ((Status == CFE_SUCCESS) && (BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE));
+                    else
+                    {
+                        printf("cla in break\n");
+                        break;
+                    }
+                } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
             }
         }
         else if (Status == OS_SEM_TIMEOUT)

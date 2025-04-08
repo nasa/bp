@@ -144,5 +144,7 @@
 #define BPNODE_ADU_OUT_PI_IN_ERR_EID            114
 #define BPNODE_TBL_UPDATE_INF_EID               115
 #define BPNODE_NC_CFG_UPDATE_ERR_EID            116
+#define BPNODE_GEN_WRKR_TASKRUN_ERR_EID         117
+#define BPNODE_GEN_WRKR_REGISTER_ERR_EID        118
 
 #endif /* BPNODE_EVENTS_H */

@@ -109,15 +109,27 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
     size_t           BundlesDiscarded;
+    OS_time_t       TimeMsec;
+    uint64_t        TimeWakeupStart, TimeNow;
 
-    /* Check if any bundles are in cache, routing them to an egress route */
-    (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
 
-    /* Garbage Collect */
-    (void) BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
+    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+    TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
+    BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
-    /* Request the event loop to run up to 'BPNODE_NUM_JOBS_PER_CYCLE' */
-    BPLib_QM_SortJobs(&BPNode_AppData.BplibInst, BPNODE_NUM_JOBS_PER_CYCLE);
+    /* Wake up the Generic Worker Tasks */
+    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d",
+                                TaskNum,
+                                OsStatus);
+        } 
+    }
 
     /* Wake up the ADU In and ADU Out tasks */
     for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
@@ -211,6 +223,19 @@ CFE_Status_t BPNode_WakeupProcess(void)
         Status = CFE_SUCCESS;
     }
 
+    /* Scan CACHE for a maxiumum of N jobs or elapsed time of X mills */
+    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+    TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
+    while (TimeNow < (BPNODE_APP_RUNTIME_MSEC + TimeWakeupStart))
+    {
+        (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
+        OS_TaskDelay(BPNODE_APP_SCANCACHE_DELAY_MSEC);
+        CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+        TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
+    }
+    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
+
+    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
     return Status;
 }
 
@@ -220,6 +245,7 @@ CFE_Status_t BPNode_AppInit(void)
 {
     CFE_Status_t Status;
     BPLib_Status_t BpStatus;
+    int32 NotifStatus;
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
     uint8 i;
@@ -382,6 +408,13 @@ CFE_Status_t BPNode_AppInit(void)
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
 
+    /* Create Child Task Notifications */
+    NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStopWorkNotif, BPNODE_CHILD_STOPWORKNOTIF_NAME);
+    if (NotifStatus != OS_SUCCESS)
+    {
+        return NotifStatus;
+    }
+
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
 
@@ -399,7 +432,6 @@ CFE_Status_t BPNode_AppInit(void)
         /* Event message handled in task creation function */
         return Status;
     }
-
 
     /* Create CLA In child tasks */
     Status = BPNode_ClaInCreateTasks();
@@ -490,6 +522,13 @@ void BPNode_AppExit(void)
 
     CFE_ES_WriteToSysLog("BPNode app terminating, error = %d", BPNode_AppData.RunStatus);
 
+    /* Signal for the children to stop work - This needs to be done here because
+    ** cFS sends the child terminate signal from another thread, which
+    ** creates the potential for a deadlock waiting on the child semaphores in the
+    ** logic below.
+    */
+    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
+
     /* Signal to ADU child tasks to exit */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
@@ -535,6 +574,9 @@ void BPNode_AppExit(void)
         (void) OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].ExitSemId, BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
+
+    /* Cleanup Notifications */
+    BPNode_NotifDestroy(&BPNode_AppData.ChildStopWorkNotif);
 
     /* Cleanup QM and MEM */
     BPLib_QM_QueueTableDestroy(&BPNode_AppData.BplibInst);

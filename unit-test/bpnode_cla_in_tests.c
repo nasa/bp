@@ -361,6 +361,7 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE, true);
 
     /* 
     ** Getting rid of handler registered at init here since it's not needed and because 
@@ -377,6 +378,7 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 }
 
 /* Test BPNode_ClaIn_AppMain when max number of bundles are received */
@@ -388,6 +390,7 @@ void Test_BPNode_ClaIn_AppMain_MaxBundles(void)
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE, true);
 
     /* 
     ** Getting rid of handler registered at init here since it's not needed and because 
@@ -406,6 +409,7 @@ void Test_BPNode_ClaIn_AppMain_MaxBundles(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
 }
 
 void Test_BPNode_ClaIn_AppMain_TakeSemErr(void)
@@ -553,6 +557,7 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount + 1);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 0);
 }
 
 /* Test BPNode_ClaIn_TaskExit in nominal shutdown */

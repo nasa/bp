@@ -196,7 +196,6 @@ void BPNode_AduOut_AppMain(void)
     BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
-    uint32 AdusEgressed;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -233,8 +232,6 @@ void BPNode_AduOut_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            AdusEgressed = 0;
-
             do
             {
                 AppState = BPLib_NC_GetAppState(ChanId);
@@ -242,11 +239,26 @@ void BPNode_AduOut_AppMain(void)
                 {
                     /* Poll bundle from PI out queue */
                     BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
+                    if (BpStatus == BPLIB_SUCCESS)
+                    {
+                        /* Success */
+                    }
+                    else if (BpStatus == BPLIB_PI_TIMEOUT)
+                    {
+                        /* This is ok, don't need to break */
+                    }
+                    else
+                    {
+                        // Event message
+                        break;
+                    }
                 }
-
-                AdusEgressed++;
-
-            } while (BpStatus == BPLIB_SUCCESS && AdusEgressed < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
+                else
+                {
+                    /* By breaking, we avoid busy-polling NC_GetAppState() */
+                    break;
+                }
+            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
