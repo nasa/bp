@@ -63,6 +63,8 @@
 #define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
 #define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
 #define BPNODE_CHILD_STOPWORKNOTIF_NAME     "BPNODE_CHLDSTOP"
+#define BPNODE_APP_RUNTIME_MSEC             (800u)  /** \brief The amount of time BPApp should run for after the wakeup, in milliseconds */
+#define BPNODE_APP_SCANCACHE_DELAY_MSEC     (10u) /** \brief The amount of time to sleep after a call to ScanCache */
 
 /**
 ** \brief Global Data

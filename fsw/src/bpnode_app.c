@@ -108,9 +108,13 @@ CFE_Status_t BPNode_WakeupProcess(void)
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
-    //size_t           BundlesDiscarded;
+    size_t           BundlesDiscarded;
+    OS_time_t       TimeMsec;
+    uint64_t        TimeWakeupStart, TimeNow;
 
 
+    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+    TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
     /* Wake up the Generic Worker Tasks */
@@ -220,12 +224,18 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Scan CACHE for a maxiumum of N jobs or elapsed time of X mills */
-    /* Check if any bundles are in cache, routing them to an egress route */
-    //(void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
-    OS_TaskDelay(800);
-    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
-    // Needs GarbageCollect
+    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+    TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
+    while (TimeNow < (BPNODE_APP_RUNTIME_MSEC + TimeWakeupStart))
+    {
+        (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
+        OS_TaskDelay(BPNODE_APP_SCANCACHE_DELAY_MSEC);
+        CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+        TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
+    }
+    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
 
+    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
     return Status;
 }
 
