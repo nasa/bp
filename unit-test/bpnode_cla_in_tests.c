@@ -265,7 +265,6 @@ void Test_BPNode_ClaIn_AppMain_Nominal(void)
     UT_SetDefaultReturnValue(UT_KEY(OS_BinSemTimedWait), OS_SUCCESS);
 
     BPNode_AppData.ClaInData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = true;
 
     BPNode_ClaIn_AppMain();
 
@@ -384,7 +383,6 @@ void Test_BPNode_ClaIn_AppMain_NoIngress(void)
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState, sizeof(BPLib_CLA_ContactRunState_t), false);
 
     BPNode_AppData.ClaInData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = false;
 
     BPNode_ClaIn_AppMain();
 
@@ -409,7 +407,6 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_Command), CFE_PSP_ERROR);
 
     BPNode_AppData.ClaInData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaInData[ContactId].IngressServiceEnabled = true;
 
     BPNode_ClaIn_AppMain();
 

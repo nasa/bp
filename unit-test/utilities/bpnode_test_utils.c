@@ -38,7 +38,6 @@
 #include "utassert.h"
 #include "uttest.h"
 #include "utstubs.h"
-#include "bplib_as_handlers.h"
 
 /*
 ** Global Data
@@ -227,6 +226,7 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Increment), UT_Handler_BPLib_AS_Increment, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_PI_Egress), UT_Handler_BPLib_PI_Egress, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPLib_CLA_GetContactRunState), UT_Handler_BPLib_CLA_GetContactRunState, NULL);
 
     BPNode_AppData.AduProxyTablePtr              = &TestAduTbl;
     BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;

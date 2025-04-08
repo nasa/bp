@@ -32,13 +32,13 @@
  * Generated stub function for BPNode_ClaOutCreateTasks()
  * ----------------------------------------------------
  */
-int32 BPNode_ClaOutCreateTasks(void)
+CFE_Status_t BPNode_ClaOutCreateTasks(void)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ClaOutCreateTasks, int32);
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaOutCreateTasks, CFE_Status_t);
 
     UT_GenStub_Execute(BPNode_ClaOutCreateTasks, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ClaOutCreateTasks, int32);
+    return UT_GenStub_GetReturnValue(BPNode_ClaOutCreateTasks, CFE_Status_t);
 }
 
 /*
@@ -54,14 +54,26 @@ void BPNode_ClaOut_AppMain(void)
 
 /*
  * ----------------------------------------------------
+ * Generated stub function for BPNode_ClaOut_DeleteSems()
+ * ----------------------------------------------------
+ */
+void BPNode_ClaOut_DeleteSems(uint32 ContactId)
+{
+    UT_GenStub_AddParam(BPNode_ClaOut_DeleteSems, uint32, ContactId);
+
+    UT_GenStub_Execute(BPNode_ClaOut_DeleteSems, Basic, NULL);
+}
+
+/*
+ * ----------------------------------------------------
  * Generated stub function for BPNode_ClaOut_ProcessBundleOutput()
  * ----------------------------------------------------
  */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
 {
     UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_ProcessBundleOutput, int32);
 
-    UT_GenStub_AddParam(BPNode_ClaOut_ProcessBundleOutput, uint8, ContId);
+    UT_GenStub_AddParam(BPNode_ClaOut_ProcessBundleOutput, uint32, ContId);
 
     UT_GenStub_Execute(BPNode_ClaOut_ProcessBundleOutput, Basic, NULL);
 
@@ -70,12 +82,62 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint8 ContId)
 
 /*
  * ----------------------------------------------------
+ * Generated stub function for BPNode_ClaOut_Setup()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char *IpAddr)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_Setup, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPNode_ClaOut_Setup, uint32, ContactId);
+    UT_GenStub_AddParam(BPNode_ClaOut_Setup, int32, PortNum);
+    UT_GenStub_AddParam(BPNode_ClaOut_Setup, char *, IpAddr);
+
+    UT_GenStub_Execute(BPNode_ClaOut_Setup, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_ClaOut_Setup, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_ClaOut_Start()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_Start, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPNode_ClaOut_Start, uint32, ContactId);
+
+    UT_GenStub_Execute(BPNode_ClaOut_Start, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_ClaOut_Start, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_ClaOut_Stop()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPNode_ClaOut_Stop(uint32 ContactId)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_Stop, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPNode_ClaOut_Stop, uint32, ContactId);
+
+    UT_GenStub_Execute(BPNode_ClaOut_Stop, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_ClaOut_Stop, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
  * Generated stub function for BPNode_ClaOut_TaskExit()
  * ----------------------------------------------------
  */
-void BPNode_ClaOut_TaskExit(uint8 ContId)
+void BPNode_ClaOut_TaskExit(uint32 ContactId)
 {
-    UT_GenStub_AddParam(BPNode_ClaOut_TaskExit, uint8, ContId);
+    UT_GenStub_AddParam(BPNode_ClaOut_TaskExit, uint32, ContactId);
 
     UT_GenStub_Execute(BPNode_ClaOut_TaskExit, Basic, NULL);
 }
@@ -85,13 +147,25 @@ void BPNode_ClaOut_TaskExit(uint8 ContId)
  * Generated stub function for BPNode_ClaOut_TaskInit()
  * ----------------------------------------------------
  */
-int32 BPNode_ClaOut_TaskInit(uint8 *ContId)
+CFE_Status_t BPNode_ClaOut_TaskInit(uint32 ContactId)
 {
-    UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_TaskInit, int32);
+    UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_TaskInit, CFE_Status_t);
 
-    UT_GenStub_AddParam(BPNode_ClaOut_TaskInit, uint8 *, ContId);
+    UT_GenStub_AddParam(BPNode_ClaOut_TaskInit, uint32, ContactId);
 
     UT_GenStub_Execute(BPNode_ClaOut_TaskInit, Basic, NULL);
 
-    return UT_GenStub_GetReturnValue(BPNode_ClaOut_TaskInit, int32);
+    return UT_GenStub_GetReturnValue(BPNode_ClaOut_TaskInit, CFE_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_ClaOut_Teardown()
+ * ----------------------------------------------------
+ */
+void BPNode_ClaOut_Teardown(uint32 ContactId)
+{
+    UT_GenStub_AddParam(BPNode_ClaOut_Teardown, uint32, ContactId);
+
+    UT_GenStub_Execute(BPNode_ClaOut_Teardown, Basic, NULL);
 }

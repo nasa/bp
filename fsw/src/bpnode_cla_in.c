@@ -267,7 +267,7 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
     return Status;
 }
 
-BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr)
+BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, const char* IpAddr)
 {
     BPLib_Status_t  Status;
     int32           PspStatus;
@@ -476,6 +476,9 @@ void BPNode_ClaIn_AppMain(void)
                     Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
                 }
             }
+
+            /* Exit gracefully */
+            BPNode_ClaIn_TaskExit(ContactId);
         }
         else
         {
@@ -490,9 +493,6 @@ void BPNode_ClaIn_AppMain(void)
             CFE_ES_ExitChildTask();
         }
     }
-
-    /* Exit gracefully */
-    BPNode_ClaIn_TaskExit(ContactId);
 
     return;
 }

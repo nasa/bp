@@ -129,7 +129,7 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId);
   * \retval    BPLIB_SUCCESS: Successful execution
   * \retval    BPLIB_CLA_IO_ERROR: A I/O driver API call failed operation
   */
-BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, char* IpAddr);
+BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, const char* IpAddr);
 
 /**
   * \brief     Start up a CLA In task

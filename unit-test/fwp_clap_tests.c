@@ -37,13 +37,18 @@
 void Test_BPA_CLAP_ContactSetup_Nominal(void)
 {
     BPLib_Status_t Status;
+    BPLib_CLA_ContactsSet_t ContactInfo;
+
+    memset((void*) &ContactInfo, 0, sizeof(BPLib_CLA_ContactsSet_t));
+    strcpy(ContactInfo.ClaInAddr, "0.0.0.0");
+    strcpy(ContactInfo.ClaOutAddr, "0.0.0.0");
 
     /* Force called functions to return success */
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaIn_Setup), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaOut_Setup), BPLIB_SUCCESS);
 
     /* Run the function under test */
-    Status = BPA_CLAP_ContactSetup(0, "0.0.0.0", BPLIB_MAX_NUM_CONTACTS - 1);
+    Status = BPA_CLAP_ContactSetup(0, ContactInfo);
 
     /* Verify that the function ran successfully */
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_SUCCESS);
@@ -56,13 +61,18 @@ void Test_BPA_CLAP_ContactSetup_Nominal(void)
 void Test_BPA_CLAP_ContactSetup_ClaInError(void)
 {
     BPLib_Status_t Status;
+    BPLib_CLA_ContactsSet_t ContactInfo;
+
+    memset((void*) &ContactInfo, 0, sizeof(BPLib_CLA_ContactsSet_t));
+    strcpy(ContactInfo.ClaInAddr, "0.0.0.0");
+    strcpy(ContactInfo.ClaOutAddr, "0.0.0.0");
 
     /* Force called functions to cause BPA_CLAP_ContactSetup to return a failure */
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaIn_Setup), BPLIB_CLA_IO_ERROR);
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaOut_Setup), BPLIB_SUCCESS);
 
     /* Run the function under test */
-    Status = BPA_CLAP_ContactSetup(0, "0.0.0.0", BPLIB_MAX_NUM_CONTACTS - 1);
+    Status = BPA_CLAP_ContactSetup(0, ContactInfo);
 
     /* Verify that the function ran successfully */
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_IO_ERROR);
@@ -76,13 +86,18 @@ void Test_BPA_CLAP_ContactSetup_ClaInError(void)
 void Test_BPA_CLAP_ContactSetup_ClaOutError(void)
 {
     BPLib_Status_t Status;
+    BPLib_CLA_ContactsSet_t ContactInfo;
+
+    memset((void*) &ContactInfo, 0, sizeof(BPLib_CLA_ContactsSet_t));
+    strcpy(ContactInfo.ClaInAddr, "0.0.0.0");
+    strcpy(ContactInfo.ClaOutAddr, "0.0.0.0");
 
     /* Force called functions to cause BPA_CLAP_ContactSetup to return a failure */
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaIn_Setup), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaOut_Setup), BPLIB_CLA_INIT_SEM_ERROR);
 
     /* Run the function under test */
-    Status = BPA_CLAP_ContactSetup(0, "0.0.0.0", BPLIB_MAX_NUM_CONTACTS - 1);
+    Status = BPA_CLAP_ContactSetup(0, ContactInfo);
 
     /* Verify that the function ran successfully */
     UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_INIT_SEM_ERROR);

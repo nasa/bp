@@ -48,6 +48,7 @@
 #include "fwp_dp.h"
 #include "bplib_em_handlers.h"
 #include "bplib_as_handlers.h"
+#include "bplib_cla_handlers.h"
 #include "fwp_tablep.h"
 
 /*

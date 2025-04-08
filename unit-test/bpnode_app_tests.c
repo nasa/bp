@@ -529,12 +529,8 @@ void Test_BPNode_AppExit_Nominal(void)
         UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
         UtAssert_UINT32_EQ(BPNode_AppData.AduInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
     }
-
-    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
-    {
-        UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
-        UtAssert_UINT32_EQ(BPNode_AppData.ClaInData[i].RunStatus, CFE_ES_RunStatus_APP_EXIT);
-    }
+    
+    UtAssert_STUB_COUNT(BPLib_CLA_SetContactExited, BPLIB_MAX_NUM_CONTACTS);
 
     for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
     {
