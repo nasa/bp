@@ -90,6 +90,10 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 {
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
+    /* Set Data buffer for time to later */
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
     /* Receive wakeup message but no command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
@@ -104,6 +108,10 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 void Test_BPNode_AppMain_WakeupErr(void)
 {
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     /* Wakeup pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -121,6 +129,10 @@ void Test_BPNode_AppMain_WakeupErr(void)
 void Test_BPNode_AppMain_CommandErr(void)
 {
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     /* Command pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -142,6 +154,10 @@ void Test_BPNode_AppMain_CommandRecvd(void)
     CFE_SB_Buffer_t *BufPtr = &Buf;
 
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -169,6 +185,10 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
@@ -181,6 +201,10 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
 void Test_BPNode_WakeupProcess_FailSem(void)
 {
     uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     /* Fail sem gives to cause errors */
     UT_SetDefaultReturnValue(UT_KEY(OS_BinSemGive), OS_SUCCESS);                        /* Guarantee only failures are those assigned below */
@@ -215,6 +239,10 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 {
     uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
 
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+
     /* Fail Time activities */
     UT_SetDeferredRetcode(UT_KEY(BPLib_TIME_MaintenanceActivities), 1, BPLIB_TIME_WRITE_ERROR);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
@@ -235,6 +263,10 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 void Test_BPNode_WakeupProcess_FailNCUpdate(void)
 {
     uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     /* Fail BPLib NC Update */
     UT_SetDeferredRetcode(UT_KEY(BPLib_NC_ConfigUpdate), 1, BPLIB_ERROR);
@@ -261,6 +293,10 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
     CFE_SB_Buffer_t *BufPtr = &Buf;
     uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
 
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+
     /* Receipt of a null buffer */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_PIPE_RD_ERR);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), NULL, sizeof(BufPtr), false);
@@ -278,6 +314,10 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 {
     uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
 
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+
     /* Command receive error */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
 
@@ -292,6 +332,10 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
 {
     CFE_Status_t Status;
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     /* Force a successful configuration update */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
@@ -314,6 +358,10 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 {
     CFE_Status_t Status;
 
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+
     /* Force the configuration updates to return success codes */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
@@ -331,6 +379,10 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
 {
     CFE_Status_t Status;
+
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
