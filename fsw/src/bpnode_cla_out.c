@@ -472,6 +472,9 @@ void BPNode_ClaOut_AppMain(void)
                     Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
                 }
             }
+
+            /* Exit gracefully */
+            BPNode_ClaOut_TaskExit(ContactId);
         }
         else
         {
@@ -486,9 +489,6 @@ void BPNode_ClaOut_AppMain(void)
             CFE_ES_ExitChildTask();
         }
     }
-
-    /* Exit gracefully */
-    BPNode_ClaOut_TaskExit(ContactId);
 
     return;
 }

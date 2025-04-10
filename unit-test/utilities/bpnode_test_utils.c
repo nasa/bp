@@ -196,6 +196,8 @@ void Test_FWP_ADUP_VerifyDecrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
 /* Setup function prior to every test */
 void BPNode_UT_Setup(void)
 {
+    char NameBuff[OS_MAX_API_NAME];
+
     UT_ResetState(0);
 
     memset((void*) &BPNode_AppData, 0, sizeof(BPNode_AppData_t));
@@ -240,6 +242,25 @@ void BPNode_UT_Setup(void)
     BPNode_AppData.ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
     BPNode_AppData.ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
     BPNode_AppData.ConfigPtrs.StorConfigPtr      = &TestStorTbl;
+
+    /* Create task semaphores */
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaInData[0].InitSemId, NameBuff, 0, 0);
+
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_IN_SEM_BASE_NAME, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaInData[0].WakeupSemId, NameBuff, 0, 0);
+
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_IN_SEM_BASE_NAME, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaInData[0].ExitSemId, NameBuff, 0, 0);
+
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].InitSemId, NameBuff, 0, 0);
+
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].WakeupSemId, NameBuff, 0, 0);
+
+    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].ExitSemId, NameBuff, 0, 0);
 }
 
 /* Teardown function after every test */
