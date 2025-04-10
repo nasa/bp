@@ -59,23 +59,23 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .Lifetime               = 10000,
             .PrevNodeBlkConfig =
                 {
-                    .IncludeBlock       = false,
-                    .CrcType            = BPLib_CRC_Type_None,
-                    .BlockNum           = 1,
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 2,
                     .BlockProcFlags     = 0
                 },
             .AgeBlkConfig =
                 {
-                    .IncludeBlock       = false,
-                    .CrcType            = BPLib_CRC_Type_None,
-                    .BlockNum           = 0,
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 3,
                     .BlockProcFlags     = 0
                 },
             .HopCountBlkConfig =
                 {
-                    .IncludeBlock       = false,
-                    .CrcType            = BPLib_CRC_Type_None,
-                    .BlockNum           = 0,
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 4,
                     .BlockProcFlags     = 0
                 },
             .PayloadBlkConfig =
