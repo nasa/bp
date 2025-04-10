@@ -51,10 +51,10 @@ void Test_BPNode_ClaInCreateTasks_InitSemErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 1, OS_SEM_FAILURE);
 
-    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), BPLIB_CLA_INIT_SEM_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_INIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Failed to create CLA In init semaphore, %s. Error = %d",
+    UtAssert_STRINGBUF_EQ("Failed to create init semaphore, %s, for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -69,10 +69,10 @@ void Test_BPNode_ClaInCreateTasks_WakeupSemErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 2, OS_SEM_FAILURE);
 
-    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), BPLIB_CLA_WAKEUP_SEM_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Failed to create CLA In wakeup semaphore, %s. Error = %d",
+    UtAssert_STRINGBUF_EQ("Failed to create wakeup semaphore, %s, for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -87,10 +87,10 @@ void Test_BPNode_ClaInCreateTasks_ExitSemErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 3, OS_SEM_FAILURE);
 
-    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), BPLIB_CLA_EXIT_SEM_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_EXIT_SEM_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Failed to create CLA In exit semaphore, %s. Error = %d",
+    UtAssert_STRINGBUF_EQ("Failed to create exit semaphore, %s, for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -105,10 +105,10 @@ void Test_BPNode_ClaInCreateTasks_TaskCrErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_CreateChildTask), 1, CFE_ES_ERR_CHILD_TASK_CREATE);
 
-    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), BPLIB_CLA_TASK_CREATE_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), CFE_ES_ERR_CHILD_TASK_CREATE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CREATE_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Failed to create CLA In child task. Error = %d",
+    UtAssert_STRINGBUF_EQ("Failed to create child task for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -123,10 +123,10 @@ void Test_BPNode_ClaInCreateTasks_TakeSemErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
 
-    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), BPLIB_CLA_INIT_SEM_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_RUN_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: CLA In task not running. Error = %d",
+    UtAssert_STRINGBUF_EQ("CLA In task #%d not running. Init Sem Error = %d.",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -136,29 +136,12 @@ void Test_BPNode_ClaInCreateTasks_TakeSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }
 
-void Test_BPNode_ClaIn_Setup_Nominal(void)
-{
-    /* Force called function to return values that will create a success return value */
-    UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_FindByName), CFE_PSP_SUCCESS);
-    UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_Command), CFE_PSP_SUCCESS);
-
-    /* Call function under test and verify return status */
-    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), CFE_SUCCESS);
-
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_INIT_INF_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: CLA In set up",
-                            BPLIB_EM_EXPANDED_EVENT_SIZE,
-                            context_BPLib_EM_SendEvent[0].Spec,
-                            BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-}
-
-/* Test BPNode_ClaIn_Setup when the PSP module can't be found */
-void Test_BPNode_ClaIn_Setup_FindByNameErr(void)
+/* Test BPNode_ClaIn_TaskInit when the PSP module can't be found */
+void Test_BPNode_ClaIn_TaskInit_FindByNameErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_FindByName), 1, CFE_PSP_ERROR);
 
-    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(BPLIB_MAX_NUM_CONTACTS - 1), BPLIB_CLA_IO_ERROR);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_FIND_NAME_ERR_EID);
@@ -170,6 +153,59 @@ void Test_BPNode_ClaIn_Setup_FindByNameErr(void)
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
 }
 
+void Test_BPNode_ClaIn_TaskInit_DirErr(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER
+    int32 CmdCount = 3;
+#else
+    int32 CmdCount = 1;
+#endif
+
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(BPLIB_MAX_NUM_CONTACTS - 1), BPLIB_CLA_IO_ERROR);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_DIR_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Couldn't set CLA In I/O direction to input. Error = %d",
+                            BPLIB_EM_EXPANDED_EVENT_SIZE,
+                            context_BPLib_EM_SendEvent[0].Spec,
+                            BPLIB_EM_EXPANDED_EVENT_SIZE);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount);
+}
+
+void Test_BPNode_ClaIn_TaskInit_RunErr(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER
+    int32 CmdCount = 4;
+#else
+    int32 CmdCount = 2;
+#endif
+    
+    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
+
+    UtAssert_INT32_EQ(BPNode_ClaIn_TaskInit(BPLIB_MAX_NUM_CONTACTS - 1), BPLIB_CLA_IO_ERROR);
+
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Couldn't set CLA In I/O state to running. Error = %d",
+                            BPLIB_EM_EXPANDED_EVENT_SIZE,
+                            context_BPLib_EM_SendEvent[0].Spec,
+                            BPLIB_EM_EXPANDED_EVENT_SIZE);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount);
+}
+
+void Test_BPNode_ClaIn_Setup_Nominal(void)
+{
+#ifdef BPNODE_CLA_UDP_DRIVER
+    /* Force called function to return values that will create a success return value */
+    UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_Command), CFE_PSP_SUCCESS);
+
+    /* Call function under test and verify return status */
+    UtAssert_EQ(BPLib_Status_t, BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_SUCCESS);
+#endif
+}
+
 void Test_BPNode_ClaIn_Setup_PortErr(void)
 {
 #ifdef BPNODE_CLA_UDP_DRIVER
@@ -179,11 +215,11 @@ void Test_BPNode_ClaIn_Setup_PortErr(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_PORT_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Couldn't configure CLA In port number. Error = %d",
+    UtAssert_STRINGBUF_EQ("Couldn't configure port number for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(CFE_PSP_IODriver_FindByName, 1);
+
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
 #endif
 }
@@ -197,55 +233,13 @@ void Test_BPNode_ClaIn_Setup_IpErr(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_IP_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Couldn't configure IP address for CLA In. Error = %d",
+    UtAssert_STRINGBUF_EQ("Couldn't configure IP address for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
                             BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(CFE_PSP_IODriver_FindByName, 1);
+
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 2);
 #endif
-}
-
-void Test_BPNode_ClaIn_Setup_DirErr(void)
-{
-#ifdef BPNODE_CLA_UDP_DRIVER
-    int32 CmdCount = 3;
-#else
-    int32 CmdCount = 1;
-#endif
-
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
-
-    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_DIR_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Couldn't set CLA In I/O direction to input. Error = %d",
-                            BPLIB_EM_EXPANDED_EVENT_SIZE,
-                            context_BPLib_EM_SendEvent[0].Spec,
-                            BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount);
-}
-
-void Test_BPNode_ClaIn_Setup_RunErr(void)
-{
-#ifdef BPNODE_CLA_UDP_DRIVER
-    int32 CmdCount = 4;
-#else
-    int32 CmdCount = 2;
-#endif
-    
-    UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), CmdCount, CFE_PSP_ERROR);
-
-    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
-
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_SET_RUN_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[Contact ID #%d]: Couldn't set CLA In I/O state to running. Error = %d",
-                            BPLIB_EM_EXPANDED_EVENT_SIZE,
-                            context_BPLib_EM_SendEvent[0].Spec,
-                            BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, CmdCount);
 }
 
 /* Test BPNode_ClaIn_AppMain when app state is started and one CLA is received */
@@ -279,8 +273,8 @@ void Test_BPNode_ClaIn_AppMain_GetTaskIDError(void)
     BPNode_ClaIn_AppMain();
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_NO_ID_ERR_EID,
-                                "[Contact ID #?]: Failed to get CLA In task ID. Error = %d");
+    BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_UNK_EXIT_CRIT_EID,
+                                "[CLA In #?]: Terminating unknown task");
 }
 
 void Test_BPNode_ClaIn_AppMain_NoContactId(void)
@@ -297,7 +291,7 @@ void Test_BPNode_ClaIn_AppMain_NoContactId(void)
     BPNode_ClaIn_AppMain();
 
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_INV_ID_ERR_EID,
-                                "[Contact ID #?] Could not find a CLA In task to process bundles with");
+                                "[CLA In #?] Could not find a task to process bundles with");
 }
 
 void Test_BPNode_ClaIn_AppMain_TakeSemTimeoutErr(void)
