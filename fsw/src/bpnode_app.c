@@ -149,7 +149,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Could not wake up CLA In task #%d, RC = %d",
+                                "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
                                 ContactNum,
                                 OsStatus);
         }
@@ -159,7 +159,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Could not wake up CLA Out task #%d, RC = %d",
+                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
                                 ContactNum,
                                 OsStatus);
         }
