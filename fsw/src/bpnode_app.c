@@ -110,7 +110,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     uint8            TaskNum;
     size_t           BundlesDiscarded;
     OS_time_t        TimeMsec;
-    uint64_t         TimeWakeupStart
+    uint64_t         TimeWakeupStart;
     uint64_t         TimeNow;
     uint32           ContactNum;
 

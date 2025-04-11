@@ -242,12 +242,8 @@ void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-<<<<<<< HEAD
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
-=======
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
->>>>>>> a9787db13d45e11ce17e0821133bd8eb47c2c8cc
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
     BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 0; /* buffer initially empty */
@@ -286,12 +282,8 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-<<<<<<< HEAD
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
-=======
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
->>>>>>> a9787db13d45e11ce17e0821133bd8eb47c2c8cc
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
     BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 4; /* buffer initially filled */
