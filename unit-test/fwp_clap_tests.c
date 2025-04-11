@@ -94,13 +94,13 @@ void Test_BPA_CLAP_ContactSetup_ClaOutError(void)
 
     /* Force called functions to cause BPA_CLAP_ContactSetup to return a failure */
     UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaIn_Setup), BPLIB_SUCCESS);
-    UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaOut_Setup), BPLIB_CLA_INIT_SEM_ERROR);
+    UT_SetDefaultReturnValue(UT_KEY(BPNode_ClaOut_Setup), BPLIB_CLA_IO_ERROR);
 
     /* Run the function under test */
     Status = BPA_CLAP_ContactSetup(0, ContactInfo);
 
     /* Verify that the function ran successfully */
-    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_INIT_SEM_ERROR);
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_IO_ERROR);
 
     /* Verify that the call functions were called the correct amount */
     UtAssert_STUB_COUNT(BPNode_ClaIn_Setup, 1);
