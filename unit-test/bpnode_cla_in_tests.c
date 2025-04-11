@@ -283,6 +283,7 @@ void Test_BPNode_ClaIn_AppMain_NoContactId(void)
 
     TaskId = 1234;
 
+    /* Test setup */
     UT_SetDefaultReturnValue(UT_KEY(CFE_ES_GetTaskID), CFE_SUCCESS);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(CFE_ES_TaskId_t), false);
 
@@ -456,7 +457,8 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
 
     BPNode_ClaIn_AppMain();
 
-    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
+    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 0);
 }
 
 /* Test BPNode_ClaIn_TaskExit in nominal shutdown */

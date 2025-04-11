@@ -137,20 +137,23 @@
 #define BPNODE_GEN_WRKR_INV_ID_ERR_EID          104
 #define BPNODE_GEN_WRKR_UNK_EXIT_CRIT_EID       105
 #define BPNODE_GEN_WRKR_SEM_TK_ERR_EID          106
-#define BPNODE_WKP_SEM_ERR_EID                  107
-#define BPNODE_NC_AS_INIT_ERR_EID               108
-#define BPNODE_DP_SEND_NODE_CNTRS_ERR_EID       109
-#define BPNODE_ADU_REM_CHAN_ERR_EID             110
-#define BPNODE_ADU_REM_STAT_ERR_EID             111
-#define BPNODE_DEL_HANDLER_ERR_EID              112
-#define BPNODE_ADU_IN_SEM_TK_TIMEOUT_INF_EID    113
-#define BPNODE_ADU_OUT_SEM_TK_TIMEOUT_INF_EID   114
-#define BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID  115
-#define BPNODE_QM_INIT_ERR_EID                  116
-#define BPNODE_MEM_INIT_ERR_EID                 117
-#define BPNODE_ADU_OUT_PI_OUT_ERR_EID           118
-#define BPNODE_ADU_OUT_PI_IN_ERR_EID            119
-#define BPNODE_TBL_UPDATE_INF_EID               120
-#define BPNODE_NC_CFG_UPDATE_ERR_EID            121
+#define BPNODE_GEN_WRKR_REGISTER_ERR_EID        107
+#define BPNODE_GEN_WRKR_TASKRUN_ERR_EID         108
+
+#define BPNODE_WKP_SEM_ERR_EID                  109
+#define BPNODE_NC_AS_INIT_ERR_EID               110
+#define BPNODE_DP_SEND_NODE_CNTRS_ERR_EID       111
+#define BPNODE_ADU_REM_CHAN_ERR_EID             112
+#define BPNODE_ADU_REM_STAT_ERR_EID             113
+#define BPNODE_DEL_HANDLER_ERR_EID              114
+#define BPNODE_ADU_IN_SEM_TK_TIMEOUT_INF_EID    115
+#define BPNODE_ADU_OUT_SEM_TK_TIMEOUT_INF_EID   116
+#define BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID  117
+#define BPNODE_QM_INIT_ERR_EID                  118
+#define BPNODE_MEM_INIT_ERR_EID                 119
+#define BPNODE_ADU_OUT_PI_OUT_ERR_EID           120
+#define BPNODE_ADU_OUT_PI_IN_ERR_EID            121
+#define BPNODE_TBL_UPDATE_INF_EID               122
+#define BPNODE_NC_CFG_UPDATE_ERR_EID            123
 
 #endif /* BPNODE_EVENTS_H */

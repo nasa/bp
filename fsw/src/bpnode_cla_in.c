@@ -453,7 +453,15 @@ void BPNode_ClaIn_AppMain(void)
                                 {
                                     BundlesReceived++;
                                 }
-                            } while ((CFE_Status == CFE_SUCCESS) && (BundlesReceived < BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE));
+                                else if (CFE_Status == CFE_PSP_ERROR_TIMEOUT)
+                                {
+                                    /* Not an error */
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
                         }
                     }
                     else if (OsStatus == OS_SEM_TIMEOUT)

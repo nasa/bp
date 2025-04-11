@@ -240,6 +240,10 @@ void BPNode_UT_Setup(void)
     BPNode_AppData.ConfigPtrs.MibPsConfigPtr     = &TestMibPsTbl;
     BPNode_AppData.ConfigPtrs.ReportConfigPtr    = &TestReportTbl;
     BPNode_AppData.ConfigPtrs.StorConfigPtr      = &TestStorTbl;
+
+    /* Process BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE bundles, then exit */
+    UT_SetDefaultReturnValue(UT_KEY(BPNode_NotifIsSet), false);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE, true);
 }
 
 /* Teardown function after every test */

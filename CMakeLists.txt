@@ -9,6 +9,7 @@ set(APP_SRC_FILES
   fsw/src/bpnode_cla_in.c
   fsw/src/bpnode_cla_out.c
   fsw/src/bpnode_gen_worker.c
+  fsw/src/bpnode_notif.c
 
   # FWP files
   fsw/fwp/fwp_timep.c
@@ -36,8 +37,6 @@ set(APP_TABLE_FILES
   fsw/tables/bpnode_src_latency_policy_tbl.c
   fsw/tables/bpnode_storage_tbl.c
 )
-
-include_directories(${MISSION_SOURCE_DIR}/dtn_defs)
 
 # Create the app module
 add_cfe_app(bpnode ${APP_SRC_FILES})

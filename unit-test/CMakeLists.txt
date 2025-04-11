@@ -26,6 +26,7 @@ add_cfe_coverage_stubs("bpnode_internal"
   stubs/bpnode_cla_out_stubs.c
   stubs/bpnode_gen_worker_stubs.c
   stubs/fwp_clap_stubs.c
+  stubs/bpnode_notif_stubs.c
   ../../../psp/fsw/modules/iodriver/ut-stubs/iodriver_base_stubs.c
 )
 
