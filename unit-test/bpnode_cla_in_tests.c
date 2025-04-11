@@ -457,7 +457,7 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
 
     BPNode_ClaIn_AppMain();
 
-    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
     UtAssert_STUB_COUNT(BPNode_NotifIsSet, 0);
 }
 

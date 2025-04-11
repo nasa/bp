@@ -244,6 +244,7 @@ void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
+    BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
     BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 0; /* buffer initially empty */
@@ -284,6 +285,7 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
+    BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
     BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 4; /* buffer initially filled */
@@ -469,6 +471,7 @@ void Test_BPNode_ClaOut_AppMain_NoEgress(void)
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
+    BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
 
