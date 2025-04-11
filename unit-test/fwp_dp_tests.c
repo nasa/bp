@@ -28,6 +28,7 @@
 /* ============= */
 
 #include "fwp_dp.h"
+#include "bplib_nc_directives.h"
 #include "bpnode_test_utils.h"
 
 /* ==================== */

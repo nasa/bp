@@ -263,8 +263,7 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, false);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
+    BPNode_UT_BundleProcessLoops(2);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
 
@@ -296,7 +295,7 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE, true);
+    BPNode_UT_BundleProcessLoops(BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE);
 
     for (i = 0; i < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE; i++)
     {

@@ -109,9 +109,10 @@ CFE_Status_t BPNode_WakeupProcess(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
     size_t           BundlesDiscarded;
-    OS_time_t       TimeMsec;
-    uint64_t        TimeWakeupStart, TimeNow;
-
+    OS_time_t        TimeMsec;
+    uint64_t         TimeWakeupStart;
+    uint64_t         TimeNow;
+    uint32           ContactNum;
 
     CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
     TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
@@ -132,49 +133,49 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Wake up the ADU In and ADU Out tasks */
-    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CHANNELS; TaskNum++)
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CHANNELS; ContactNum++)
     {
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
+                                ContactNum,
                                 OsStatus);
         }
 
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
+                                ContactNum,
                                 OsStatus);
         }
     }
 
     /* Wake up the CLA In and CLA Out tasks */
-    for (TaskNum = 0; TaskNum < BPLIB_MAX_NUM_CONTACTS; TaskNum++)
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
     {
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
+                                ContactNum,
                                 OsStatus);
         }
 
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[TaskNum].WakeupSemId);
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
+                                ContactNum,
                                 OsStatus);
         }
     }
@@ -275,7 +276,12 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TLMP_SendNodeMibCounterPkt = BPA_TLMP_SendNodeMibCounterPkt,
         .BPA_TLMP_SendPerSourceMibCounterPkt = BPA_TLMP_SendPerSourceMibCounterPkt,
         .BPA_TLMP_SendChannelContactPkt = BPA_TLMP_SendChannelContactPkt,
-        .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt
+        .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt,
+        /* CLA Proxy */
+        .BPA_CLAP_ContactSetup    = BPA_CLAP_ContactSetup,
+        .BPA_CLAP_ContactStart    = BPA_CLAP_ContactStart,
+        .BPA_CLAP_ContactStop     = BPA_CLAP_ContactStop,
+        .BPA_CLAP_ContactTeardown = BPA_CLAP_ContactTeardown,
     };
 
     /* Zero out the global data structure */
@@ -515,7 +521,8 @@ CFE_Status_t BPNode_AppInit(void)
 /* Exit app */
 void BPNode_AppExit(void)
 {
-    uint8 i;
+    uint8  i;
+    uint32 ContactId;
 
     BPLib_EM_SendEvent(BPNODE_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "App terminating, error = %d", BPNode_AppData.RunStatus);
@@ -537,10 +544,13 @@ void BPNode_AppExit(void)
     }
 
     /* Signal to CLA child tasks to exit */
-    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        BPNode_AppData.ClaOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        BPNode_AppData.ClaInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        /*
+        ** Exit all CLA child tasks. Upon exit, return ignored
+        ** since contact IDs are all but guaranteed to be valid
+        */
+        (void) BPLib_CLA_SetContactExited(ContactId);
     }
 
     /* Signal to generic worker tasks to exit */

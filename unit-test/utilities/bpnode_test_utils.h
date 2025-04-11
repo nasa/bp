@@ -48,6 +48,7 @@
 #include "fwp_dp.h"
 #include "bplib_em_handlers.h"
 #include "bplib_as_handlers.h"
+#include "bplib_cla_handlers.h"
 #include "fwp_tablep.h"
 
 /*
@@ -115,6 +116,9 @@ void Test_FWP_ADUP_VerifyIncrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
 
 /* Verify values given when BPLib_AS_Decrement is called, match what's expected */
 void Test_FWP_ADUP_VerifyDecrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, uint32_t Amount, int16_t CallNum);
+
+/* Set the number of times the bundle processing functions will run */
+void BPNode_UT_BundleProcessLoops(uint32 NumLoops);
 
 /* Unit test case set up */
 void BPNode_UT_Setup(void);
