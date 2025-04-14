@@ -228,7 +228,7 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE, true);
+    BPNode_UT_BundleProcessLoops(BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
 
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
 

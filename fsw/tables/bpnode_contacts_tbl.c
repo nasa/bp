@@ -28,11 +28,10 @@
 #include "bplib.h"
 
 
-BPLib_CLA_ContactsTable_t ContactsTable = 
+BPLib_CLA_ContactsTable_t ContactsTable =
 {
     .ContactSet = {
         {
-            .ContactID              = 0, /*Contact ID, uint32*/
             .DestEIDs               = {{
                                         .Scheme       = BPLIB_EID_SCHEME_IPN,
                                         .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
@@ -52,15 +51,17 @@ BPLib_CLA_ContactsTable_t ContactsTable =
                                         .MaxService   = 2,
                                         .MinService   = 2}},
             .CLAType                = 1, /*CLA Type, uint32 */
-            .CLAddr                 = "127.0.0.1", /*CL ip address*/
-            .PortNum                = 1001, /*Port Number, int32*/
+            .ClaInAddr              = "0.0.0.0",
+            .ClaOutAddr             = "127.0.0.1", /* CL ip address */
+            .ClaInPort              = 4501, /* Port Number, int32 */
+            .ClaOutPort             = 4551,
             .DestLTPEngineID        = 1, /*Destination LTP engine ID*/
             .SendBytePerCycle       = 101, /*Maximum bytes to send per wakeup, uint32*/
             .ReceiveBytePerCycle    = 200, /*Maximum bytes to receive per wakeup, uint32*/
             .RetransmitTimeout      = 102, /*bundle reforwarding timeout in seconds, uint32*/
             .CSTimeTrigger          = 103, /*Custody Signal time trigger in seconds, uint32*/
             .CSSizeTrigger          = 10 /*Custody signal size trigger in bytes, size_t*/
-        },            
+        },
     }
 };
 
@@ -71,4 +72,4 @@ BPLib_CLA_ContactsTable_t ContactsTable =
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, bpnode_contacts.tbl) 
+CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, bpnode_contacts.tbl)

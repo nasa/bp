@@ -223,7 +223,7 @@ void Test_BPNode_GenWorker_AppMain_Nominal(void)
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), 1, true);
+    BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.GenWorkerData[WorkerId].TaskId = TaskId;
 
