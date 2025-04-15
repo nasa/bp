@@ -32,8 +32,6 @@ BPLib_PI_ChannelTable_t ChannelTable = {
         {
             .AddAutomatically       = true,
             .RequestCustody         = false,
-            .IncludePrevNodeBlk     = false,
-            .IncludeHopCountBlk     = false,
             .AduWrapping            = false,
             .AduUnwrapping          = false,
             .RegState               = 0,
@@ -41,7 +39,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0,
             .MaxBundlePayloadSize   = 15864,
             .CrcType                = BPLib_CRC_Type_CRC16,
-            .BundleProcFlags        = 4,
+            .BundleProcFlags        = BPLIB_BUNDLE_PROC_NO_FRAG_FLAG,
             .DestEID                =
                 {
                     .Scheme         = BPLIB_EID_SCHEME_IPN,
@@ -59,38 +57,33 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Service        = 1
                 },
             .Lifetime               = 10000,
-            .CanBlkConfig           =
+            .PrevNodeBlkConfig =
                 {
-                    {
-                        .BlockType          = BPLib_BlockType_Payload,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 1,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 2,
+                    .BlockProcFlags     = 0
+                },
+            .AgeBlkConfig =
+                {
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 3,
+                    .BlockProcFlags     = 0
+                },
+            .HopCountBlkConfig =
+                {
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 4,
+                    .BlockProcFlags     = 0
+                },
+            .PayloadBlkConfig =
+                {
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 1,
+                    .BlockProcFlags     = 0
                 }
         },
 
@@ -98,8 +91,6 @@ BPLib_PI_ChannelTable_t ChannelTable = {
         {
             .AddAutomatically       = false,
             .RequestCustody         = false,
-            .IncludePrevNodeBlk     = false,
-            .IncludeHopCountBlk     = false,
             .AduWrapping            = true,
             .AduUnwrapping          = false,
             .RegState               = 0,
@@ -107,7 +98,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1,
             .MaxBundlePayloadSize   = 15864,
             .CrcType                = BPLib_CRC_Type_CRC16,
-            .BundleProcFlags        = 4,
+            .BundleProcFlags        = BPLIB_BUNDLE_PROC_NO_FRAG_FLAG,
             .DestEID                =
                 {
                     .Scheme         = BPLIB_EID_SCHEME_IPN,
@@ -125,38 +116,33 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Service        = 1
                 },
             .Lifetime               = 10000,
-            .CanBlkConfig           =
+            .PrevNodeBlkConfig =
                 {
-                    {
-                        .BlockType          = BPLib_BlockType_Payload,
-                        .CrcType            = BPLib_CRC_Type_CRC16,
-                        .BlockNum           = 1,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
-                    {
-                        .BlockType          = BPLib_BlockType_Reserved,
-                        .CrcType            = BPLib_CRC_Type_None,
-                        .BlockNum           = 0,
-                        .BlockProcFlags     = 0
-                    },
+                    .IncludeBlock       = false,
+                    .CrcType            = BPLib_CRC_Type_None,
+                    .BlockNum           = 1,
+                    .BlockProcFlags     = 0
+                },
+            .AgeBlkConfig =
+                {
+                    .IncludeBlock       = false,
+                    .CrcType            = BPLib_CRC_Type_None,
+                    .BlockNum           = 0,
+                    .BlockProcFlags     = 0
+                },
+            .HopCountBlkConfig =
+                {
+                    .IncludeBlock       = false,
+                    .CrcType            = BPLib_CRC_Type_None,
+                    .BlockNum           = 0,
+                    .BlockProcFlags     = 0
+                },
+            .PayloadBlkConfig =
+                {
+                    .IncludeBlock       = true,
+                    .CrcType            = BPLib_CRC_Type_CRC16,
+                    .BlockNum           = 1,
+                    .BlockProcFlags     = 0
                 }
         }
     }
