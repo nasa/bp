@@ -118,6 +118,50 @@ CFE_Status_t BPNode_WakeupProcess(void)
     TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
+    /* Update time as needed */
+    BpStatus = BPLib_TIME_MaintenanceActivities();
+
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        BPLib_EM_SendEvent(BPNODE_TIME_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error doing time maintenance activities, RC = %d", BpStatus);
+    }
+
+    /* Call NC to update configurations */
+    BpStatus = BPLib_NC_ConfigUpdate();
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
+    {
+        BPLib_EM_SendEvent(BPNODE_NC_CFG_UPDATE_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error managing configurations on wakeup, Status=0x%08X",
+                            BpStatus);
+    }
+
+    /* Update the ADUP configuration individually since it's owned by BPNode */
+    BpStatus = BPA_TABLEP_TableUpdate(BPLIB_ADU_PROXY, (void**) &BPNode_AppData.AduProxyTablePtr);
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
+    {
+        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X",
+                            BpStatus);
+    }
+
+    /* Check for pending commands */
+    do
+    {
+        Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
+
+        if (Status == CFE_SUCCESS && BufPtr != NULL)
+        {
+            BPA_DP_TaskPipe(BufPtr);
+        }
+    } while (Status == CFE_SUCCESS);
+
+    /* Not an error case */
+    if (Status == CFE_SB_NO_MESSAGE)
+    {
+        Status = CFE_SUCCESS;
+    }
+
     /* Wake up the Generic Worker Tasks */
     for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
     {
@@ -178,50 +222,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
                                 ContactNum,
                                 OsStatus);
         }
-    }
-
-    /* Update time as needed */
-    BpStatus = BPLib_TIME_MaintenanceActivities();
-
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_TIME_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error doing time maintenance activities, RC = %d", BpStatus);
-    }
-
-    /* Call NC to update configurations */
-    BpStatus = BPLib_NC_ConfigUpdate();
-    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
-    {
-        BPLib_EM_SendEvent(BPNODE_NC_CFG_UPDATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error managing configurations on wakeup, Status=0x%08X",
-                            BpStatus);
-    }
-
-    /* Update the ADUP configuration individually since it's owned by BPNode */
-    BpStatus = BPA_TABLEP_TableUpdate(BPLIB_ADU_PROXY, (void**) &BPNode_AppData.AduProxyTablePtr);
-    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_TBL_UPDATED)
-    {
-        BPLib_EM_SendEvent(BPNODE_TBL_ADDR_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error managing the configuration: ADUProxyTable on wakeup, Status=0x%08X",
-                            BpStatus);
-    }
-
-    /* Check for pending commands */
-    do
-    {
-        Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.CommandPipe, CFE_SB_POLL);
-
-        if (Status == CFE_SUCCESS && BufPtr != NULL)
-        {
-            BPA_DP_TaskPipe(BufPtr);
-        }
-    } while (Status == CFE_SUCCESS);
-
-    /* Not an error case */
-    if (Status == CFE_SB_NO_MESSAGE)
-    {
-        Status = CFE_SUCCESS;
     }
 
     /* Scan CACHE for a maxiumum of N jobs or elapsed time of X mills */
