@@ -27,7 +27,7 @@
 #include "bpnode_tbl.h"
 
 
-BPLib_NC_MIBConfigPNTable_t MIBConfigPNTable = {
+BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
     .InstanceEID = {
         .Scheme       = BPLIB_LOCAL_EID_SCHEME,
         .IpnSspFormat = BPLIB_LOCAL_EID_IPN_SSP_FORMAT,

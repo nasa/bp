@@ -461,7 +461,7 @@ void Test_BPA_TABLEP_PDB_CustodyAuthTblValidateFunc_Error(void)
 void Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Nominal(void)
 {
     CFE_Status_t Status;
-    BPLib_NC_MIBConfigPNTable_t* TblData;
+    BPLib_NC_MibPerNodeConfig_t* TblData;
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_MIBConfigPNTblValidateFunc), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_SUCCESS);
@@ -478,7 +478,7 @@ void Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Nominal(void)
 void Test_BPA_TABLEP_NC_MIBConfigPNTblValidateFunc_Error(void)
 {
     CFE_Status_t Status;
-    BPLib_NC_MIBConfigPNTable_t* TblData;
+    BPLib_NC_MibPerNodeConfig_t* TblData;
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_MIBConfigPNTblValidateFunc), BPLIB_ERROR);
     UT_SetDefaultReturnValue(UT_KEY(BPA_BPLib_Status_Translate), CFE_STATUS_NOT_IMPLEMENTED);
