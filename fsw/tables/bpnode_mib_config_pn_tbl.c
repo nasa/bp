@@ -28,32 +28,46 @@
 
 
 BPLib_NC_MIBConfigPNTable_t MIBConfigPNTable = {
-    .SysNodeName                        = "Name", 
-    .SysNodeOwner                       = "NASA",
-    .SysSoftExec                        = "SysExec",
-    .SysSoftExecVer                     = "Version",
-    .BundleAgentNum                     = 1,
-    .BundleAgentVer                     = "BA Version",
-    .BundleAgentOpState                 = "Active",
-    .BundleAgentConfig                  = "BA Config",
-    .BundleAgentAvailStorage            = 1000,
-    .BundleAgentCtdbSize                = 1000,
-    .BundleSizeNoFrag                   = 1000,
-    .ParamSetMaxSeqenceNum              = 100000,
-    .ParamSetMaxPayloadLength           = 100000,
-    .ParamSetMaxBundleLength            = 100000,
-    .ParamSetMaxTransmissionID          = 1000,
-    .ParamSetMaxForwardingRetries       = 100,
-    .ParamSetMaxSimultaneousContacts    = 10,
-    .ParamSetBehaviorEventReporting     = 10, 
-    .ParamSetBehaviorReturnToSender     = false,
-    .ParamSetBehaviorTransIDReuse       = false,
-    .ParamSetBehaviorTransIDRollover    = false,
-    .ParamSetBehaviorWrapResponse       = false,
-    .ParamSupportBIBE                   = false,
-    .ParamSupportCustody                = false,
-    .ParamSupportConfidentiality        = false,
-    .Spare                              = true
+    .InstanceEID = {
+        .Scheme       = BPLIB_LOCAL_EID_SCHEME,
+        .IpnSspFormat = BPLIB_LOCAL_EID_IPN_SSP_FORMAT,
+        .Allocator    = BPLIB_LOCAL_EID_ALLOCATOR,
+        .Node         = BPLIB_LOCAL_EID_NODE_NUM,
+        .Service      = BPLIB_LOCAL_EID_SERVICE_NUM
+                   },
+
+    /* Per Node values */
+    .SystemNodeName                         = "Name", 
+    .SystemSoftwareExec                     = "SysExec",
+    .SystemSoftwareExecVersion              = "Version",
+    .BundleAgentSoftwareVersion             = "BA Version",
+    .BundleAgentOperationalState            = "Active",
+    .BundleAgentConfiguration               = "BA Config",
+    .ParamSupportedCLAs                     = "",
+    .NodeActiveEndpoints                    = "",
+    .SystemNodeUpTime                       = 0,
+    .NodeStartupCounter                     = 0,
+    .BundleAgentAvailableStorage            = 1000,
+    .BundleSizeNoFragment                   = 1000,
+    .BundleIngressRejectedRateBytesPerSec   = 0,
+    .BundleIngressRejectedRateBundlesPerSec = 0,
+    .ParamSetMaxSequenceNum                 = 100000,
+    .ParamSetMaxPayloadLength               = 100000,
+    .ParamSetMaxBundleLength                = 100000,
+    .ParamSetNodeDTNTime                    = 0,
+    .ParamSetBehaviorEventReporting         = 10,
+
+    /* Per Node and per Source values */
+    .ParamSetMaxLifetime             = 0,            
+    .KbytesCountStorageAvailable     = 0,    
+    .BundleIngressRateBytesPerSec    = 0,   
+    .BundleIngressRateBundlesPerSec  = 0, 
+    .BundleEgressRateBytesPerSec     = 0,    
+    .BundleIngestedRateBundlesPerSec = 0,
+    .BundleIngestedRateBytesPerSec   = 0,  
+    .BundleDeliveryRateBundlesPerSec = 0,
+    .BundleDeliveryRateBytesPerSec   = 0,  
+    .BundleEgressRateBundlesPerSec   = 0,  
 };
 
 /*
