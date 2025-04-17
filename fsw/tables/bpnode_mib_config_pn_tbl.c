@@ -36,6 +36,9 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
         .Service      = BPLIB_LOCAL_EID_SERVICE_NUM
                    },
 
+    /* Alignment spares */
+    .Spare = {0, 0, 0},
+
     /* Per Node values */
     .SystemNodeName                         = "Name",
     .SystemSoftwareExec                     = "SysExec",
