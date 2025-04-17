@@ -37,7 +37,7 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
                    },
 
     /* Per Node values */
-    .SystemNodeName                         = "Name", 
+    .SystemNodeName                         = "Name",
     .SystemSoftwareExec                     = "SysExec",
     .SystemSoftwareExecVersion              = "Version",
     .BundleAgentSoftwareVersion             = "BA Version",
@@ -58,16 +58,16 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
     .ParamSetBehaviorEventReporting         = 10,
 
     /* Per Node and per Source values */
-    .ParamSetMaxLifetime             = 0,            
-    .KbytesCountStorageAvailable     = 0,    
-    .BundleIngressRateBytesPerSec    = 0,   
-    .BundleIngressRateBundlesPerSec  = 0, 
-    .BundleEgressRateBytesPerSec     = 0,    
+    .ParamSetMaxLifetime             = 0,
+    .KbytesCountStorageAvailable     = 0,
+    .BundleIngressRateBytesPerSec    = 0,
+    .BundleIngressRateBundlesPerSec  = 0,
+    .BundleEgressRateBytesPerSec     = 0,
     .BundleIngestedRateBundlesPerSec = 0,
-    .BundleIngestedRateBytesPerSec   = 0,  
+    .BundleIngestedRateBytesPerSec   = 0,
     .BundleDeliveryRateBundlesPerSec = 0,
-    .BundleDeliveryRateBytesPerSec   = 0,  
-    .BundleEgressRateBundlesPerSec   = 0,  
+    .BundleDeliveryRateBytesPerSec   = 0,
+    .BundleEgressRateBundlesPerSec   = 0,
 };
 
 /*
