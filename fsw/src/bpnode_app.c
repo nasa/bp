@@ -234,6 +234,18 @@ CFE_Status_t BPNode_WakeupProcess(void)
         CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
         TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
     }
+
+    /* Flush bundles pending storage */
+    Status = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+    if (Status != BPLIB_SUCCESS)
+    {
+        /* Event message */
+        BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
+            "Error batch-flushing bundles to storage, Status=0x%08X",
+            BpStatus);
+    }
+
+    /* Cleanup bundles that should be discarded */
     BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
 
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
