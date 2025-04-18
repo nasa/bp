@@ -236,8 +236,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Flush bundles pending storage */
-    Status = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
-    if (Status != BPLIB_SUCCESS)
+    BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+    if (BpStatus != BPLIB_SUCCESS)
     {
         /* Event message */
         BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
