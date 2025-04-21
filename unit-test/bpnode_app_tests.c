@@ -197,6 +197,41 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
     UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
 }
 
+/* Test wakeup process calls STOR GarbageCollect and FlushPending */
+void Test_BPNode_WakeupProcess_STORNominal(void)
+{
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(BPLib_STOR_FlushPending, 1);
+    UtAssert_STUB_COUNT(BPLib_STOR_GarbageCollect, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+void Test_BPNode_WakeupProcess_STORFail(void)
+{
+    int64 TimeNow = 123450000;
+    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
+                                                            sizeof(TimeNow), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+
+    /* return a storage error from FlushPending */
+    UT_SetDeferredRetcode(UT_KEY(BPLib_STOR_FlushPending), 1, BPLIB_STOR_SQL_STORAGE_ERR);
+
+    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
+
+    /* Ensure Event Send was called */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+
+    /* Flush and GarbageCollect should still be called */
+    UtAssert_STUB_COUNT(BPLib_STOR_FlushPending, 1);
+    UtAssert_STUB_COUNT(BPLib_STOR_GarbageCollect, 1);
+}
+
 /* Test wakeup process after failing to give a semaphore */
 void Test_BPNode_WakeupProcess_FailSem(void)
 {
@@ -674,6 +709,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppMain_CommandErr);
     ADD_TEST(Test_BPNode_AppMain_CommandRecvd);
     ADD_TEST(Test_BPNode_WakeupProcess_CommandRecvd);
+    ADD_TEST(Test_BPNode_WakeupProcess_STORNominal);
+    ADD_TEST(Test_BPNode_WakeupProcess_STORFail);
     ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
