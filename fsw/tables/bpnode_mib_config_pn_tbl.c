@@ -36,18 +36,6 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
         .Service      = BPLIB_LOCAL_EID_SERVICE_NUM
                    },
 
-    /* Alignment spares */
-    .Spare = {0, 0, 0},
-
-    /* Per Node values */
-    .SystemNodeName                         = "Name",
-    .SystemSoftwareExec                     = "SysExec",
-    .SystemSoftwareExecVersion              = "Version",
-    .BundleAgentSoftwareVersion             = "BA Version",
-    .BundleAgentOperationalState            = "Active",
-    .BundleAgentConfiguration               = "BA Config",
-    .ParamSupportedCLAs                     = "",
-    .NodeActiveEndpoints                    = "",
     .SystemNodeUpTime                       = 0,
     .NodeStartupCounter                     = 0,
     .BundleAgentAvailableStorage            = 1000,
@@ -71,6 +59,18 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
     .BundleDeliveryRateBundlesPerSec = 0,
     .BundleDeliveryRateBytesPerSec   = 0,
     .BundleEgressRateBundlesPerSec   = 0,
+
+    .Spare = {0, 0, 0},
+
+    /* Per Node values */
+    .SystemNodeName              = "Name",
+    .SystemSoftwareExec          = "SysExec",
+    .SystemSoftwareExecVersion   = "Version",
+    .BundleAgentSoftwareVersion  = "BA Version",
+    .BundleAgentOperationalState = "Active",
+    .BundleAgentConfiguration    = "BA Config",
+    .ParamSupportedCLAs          = "",
+    .NodeActiveEndpoints         = "",
 };
 
 /*
