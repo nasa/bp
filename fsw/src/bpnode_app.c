@@ -226,7 +226,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
     /* Flush and Garbage Collect */
     BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
-    BpStatus = BPLIB_SUCCESS;
     if (BpStatus != BPLIB_SUCCESS)
     {
         /* Event message */
