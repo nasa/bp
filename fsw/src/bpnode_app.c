@@ -260,6 +260,7 @@ CFE_Status_t BPNode_AppInit(void)
     char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
     char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
     uint8 i;
+    CFE_SB_Qos_t PipeQOS = {0, 0};
 
     BPLib_FWP_ProxyCallbacks_t Callbacks = {
         /* Time Proxy */
@@ -397,8 +398,8 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Subscribe to ground command packets */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CMD_MID),
-                                BPNode_AppData.CommandPipe);
+    Status = CFE_SB_SubscribeEx(CFE_SB_ValueToMsgId(BPNODE_CMD_MID), BPNode_AppData.CommandPipe,
+            PipeQOS, BPNODE_CMD_MID_DEPTH);
 
     if (Status != CFE_SUCCESS)
     {
