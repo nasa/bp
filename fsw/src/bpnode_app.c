@@ -224,6 +224,17 @@ CFE_Status_t BPNode_WakeupProcess(void)
         Status = CFE_SUCCESS;
     }
 
+    /* Flush and Garbage Collect */
+    BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        /* Event message */
+        BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
+            "Error batch-flushing bundles to storage, Status=0x%08X",
+            BpStatus);
+    }
+    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
+
     /* Scan CACHE for a maxiumum of N jobs or elapsed time of X mills */
     CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
     TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
@@ -234,7 +245,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
         CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
         TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
     }
-    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
 
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
     return Status;

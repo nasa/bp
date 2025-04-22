@@ -156,4 +156,7 @@
 #define BPNODE_TBL_UPDATE_INF_EID               122
 #define BPNODE_NC_CFG_UPDATE_ERR_EID            123
 
+#define BPNODE_APP_STOR_FLUSH_ERR_EID           124
+
+
 #endif /* BPNODE_EVENTS_H */
