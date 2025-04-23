@@ -110,7 +110,7 @@ CFE_Status_t BPA_TABLEP_TableInit(void)
         /* Initialize the NC MIB config per node configuration */
         Status = BPA_TABLEP_SingleTableInit("MIBConfigPNTable",
                                             MIB_CONFIG_PN_TABLE_FILE,
-                                            sizeof(BPLib_NC_MIBConfigPNTable_t),
+                                            sizeof(BPLib_NC_MibPerNodeConfig_t),
                                             (CFE_TBL_CallbackFuncPtr_t) BPA_TABLEP_NC_MIBConfigPNTblValidateFunc,
                                             (void**) &BPNode_AppData.ConfigPtrs.MibPnConfigPtr,
                                             &BPNode_AppData.TableHandles[BPLIB_MIB_PER_NODE]);

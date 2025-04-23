@@ -50,7 +50,7 @@ BPLib_CLA_ContactsTable_t   TestContactsTbl;
 BPLib_ARP_CRSTable_t        TestCrsTbl;
 BPLib_PDB_CustodianTable_t  TestCustodianTbl;
 BPLib_PDB_CustodyTable_t    TestCustodyTbl;
-BPLib_NC_MIBConfigPNTable_t TestMibPnTbl;
+BPLib_NC_MibPerNodeConfig_t TestMibPnTbl;
 BPLib_NC_MIBConfigPSTable_t TestMibPsTbl;
 BPLib_PDB_ReportToTable_t   TestReportTbl;
 BPLib_PDB_SrcAuthTable_t    TestAuthTbl;
@@ -219,7 +219,7 @@ void BPNode_UT_Setup(void)
     memset(&TestCrsTbl, 0, sizeof(BPLib_ARP_CRSTable_t));
     memset(&TestCustodianTbl, 0, sizeof(BPLib_PDB_CustodianTable_t));
     memset(&TestCustodyTbl, 0, sizeof(BPLib_PDB_CustodyTable_t));
-    memset(&TestMibPnTbl, 0, sizeof(BPLib_NC_MIBConfigPNTable_t));
+    memset(&TestMibPnTbl, 0, sizeof(BPLib_NC_MibPerNodeConfig_t));
     memset(&TestMibPsTbl, 0, sizeof(BPLib_NC_MIBConfigPSTable_t));
     memset(&TestReportTbl, 0, sizeof(BPLib_PDB_ReportToTable_t));
     memset(&TestAuthTbl, 0, sizeof(BPLib_PDB_SrcAuthTable_t));
