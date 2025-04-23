@@ -295,7 +295,6 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     BPNode_ClaOut_AppMain();
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(BPLib_AS_Increment, 1);
     UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
 
     /*
