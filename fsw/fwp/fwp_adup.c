@@ -84,17 +84,8 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
             /* TODO remove header */
         }
 
-        BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1);
-
         /* Pass ADU to PI */
         Status = BPLib_PI_Ingress(&BPNode_AppData.BplibInst, ChanId, AduPtr, Size);
-
-        if (Status != BPLIB_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_PI_IN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[ADU In #%d]: Failed to ingress an ADU. Error = %d.",
-                                ChanId, Status);
-        }
     }
     else
     {
@@ -121,13 +112,10 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 
     if (Status == BPLIB_SUCCESS)
     {
-        /* AduSize seems wrong, return length error */
-        if (AduSize == 0 || AduSize > BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES)
-        {
-            Status = BPLIB_BUF_LEN_ERROR;
-        }        
+        /* AduSize is validated within PI Egress, no need to check */
+
         /* Add cFS header to ADU */
-        else if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
+        if (BPNode_AppData.AduOutData[ChanId].AduWrapping == true)
         {
             CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader),
                                         BPNode_AppData.AduOutData[ChanId].SendToMsgId);
@@ -136,14 +124,12 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 
             /* Send wrapped ADU onto Software Bus */
             CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), true);
-            BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
         }
         /* Don't add cFS header, assume it has one already */
         else
         {
             /* Send ADU onto Software Bus */
             CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload, false);
-            BPLib_AS_Increment(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1);
         }     
     }
     /* Only report non-timeout errors */

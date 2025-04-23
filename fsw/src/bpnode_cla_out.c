@@ -72,15 +72,14 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
         WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
         WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].BundleBuffer;
 
-        BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_COUNT_FORWARDED, 1);
-
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
+        
         /* This does not check return code here, it is "best effort" at this stage.
          * bplib should retry based on custody signals if this does not work. */
-        CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation,
-                                    CFE_PSP_IODriver_PACKET_IO_WRITE,
-                                    CFE_PSP_IODriver_VPARG(&WrBuf));
+        (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation,
+                                                CFE_PSP_IODriver_PACKET_IO_WRITE,
+                                                CFE_PSP_IODriver_VPARG(&WrBuf));
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
