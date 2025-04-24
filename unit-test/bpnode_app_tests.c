@@ -499,7 +499,7 @@ void Test_BPNode_AppInit_FailedWakeupPipeCreate(void)
 void Test_BPNode_AppInit_FailedCommandSub(void)
 {
     /* Failure to subscribe to commands */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_BAD_ARGUMENT);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_SubscribeEx), 1, CFE_SB_BAD_ARGUMENT);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
@@ -513,7 +513,7 @@ void Test_BPNode_AppInit_FailedCommandSub(void)
 void Test_BPNode_AppInit_FailedWakeupSub(void)
 {
     /* Failure to subscribe to wakeups */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 2, CFE_SB_BAD_ARGUMENT);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_BAD_ARGUMENT);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
