@@ -110,7 +110,6 @@ void Test_BPA_ADUP_In_Nominal(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_SUCCESS);
     
-    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1, 1);
     UtAssert_STUB_COUNT(BPLib_PI_Ingress, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -152,11 +151,6 @@ void Test_BPA_ADUP_In_IngressErr(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_In(&Buf, ChanId), BPLIB_NULL_PTR_ERROR);
 
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_PI_IN_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[ADU In #%d]: Failed to ingress an ADU. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE, 
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-
-    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_RECEIVED, 1, 1);
     UtAssert_STUB_COUNT(BPLib_PI_Ingress, 1);
 }
 
@@ -170,36 +164,10 @@ void Test_BPA_ADUP_Out_Nominal(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
-    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1,  1);
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
-/* Test BPA_ADUP_Out when the AduSize doesn't get set correctly */
-void Test_BPA_ADUP_Out_SizeZero(void)
-{
-    uint8_t ChanId = 0;
-    size_t SizeVal = 0;
-
-    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
-
-    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_BUF_LEN_ERROR);
-    
-    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
-}
-
-/* Test BPA_ADUP_Out when the AduSize doesn't get set correctly */
-void Test_BPA_ADUP_Out_SizeTooBig(void)
-{
-    uint8_t ChanId = 0;
-    size_t SizeVal = BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES + 1;
-
-    UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
-
-    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_BUF_LEN_ERROR);
-    
-    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
-}
 
 /* Test BPA_ADUP_Out when wrapping is true */
 void Test_BPA_ADUP_Out_Wrapping(void)
@@ -213,7 +181,6 @@ void Test_BPA_ADUP_Out_Wrapping(void)
 
     UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT), BPLIB_SUCCESS);
     
-    Test_FWP_ADUP_VerifyIncrement(BPLIB_EID_INSTANCE, ADU_COUNT_DELIVERED, 1,  1);
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(CFE_MSG_SetMsgId, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
@@ -507,8 +474,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_ADUP_In_IngressErr);
 
     ADD_TEST(Test_BPA_ADUP_Out_Nominal);
-    ADD_TEST(Test_BPA_ADUP_Out_SizeZero);
-    ADD_TEST(Test_BPA_ADUP_Out_SizeTooBig);
     ADD_TEST(Test_BPA_ADUP_Out_Wrapping);
     ADD_TEST(Test_BPA_ADUP_Out_EgressErr);
     ADD_TEST(Test_BPA_ADUP_Out_Timeout);

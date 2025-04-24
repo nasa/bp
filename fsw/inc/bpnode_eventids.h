@@ -152,7 +152,7 @@
 #define BPNODE_QM_INIT_ERR_EID                  118
 #define BPNODE_MEM_INIT_ERR_EID                 119
 #define BPNODE_ADU_OUT_PI_OUT_ERR_EID           120
-#define BPNODE_ADU_OUT_PI_IN_ERR_EID            121
+
 #define BPNODE_TBL_UPDATE_INF_EID               122
 #define BPNODE_NC_CFG_UPDATE_ERR_EID            123
 
