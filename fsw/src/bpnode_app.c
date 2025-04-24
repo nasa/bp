@@ -400,7 +400,6 @@ CFE_Status_t BPNode_AppInit(void)
     /* Subscribe to ground command packets */
     Status = CFE_SB_SubscribeEx(CFE_SB_ValueToMsgId(BPNODE_CMD_MID), BPNode_AppData.CommandPipe,
             PipeQOS, BPNODE_CMD_MID_DEPTH);
-
     if (Status != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_SUB_CMD_ERR_EID, BPLib_EM_EventType_ERROR,
