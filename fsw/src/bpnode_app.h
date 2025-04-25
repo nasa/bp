@@ -91,8 +91,6 @@ typedef struct
     BPNode_ClaOutData_t    ClaOutData[BPLIB_MAX_NUM_CONTACTS];       /** \brief Global data for CLA Out tasks */
     BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /** \brief Global data for Generic Worker tasks */
     BPNode_Notif_t         ChildStopWorkNotif;                       /** \brief Shared notification for stopping child task work */
-    BPNode_ClaInData_t     SB_ClaInData;                             /** \brief Global data for SB CLA In task */
-    BPNode_ClaOutData_t    SB_ClaOutData;                            /** \brief Global data for SB CLA Out task */
 
     /* BPLib Instance State */
     BPLib_Instance_t            BplibInst;

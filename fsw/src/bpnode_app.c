@@ -224,15 +224,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
-    OsStatus = OS_BinSemGive(BPNode_AppData.SB_ClaInData.WakeupSemId);
-    if (OsStatus != OS_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                            BPLib_EM_EventType_ERROR,
-                            "Error giving SB CLA Task its wakeup semaphore, RC = %d",
-                            OsStatus);
-    }
-
     /* Flush and Garbage Collect */
     BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
     if (BpStatus != BPLIB_SUCCESS)
