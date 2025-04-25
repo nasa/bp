@@ -82,11 +82,6 @@
  */
 #define BPNODE_GEN_WRKR_STACK_SIZE (8192u)
 
-/**
- * \brief SB CLA In Task stack size
- */
-#define BPNODE_SB_CLA_IN_STACK_SIZE  (32768u)
-
 /** @} */
 
 
@@ -172,11 +167,6 @@
  *          The Contact ID is added to the base value to get the final task priority
  */
 #define BPNODE_CLA_IN_PRIORITY_BASE  (BPNODE_ADU_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
-
-/**
- * \brief SB CLA In Task priority base
- */
-#define BPNODE_SB_CLA_IN_PRIORITY_BASE (BPNODE_CLA_IN_PRIORITY_BASE + 1)
 
 /** @} */
 
