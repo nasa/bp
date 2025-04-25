@@ -70,7 +70,6 @@ typedef struct
     CFE_PSP_IODriver_Location_t  PspLocation;
     size_t                       CurrentBufferSize;
     uint8                        BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
-
 } BPNode_ClaInData_t;
 
 
@@ -191,6 +190,6 @@ void BPNode_ClaIn_TaskExit(uint32 ContactId);
   *                                 arrays that corresponds to that contact's info
   * \return    void
   */
- void BPNode_ClaIn_DeleteSems(uint32 ContactId);
+void BPNode_ClaIn_DeleteSems(uint32 ContactId);
 
 #endif /* BPNODE_CLA_IN_H */

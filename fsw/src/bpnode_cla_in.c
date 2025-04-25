@@ -128,7 +128,7 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
 
             if (Status != OS_SUCCESS)
             {
-                BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
                                     "Failed to create wakeup semaphore, %s, for CLA In #%d. Error = %d",
                                     ContactId,
                                     NameBuff,
