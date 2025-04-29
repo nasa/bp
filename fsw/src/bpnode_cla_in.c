@@ -37,16 +37,43 @@
 int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
-    int32                               Status = CFE_PSP_SUCCESS;
+    CFE_SB_Buffer_t*                    BufPtr;
+    int32                               Status;
     BPLib_Status_t                      BpStatus;
 
+    Status = CFE_PSP_SUCCESS;
 
     if (BPNode_AppData.ClaInData[ContId].CurrentBufferSize == 0)
     {
         if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
         {
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+
             /* Read next bundle from SB */
-            /* TODO */
+            Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.ClaInData[ContId].IngressPipe,
+                                            BPNODE_CLA_IN_SB_TIMEOUT);
+
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
+            if (Status == CFE_SUCCESS)
+            {
+                BPNode_AppData.ClaInData[ContId].CurrentBufferSize = sizeof(*BufPtr);
+            }
+            else if (Status == CFE_SB_TIME_OUT)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_TIMEOUT_ERR_EID,
+                                    BPLib_EM_EventType_ERROR,
+                                    "[CLA In #%d]: SB buffer reception timed out",
+                                    ContId);
+            }
+            else
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_ERR_EID,
+                                    BPLib_EM_EventType_ERROR,
+                                    "[CLA In #%d]: Failed to receive from the SB buffer. Error = %d",
+                                    ContId,
+                                    Status);
+            }
         }
         else
         {

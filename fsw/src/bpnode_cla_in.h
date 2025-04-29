@@ -49,6 +49,7 @@
 #define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)                      /** \brief Wait time for init semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)                      /** \brief Wait time for wakeup semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SB_CONTACT_ID          (BPLIB_MAX_NUM_CONTACTS - 1) /** \brief Make the last contact an SB contact */
+#define BPNODE_CLA_IN_SB_TIMEOUT             (1200u)                      /** \brief Time to wait for a buffer to be received from SB */
 
 
 /*
@@ -66,9 +67,14 @@ typedef struct
     osal_id_t                    ExitSemId;
     uint32                       PerfId;
 
-    /* IODriver usock_intf related*/
+    /* IODriver usock_intf related */
     CFE_PSP_IODriver_Direction_t Dir;
     CFE_PSP_IODriver_Location_t  PspLocation;
+
+    /* CFE_SB_ReceiveBuffer related */
+    CFE_SB_PipeId_t IngressPipe;
+
+    /* General ingress info */
     size_t                       CurrentBufferSize;
     uint8                        BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
 } BPNode_ClaInData_t;
