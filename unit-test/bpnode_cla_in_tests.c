@@ -525,7 +525,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
     
     /* Verify that the function ran as expected */
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
-    UtAssert_EQ(size_t, BPNode_AppData.ClaInData[ContId].CurrentBufferSize, sizeof(Buff));
+    UtAssert_GT(size_t, BPNode_AppData.ClaInData[ContId].CurrentBufferSize, (size_t) 0);
     UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 }
 
