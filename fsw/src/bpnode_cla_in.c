@@ -40,15 +40,15 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     int32                               Status = CFE_PSP_SUCCESS;
     BPLib_Status_t                      BpStatus;
 
-    if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
+
+    if (BPNode_AppData.ClaInData[ContId].CurrentBufferSize == 0)
     {
-        /* Read next bundle from SB */
-        /* TODO */
-    }
-    else
-    {
-        /* Read next bundle from CL */
-        if (BPNode_AppData.ClaInData[ContId].CurrentBufferSize == 0)
+        if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
+        {
+            /* Read next bundle from SB */
+            /* TODO */
+        }
+        else
         {
             RdBuf.BufferSize = sizeof(BPNode_AppData.ClaInData[ContId].BundleBuffer);
             RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].BundleBuffer;
@@ -252,7 +252,7 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
             }
         }
     }
-    
+
     if (Status == CFE_PSP_SUCCESS)
     {
         /* Verify initialization by trying to give on the init sempahore */
