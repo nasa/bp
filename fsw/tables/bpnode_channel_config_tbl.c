@@ -34,7 +34,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .RequestCustody         = false,
             .AduWrapping            = false,
             .AduUnwrapping          = false,
-            .RegState               = 0,
+            .RegState               = BPLIB_PI_ACTIVE,
             .HopLimit               = 10,
             .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0,
             .MaxBundlePayloadSize   = 15864,
@@ -50,11 +50,11 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                 },
             .ReportToEID            =
                 {
-                    .Scheme         = BPLIB_EID_SCHEME_IPN,
+                    .Scheme         = BPLIB_EID_SCHEME_DTN,
                     .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
                     .Allocator      = 0,
-                    .Node           = 100,
-                    .Service        = 1
+                    .Node           = 0,
+                    .Service        = 0
                 },
             .Lifetime               = 10000,
             .PrevNodeBlkConfig =
@@ -93,7 +93,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .RequestCustody         = false,
             .AduWrapping            = true,
             .AduUnwrapping          = false,
-            .RegState               = 0,
+            .RegState               = BPLIB_PI_PASSIVE_DEFER,
             .HopLimit               = 10,
             .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1,
             .MaxBundlePayloadSize   = 15864,
