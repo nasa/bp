@@ -37,8 +37,10 @@ BPNode_NodeMibConfigHkTlm_t      NodeMibConfigHkTlm;      /** \brief Node MIB Co
 BPNode_SourceMibConfigHkTlm_t    SourceMibConfigHkTlm;    /** \brief Per Source MIB Config housekeeping packet */
 BPNode_NodeMibCountersHkTlm_t    NodeMibCountersHkTlm;    /** \brief Node MIB counter housekeeping packet */
 BPNode_SourceMibCountersHkTlm_t  SourceMibCountersHkTlm;  /** \brief Per source MIB counters housekeeping packet */
+BPNode_NodeMibReportsHkTlm_t     NodeMibReportsHkTlm;     /** \brief Node MIB reports housekeeping packet */
 BPNode_ChannelContactStatHkTlm_t ChannelContactStatHkTlm; /** \brief Channel contact statistics housekeeping packet */
 BPNode_StorageHkTlm_t            StorageHkTlm;            /** \brief Storage housekeeping packet */
+
 
 /*
 ** Function Definitions
@@ -60,6 +62,11 @@ void BPA_TLMP_Init(void)
     CFE_MSG_Init(CFE_MSG_PTR(NodeMibCountersHkTlm.TelemetryHeader),
                     CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID),
                     sizeof(BPNode_NodeMibCountersHkTlm_t));
+
+    /* Inititalize node MIB reports housekeeping packet */
+    CFE_MSG_Init(CFE_MSG_PTR(NodeMibReportsHkTlm.TelemetryHeader),
+                    CFE_SB_ValueToMsgId(BPNODE_NODE_MIB_REPORTS_HK_TLM_MID),
+                    sizeof(BPNode_NodeMibReportsHkTlm_t));                    
 
     /* Inititalize source MIB counters housekeeping packet */
     CFE_MSG_Init(CFE_MSG_PTR(SourceMibCountersHkTlm.TelemetryHeader),
@@ -141,6 +148,23 @@ BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_
 
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(SourceMibCountersHkTlm.TelemetryHeader));
     Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(SourceMibCountersHkTlm.TelemetryHeader), true);
+
+    return BPA_CFE_Status_Translate(Status);
+}
+
+BPLib_Status_t BPA_TLMP_SendNodeMibReportsPkt(BPLib_NodeMibReportsHkTlm_Payload_t* NodeMibReportsHkTlm_Payload)
+{
+    CFE_Status_t Status;
+    BPLib_TIME_MonotonicTime_t MonotonicTime;
+
+    BPLib_TIME_GetMonotonicTime(&MonotonicTime);
+    NodeMibReportsHkTlm.Payload                    = *NodeMibReportsHkTlm_Payload;    
+    NodeMibReportsHkTlm.Payload.MonotonicTime      = MonotonicTime.Time;
+    NodeMibReportsHkTlm.Payload.NodeStartupCounter = MonotonicTime.BootEra;
+    NodeMibReportsHkTlm.Payload.CorrelationFactor  = BPLib_TIME_GetCorrelationFactor();
+    
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(NodeMibReportsHkTlm.TelemetryHeader));
+    Status = CFE_SB_TransmitMsg(CFE_MSG_PTR(NodeMibReportsHkTlm.TelemetryHeader), true);
 
     return BPA_CFE_Status_Translate(Status);
 }

@@ -406,6 +406,14 @@ typedef struct
 } BPNode_SendNodeMibCountersHkCmd_t;
 
 /**
+ * \brief Send node MIB reports hk command
+ */
+typedef struct
+{
+    CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
+} BPNode_SendNodeMibReportsHkCmd_t;
+
+/**
  * \brief Send per-source mib counter hk command
  */
 typedef struct
@@ -469,6 +477,15 @@ typedef struct
     CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
     BPLib_SourceMibCountersHkTlm_Payload_t Payload;  /**< \brief Telemetry payload */
 } BPNode_SourceMibCountersHkTlm_t;
+
+/**
+ * \brief Node MIB reports housekeeping telemetry
+ */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t  TelemetryHeader;     /**< \brief Telemetry header */
+    BPLib_NodeMibReportsHkTlm_Payload_t Payload;    /**< \brief Telemetry payload */
+} BPNode_NodeMibReportsHkTlm_t;
 
 /**
  * \brief Storage housekeeping telemetry
