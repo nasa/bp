@@ -37,7 +37,7 @@
 int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
-    CFE_SB_Buffer_t*                    BufPtr;
+    void**                              BundleBufferPtr;
     int32                               Status;
     BPLib_Status_t                      BpStatus;
 
@@ -47,17 +47,23 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     {
         if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
         {
+            BundleBufferPtr = &(BPNode_AppData.ClaInData[ContId].BundleBuffer);
+
             BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
             /* Read next bundle from SB */
-            Status = CFE_SB_ReceiveBuffer(&BufPtr, BPNode_AppData.ClaInData[ContId].IngressPipe,
+            Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) BundleBufferPtr,
+                                            BPNode_AppData.ClaInData[ContId].IngressPipe,
                                             BPNODE_CLA_IN_SB_TIMEOUT);
 
             BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
+            /* Extract the bundle from the space packet */
+            *BundleBufferPtr = (void*) CFE_SB_GetUserData((CFE_MSG_Message_t*) *BundleBufferPtr);
+
             if (Status == CFE_SUCCESS)
             {
-                BPNode_AppData.ClaInData[ContId].CurrentBufferSize = sizeof(*BufPtr);
+                CFE_MSG_GetSize(*BundleBufferPtr, (CFE_MSG_Size_t*) &(BPNode_AppData.ClaInData[ContId].CurrentBufferSize));
             }
             else if (Status == CFE_SB_TIME_OUT)
             {
