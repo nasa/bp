@@ -18,7 +18,7 @@
  *
  */
 
-/*
+/**
 ** \file
 **   This file contains the source code for the MIB Per Node Config Table
 */
@@ -37,11 +37,11 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
     },
 
     .ParamSetMaxSequenceNum                 = 100000,
-    .ParamSetMaxPayloadLength               = 100000,
-    .ParamSetMaxBundleLength                = 100000,
+    .ParamSetMaxPayloadLength               = BPLIB_MAX_PAYLOAD_SIZE,
+    .ParamSetMaxBundleLength                = BPLIB_MAX_BUNDLE_LEN,
     .ParamSetNodeDTNTime                    = 0,
     .ParamSetBehaviorEventReporting         = 10,
-    .ParamSetMaxLifetime                    = 0
+    .ParamSetMaxLifetime                    = BPLIB_MAX_LIFETIME_ALLOWED
 
 };
 
