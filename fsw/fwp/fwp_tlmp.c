@@ -121,7 +121,6 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload
     CFE_Status_t Status;
     BPLib_TIME_MonotonicTime_t MonotonicTime;
 
-    // TODO node startup counter
     BPLib_TIME_GetMonotonicTime(&MonotonicTime);
     NodeMibCountersHkTlm.Payload                   = *NodeMibCountersHkTlm_Payload;    
     NodeMibCountersHkTlm.Payload.MonotonicTime     = MonotonicTime.Time;
