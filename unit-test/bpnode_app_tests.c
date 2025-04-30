@@ -611,6 +611,26 @@ void Test_BPNode_AppInit_AutoAddAppFail(void)
     UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
 }
 
+void Test_BPNode_AppInit_SetupContactFail(void)
+{
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactSetup), BPLIB_CLA_INCORRECT_STATE);
+
+    UtAssert_EQ(BPLib_Status_t, BPNode_AppInit(), BPLIB_CLA_INCORRECT_STATE);
+
+    BPNode_Test_Verify_Event(0, BPNODE_INIT_SB_CONTACT_ERR_EID,
+                                "Failed to set up SB contact during initialization, RC = %d");
+}
+
+void Test_BPNode_AppInit_StartContactFail(void)
+{
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactStart), BPLIB_CLA_INCORRECT_STATE);
+
+    UtAssert_EQ(BPLib_Status_t, BPNode_AppInit(), BPLIB_CLA_INCORRECT_STATE);
+
+    BPNode_Test_Verify_Event(0, BPNODE_INIT_SB_CONTACT_ERR_EID,
+                                "Failed to start SB contact during initialization, RC = %d");
+}
+
 /* Test app exit in nominal case */
 void Test_BPNode_AppExit_Nominal(void)
 {
@@ -713,6 +733,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_WakeupProcess_STORFail);
     ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
     ADD_TEST(Test_BPNode_WakeupProcess_TableUpdate_Nominal);
@@ -731,11 +752,12 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedAduOutTasks);
     ADD_TEST(Test_BPNode_AppInit_AutoAddApp);
     ADD_TEST(Test_BPNode_AppInit_AutoAddAppFail);
+    ADD_TEST(Test_BPNode_AppInit_SetupContactFail);
+    ADD_TEST(Test_BPNode_AppInit_StartContactFail);
     ADD_TEST(Test_BPNode_AppExit_Nominal);
     ADD_TEST(Test_BPNode_AppInit_FailedTimeInit);
     ADD_TEST(Test_BPNode_AppInit_FailedClaIn);
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
-    ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
 }

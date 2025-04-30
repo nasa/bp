@@ -163,5 +163,7 @@
 
 #define BPNODE_APP_STOR_FLUSH_ERR_EID           128
 
+#define BPNODE_INIT_SB_CONTACT_ERR_EID          129
+
 
 #endif /* BPNODE_EVENTS_H */
