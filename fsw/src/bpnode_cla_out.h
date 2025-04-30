@@ -79,8 +79,7 @@ typedef struct
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t Dir;
     CFE_PSP_IODriver_Location_t  PspLocation;
-    size_t                       CurrentBufferSize;
-    uint8                        BundlexBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
+    BPNode_ClaOut_Buffer_t       OutBuffer;
 } BPNode_ClaOutData_t;
 
 

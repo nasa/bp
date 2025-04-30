@@ -39,17 +39,24 @@
 int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
 {
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
+    CFE_SB_Buffer_t*                     Buffer;
     int32                                Status = CFE_PSP_SUCCESS;
     BPLib_Status_t                       BpStatus;
+    CFE_MSG_Size_t                       MsgSize;
+
+    /* Obtain the size of the message */
+    Buffer = (CFE_SB_Buffer_t*) &BPNode_AppData.ClaOutData[ContId].OutBuffer;
+    CFE_MSG_GetSize(&(Buffer->Msg), &MsgSize);
 
     /* Get next bundle from CLA */
-    if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize == 0)
+    if (MsgSize == 0)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst, ContId,
-                                    BPNode_AppData.ClaOutData[ContId].BundleBuffer,
-                                    &BPNode_AppData.ClaOutData[ContId].CurrentBufferSize,
+        BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst,
+                                    ContId,
+                                    BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload,
+                                    &MsgSize,
                                     BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
                                     BPNODE_CLA_OUT_QUEUE_PEND_TIME);
 
@@ -67,23 +74,38 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
     }
 
     /* Send egress bundle onto CL */
-    if (BPNode_AppData.ClaOutData[ContId].CurrentBufferSize != 0)
+    if (MsgSize != 0)
     {
-        WrBuf.OutputSize = BPNode_AppData.ClaOutData[ContId].CurrentBufferSize;
-        WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].BundleBuffer;
+        if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
+        { /* Contact is SB-type */
+            /* Set the MID for the outbound bundle */
+            CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
+                                CFE_SB_ValueToMsgId(BPNODE_CLA_OUT_BUNDLE_MID));
 
-        BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
+            /* Set the size of the message */
+            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
+                            MsgSize + sizeof(CFE_MSG_TelemetryHeader_t));
 
-        
-        /* This does not check return code here, it is "best effort" at this stage.
-         * bplib should retry based on custody signals if this does not work. */
-        (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation,
-                                                CFE_PSP_IODriver_PACKET_IO_WRITE,
-                                                CFE_PSP_IODriver_VPARG(&WrBuf));
+            /* Send the wrapped bundle onto the Software Bus */
+            CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), true);
+        }
+        else
+        {
+            WrBuf.OutputSize = MsgSize;
+            WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload;
 
-        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-        BPNode_AppData.ClaOutData[ContId].CurrentBufferSize = 0;
+            /* This does not check return code here, it is "best effort" at this stage.
+            * bplib should retry based on custody signals if this does not work. */
+            (void) CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContId].PspLocation,
+                                                    CFE_PSP_IODriver_PACKET_IO_WRITE,
+                                                    CFE_PSP_IODriver_VPARG(&WrBuf));
+
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
+        }
+
+        CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), 0);
     }
 
     return CFE_SUCCESS;
