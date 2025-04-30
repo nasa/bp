@@ -252,7 +252,39 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
 
     if (ContactId == BPNODE_CLA_IN_SB_CONTACT_ID)
     {
-        /* TODO: Init SB stuff */
+        /* Create ingress pipe */
+        Status = CFE_SB_CreatePipe(&(BPNode_AppData.ClaInData[ContactId].IngressPipe),
+                                    BPNODE_CLA_INGRESS_PIPE_DEPTH,
+                                    "BPNODE_CLA_INGRESS_PIPE");
+
+        if (Status != CFE_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_PIPE_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08lX",
+                                ContactId,
+                                (unsigned long)Status);
+        }
+        else
+        {
+            /* Make put bundles from SB into ingress pipe */
+            Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_CLA_IN_BUNDLE_MID),
+                                        BPNode_AppData.ClaInData[ContactId].IngressPipe);
+
+            if (Status != CFE_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_SUB_ERR_EID,
+                                    BPLib_EM_EventType_ERROR,
+                                    "[CLA In #%d]: Error subscribing to CLA In task messages, RC = 0x%08lX",
+                                    ContactId,
+                                    (unsigned long)Status);
+            }
+            else
+            {
+                /* CFE_SUCCESS ~= CFE_PSP_SUCCESS but the logic makes more sense this way */
+                Status = CFE_PSP_SUCCESS;
+            }
+        }
     }
     else
     {
@@ -321,11 +353,8 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, const char* I
 
     Status = BPLIB_SUCCESS;
 
-    if (ContactId == BPNODE_CLA_IN_SB_CONTACT_ID)
-    {
-        /* TODO: Any SB setup */
-    }
-    else
+    /* Nothing special needs to happen for an SB contact */
+    if (ContactId != BPNODE_CLA_IN_SB_CONTACT_ID)
     {
         #ifdef BPNODE_CLA_UDP_DRIVER
             /* Configure Port Number */
@@ -379,11 +408,8 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId)
 
     Status = BPLIB_SUCCESS;
 
-    if (ContactId == BPNODE_CLA_IN_SB_CONTACT_ID)
-    {
-        /* TODO: Any SB stuff needed */
-    }
-    else
+    /* Nothing special needs to happen for an SB contact */
+    if (ContactId != BPNODE_CLA_IN_SB_CONTACT_ID)
     {
         /* Set I/O to running */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
@@ -411,11 +437,8 @@ BPLib_Status_t BPNode_ClaIn_Stop(uint32 ContactId)
 
     Status = BPLIB_SUCCESS;
 
-    if (ContactId == BPNODE_CLA_IN_SB_CONTACT_ID)
-    {
-        /* TODO: Anything needed to stop SB intake */
-    }
-    else
+    /* Nothing special needs to happen for an SB contact */
+    if (ContactId != BPNODE_CLA_IN_SB_CONTACT_ID)
     {
         /* Set I/O to stop running */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,

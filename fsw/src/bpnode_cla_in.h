@@ -50,7 +50,7 @@
 #define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)                      /** \brief Wait time for wakeup semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SB_CONTACT_ID          (BPLIB_MAX_NUM_CONTACTS - 1) /** \brief Make the last contact an SB contact */
 #define BPNODE_CLA_IN_SB_TIMEOUT             (1200u)                      /** \brief Time to wait for a buffer to be received from SB */
-
+#define BPNODE_CLA_INGRESS_PIPE_DEPTH        (32u)                        /** \brief CLA In SB pipe depth */
 
 /*
 ** Type Definitions

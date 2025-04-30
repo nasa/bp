@@ -193,7 +193,7 @@ void Test_BPNode_ClaIn_TaskInit_CreatePipeErr(void)
 
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_CREATE_PIPE_ERR_EID,
-                                "Error creating CLA In task SB pipe, RC = 0x%08lX");
+                                "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08lX");
 }
 
 void Test_BPNode_ClaIn_TaskInit_SubscribeErr()
@@ -204,7 +204,7 @@ void Test_BPNode_ClaIn_TaskInit_SubscribeErr()
 
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_SUB_ERR_EID,
-                                "Error subscribing to CLA In task messages, RC = 0x%08lX");
+                                "[CLA In #%d]: Error subscribing to CLA In task messages, RC = 0x%08lX");
 }
 
 void Test_BPNode_ClaIn_Setup_Nominal(void)
