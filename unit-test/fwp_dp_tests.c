@@ -1866,7 +1866,7 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
     UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    }
+}
 
 void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error(void)
 {
@@ -1884,6 +1884,44 @@ void Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error(vo
     BPA_DP_ProcessGroundCommand(&Buf);
 
     UtAssert_STUB_COUNT(BPLib_NC_SendChannelContactStatHk, 1);
+}
+
+/* Test ground command processing after receiving a valid send-node-mib-reports command */
+void Test_BPA_DP_ProcessGroundCommand_ValSendReports(void)
+{
+    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_REPORTS_HK_CC;
+    size_t            Size = sizeof(BPNode_SendNodeMibReportsHkCmd_t);
+    CFE_SB_Buffer_t   Buf;
+
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+
+    BPA_DP_ProcessGroundCommand(&Buf);
+
+    UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibReportsHk, 1);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+/* Test ground command processing after receiving an invalid send-node-mib-reports */
+void Test_BPA_DP_ProcessGroundCommand_InvalidSendReports(void)
+{
+    CFE_MSG_FcnCode_t FcnCode = BPNODE_SEND_NODE_MIB_REPORTS_HK_CC;
+    size_t            Size = sizeof(BPNode_SendNodeMibReportsHkCmd_t) - 1; /* Invalid length */
+    CFE_SB_MsgId_t    MsgId = CFE_SB_ValueToMsgId(BPNODE_CMD_MID);
+    CFE_SB_Buffer_t   Buf;
+
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &Size, sizeof(Size), false);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetFcnCode), &FcnCode, sizeof(FcnCode), false);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetMsgId), &MsgId, sizeof(MsgId), false);
+
+    BPA_DP_ProcessGroundCommand(&Buf);
+
+    UtAssert_STUB_COUNT(BPLib_NC_SendNodeMibReportsHk, 0);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CMD_LEN_ERR_EID);
+    UtAssert_STRINGBUF_EQ("Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u", BPLIB_EM_EXPANDED_EVENT_SIZE, 
+                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 
@@ -2033,6 +2071,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValidSendChannelContacStatHkTlm);
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm);
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendChannelContacStatHkTlm_Error);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_ValSendReports);
+    ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidSendReports);
     ADD_TEST(Test_BPA_DP_ProcessGroundCommand_InvalidCode);
     ADD_TEST(Test_BPA_DP_VerifyCmdLength_Nominal);
     ADD_TEST(Test_BPA_DP_VerifyCmdLength_InvalidLength);

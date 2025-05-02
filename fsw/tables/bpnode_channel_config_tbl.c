@@ -56,7 +56,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Node           = 0,
                     .Service        = 0
                 },
-            .Lifetime               = 10000,
+            .Lifetime               = 3600000,
             .PrevNodeBlkConfig =
                 {
                     .IncludeBlock       = true,
@@ -115,7 +115,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Node           = 100,
                     .Service        = 1
                 },
-            .Lifetime               = 10000,
+            .Lifetime               = 3600000,
             .PrevNodeBlkConfig =
                 {
                     .IncludeBlock       = false,
