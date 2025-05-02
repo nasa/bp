@@ -41,13 +41,13 @@
 ** Macro Definitions
 */
 
-#define BPNODE_CLA_IN_SEM_BASE_NAME          "BPN_CLA_IN"    /** \brief Initialization semaphore base name */
-#define BPNODE_CLA_IN_BASE_NAME              "BPNODE.CLA_IN" /** \brief Task base name */
-#define BPNODE_CLA_IN_SLEEP_MSEC             (1000u)         /** \brief Sleep time */
-#define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC (250u)          /** \brief Bundle processing Sleep time */
-#define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (4096)          /** \brief IODriver buffer size*/
-#define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)         /** \brief Wait time for init semaphore take, in milliseconds */
-#define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)         /** \brief Wait time for wakeup semaphore take, in milliseconds */
+#define BPNODE_CLA_IN_SEM_BASE_NAME          "BPN_CLA_IN"           /** \brief Initialization semaphore base name */
+#define BPNODE_CLA_IN_BASE_NAME              "BPNODE.CLA_IN"        /** \brief Task base name */
+#define BPNODE_CLA_IN_SLEEP_MSEC             (1000u)                /** \brief Sleep time */
+#define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC (250u)                 /** \brief Bundle processing Sleep time */
+#define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (BPLIB_MAX_BUNDLE_LEN) /** \brief IODriver buffer size*/
+#define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)                /** \brief Wait time for init semaphore take, in milliseconds */
+#define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 
 /*

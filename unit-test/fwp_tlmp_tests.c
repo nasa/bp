@@ -97,6 +97,13 @@ void Test_BPA_TLMP_SendStoragePkt_Nominal(void)
     UtAssert_INT32_EQ((int32) BPA_TLMP_SendStoragePkt(&StorTlmPayload), (int32) CFE_SUCCESS);            
 }
 
+void Test_BPA_TLMP_SendNodeMibReportsPkt_Nominal(void)
+{
+    BPLib_NodeMibReportsHkTlm_Payload_t Payload;
+    memset(&Payload, 0, sizeof(BPLib_NodeMibReportsHkTlm_Payload_t));
+    UtAssert_INT32_EQ((int32) BPA_TLMP_SendNodeMibReportsPkt(&Payload), (int32) CFE_SUCCESS);            
+}
+
 
 /*
  * Register the test cases to execute with the unit test tool
@@ -110,4 +117,5 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_TLMP_SendPerSourceMibCounterPkt_Nominal);
     ADD_TEST(Test_BPA_TLMP_SendChannelContactPkt_Nominal);
     ADD_TEST(Test_BPA_TLMP_SendStoragePkt_Nominal);    
+    ADD_TEST(Test_BPA_TLMP_SendNodeMibReportsPkt_Nominal);
 }

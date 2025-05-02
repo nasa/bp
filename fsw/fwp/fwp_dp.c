@@ -495,6 +495,14 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
 
             break;
 
+        case BPNODE_SEND_NODE_MIB_REPORTS_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibReportsHkCmd_t)))
+            {
+                BPLib_NC_SendNodeMibReportsHk();
+            }
+
+            break;
+
         /* Default case already found during FC vs length test */
         default:
             BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
