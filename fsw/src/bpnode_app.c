@@ -281,6 +281,7 @@ CFE_Status_t BPNode_AppInit(void)
         .BPA_TLMP_SendPerSourceMibConfigPkt = BPA_TLMP_SendPerSourceMibConfigPkt,
         .BPA_TLMP_SendNodeMibCounterPkt = BPA_TLMP_SendNodeMibCounterPkt,
         .BPA_TLMP_SendPerSourceMibCounterPkt = BPA_TLMP_SendPerSourceMibCounterPkt,
+        .BPA_TLMP_SendNodeMibReportsPkt = BPA_TLMP_SendNodeMibReportsPkt,
         .BPA_TLMP_SendChannelContactPkt = BPA_TLMP_SendChannelContactPkt,
         .BPA_TLMP_SendStoragePkt = BPA_TLMP_SendStoragePkt,
         /* CLA Proxy */

@@ -112,6 +112,22 @@ BPLib_Status_t BPA_TLMP_SendNodeMibCounterPkt(BPLib_NodeMibCountersHkTlm_Payload
 BPLib_Status_t BPA_TLMP_SendPerSourceMibCounterPkt(BPLib_SourceMibCountersHkTlm_Payload_t* SrcMIBCounterTlmPayload);
 
 /**
+ * \brief FWP Telemetry Proxy Send Node MIB Reports HK packet
+ *
+ *  \par Description
+ *       Telemetry Proxy, Send Node MIB Reports HK packet
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] NodeMibReportsHkTlm_Payload Node MIB Reports payload data 
+ *
+ *  \return Execution status
+ *  \retval BPLIB_SUCCESS Output was successful
+ */
+BPLib_Status_t BPA_TLMP_SendNodeMibReportsPkt(BPLib_NodeMibReportsHkTlm_Payload_t* NodeMibReportsHkTlm_Payload);
+
+/**
  * \brief FWP Telemetry Proxy Send Channel/Contact status HK packet
  *
  *  \par Description

@@ -18,7 +18,7 @@
  *
  */
 
-/*
+/**
 ** \file
 **   This file contains the source code for the MIB Per Node Config Table
 */
@@ -34,43 +34,15 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
         .Allocator    = BPLIB_LOCAL_EID_ALLOCATOR,
         .Node         = BPLIB_LOCAL_EID_NODE_NUM,
         .Service      = BPLIB_LOCAL_EID_SERVICE_NUM
-                   },
+    },
 
-    .SystemNodeUpTime                       = 0,
-    .NodeStartupCounter                     = 0,
-    .BundleAgentAvailableStorage            = 1000,
-    .BundleSizeNoFragment                   = 1000,
-    .BundleIngressRejectedRateBytesPerSec   = 0,
-    .BundleIngressRejectedRateBundlesPerSec = 0,
     .ParamSetMaxSequenceNum                 = 100000,
-    .ParamSetMaxPayloadLength               = 100000,
-    .ParamSetMaxBundleLength                = 100000,
+    .ParamSetMaxPayloadLength               = BPLIB_MAX_PAYLOAD_SIZE,
+    .ParamSetMaxBundleLength                = BPLIB_MAX_BUNDLE_LEN,
     .ParamSetNodeDTNTime                    = 0,
     .ParamSetBehaviorEventReporting         = 10,
+    .ParamSetMaxLifetime                    = BPLIB_MAX_LIFETIME_ALLOWED
 
-    /* Per Node and per Source values */
-    .ParamSetMaxLifetime             = 0,
-    .KbytesCountStorageAvailable     = 0,
-    .BundleIngressRateBytesPerSec    = 0,
-    .BundleIngressRateBundlesPerSec  = 0,
-    .BundleEgressRateBytesPerSec     = 0,
-    .BundleIngestedRateBundlesPerSec = 0,
-    .BundleIngestedRateBytesPerSec   = 0,
-    .BundleDeliveryRateBundlesPerSec = 0,
-    .BundleDeliveryRateBytesPerSec   = 0,
-    .BundleEgressRateBundlesPerSec   = 0,
-
-    .Spare = {0, 0, 0},
-
-    /* Per Node values */
-    .SystemNodeName              = "Name",
-    .SystemSoftwareExec          = "SysExec",
-    .SystemSoftwareExecVersion   = "Version",
-    .BundleAgentSoftwareVersion  = "BA Version",
-    .BundleAgentOperationalState = "Active",
-    .BundleAgentConfiguration    = "BA Config",
-    .ParamSupportedCLAs          = "",
-    .NodeActiveEndpoints         = "",
 };
 
 /*
