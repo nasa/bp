@@ -108,14 +108,14 @@ CFE_Status_t BPNode_WakeupProcess(void)
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
-    size_t           BundlesDiscarded;
-    OS_time_t        TimeMsec;
-    uint64_t         TimeWakeupStart;
-    uint64_t         TimeNow;
+    // size_t           BundlesDiscarded;
+    // OS_time_t        TimeMsec;
+    // uint64_t         TimeWakeupStart;
+    // uint64_t         TimeNow;
     uint32           ContactNum;
 
-    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
-    TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
+    // CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+    // TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
     /* Update time as needed */
@@ -225,26 +225,21 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Flush and Garbage Collect */
-    BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        /* Event message */
-        BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
-            "Error batch-flushing bundles to storage, Status=0x%08X",
-            BpStatus);
-    }
-    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
+    // BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+    // if (BpStatus != BPLIB_SUCCESS)
+    // {
+    //     /* Event message */
+    //     BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
+    //         "Error batch-flushing bundles to storage, Status=0x%08X",
+    //         BpStatus);
+    // }
+    // BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
 
     /* Scan CACHE for a maxiumum of N jobs or elapsed time of X mills */
-    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
-    TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
-    while (TimeNow < (BPNODE_APP_RUNTIME_MSEC + TimeWakeupStart))
-    {
-        (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
-        OS_TaskDelay(BPNODE_APP_SCANCACHE_DELAY_MSEC);
-        CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
-        TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
-    }
+    OS_TaskDelay(BPNODE_APP_RUNTIME_MSEC);
+    (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst, BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN);
+    // CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
+    // TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
 
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
     return Status;
@@ -510,8 +505,11 @@ CFE_Status_t BPNode_AppInit(void)
         }
     }
 
-    /* App has initialized properly */
+    /* Remove me: Got tired of opening cosmos */
+    BPLib_CLA_ContactSetup(0);
+    BPLib_CLA_ContactStart(0);
 
+    /* App has initialized properly */
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
