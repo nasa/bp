@@ -79,7 +79,9 @@ typedef struct
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t Dir;
     CFE_PSP_IODriver_Location_t  PspLocation;
-    BPNode_ClaOut_Buffer_t       OutBuffer;
+
+    /* CLA Out bundle/packet */
+    BPNode_ClaOut_Buffer_t OutBuffer;
 } BPNode_ClaOutData_t;
 
 

@@ -39,42 +39,36 @@
 int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
 {
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
-    CFE_SB_Buffer_t*                     Buffer;
-    int32                                Status = CFE_PSP_SUCCESS;
+    int32                                Status;
     BPLib_Status_t                       BpStatus;
-    CFE_MSG_Size_t                       MsgSize;
+    size_t                               MsgSize;
 
-    /* Obtain the size of the message */
-    Buffer = (CFE_SB_Buffer_t*) &BPNode_AppData.ClaOutData[ContId].OutBuffer;
-    CFE_MSG_GetSize(&(Buffer->Msg), &MsgSize);
+    Status = CFE_PSP_SUCCESS;
 
     /* Get next bundle from CLA */
-    if (MsgSize == 0)
+    BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
+
+    BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst,
+                                ContId,
+                                BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload,
+                                &MsgSize,
+                                BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
+                                BPNODE_CLA_OUT_QUEUE_PEND_TIME);
+
+    BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
+
+    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
     {
-        BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
+                            ContId,
+                            Status);
 
-        BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst,
-                                    ContId,
-                                    BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload,
-                                    &MsgSize,
-                                    BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
-                                    BPNODE_CLA_OUT_QUEUE_PEND_TIME);
-
-        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
-
-        if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
-                               "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
-                               ContId,
-                               Status);
-
-            return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-        }
+        Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
 
     /* Send egress bundle onto CL */
-    if (MsgSize != 0)
+    if (Status == CFE_PSP_SUCCESS && MsgSize != 0)
     {
         if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
         { /* Contact is SB-type */
