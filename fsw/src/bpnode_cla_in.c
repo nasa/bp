@@ -37,33 +37,35 @@
 int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
-    void**                              BundleBufferPtr;
     int32                               Status;
     BPLib_Status_t                      BpStatus;
+    CFE_SB_Buffer_t*                    Buffer;
+    CFE_MSG_Size_t                      MsgSize;
 
     Status = CFE_PSP_SUCCESS;
 
-    if (BPNode_AppData.ClaInData[ContId].CurrentBufferSize == 0)
+    Buffer = (CFE_SB_Buffer_t*) &BPNode_AppData.ClaInData[ContId].InBuffer;
+    CFE_MSG_GetSize(&(Buffer->Msg), &MsgSize);
+
+    if (MsgSize == 0)
     {
         if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
         {
-            BundleBufferPtr = &(BPNode_AppData.ClaInData[ContId].BundleBuffer);
-
             BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
             /* Read next bundle from SB */
-            Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) BundleBufferPtr,
+            Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &Buffer,
                                             BPNode_AppData.ClaInData[ContId].IngressPipe,
                                             BPNODE_CLA_IN_SB_TIMEOUT);
 
             BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
             /* Extract the bundle from the space packet */
-            *BundleBufferPtr = (void*) CFE_SB_GetUserData((CFE_MSG_Message_t*) *BundleBufferPtr);
+            BPNode_AppData.ClaInData[ContId].InBuffer.Payload = CFE_SB_GetUserData((CFE_MSG_Message_t*) Buffer);
 
             if (Status == CFE_SUCCESS)
             {
-                CFE_MSG_GetSize(*BundleBufferPtr, (CFE_MSG_Size_t*) &(BPNode_AppData.ClaInData[ContId].CurrentBufferSize));
+                CFE_MSG_GetSize(BPNode_AppData.ClaInData[ContId].InBuffer.Payload, &MsgSize);
             }
             else if (Status == CFE_SB_TIME_OUT)
             {
@@ -83,8 +85,8 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         }
         else
         {
-            RdBuf.BufferSize = sizeof(BPNode_AppData.ClaInData[ContId].BundleBuffer);
-            RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].BundleBuffer;
+            RdBuf.BufferSize = MsgSize;
+            RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer.Payload;
 
             BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -96,27 +98,30 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
             if (Status == CFE_PSP_SUCCESS)
             {
-                BPNode_AppData.ClaInData[ContId].CurrentBufferSize = RdBuf.BufferSize;
+                CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaInData[ContId].InBuffer.TelemetryHeader), RdBuf.BufferSize);
                 Status = CFE_SUCCESS;
             }
         }
     }
 
     /* Ingress received bundle to bplib CLA */
-    if (Status == CFE_SUCCESS && BPNode_AppData.ClaInData[ContId].CurrentBufferSize != 0)
+    if (Status == CFE_SUCCESS && MsgSize != 0)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst, ContId,
-                                    BPNode_AppData.ClaInData[ContId].BundleBuffer,
-                                    BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);
+        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
+                                     ContId,
+                                     BPNode_AppData.ClaInData[ContId].InBuffer.Payload,
+                                     MsgSize,
+                                     0);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
         /* If CLA did not timeout during ingress, zero out current buffer size */
         if (BpStatus != BPLIB_CLA_TIMEOUT)
         {
-            BPNode_AppData.ClaInData[ContId].CurrentBufferSize = 0;
+            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaInData[ContId].InBuffer.TelemetryHeader), 0);
+
             if (BpStatus != BPLIB_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,

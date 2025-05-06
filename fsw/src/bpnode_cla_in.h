@@ -57,6 +57,15 @@
 */
 
 /**
+ * \brief CLA In bundle packet
+ */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t TelemetryHeader; /** \brief Telemtry header for space packet wrapped around bundle */
+    void*                     Payload;         /** \brief Bundle payload */
+} BPNode_ClaIn_Buffer_t;
+
+/**
 ** \brief CLA In Task Data
 */
 typedef struct
@@ -74,9 +83,8 @@ typedef struct
     /* CFE_SB_ReceiveBuffer related */
     CFE_SB_PipeId_t IngressPipe;
 
-    /* General ingress info */
-    size_t CurrentBufferSize;
-    uint8  BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+    /* CLA In bundle/packet */
+    BPNode_ClaIn_Buffer_t InBuffer;
 } BPNode_ClaInData_t;
 
 
