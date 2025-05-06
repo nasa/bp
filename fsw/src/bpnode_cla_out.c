@@ -43,7 +43,8 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
     BPLib_Status_t                       BpStatus;
     size_t                               MsgSize;
 
-    Status = CFE_PSP_SUCCESS;
+    Status  = CFE_PSP_SUCCESS;
+    MsgSize = 0;
 
     /* Get next bundle from CLA */
     BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
@@ -62,7 +63,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
                             ContId,
-                            Status);
+                            BpStatus);
 
         Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
     }
@@ -168,6 +169,13 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
                 }
                 else
                 {
+                    BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload = malloc(BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE);
+                    if (BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload == NULL)
+                    {
+                        printf("FRIG!\n");
+                        break;
+                    }
+
                     /* Create child task */
                     snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_BASE_NAME, ContactId);
                     TaskPriority = BPNODE_CLA_OUT_PRIORITY_BASE + ContactId;
