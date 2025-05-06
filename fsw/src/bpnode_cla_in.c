@@ -41,7 +41,8 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     BPLib_Status_t                      BpStatus;
     size_t                              MsgSize;
 
-    Status = CFE_PSP_SUCCESS;
+    Status  = CFE_PSP_SUCCESS;
+    MsgSize = 0;
 
     if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
     {
@@ -97,8 +98,6 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             Status = CFE_SUCCESS;
         }
     }
-
-    printf("Bundle input size == %lu\n", MsgSize);
 
     /* Ingress received bundle to bplib CLA */
     if (Status == CFE_SUCCESS && MsgSize != 0)
