@@ -39,70 +39,66 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
     int32                               Status;
     BPLib_Status_t                      BpStatus;
-    CFE_SB_Buffer_t*                    Buffer;
-    CFE_MSG_Size_t                      MsgSize;
+    size_t                              MsgSize;
 
     Status = CFE_PSP_SUCCESS;
 
-    Buffer = (CFE_SB_Buffer_t*) &BPNode_AppData.ClaInData[ContId].InBuffer;
-    CFE_MSG_GetSize(&(Buffer->Msg), &MsgSize);
-
-    if (MsgSize == 0)
+    if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
     {
-        if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+
+        /* Read next bundle from SB */
+        Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &BPNode_AppData.ClaInData[ContId].InBuffer,
+                                        BPNode_AppData.ClaInData[ContId].IngressPipe,
+                                        BPNODE_CLA_IN_SB_TIMEOUT);
+
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
+        if (Status == CFE_SUCCESS)
         {
-            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-
-            /* Read next bundle from SB */
-            Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &Buffer,
-                                            BPNode_AppData.ClaInData[ContId].IngressPipe,
-                                            BPNODE_CLA_IN_SB_TIMEOUT);
-
-            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+            /* Grab the size of the bundle */
+            CFE_MSG_GetSize((CFE_MSG_Message_t*) BPNode_AppData.ClaInData[ContId].InBuffer, &MsgSize);
 
             /* Extract the bundle from the space packet */
-            BPNode_AppData.ClaInData[ContId].InBuffer.Payload = CFE_SB_GetUserData((CFE_MSG_Message_t*) Buffer);
-
-            if (Status == CFE_SUCCESS)
-            {
-                CFE_MSG_GetSize(BPNode_AppData.ClaInData[ContId].InBuffer.Payload, &MsgSize);
-            }
-            else if (Status == CFE_SB_TIME_OUT)
-            {
-                BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_TIMEOUT_ERR_EID,
-                                    BPLib_EM_EventType_ERROR,
-                                    "[CLA In #%d]: SB buffer reception timed out",
-                                    ContId);
-            }
-            else
-            {
-                BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_ERR_EID,
-                                    BPLib_EM_EventType_ERROR,
-                                    "[CLA In #%d]: Failed to receive from the SB buffer. Error = %d",
-                                    ContId,
-                                    Status);
-            }
+            BPNode_AppData.ClaInData[ContId].InBuffer = CFE_SB_GetUserData((CFE_MSG_Message_t*) BPNode_AppData.ClaInData[ContId].InBuffer);
+        }
+        else if (Status == CFE_SB_TIME_OUT)
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_TIMEOUT_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: SB buffer reception timed out",
+                                ContId);
         }
         else
         {
-            RdBuf.BufferSize = MsgSize;
-            RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer.Payload;
-
-            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-
-            Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation,
-                                                CFE_PSP_IODriver_PACKET_IO_READ,
-                                                CFE_PSP_IODriver_VPARG(&RdBuf));
-
-            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-
-            if (Status == CFE_PSP_SUCCESS)
-            {
-                CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaInData[ContId].InBuffer.TelemetryHeader), RdBuf.BufferSize);
-                Status = CFE_SUCCESS;
-            }
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: Failed to receive from the SB buffer. Error = %d",
+                                ContId,
+                                Status);
         }
     }
+    else
+    {
+        RdBuf.BufferSize = sizeof(BPNode_AppData.ClaInData[ContId].InBuffer);
+        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer;
+
+        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+
+        Status = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContId].PspLocation,
+                                            CFE_PSP_IODriver_PACKET_IO_READ,
+                                            CFE_PSP_IODriver_VPARG(&RdBuf));
+
+        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
+        if (Status == CFE_PSP_SUCCESS)
+        {
+            MsgSize = RdBuf.BufferSize;
+            Status = CFE_SUCCESS;
+        }
+    }
+
+    printf("Bundle input size == %lu\n", MsgSize);
 
     /* Ingress received bundle to bplib CLA */
     if (Status == CFE_SUCCESS && MsgSize != 0)
@@ -111,17 +107,15 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
                                      ContId,
-                                     BPNode_AppData.ClaInData[ContId].InBuffer.Payload,
+                                     BPNode_AppData.ClaInData[ContId].InBuffer,
                                      MsgSize,
                                      0);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        /* If CLA did not timeout during ingress, zero out current buffer size */
+        /* If CLA did not timeout during ingress, but wasn't successful */
         if (BpStatus != BPLIB_CLA_TIMEOUT)
         {
-            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaInData[ContId].InBuffer.TelemetryHeader), 0);
-
             if (BpStatus != BPLIB_SUCCESS)
             {
                 BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
@@ -200,6 +194,13 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
                 }
                 else
                 {
+                    BPNode_AppData.ClaInData[ContactId].InBuffer = malloc(BPNODE_CLA_PSP_INPUT_BUFFER_SIZE);
+                    if (BPNode_AppData.ClaInData[ContactId].InBuffer == NULL)
+                    {
+                        printf("FRIG!\n");
+                        break;
+                    }
+
                     /* Create child task */
                     snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_BASE_NAME, ContactId);
                     TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + ContactId;
@@ -260,13 +261,13 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
         /* Create ingress pipe */
         Status = CFE_SB_CreatePipe(&(BPNode_AppData.ClaInData[ContactId].IngressPipe),
                                     BPNODE_CLA_INGRESS_PIPE_DEPTH,
-                                    "BPNODE_CLA_INGRESS_PIPE");
+                                    "BPNODE_CLA_IN_PIPE");
 
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_PIPE_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08lX",
+                                "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08X",
                                 ContactId,
                                 (unsigned long)Status);
         }
