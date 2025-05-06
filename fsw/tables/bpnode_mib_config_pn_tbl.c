@@ -36,13 +36,15 @@ BPLib_NC_MibPerNodeConfig_t MIBConfigPNTable = {
         .Service      = BPLIB_LOCAL_EID_SERVICE_NUM
     },
 
-    .ParamSetMaxSequenceNum                 = 100000,
-    .ParamSetMaxPayloadLength               = BPLIB_MAX_PAYLOAD_SIZE,
-    .ParamSetMaxBundleLength                = BPLIB_MAX_BUNDLE_LEN,
-    .ParamSetNodeDTNTime                    = 0,
-    .ParamSetBehaviorEventReporting         = 10,
-    .ParamSetMaxLifetime                    = BPLIB_MAX_LIFETIME_ALLOWED
-
+    .Configs = {
+        /* PARAM_BUNDLE_SIZE_NO_FRAGMENT      */ BPLIB_MAX_BUNDLE_LEN,
+        /* PARAM_SET_MAX_SEQUENCE NUM         */ 100000,   
+        /* PARAM_SET_MAX_PAYLOAD_LENGTH       */ BPLIB_MAX_PAYLOAD_SIZE,
+        /* PARAM_SET_MAX_BUNDLE_LENGTH        */ BPLIB_MAX_BUNDLE_LEN,
+        /* PARAM_SET_NODE_DTN_TIME            */ 0,
+        /* PARAM_SET_BEHAVIOR_EVENT_REPORTING */ 10,
+        /* PARAM_SET_MAX_LIFETIME             */ BPLIB_MAX_LIFETIME_ALLOWED
+    }
 };
 
 /*
