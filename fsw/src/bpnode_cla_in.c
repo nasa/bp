@@ -97,6 +97,15 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             MsgSize = RdBuf.BufferSize;
             Status = CFE_SUCCESS;
         }
+        else
+        {
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_IO_READ_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: Failed to read packet from UDP socket",
+                                ContId);
+
+            Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+        }
     }
 
     /* Ingress received bundle to bplib CLA */
@@ -113,17 +122,18 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
         /* If CLA did not timeout during ingress, but wasn't successful */
-        if (BpStatus != BPLIB_CLA_TIMEOUT)
+        if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
         {
-            if (BpStatus != BPLIB_SUCCESS)
-            {
-                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                  "[CLA In #%d]: Failed to ingress bundle. Error = %d",
-                                  ContId,
-                                  BpStatus);
+            BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[CLA In #%d]: Failed to ingress bundle. Error = %d",
+                                ContId,
+                                BpStatus);
 
-                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-            }
+            Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+        }
+        else
+        {
+            Status = CFE_SUCCESS;
         }
     }
 
