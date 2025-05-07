@@ -247,7 +247,6 @@ void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
     BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 0; /* buffer initially empty */
 
     BPNode_ClaOut_AppMain();
 
@@ -288,7 +287,6 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 4; /* buffer initially filled */
 
     // TODO How to add more bundles?
 
@@ -296,12 +294,6 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
-
-    /*
-    ** CurrentBufferSize should get cleared by BPNode_ClaOut_ProcessBundleOutput
-    ** after buffer is sent to CFE_PSP_IODriver_Command
-    */
-    UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize, 0);
 }
 
 void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
@@ -510,7 +502,6 @@ void Test_BPNode_ClaOut_AppMain_FailedProcBundle(void)
     UT_SetDeferredRetcode(UT_KEY(BPNode_ClaOut_ProcessBundleOutput), 1, CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 0;
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_ERROR);
     UtAssert_VOIDCALL(BPNode_ClaOut_AppMain());
 
@@ -544,10 +535,28 @@ void Test_BPNode_ClaOut_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-void Test_BPNode_ClaOut_ProcessBundleOutput_Nominal(void)
+void Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal(void)
 {
-    uint32 ContactId = 0;
+    uint32 ContactId;
+
+    ContactId = BPNODE_CLA_IN_SB_CONTACT_ID;
+
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
+}
+
+void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
+{
+    uint32 ContactId;
+
+    ContactId = 0;
+
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
 }
 
 void Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress(void)
@@ -565,15 +574,7 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout(void)
 {
     uint32 ContactId = 0;
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
-}
-
-void Test_BPNode_ClaOut_ProcessBundleOutput_NonZeroBuffSize(void)
-{
-    uint32 ContactId = 0;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 1;
-    UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_PSP_SUCCESS);
 }
 
 /* Register the test cases to execute with the unit test tool */
@@ -598,8 +599,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_FailedProcBundle);
     ADD_TEST(Test_BPNode_ClaOut_TaskExit_Nominal);
-    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout);
-    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_NonZeroBuffSize);
 }
