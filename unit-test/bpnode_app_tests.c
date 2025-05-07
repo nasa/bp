@@ -453,6 +453,8 @@ void Test_BPNode_AppInit_Nominal(void)
     UtAssert_STUB_COUNT(BPLib_EM_Init, 1);
     UtAssert_STUB_COUNT(BPLib_TIME_Init, 1);
     UtAssert_STUB_COUNT(BPLib_NC_Init, 1);
+    UtAssert_STUB_COUNT(BPLib_CLA_ContactSetup, 1);
+    UtAssert_STUB_COUNT(BPLib_CLA_ContactStart, 1);
 }
 
 /* Test app initialization after event management initialization failure */
@@ -719,6 +721,35 @@ void Test_BPNode_AppInit_InstallDelHandler(void)
 
 }
 
+void Test_BPNode_AppInit_SBContactSetupFail(void)
+{
+    BPLib_Status_t Status;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactSetup), BPLIB_CLA_INCORRECT_STATE);
+
+    Status = BPNode_AppInit();
+
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_INCORRECT_STATE);
+    UtAssert_STUB_COUNT(BPLib_CLA_ContactStart, 0);
+
+    BPNode_Test_Verify_Event(0, BPNODE_INIT_SB_CONTACT_ERR_EID,
+                            "Failed to set up SB contact during initialization, RC = %d");
+}
+
+void Test_BPNode_AppInit_SBContactStartFail(void)
+{
+    BPLib_Status_t Status;
+
+    UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactStart), BPLIB_CLA_INCORRECT_STATE);
+
+    Status = BPNode_AppInit();
+
+    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_INCORRECT_STATE);
+
+    BPNode_Test_Verify_Event(0, BPNODE_INIT_SB_CONTACT_ERR_EID,
+                            "Failed to start SB contact during initialization, RC = %d");
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -760,4 +791,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
+    ADD_TEST(Test_BPNode_AppInit_SBContactSetupFail);
+    ADD_TEST(Test_BPNode_AppInit_SBContactStartFail);
 }
