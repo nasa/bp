@@ -69,7 +69,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
     }
 
     /* Send egress bundle onto CL */
-    if (Status == CFE_PSP_SUCCESS && MsgSize != 0)
+    if (Status == CFE_PSP_SUCCESS)
     {
         if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
         { /* Contact is SB-type */
@@ -103,7 +103,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
         CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), 0);
     }
 
-    return CFE_SUCCESS;
+    return Status;
 }
 
 CFE_Status_t BPNode_ClaOutCreateTasks(void)
