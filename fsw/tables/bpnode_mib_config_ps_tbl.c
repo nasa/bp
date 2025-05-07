@@ -28,7 +28,7 @@
 
 
 BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
-    .MIB_PS_Set = {
+    .Sources = {
         {
             // .SrcEID                                 = "100.1",
             // .EIDPattern                             = "ipn",
