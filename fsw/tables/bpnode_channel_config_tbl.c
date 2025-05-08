@@ -34,10 +34,10 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .RequestCustody         = false,
             .AduWrapping            = false,
             .AduUnwrapping          = false,
-            .RegState               = 0,
+            .RegState               = BPLIB_PI_ACTIVE,
             .HopLimit               = 10,
             .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0,
-            .MaxBundlePayloadSize   = 15864,
+            .MaxBundlePayloadSize   = BPLIB_MAX_PAYLOAD_SIZE,
             .CrcType                = BPLib_CRC_Type_CRC16,
             .BundleProcFlags        = BPLIB_BUNDLE_PROC_NO_FRAG_FLAG,
             .DestEID                =
@@ -50,13 +50,13 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                 },
             .ReportToEID            =
                 {
-                    .Scheme         = BPLIB_EID_SCHEME_IPN,
+                    .Scheme         = BPLIB_EID_SCHEME_DTN,
                     .IpnSspFormat   = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
                     .Allocator      = 0,
-                    .Node           = 100,
-                    .Service        = 1
+                    .Node           = 0,
+                    .Service        = 0
                 },
-            .Lifetime               = 10000,
+            .Lifetime               = 3600000,
             .PrevNodeBlkConfig =
                 {
                     .IncludeBlock       = true,
@@ -93,10 +93,10 @@ BPLib_PI_ChannelTable_t ChannelTable = {
             .RequestCustody         = false,
             .AduWrapping            = true,
             .AduUnwrapping          = false,
-            .RegState               = 0,
+            .RegState               = BPLIB_PI_PASSIVE_DEFER,
             .HopLimit               = 10,
             .LocalServiceNumber     = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_1,
-            .MaxBundlePayloadSize   = 15864,
+            .MaxBundlePayloadSize   = BPLIB_MAX_PAYLOAD_SIZE,
             .CrcType                = BPLib_CRC_Type_CRC16,
             .BundleProcFlags        = BPLIB_BUNDLE_PROC_NO_FRAG_FLAG,
             .DestEID                =
@@ -115,7 +115,7 @@ BPLib_PI_ChannelTable_t ChannelTable = {
                     .Node           = 100,
                     .Service        = 1
                 },
-            .Lifetime               = 10000,
+            .Lifetime               = 3600000,
             .PrevNodeBlkConfig =
                 {
                     .IncludeBlock       = false,
