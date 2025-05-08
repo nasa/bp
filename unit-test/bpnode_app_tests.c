@@ -36,7 +36,7 @@
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
-    BPNode_AppData.AduProxyTablePtr                     = &TestAduTbl;
+    BPNode_AppData.AduProxyTablePtr              = &TestAduTbl;
     BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
     BPNode_AppData.ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
     BPNode_AppData.ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
@@ -615,6 +615,7 @@ void Test_BPNode_AppInit_AutoAddAppFail(void)
 
 void Test_BPNode_AppInit_SetupContactFail(void)
 {
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactSetup), BPLIB_CLA_INCORRECT_STATE);
 
     UtAssert_EQ(BPLib_Status_t, BPNode_AppInit(), BPLIB_CLA_INCORRECT_STATE);
@@ -625,6 +626,7 @@ void Test_BPNode_AppInit_SetupContactFail(void)
 
 void Test_BPNode_AppInit_StartContactFail(void)
 {
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactStart), BPLIB_CLA_INCORRECT_STATE);
 
     UtAssert_EQ(BPLib_Status_t, BPNode_AppInit(), BPLIB_CLA_INCORRECT_STATE);
@@ -723,13 +725,10 @@ void Test_BPNode_AppInit_InstallDelHandler(void)
 
 void Test_BPNode_AppInit_SBContactSetupFail(void)
 {
-    BPLib_Status_t Status;
-
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactSetup), BPLIB_CLA_INCORRECT_STATE);
 
-    Status = BPNode_AppInit();
-
-    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_INCORRECT_STATE);
+    UtAssert_EQ(BPLib_Status_t, BPNode_AppInit(), BPLIB_CLA_INCORRECT_STATE);
     UtAssert_STUB_COUNT(BPLib_CLA_ContactStart, 0);
 
     BPNode_Test_Verify_Event(0, BPNODE_INIT_SB_CONTACT_ERR_EID,
@@ -738,13 +737,10 @@ void Test_BPNode_AppInit_SBContactSetupFail(void)
 
 void Test_BPNode_AppInit_SBContactStartFail(void)
 {
-    BPLib_Status_t Status;
-
+    UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_ContactStart), BPLIB_CLA_INCORRECT_STATE);
 
-    Status = BPNode_AppInit();
-
-    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_CLA_INCORRECT_STATE);
+    UtAssert_EQ(BPLib_Status_t, BPNode_AppInit(), BPLIB_CLA_INCORRECT_STATE);
 
     BPNode_Test_Verify_Event(0, BPNODE_INIT_SB_CONTACT_ERR_EID,
                             "Failed to start SB contact during initialization, RC = %d");

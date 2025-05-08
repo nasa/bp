@@ -196,7 +196,7 @@ void Test_BPNode_ClaIn_TaskInit_CreatePipeErr(void)
                                 "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08lX");
 }
 
-void Test_BPNode_ClaIn_TaskInit_SubscribeErr()
+void Test_BPNode_ClaIn_TaskInit_SubscribeErr(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_Subscribe), CFE_SB_MAX_MSGS_MET);
 
@@ -511,10 +511,14 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
 {
     uint8  ContId;
     size_t MsgSize;
+    CFE_MSG_Message_t Msg;
 
     /* Set pre-test values for comparison purposes */
+    memset((void*) &Msg, 0, sizeof(Msg));
+
     ContId  = BPNODE_CLA_IN_SB_CONTACT_ID;
     MsgSize = 42;
+    BPNode_AppData.ClaInData[ContId].InBuffer = (void*) &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
@@ -571,13 +575,22 @@ void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
 {
     uint8 ContactId;
     size_t MsgSize;
+    CFE_MSG_Message_t Msg;
+    CFE_Status_t Status;
+
+    memset((void*) &Msg, 0, sizeof(Msg));
 
     ContactId = BPNODE_CLA_IN_SB_CONTACT_ID;
     MsgSize   = 0;
+    BPNode_AppData.ClaInData[ContactId].InBuffer = (void*) &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
+    memset((void*) BPNode_AppData.ClaInData[ContactId].InBuffer, 0, sizeof(CFE_MSG_Message_t*));
 
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
+    Status = BPNode_ClaIn_ProcessBundleInput(ContactId);
+
+    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
+    // UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
 }
 
@@ -605,6 +618,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
+    memset((void*) BPNode_AppData.ClaInData[ContId].InBuffer, 0, sizeof(CFE_MSG_Message_t*));
 
     UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
 
@@ -623,6 +637,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)
 
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_CLA_TIMEOUT);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
+    memset((void*) BPNode_AppData.ClaInData[ContId].InBuffer, 0, sizeof(CFE_MSG_Message_t*));
 
     UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 
