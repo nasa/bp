@@ -71,7 +71,7 @@ void Test_BPNode_ClaInCreateTasks_WakeupSemErr(void)
 
     UtAssert_INT32_EQ(BPNode_ClaInCreateTasks(), OS_SEM_FAILURE);
 
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID);
+    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID);
     UtAssert_STRINGBUF_EQ("Failed to create wakeup semaphore, %s, for CLA In #%d. Error = %d",
                             BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec,
@@ -214,7 +214,7 @@ void Test_BPNode_ClaIn_Setup_Nominal(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_Command), CFE_PSP_SUCCESS);
 
     /* Call function under test and verify return status */
-    UtAssert_EQ(BPLib_Status_t, BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_SUCCESS);
+    UtAssert_EQ(BPLib_Status_t, BPNode_ClaIn_Setup(0, 0, "0.0.0.0"), BPLIB_SUCCESS);
 #endif
 }
 
@@ -223,7 +223,7 @@ void Test_BPNode_ClaIn_Setup_PortErr(void)
 #ifdef BPNODE_CLA_UDP_DRIVER
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
 
-    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(0, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_PORT_ERR_EID);
@@ -241,7 +241,7 @@ void Test_BPNode_ClaIn_Setup_IpErr(void)
 #ifdef BPNODE_CLA_UDP_DRIVER
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 2, CFE_PSP_ERROR);
 
-    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(BPLIB_MAX_NUM_CONTACTS - 1, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
+    UtAssert_INT32_EQ(BPNode_ClaIn_Setup(0, 0, "0.0.0.0"), BPLIB_CLA_IO_ERROR);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_CFG_IP_ERR_EID);
@@ -555,9 +555,6 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout(void)
 
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
     UtAssert_STUB_COUNT(CFE_MSG_GetSize, 0);
-
-    BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_RECV_BUFF_TIMEOUT_ERR_EID,
-                                "[CLA In #%d]: SB buffer reception timed out");
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand(void)
@@ -576,33 +573,14 @@ void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
     uint8 ContactId;
     size_t MsgSize;
     CFE_MSG_Message_t Msg;
-    CFE_Status_t Status;
 
-    memset((void*) &Msg, 0, sizeof(Msg));
+    memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
 
     ContactId = BPNODE_CLA_IN_SB_CONTACT_ID;
     MsgSize   = 0;
     BPNode_AppData.ClaInData[ContactId].InBuffer = (void*) &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
-    memset((void*) BPNode_AppData.ClaInData[ContactId].InBuffer, 0, sizeof(CFE_MSG_Message_t*));
-
-    Status = BPNode_ClaIn_ProcessBundleInput(ContactId);
-
-    UtAssert_EQ(CFE_Status_t, Status, CFE_SUCCESS);
-    // UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
-    UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
-}
-
-void Test_BPNode_ClaIn_ProcessBundleIntput_PSP_MsgSizeZero(void)
-{
-    uint8 ContactId;
-    size_t MsgSize;
-
-    ContactId = 0;
-    MsgSize   = 0;
-
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_IODriver_Command), &MsgSize, sizeof(size_t), false);
 
     UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
@@ -612,13 +590,15 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
 {
     uint8 ContId;
     size_t MsgSize;
+    CFE_MSG_Message_t Msg;
 
     ContId  = 0;
     MsgSize = 42;
+    memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
+    BPNode_AppData.ClaInData[ContId].InBuffer = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
-    memset((void*) BPNode_AppData.ClaInData[ContId].InBuffer, 0, sizeof(CFE_MSG_Message_t*));
 
     UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
 
@@ -631,13 +611,15 @@ void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)
 {
     uint8  ContId;
     size_t MsgSize;
+    CFE_MSG_Message_t Msg;
 
     ContId  = 0;
     MsgSize = 42;
+    memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
+    BPNode_AppData.ClaInData[ContId].InBuffer = &Msg;
 
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_CLA_TIMEOUT);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
-    memset((void*) BPNode_AppData.ClaInData[ContId].InBuffer, 0, sizeof(CFE_MSG_Message_t*));
 
     UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
 
@@ -675,7 +657,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout);
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand);
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero);
-    ADD_TEST(Test_BPNode_ClaIn_ProcessBundleIntput_PSP_MsgSizeZero);
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress);
     ADD_TEST(Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout);
 }

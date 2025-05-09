@@ -63,14 +63,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             /* Extract the bundle from the space packet */
             BPNode_AppData.ClaInData[ContId].InBuffer = CFE_SB_GetUserData((CFE_MSG_Message_t*) BPNode_AppData.ClaInData[ContId].InBuffer);
         }
-        else if (Status == CFE_SB_TIME_OUT)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_TIMEOUT_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: SB buffer reception timed out",
-                                ContId);
-        }
-        else
+        else if (Status != CFE_SB_TIME_OUT)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_RECV_BUFF_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
@@ -276,7 +269,7 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_CREATE_PIPE_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08X",
+                                "[CLA In #%d]: Error creating CLA In task SB pipe, RC = 0x%08lX",
                                 ContactId,
                                 (unsigned long)Status);
         }
