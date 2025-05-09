@@ -189,7 +189,7 @@ void Test_BPNode_ClaIn_TaskInit_CreatePipeErr(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_CreatePipe), CFE_SB_BAD_ARGUMENT);
 
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_TaskInit(BPNODE_CLA_IN_SB_CONTACT_ID), CFE_SB_BAD_ARGUMENT);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_TaskInit(BPNODE_CLA_SB_CONTACT_ID), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_CREATE_PIPE_ERR_EID,
@@ -200,7 +200,7 @@ void Test_BPNode_ClaIn_TaskInit_SubscribeErr(void)
 {
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_Subscribe), CFE_SB_MAX_MSGS_MET);
 
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_TaskInit(BPNODE_CLA_IN_SB_CONTACT_ID), CFE_SB_MAX_MSGS_MET);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_TaskInit(BPNODE_CLA_SB_CONTACT_ID), CFE_SB_MAX_MSGS_MET);
 
     UtAssert_STUB_COUNT(OS_BinSemGive, 0);
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_SUB_ERR_EID,
@@ -516,7 +516,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
     /* Set pre-test values for comparison purposes */
     memset((void*) &Msg, 0, sizeof(Msg));
 
-    ContId  = BPNODE_CLA_IN_SB_CONTACT_ID;
+    ContId  = BPNODE_CLA_SB_CONTACT_ID;
     MsgSize = 42;
     BPNode_AppData.ClaInData[ContId].InBuffer = (void*) &Msg;
 
@@ -533,7 +533,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferErr(void)
 {
     uint8 ContId;
 
-    ContId = BPNODE_CLA_IN_SB_CONTACT_ID;
+    ContId = BPNODE_CLA_SB_CONTACT_ID;
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SB_BAD_ARGUMENT);
@@ -547,7 +547,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout(void)
 {
     uint8 ContId;
     
-    ContId = BPNODE_CLA_IN_SB_CONTACT_ID;
+    ContId = BPNODE_CLA_SB_CONTACT_ID;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_TIME_OUT);
 
@@ -576,7 +576,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
 
     memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
 
-    ContactId = BPNODE_CLA_IN_SB_CONTACT_ID;
+    ContactId = BPNODE_CLA_SB_CONTACT_ID;
     MsgSize   = 0;
     BPNode_AppData.ClaInData[ContactId].InBuffer = (void*) &Msg;
 

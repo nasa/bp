@@ -30,6 +30,12 @@
 #include "bpnode_eventids.h"
 #include "bpnode_app.h"
 
+/* ====== */
+/* Macros */
+/* ====== */
+
+#define BPNODE_CLA_SB_CONTACT_ID (BPLIB_MAX_NUM_CONTACTS - 1) /** \brief Make the last contact an SB contact */
+
 /* =================== */
 /* Function Prototypes */
 /* =================== */

@@ -555,7 +555,7 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal(void)
 {
     uint32 ContactId;
 
-    ContactId = BPNODE_CLA_IN_SB_CONTACT_ID;
+    ContactId = BPNODE_CLA_SB_CONTACT_ID;
 
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
 

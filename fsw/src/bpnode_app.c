@@ -511,7 +511,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Start the SB contact by default */
-    BpStatus = BPLib_CLA_ContactSetup(BPNODE_CLA_IN_SB_CONTACT_ID);
+    BpStatus = BPLib_CLA_ContactSetup(BPNODE_CLA_SB_CONTACT_ID);
     if (BpStatus != BPLIB_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_INIT_SB_CONTACT_ERR_EID,
@@ -523,7 +523,7 @@ CFE_Status_t BPNode_AppInit(void)
     }
     else
     {
-        BpStatus = BPLib_CLA_ContactStart(BPNODE_CLA_IN_SB_CONTACT_ID);
+        BpStatus = BPLib_CLA_ContactStart(BPNODE_CLA_SB_CONTACT_ID);
         if (BpStatus != BPLIB_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_INIT_SB_CONTACT_ERR_EID,
