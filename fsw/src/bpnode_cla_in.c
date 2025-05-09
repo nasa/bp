@@ -44,7 +44,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     Status  = CFE_PSP_SUCCESS;
     MsgSize = 0;
 
-    if (ContId == BPNODE_CLA_IN_SB_CONTACT_ID)
+    if (ContId == BPNODE_CLA_SB_CONTACT_ID)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -90,12 +90,13 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             MsgSize = RdBuf.BufferSize;
             Status = CFE_SUCCESS;
         }
-        else
+        else if (Status != CFE_PSP_ERROR_TIMEOUT)
         {
             BPLib_EM_SendEvent(BPNODE_CLA_IN_IO_READ_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Failed to read packet from UDP socket",
-                                ContId);
+                                "[CLA In #%d]: Failed to read packet from UDP socket, RC = %d",
+                                ContId,
+                                Status);
 
             Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
@@ -258,7 +259,7 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
     /* Set performance ID */
     BPNode_AppData.ClaInData[ContactId].PerfId = BPNODE_CLA_IN_PERF_ID_BASE + ContactId;
 
-    if (ContactId == BPNODE_CLA_IN_SB_CONTACT_ID)
+    if (ContactId == BPNODE_CLA_SB_CONTACT_ID)
     {
         /* Create ingress pipe */
         Status = CFE_SB_CreatePipe(&(BPNode_AppData.ClaInData[ContactId].IngressPipe),
@@ -362,7 +363,7 @@ BPLib_Status_t BPNode_ClaIn_Setup(uint32 ContactId, int32 PortNum, const char* I
     Status = BPLIB_SUCCESS;
 
     /* Nothing special needs to happen for an SB contact */
-    if (ContactId != BPNODE_CLA_IN_SB_CONTACT_ID)
+    if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
     {
         #ifdef BPNODE_CLA_UDP_DRIVER
             /* Configure Port Number */
@@ -417,7 +418,7 @@ BPLib_Status_t BPNode_ClaIn_Start(uint32 ContactId)
     Status = BPLIB_SUCCESS;
 
     /* Nothing special needs to happen for an SB contact */
-    if (ContactId != BPNODE_CLA_IN_SB_CONTACT_ID)
+    if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
     {
         /* Set I/O to running */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
@@ -446,7 +447,7 @@ BPLib_Status_t BPNode_ClaIn_Stop(uint32 ContactId)
     Status = BPLIB_SUCCESS;
 
     /* Nothing special needs to happen for an SB contact */
-    if (ContactId != BPNODE_CLA_IN_SB_CONTACT_ID)
+    if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
     {
         /* Set I/O to stop running */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaInData[ContactId].PspLocation,
