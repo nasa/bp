@@ -28,7 +28,7 @@
 
 
 BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
-    .MIB_PS_Set = {
+    .Sources = {
         {
             // .SrcEID                                 = "100.1",
             // .EIDPattern                             = "ipn",
@@ -42,20 +42,22 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
                 .MaxService   = 1,
                 .MinService   = 1,}
             },
-            .ParamSetMaxLifetime                    = 1000, 
-            .ParamSetMaxBSRGenerationRate           = 20000,
-            .ParamSetMaxCBRGenerationRate           = 20000,
-            .BundleSetBehaviorReceivedBSRGenerate   = false,
-            .BundleSetBehaviorAcceptedBSRGenerate   = false,
-            .BundleSetBehaviorForwardedBSRGenerate  = false,
-            .BundleSetBehaviorDeliveredBSRGenerate  = false,
-            .BundleSetBehaviorDeletedBSRGenerate    = false,
-            .BundleSetBehaviorReceivedCBRGenerate   = false,
-            .BundleSetBehaviorAcceptedCBRGenerate   = false,
-            .BundleSetBehaviorForwardedCBRGenerate  = false,
-            .BundleSetBehaviorDeliveredCBRGenerate  = false,
-            .BundleSetBehaviorDeletedCBRGenerate    = false, 
-            .Spare                                  = 0,
+            .Configs = {
+                /* PARAM_SET_MAX_LIFETIME                */ 1000, 
+                /* PARAM_SET_MAX_BSR_GENERATION_RATE     */ 20000,
+                /* PARAM_SET_MAX_CBR_GENERATION_RATE     */ 20000,
+                /* BUNDLE_SET_BEHAVIOR_RCVD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_ACPT_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_FWRD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLVR_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLTD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_RCVD_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_ACPT_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_FWRD_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLVR_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLTD_CBR_GENERATE */ 0
+            }
+            
         },
         {
             // .SrcEID                                 = "101.1",
@@ -70,20 +72,21 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
                 .MaxService   = 1,
                 .MinService   = 1,}
             },
-            .ParamSetMaxLifetime                    = 1000, 
-            .ParamSetMaxBSRGenerationRate           = 20000,
-            .ParamSetMaxCBRGenerationRate           = 20000,
-            .BundleSetBehaviorReceivedBSRGenerate   = false,
-            .BundleSetBehaviorAcceptedBSRGenerate   = false,
-            .BundleSetBehaviorForwardedBSRGenerate  = false,
-            .BundleSetBehaviorDeliveredBSRGenerate  = false,
-            .BundleSetBehaviorDeletedBSRGenerate    = false,
-            .BundleSetBehaviorReceivedCBRGenerate   = false,
-            .BundleSetBehaviorAcceptedCBRGenerate   = false,
-            .BundleSetBehaviorForwardedCBRGenerate  = false,
-            .BundleSetBehaviorDeliveredCBRGenerate  = false,
-            .BundleSetBehaviorDeletedCBRGenerate    = false, 
-            .Spare                                  = 0,
+            .Configs = {
+                /* PARAM_SET_MAX_LIFETIME                */ 1000, 
+                /* PARAM_SET_MAX_BSR_GENERATION_RATE     */ 20000,
+                /* PARAM_SET_MAX_CBR_GENERATION_RATE     */ 20000,
+                /* BUNDLE_SET_BEHAVIOR_RCVD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_ACPT_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_FWRD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLVR_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLTD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_RCVD_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_ACPT_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_FWRD_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLVR_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLTD_CBR_GENERATE */ 0
+            }
         },
         {
             // .SrcEID                                 = "102.1",
@@ -98,20 +101,21 @@ BPLib_NC_MIBConfigPSTable_t MIBConfigPSTable = {
                 .MaxService   = 1,
                 .MinService   = 1,}
             },
-            .ParamSetMaxLifetime                    = 1000, 
-            .ParamSetMaxBSRGenerationRate           = 20000,
-            .ParamSetMaxCBRGenerationRate           = 20000,
-            .BundleSetBehaviorReceivedBSRGenerate   = false,
-            .BundleSetBehaviorAcceptedBSRGenerate   = false,
-            .BundleSetBehaviorForwardedBSRGenerate  = false,
-            .BundleSetBehaviorDeliveredBSRGenerate  = false,
-            .BundleSetBehaviorDeletedBSRGenerate    = false,
-            .BundleSetBehaviorReceivedCBRGenerate   = false,
-            .BundleSetBehaviorAcceptedCBRGenerate   = false,
-            .BundleSetBehaviorForwardedCBRGenerate  = false,
-            .BundleSetBehaviorDeliveredCBRGenerate  = false,
-            .BundleSetBehaviorDeletedCBRGenerate    = false, 
-            .Spare                                  = 0,
+            .Configs = {
+                /* PARAM_SET_MAX_LIFETIME                */ 1000, 
+                /* PARAM_SET_MAX_BSR_GENERATION_RATE     */ 20000,
+                /* PARAM_SET_MAX_CBR_GENERATION_RATE     */ 20000,
+                /* BUNDLE_SET_BEHAVIOR_RCVD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_ACPT_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_FWRD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLVR_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLTD_BSR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_RCVD_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_ACPT_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_FWRD_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLVR_CBR_GENERATE */ 0,
+                /* BUNDLE_SET_BEHAVIOR_DLTD_CBR_GENERATE */ 0
+            }
         },
     }
 };
