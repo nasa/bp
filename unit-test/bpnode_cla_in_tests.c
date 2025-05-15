@@ -565,7 +565,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand(void)
     UtAssert_UINT32_NEQ(BPNode_ClaIn_ProcessBundleInput(ContId), CFE_PSP_ERROR);
 
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_IO_READ_ERR_EID,
-                            "[CLA In #%d]: Failed to read packet from UDP socket");
+                            "[CLA In #%d]: Failed to read packet from UDP socket, RC = %d");
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
