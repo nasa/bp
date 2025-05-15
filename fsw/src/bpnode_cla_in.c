@@ -70,7 +70,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst, ContId,
                                     BPNode_AppData.ClaInData[ContId].BundleBuffer,
-                                    BPNode_AppData.ClaInData[ContId].CurrentBufferSize, 0);
+                                    BPNode_AppData.ClaInData[ContId].CurrentBufferSize, QM_WAIT_FOREVER);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 

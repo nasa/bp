@@ -108,14 +108,14 @@ CFE_Status_t BPNode_WakeupProcess(void)
     int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint8            TaskNum;
-    size_t           BundlesDiscarded;
+    uint32           ContactNum;
     OS_time_t        TimeMsec;
     uint64_t         TimeWakeupStart;
     uint64_t         TimeNow;
-    uint32           ContactNum;
 
     CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
     TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
+
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
     /* Update time as needed */
@@ -160,6 +160,16 @@ CFE_Status_t BPNode_WakeupProcess(void)
     if (Status == CFE_SB_NO_MESSAGE)
     {
         Status = CFE_SUCCESS;
+    }
+
+    /* Flush any bundles pending storage */
+    BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+    if (BpStatus != BPLIB_SUCCESS)
+    {
+        /* Event message */
+        BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
+            "Error batch-flushing bundles to storage, Status=0x%08X",
+            BpStatus);
     }
 
     /* Wake up the Generic Worker Tasks */
@@ -224,30 +234,24 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
-    /* Flush and Garbage Collect */
-    BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        /* Event message */
-        BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
-            "Error batch-flushing bundles to storage, Status=0x%08X",
-            BpStatus);
-    }
-    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst, &BundlesDiscarded);
+    /* Garbage Collect: Ideally, you should do this if nothing is busy. For B 7.0
+    ** Calling it once a cycle is enough, but this comes with the caveat that remove bundles
+    ** from storage will take several cycles. There may be optimizations that can be done here
+    ** such as detecting system "idle" time and doing a bulk delete then.
+    */
+    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst);
 
-    /* Scan CACHE for a maxiumum elapsed time of X mills */
+    /* Sleep for any remaining wakeup cycle time */
     CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
     TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
-    while (TimeNow < (BPNODE_APP_RUNTIME_MSEC + TimeWakeupStart))
+    if (TimeNow - TimeWakeupStart < BPNODE_APP_RUNTIME_MSEC)
     {
-        (void) BPLib_STOR_ScanCache(&BPNode_AppData.BplibInst);
-        OS_TaskDelay(BPNODE_APP_SCANCACHE_DELAY_MSEC);
-        CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
-        TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
+        OS_TaskDelay(BPNODE_APP_RUNTIME_MSEC - (TimeNow - TimeWakeupStart));
     }
 
     /* Signal the child tasks to stop */
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
+
     return Status;
 }
 
@@ -510,10 +514,6 @@ CFE_Status_t BPNode_AppInit(void)
 
         }
     }
-
-    /* Remove me: Got tired of opening cosmos */
-    BPLib_CLA_ContactSetup(0);
-    BPLib_CLA_ContactStart(0);
 
     /* App has initialized properly */
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
