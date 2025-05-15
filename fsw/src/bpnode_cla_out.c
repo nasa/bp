@@ -81,6 +81,9 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
             CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
                             MsgSize + sizeof(CFE_MSG_TelemetryHeader_t));
 
+            /* Timestamp message before transmitting */
+            CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader));
+
             /* Send the wrapped bundle onto the Software Bus */
             CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), true);
         }
