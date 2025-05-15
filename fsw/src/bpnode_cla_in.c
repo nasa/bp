@@ -74,7 +74,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     }
     else
     {
-        RdBuf.BufferSize = sizeof(BPNode_AppData.ClaInData[ContId].InBuffer);
+        RdBuf.BufferSize = BPNODE_CLA_PSP_INPUT_BUFFER_SIZE;
         RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer;
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
