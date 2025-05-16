@@ -244,7 +244,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     /* Sleep for any remaining wakeup cycle time */
     CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
     TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
-    if (TimeNow - TimeWakeupStart < BPNODE_APP_RUNTIME_MSEC)
+    if ((TimeNow - TimeWakeupStart) < BPNODE_APP_RUNTIME_MSEC)
     {
         OS_TaskDelay(BPNODE_APP_RUNTIME_MSEC - (TimeNow - TimeWakeupStart));
     }
