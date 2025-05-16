@@ -54,6 +54,15 @@
 */
 
 /**
+ * \brief Union to align CLA In buffer
+ */
+typedef union
+{
+    CFE_MSG_Message_t* MsgPtr;
+    uint8 InBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+} BPNode_ClaIn_Buffer_t;
+
+/**
 ** \brief CLA In Task Data
 */
 typedef struct
@@ -72,7 +81,7 @@ typedef struct
     CFE_SB_PipeId_t IngressPipe;
 
     /* CLA In bundle/packet */
-    void* InBuffer;
+    BPNode_ClaIn_Buffer_t AlignedBuffer;
 } BPNode_ClaInData_t;
 
 
@@ -182,7 +191,7 @@ void BPNode_ClaIn_AppMain(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ContactId Contacts ID for this task
  */
 void BPNode_ClaIn_TaskExit(uint32 ContactId);

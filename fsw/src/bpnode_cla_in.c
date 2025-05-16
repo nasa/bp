@@ -49,7 +49,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
         /* Read next bundle from SB */
-        Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &BPNode_AppData.ClaInData[ContId].InBuffer,
+        Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr,
                                         BPNode_AppData.ClaInData[ContId].IngressPipe,
                                         BPNODE_CLA_IN_SB_TIMEOUT);
 
@@ -58,10 +58,10 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         if (Status == CFE_SUCCESS)
         {
             /* Grab the size of the bundle */
-            CFE_MSG_GetSize((CFE_MSG_Message_t*) BPNode_AppData.ClaInData[ContId].InBuffer, &MsgSize);
+            CFE_MSG_GetSize(BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr, &MsgSize);
 
             /* Extract the bundle from the space packet */
-            BPNode_AppData.ClaInData[ContId].InBuffer = CFE_SB_GetUserData((CFE_MSG_Message_t*) BPNode_AppData.ClaInData[ContId].InBuffer);
+            memcpy(BPNode_AppData.ClaInData[ContId].AlignedBuffer.InBuffer, CFE_SB_GetUserData(BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr), (size_t) BPNODE_CLA_PSP_INPUT_BUFFER_SIZE);
         }
         else if (Status != CFE_SB_TIME_OUT)
         {
@@ -75,7 +75,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     else
     {
         RdBuf.BufferSize = BPNODE_CLA_PSP_INPUT_BUFFER_SIZE;
-        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer;
+        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].AlignedBuffer.InBuffer;
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -109,7 +109,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
                                      ContId,
-                                     BPNode_AppData.ClaInData[ContId].InBuffer,
+                                     BPNode_AppData.ClaInData[ContId].AlignedBuffer.InBuffer,
                                      MsgSize,
                                      0);
 
@@ -197,13 +197,6 @@ CFE_Status_t BPNode_ClaInCreateTasks(void)
                 }
                 else
                 {
-                    BPNode_AppData.ClaInData[ContactId].InBuffer = malloc(BPNODE_CLA_PSP_INPUT_BUFFER_SIZE);
-                    if (BPNode_AppData.ClaInData[ContactId].InBuffer == NULL)
-                    {
-                        printf("FRIG!\n");
-                        break;
-                    }
-
                     /* Create child task */
                     snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_IN_BASE_NAME, ContactId);
                     TaskPriority = BPNODE_CLA_IN_PRIORITY_BASE + ContactId;

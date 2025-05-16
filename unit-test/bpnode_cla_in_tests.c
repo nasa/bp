@@ -518,13 +518,13 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
 
     ContId  = BPNODE_CLA_SB_CONTACT_ID;
     MsgSize = 42;
-    BPNode_AppData.ClaInData[ContId].InBuffer = (void*) &Msg;
+    BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
     /* Run function under test */
     UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SUCCESS);
-    
+
     /* Verify that the function ran as expected */
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
 }
@@ -537,7 +537,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferErr(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContId), CFE_SB_BAD_ARGUMENT);
-    
+
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_RECV_BUFF_ERR_EID,
                                 "[CLA In #%d]: Failed to receive from the SB buffer. Error = %d");
@@ -546,7 +546,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferErr(void)
 void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout(void)
 {
     uint8 ContId;
-    
+
     ContId = BPNODE_CLA_SB_CONTACT_ID;
 
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_TIME_OUT);
@@ -578,7 +578,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
 
     ContactId = BPNODE_CLA_SB_CONTACT_ID;
     MsgSize   = 0;
-    BPNode_AppData.ClaInData[ContactId].InBuffer = (void*) &Msg;
+    BPNode_AppData.ClaInData[ContactId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
@@ -595,7 +595,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
     ContId  = 0;
     MsgSize = 42;
     memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
-    BPNode_AppData.ClaInData[ContId].InBuffer = &Msg;
+    BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
@@ -616,7 +616,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)
     ContId  = 0;
     MsgSize = 42;
     memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
-    BPNode_AppData.ClaInData[ContId].InBuffer = &Msg;
+    BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_CLA_TIMEOUT);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
