@@ -67,6 +67,9 @@ void BPNode_AppMain(void)
         BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_ERROR;
     }
 
+    BPLib_CLA_ContactSetup(0);
+    BPLib_CLA_ContactStart(0);
+
     /* BPNode run loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.RunStatus) == true)
     {
