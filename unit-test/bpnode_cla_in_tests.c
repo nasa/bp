@@ -511,14 +511,9 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
 {
     uint8  ContId;
     size_t MsgSize;
-    CFE_MSG_Message_t Msg;
-
-    /* Set pre-test values for comparison purposes */
-    memset((void*) &Msg, 0, sizeof(Msg));
 
     ContId  = BPNODE_CLA_SB_CONTACT_ID;
     MsgSize = 42;
-    BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
@@ -572,13 +567,9 @@ void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
 {
     uint8 ContactId;
     size_t MsgSize;
-    CFE_MSG_Message_t Msg;
-
-    memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
 
     ContactId = BPNODE_CLA_SB_CONTACT_ID;
     MsgSize   = 0;
-    BPNode_AppData.ClaInData[ContactId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
@@ -590,12 +581,9 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
 {
     uint8 ContId;
     size_t MsgSize;
-    CFE_MSG_Message_t Msg;
 
     ContId  = 0;
     MsgSize = 42;
-    memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
-    BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
@@ -611,12 +599,9 @@ void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)
 {
     uint8  ContId;
     size_t MsgSize;
-    CFE_MSG_Message_t Msg;
 
     ContId  = 0;
     MsgSize = 42;
-    memset((void*) &Msg, 0, sizeof(CFE_MSG_Message_t));
-    BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr = &Msg;
 
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_CLA_TIMEOUT);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
