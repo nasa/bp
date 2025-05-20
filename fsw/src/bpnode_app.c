@@ -173,7 +173,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
                                 "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d",
                                 TaskNum,
                                 OsStatus);
-        } 
+        }
     }
 
     /* Wake up the ADU In and ADU Out tasks */
@@ -507,12 +507,10 @@ CFE_Status_t BPNode_AppInit(void)
                 BPLib_EM_SendEvent(BPNODE_AUTO_ADD_APP_INF_EID, BPLib_EM_EventType_INFORMATION,
                                     "Automatically added app configurations for ChanId=%d", i);
             }
-
         }
     }
 
     /* App has initialized properly */
-
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
