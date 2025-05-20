@@ -54,15 +54,6 @@
 */
 
 /**
- * \brief Union to align CLA In buffer
- */
-typedef union
-{
-    CFE_MSG_Message_t* MsgPtr;
-    uint8 InBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
-} BPNode_ClaIn_Buffer_t;
-
-/**
 ** \brief CLA In Task Data
 */
 typedef struct
@@ -81,7 +72,7 @@ typedef struct
     CFE_SB_PipeId_t IngressPipe;
 
     /* CLA In bundle/packet */
-    BPNode_ClaIn_Buffer_t AlignedBuffer;
+    uint8 InBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
 } BPNode_ClaInData_t;
 
 

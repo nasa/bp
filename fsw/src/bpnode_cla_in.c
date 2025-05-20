@@ -40,6 +40,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     int32                               Status;
     BPLib_Status_t                      BpStatus;
     size_t                              MsgSize;
+    CFE_MSG_Message_t*                  MsgPtr;
 
     Status  = CFE_PSP_SUCCESS;
     MsgSize = 0;
@@ -49,7 +50,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
         /* Read next bundle from SB */
-        Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr,
+        Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &MsgPtr,
                                         BPNode_AppData.ClaInData[ContId].IngressPipe,
                                         BPNODE_CLA_IN_SB_TIMEOUT);
 
@@ -58,10 +59,10 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         if (Status == CFE_SUCCESS)
         {
             /* Grab the size of the bundle */
-            CFE_MSG_GetSize(BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr, &MsgSize);
+            CFE_MSG_GetSize(MsgPtr, &MsgSize);
 
             /* Extract the bundle from the space packet */
-            memcpy(BPNode_AppData.ClaInData[ContId].AlignedBuffer.InBuffer, CFE_SB_GetUserData(BPNode_AppData.ClaInData[ContId].AlignedBuffer.MsgPtr), (size_t) BPNODE_CLA_PSP_INPUT_BUFFER_SIZE);
+            memcpy(BPNode_AppData.ClaInData[ContId].InBuffer, CFE_SB_GetUserData(MsgPtr), (size_t) BPNODE_CLA_PSP_INPUT_BUFFER_SIZE);
         }
         else if (Status != CFE_SB_TIME_OUT)
         {
@@ -75,7 +76,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     else
     {
         RdBuf.BufferSize = BPNODE_CLA_PSP_INPUT_BUFFER_SIZE;
-        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].AlignedBuffer.InBuffer;
+        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer;
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -109,7 +110,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
                                      ContId,
-                                     BPNode_AppData.ClaInData[ContId].AlignedBuffer.InBuffer,
+                                     BPNode_AppData.ClaInData[ContId].InBuffer,
                                      MsgSize,
                                      0);
 
