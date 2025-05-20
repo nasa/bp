@@ -311,35 +311,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
 /* Remove an application */
 BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
 {
-    BPLib_NC_ApplicationState_t AppState;
-
-    /* Check for channel ID validity */
-    if (ChanId >= BPLIB_MAX_NUM_CHANNELS)
-    {
-        BPLib_EM_SendEvent(BPNODE_ADU_REM_CHAN_ERR_EID, BPLib_EM_EventType_DEBUG,
-                            "Error with remove-application directive, invalid ChanId=%d",
-                            ChanId);
-
-        return BPLIB_ERROR;
-    }
-
-    /* App state must be stopped or added */
-    AppState = BPLib_NC_GetAppState(ChanId);
-    if (AppState != BPLIB_NC_APP_STATE_ADDED &&
-        AppState != BPLIB_NC_APP_STATE_STOPPED)
-    {
-        BPLib_EM_SendEvent(BPNODE_ADU_REM_STAT_ERR_EID, BPLib_EM_EventType_DEBUG,
-                            "Error with remove-application directive, invalid AppState=%d for ChanId=%d",
-                            AppState,
-                            ChanId);
-
-        return BPLIB_ERROR;
-    }
-
-    /* TODO PI cleanup */
-
-    /* Set app state to removed */
-    BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_REMOVED);
+    /* No cFS-specific operations needed */
 
     return BPLIB_SUCCESS;
 }

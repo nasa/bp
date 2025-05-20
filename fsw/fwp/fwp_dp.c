@@ -218,7 +218,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_RemoveApplicationCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_RemoveApplicationCmd_t*) SBBufPtr;
 
-                BPLib_NC_RemoveApplication(MsgPtr->Payload);
+                BPLib_NC_RemoveApplication(&BPNode_AppData.BplibInst, MsgPtr->Payload);
             }
             break;
 
@@ -388,7 +388,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
                 const BPNode_ContactTeardownCmd_t* MsgPtr;
                 MsgPtr = (const BPNode_ContactTeardownCmd_t*) SBBufPtr;
 
-                BPLib_NC_ContactTeardown(MsgPtr->Payload);
+                BPLib_NC_ContactTeardown(&BPNode_AppData.BplibInst, MsgPtr->Payload);
             }
             break;
 
