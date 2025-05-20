@@ -510,33 +510,7 @@ CFE_Status_t BPNode_AppInit(void)
         }
     }
 
-    /* Start the SB contact by default */
-    BpStatus = BPLib_CLA_ContactSetup(BPNODE_CLA_SB_CONTACT_ID);
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        BPLib_EM_SendEvent(BPNODE_INIT_SB_CONTACT_ERR_EID,
-                            BPLib_EM_EventType_ERROR,
-                            "Failed to set up SB contact during initialization, RC = %d",
-                            BpStatus);
-
-        return BpStatus;
-    }
-    else
-    {
-        BpStatus = BPLib_CLA_ContactStart(BPNODE_CLA_SB_CONTACT_ID);
-        if (BpStatus != BPLIB_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_INIT_SB_CONTACT_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Failed to start SB contact during initialization, RC = %d",
-                                BpStatus);
-
-            return BpStatus;
-        }
-    }
-
     /* App has initialized properly */
-
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
