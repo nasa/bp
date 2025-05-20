@@ -136,7 +136,7 @@ void BPNode_AduOut_AppMain(void);
  *
  *  \param[in] ChanId Channel ID for this task
  */
-void BPNode_AduOut_TaskExit(uint8 ChanId);
+void BPNode_AduOut_TaskExit(uint32 ChanId);
 
 
 #endif /* BPNODE_ADU_OUT_H */

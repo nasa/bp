@@ -203,7 +203,7 @@ void BPNode_AduIn_AppMain(void)
 {
     int32 Status;
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
+    uint32 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
 
     /* Perform task-specific initialization */
@@ -311,7 +311,7 @@ void BPNode_AduIn_AppMain(void)
 }
 
 /* Exit child task */
-void BPNode_AduIn_TaskExit(uint8 ChanId)
+void BPNode_AduIn_TaskExit(uint32 ChanId)
 {
     BPLib_EM_SendEvent(BPNODE_ADU_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "[ADU In #%d]: Terminating Task. RunStatus = %d.",

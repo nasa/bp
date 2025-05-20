@@ -67,7 +67,7 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
 }
 
 /* Ingest an ADU */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId)
 {
     BPLib_Status_t  Status = BPLIB_SUCCESS;
     CFE_SB_Buffer_t *Buf   = (CFE_SB_Buffer_t *) AduPtr;
@@ -100,7 +100,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId)
 }
 
 /* Send out an ADU */
-BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
+BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout)
 {
     BPLib_Status_t Status;
     size_t         AduSize;
@@ -144,7 +144,7 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout)
 }
 
 /* Add a new application's configurations */
-BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId)
 {
     uint8_t i;
 
@@ -175,7 +175,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId)
 }
 
 /* Start an application */
-BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_StartApplication(uint32_t ChanId)
 {
     CFE_Status_t Status;
     uint8_t i;
@@ -201,7 +201,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId)
 }
 
 /* Stop an application */
-BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_StopApplication(uint32_t ChanId)
 {
     CFE_Status_t Status;
     uint8_t i;
@@ -230,7 +230,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId)
 }
 
 /* Remove an application */
-BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId)
+BPLib_Status_t BPA_ADUP_RemoveApplication(uint32_t ChanId)
 {
     /* No cFS-specific operations needed */
 
