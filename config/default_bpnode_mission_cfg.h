@@ -67,7 +67,7 @@
 /**
  * \brief Default EID Node Number to egress bundles to contact 1
  */
-#define BPNODE_EID_NODE_NUM_FOR_CONTACT_1 100
+#define BPNODE_EID_NODE_NUM_FOR_CONTACT_1 400
 
 /**
  * \brief Default EID Service Number to egress bundles to contact 1
