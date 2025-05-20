@@ -546,14 +546,7 @@ void BPNode_ClaIn_AppMain(void)
                                 {
                                     BundlesReceived++;
                                 }
-                                else if (CFE_Status == CFE_PSP_ERROR_TIMEOUT)
-                                {
-                                    /* Not an error */
-                                }
-                                else
-                                {
-                                    break;
-                                }
+
                             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
                         }
                     }
