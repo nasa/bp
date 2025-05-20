@@ -126,7 +126,7 @@ int32 BPNode_AduInCreateTasks(void)
 }
 
 /* Task initialization for ADU In task(s) */
-int32 BPNode_AduIn_TaskInit(uint8 *ChanId)
+int32 BPNode_AduIn_TaskInit(uint32 *ChanId)
 {
     CFE_ES_TaskId_t TaskId;
     int32           Status;

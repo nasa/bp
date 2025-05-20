@@ -112,7 +112,7 @@ int32 BPNode_AduOutCreateTasks(void);
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  *  \retval OSAL or cFE error code
  */
-int32 BPNode_AduOut_TaskInit(uint8 *ChanId);
+int32 BPNode_AduOut_TaskInit(uint32 *ChanId);
 
 /**
  * \brief ADU Out Main Task
