@@ -531,9 +531,12 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
 void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferErr(void)
 {
     uint8 ContactId;
+    size_t MsgSize;
 
+    MsgSize   = 42;
     ContactId = BPNODE_CLA_SB_CONTACT_ID;
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_BAD_ARGUMENT);
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
     UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SB_BAD_ARGUMENT);
 
@@ -545,9 +548,12 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferErr(void)
 void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout(void)
 {
     uint8 ContactId;
+    size_t MsgSize;
 
     ContactId = BPNODE_CLA_SB_CONTACT_ID;
+    MsgSize   = 42;
 
+    UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_TIME_OUT);
 
     UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SB_TIME_OUT);
