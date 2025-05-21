@@ -67,9 +67,6 @@ void BPNode_AppMain(void)
         BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_ERROR;
     }
 
-    BPLib_CLA_ContactSetup(0);
-    BPLib_CLA_ContactStart(0);
-
     /* BPNode run loop */
     while (CFE_ES_RunLoop(&BPNode_AppData.RunStatus) == true)
     {
@@ -238,7 +235,7 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Garbage Collect: Ideally, you should do this if nothing is busy. For B 7.0
-    ** Calling it once a cycle is enough, but this comes with the caveat that remove bundles
+    ** Calling it once a cycle is enough, but this comes with the caveat that removing bundles
     ** from storage will take several cycles. There may be optimizations that can be done here
     ** such as detecting system "idle" time and doing a bulk delete then.
     */
