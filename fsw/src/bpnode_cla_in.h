@@ -43,12 +43,11 @@
 
 #define BPNODE_CLA_IN_SEM_BASE_NAME          "BPN_CLA_IN"           /** \brief Initialization semaphore base name */
 #define BPNODE_CLA_IN_BASE_NAME              "BPNODE.CLA_IN"        /** \brief Task base name */
-#define BPNODE_CLA_IN_SLEEP_MSEC             (1000u)                /** \brief Sleep time */
-#define BPNODE_CLA_IN_BUNDLE_PROC_SLEEP_MSEC (250u)                 /** \brief Bundle processing Sleep time */
 #define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (BPLIB_MAX_BUNDLE_LEN) /** \brief IODriver buffer size*/
 #define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)                /** \brief Wait time for init semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
-
+#define BPNODE_CLA_IN_SB_TIMEOUT             (100u)                 /** \brief Time to wait for a buffer to be received from SB */
+#define BPNODE_CLA_INGRESS_PIPE_DEPTH        (32u)                  /** \brief CLA In SB pipe depth */
 
 /*
 ** Type Definitions
@@ -59,18 +58,22 @@
 */
 typedef struct
 {
-    CFE_ES_TaskId_t              TaskId;
-    osal_id_t                    InitSemId;
-    osal_id_t                    WakeupSemId;
-    osal_id_t                    ExitSemId;
-    uint32                       PerfId;
+    CFE_ES_TaskId_t TaskId;
+    osal_id_t       InitSemId;
+    osal_id_t       WakeupSemId;
+    osal_id_t       ExitSemId;
+    uint32          PerfId;
 
-    /* IODriver usock_intf related*/
+    /* IODriver usock_intf related */
     CFE_PSP_IODriver_Direction_t Dir;
     CFE_PSP_IODriver_Location_t  PspLocation;
-    size_t                       CurrentBufferSize;
-    uint8                        BundleBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
 
+    /* CFE_SB_ReceiveBuffer related */
+    CFE_SB_PipeId_t IngressPipe;
+
+    /* CLA In bundle/packet */
+    uint8 PSP_Buffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+    void* SB_Buffer;
 } BPNode_ClaInData_t;
 
 
@@ -180,7 +183,7 @@ void BPNode_ClaIn_AppMain(void);
  *
  *  \par Assumptions, External Events, and Notes:
  *       None
- * 
+ *
  *  \param[in] ContactId Contacts ID for this task
  */
 void BPNode_ClaIn_TaskExit(uint32 ContactId);
@@ -191,6 +194,6 @@ void BPNode_ClaIn_TaskExit(uint32 ContactId);
   *                                 arrays that corresponds to that contact's info
   * \return    void
   */
- void BPNode_ClaIn_DeleteSems(uint32 ContactId);
+void BPNode_ClaIn_DeleteSems(uint32 ContactId);
 
 #endif /* BPNODE_CLA_IN_H */
