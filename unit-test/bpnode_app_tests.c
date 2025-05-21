@@ -36,7 +36,7 @@
 void UT_BPA_TABLEP_Init_Handler(void *UserObj, UT_EntryKey_t FuncKey,
                                                 const UT_StubContext_t *Context)
 {
-    BPNode_AppData.AduProxyTablePtr                     = &TestAduTbl;
+    BPNode_AppData.AduProxyTablePtr              = &TestAduTbl;
     BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;
     BPNode_AppData.ConfigPtrs.ChanConfigPtr      = &TestChanTbl;
     BPNode_AppData.ConfigPtrs.ContactsConfigPtr  = &TestContactsTbl;
@@ -713,6 +713,7 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_WakeupProcess_STORFail);
     ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
+    ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);
     ADD_TEST(Test_BPNode_WakeupProcess_RecvErr);
     ADD_TEST(Test_BPNode_WakeupProcess_TableUpdate_Nominal);
@@ -737,5 +738,4 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AppInit_FailedClaOut);
     ADD_TEST(Test_BPNode_AppInit_FailedGenWrkr);
     ADD_TEST(Test_BPNode_AppInit_InstallDelHandler);
-    ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
 }

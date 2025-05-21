@@ -128,8 +128,7 @@ void Test_BPNode_ClaOutCreateTasks_TakeSemErr(void)
 /* Test BPNode_ClaOut_TaskInit when everything succeeds */
 void Test_BPNode_ClaOut_TaskInit_Nominal(void)
 {
-    uint32 ContactId    = BPLIB_MAX_NUM_CONTACTS - 1;
-    uint32 ExpContactId = 0;
+    uint32 ContactId = 0;
 
     /* Test setup */
     UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_FindByName), CFE_PSP_SUCCESS);
@@ -141,7 +140,6 @@ void Test_BPNode_ClaOut_TaskInit_Nominal(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_INIT_INF_EID);
     UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Child task initialized", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT8_EQ(ContactId, ExpContactId);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_FindByName, 1);
@@ -195,12 +193,11 @@ void Test_BPNode_ClaOut_TaskInit_DirErr(void)
 /* Test BPNode_ClaOut_TaskInit when init semaphore give fails */
 void Test_BPNode_ClaOut_TaskInit_GiveSemErr(void)
 {
-    uint32 ContactId = BPLIB_MAX_NUM_CONTACTS - 1;
-    uint32 ExpContactId = 0;
+    uint32 ContactId       = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
-    BPNode_AppData.ClaOutData[ExpContactId].TaskId = TaskId;
+    BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
 
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_SEM_FAILURE);
@@ -210,7 +207,6 @@ void Test_BPNode_ClaOut_TaskInit_GiveSemErr(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_RUN_ERR_EID);
     UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Task not running. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_UINT8_EQ(ContactId, ExpContactId);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_STUB_COUNT(OS_BinSemGive, 1);
 }
@@ -223,19 +219,23 @@ void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
     BPLib_CLA_ContactRunState_t RunState1;
     BPLib_CLA_ContactRunState_t RunState2;
     char                        NameBuff[OS_MAX_API_NAME];
+    uint8                       ContactNum;
     
     /* Create task semaphores */
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].InitSemId, NameBuff, 0, 0);
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
+    {
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].InitSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].WakeupSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].WakeupSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].ExitSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].ExitSemId, NameBuff, 0, 0);
+    }
 
-    ContactId   = BPLIB_MAX_NUM_CONTACTS - 1;
-    TaskId   = 1234;
+    ContactId = BPLIB_MAX_NUM_CONTACTS - 1;
+    TaskId    = 1234;
     RunState1 = BPLIB_CLA_STARTED;
     RunState2 = BPLIB_CLA_EXITED;
 
@@ -247,7 +247,6 @@ void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
     BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 0; /* buffer initially empty */
 
     BPNode_ClaOut_AppMain();
 
@@ -264,16 +263,20 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     BPLib_CLA_ContactRunState_t RunState1;
     BPLib_CLA_ContactRunState_t RunState2;
     char                        NameBuff[OS_MAX_API_NAME];
+    uint8                       ContactNum;
     
     /* Create task semaphores */
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].InitSemId, NameBuff, 0, 0);
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
+    {
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].InitSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].WakeupSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].WakeupSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].ExitSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].ExitSemId, NameBuff, 0, 0);
+    }
 
     ContactId = BPLIB_MAX_NUM_CONTACTS - 1;
     TaskId    = 1234;
@@ -288,7 +291,6 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 4; /* buffer initially filled */
 
     // TODO How to add more bundles?
 
@@ -296,12 +298,6 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(BPNode_NotifIsSet, 1);
-
-    /*
-    ** CurrentBufferSize should get cleared by BPNode_ClaOut_ProcessBundleOutput
-    ** after buffer is sent to CFE_PSP_IODriver_Command
-    */
-    UtAssert_UINT32_EQ(BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize, 0);
 }
 
 void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
@@ -311,16 +307,20 @@ void Test_BPNode_ClaOut_AppMain_TakeSemErr(void)
     BPLib_CLA_ContactRunState_t RunState1;
     BPLib_CLA_ContactRunState_t RunState2;
     char                        NameBuff[OS_MAX_API_NAME];
+    uint8                       ContactNum;
     
     /* Create task semaphores */
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].InitSemId, NameBuff, 0, 0);
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
+    {
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].InitSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].WakeupSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].WakeupSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].ExitSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].ExitSemId, NameBuff, 0, 0);
+    }
 
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
@@ -355,16 +355,20 @@ void Test_BPNode_ClaOut_AppMain_WakeupSemTimeout(void)
     BPLib_CLA_ContactRunState_t RunState1;
     BPLib_CLA_ContactRunState_t RunState2;
     char                        NameBuff[OS_MAX_API_NAME];
+    uint8                       ContactNum;
     
     /* Create task semaphores */
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].InitSemId, NameBuff, 0, 0);
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
+    {
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].InitSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].WakeupSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].WakeupSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].ExitSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].ExitSemId, NameBuff, 0, 0);
+    }
 
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
@@ -398,16 +402,20 @@ void Test_BPNode_ClaOut_AppMain_InitErr(void)
     uint32          ContactId;
     CFE_ES_TaskId_t TaskId;
     char            NameBuff[OS_MAX_API_NAME];
+    uint8           ContactNum;
     
     /* Create task semaphores */
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].InitSemId, NameBuff, 0, 0);
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
+    {
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_INIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].InitSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].WakeupSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].WakeupSemId, NameBuff, 0, 0);
 
-    snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, 0);
-    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[0].ExitSemId, NameBuff, 0, 0);
+        snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactNum);
+        (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactNum].ExitSemId, NameBuff, 0, 0);
+    }
 
     ContactId = BPLIB_MAX_NUM_CONTACTS - 1;
     TaskId    = 1234;
@@ -510,7 +518,6 @@ void Test_BPNode_ClaOut_AppMain_FailedProcBundle(void)
     UT_SetDeferredRetcode(UT_KEY(BPNode_ClaOut_ProcessBundleOutput), 1, CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 0;
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_ERROR);
     UtAssert_VOIDCALL(BPNode_ClaOut_AppMain());
 
@@ -544,10 +551,28 @@ void Test_BPNode_ClaOut_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-void Test_BPNode_ClaOut_ProcessBundleOutput_Nominal(void)
+void Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal(void)
 {
-    uint32 ContactId = 0;
+    uint32 ContactId;
+
+    ContactId = BPNODE_CLA_SB_CONTACT_ID;
+
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
+}
+
+void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
+{
+    uint32 ContactId;
+
+    ContactId = 0;
+
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+
+    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+    UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
 }
 
 void Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress(void)
@@ -565,15 +590,7 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout(void)
 {
     uint32 ContactId = 0;
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
-}
-
-void Test_BPNode_ClaOut_ProcessBundleOutput_NonZeroBuffSize(void)
-{
-    uint32 ContactId = 0;
-    BPNode_AppData.ClaOutData[ContactId].CurrentBufferSize = 1;
-    UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_PSP_SUCCESS);
 }
 
 /* Register the test cases to execute with the unit test tool */
@@ -598,8 +615,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_FailedProcBundle);
     ADD_TEST(Test_BPNode_ClaOut_TaskExit_Nominal);
-    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal);
+    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout);
-    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_NonZeroBuffSize);
 }

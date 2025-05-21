@@ -57,21 +57,31 @@
 */
 
 /**
+ * \brief CLA Out bundle packet
+ */
+typedef struct
+{
+    CFE_MSG_TelemetryHeader_t TelemetryHeader; /** \brief Telemtry header for space packet wrapped around bundle */
+    void*                     Payload;         /** \brief Bundle payload */
+} BPNode_ClaOut_Buffer_t;
+
+/**
 ** \brief CLA Out Task Data
 */
 typedef struct
 {
-    CFE_ES_TaskId_t                 TaskId;
-    osal_id_t                       InitSemId;
-    osal_id_t                       WakeupSemId;
-    osal_id_t                       ExitSemId;
-    uint32                          PerfId;
+    CFE_ES_TaskId_t TaskId;
+    osal_id_t       InitSemId;
+    osal_id_t       WakeupSemId;
+    osal_id_t       ExitSemId;
+    uint32          PerfId;
 
     /* IODriver usock_intf related*/
-    CFE_PSP_IODriver_Direction_t    Dir;
-    CFE_PSP_IODriver_Location_t     PspLocation;
-    size_t                          CurrentBufferSize;
-    uint8                           BundleBuffer[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
+    CFE_PSP_IODriver_Direction_t Dir;
+    CFE_PSP_IODriver_Location_t  PspLocation;
+
+    /* CLA Out bundle/packet */
+    BPNode_ClaOut_Buffer_t OutBuffer;
 } BPNode_ClaOutData_t;
 
 

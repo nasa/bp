@@ -87,10 +87,10 @@ typedef struct
     BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
 
     /* Child Task State */
-    BPNode_ClaInData_t  ClaInData [BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA In tasks */
-    BPNode_ClaOutData_t ClaOutData[BPLIB_MAX_NUM_CONTACTS]; /**< \brief Global data for CLA Out tasks */
-    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /**< \brief Global data for Generic Worker tasks */
-    BPNode_Notif_t ChildStopWorkNotif; /**< \Shared notification for stopping child task work */
+    BPNode_ClaInData_t     ClaInData [BPLIB_MAX_NUM_CONTACTS];       /** \brief Global data for CLA In tasks */
+    BPNode_ClaOutData_t    ClaOutData[BPLIB_MAX_NUM_CONTACTS];       /** \brief Global data for CLA Out tasks */
+    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /** \brief Global data for Generic Worker tasks */
+    BPNode_Notif_t         ChildStopWorkNotif;                       /** \brief Shared notification for stopping child task work */
 
     /* BPLib Instance State */
     BPLib_Instance_t            BplibInst;
