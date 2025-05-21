@@ -56,13 +56,38 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        if (Status == CFE_SUCCESS)
-        {
-            /* Grab the size of the bundle */
-            CFE_MSG_GetSize(MsgPtr, &MsgSize);
+        /* Grab the size of the bundle */
+        CFE_MSG_GetSize(MsgPtr, &MsgSize);
 
+        if (Status == CFE_SUCCESS && MsgSize != 0)
+        { /* Ingress received bundle to bplib CLA */
             /* Extract the bundle from the space packet */
-            memcpy(BPNode_AppData.ClaInData[ContId].InBuffer, CFE_SB_GetUserData(MsgPtr), (size_t) BPNODE_CLA_PSP_INPUT_BUFFER_SIZE);
+            BPNode_AppData.ClaInData[ContId].SB_Buffer = CFE_SB_GetUserData(MsgPtr);
+
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+
+            BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
+                                        ContId,
+                                        BPNode_AppData.ClaInData[ContId].SB_Buffer,
+                                        MsgSize,
+                                        0);
+
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
+            /* If CLA did not timeout during ingress, but wasn't successful */
+            if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "[CLA In #%d]: Failed to ingress bundle. Error = %d",
+                                    ContId,
+                                    BpStatus);
+
+                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+            }
+            else
+            {
+                Status = CFE_SUCCESS;
+            }
         }
         else if (Status != CFE_SB_TIME_OUT)
         {
@@ -76,7 +101,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
     else
     {
         RdBuf.BufferSize = BPNODE_CLA_PSP_INPUT_BUFFER_SIZE;
-        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].InBuffer;
+        RdBuf.BufferMem  = BPNode_AppData.ClaInData[ContId].PSP_Buffer;
 
         BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -86,10 +111,32 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
-        if (Status == CFE_PSP_SUCCESS)
-        {
-            MsgSize = RdBuf.BufferSize;
-            Status = CFE_SUCCESS;
+        if (Status == CFE_PSP_SUCCESS && RdBuf.BufferSize != 0)
+        { /* Ingress received bundle to bplib CLA */
+            BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
+
+            BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
+                                        ContId,
+                                        BPNode_AppData.ClaInData[ContId].PSP_Buffer,
+                                        RdBuf.BufferSize,
+                                        0);
+
+            BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
+
+            /* If CLA did not timeout during ingress, but wasn't successful */
+            if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
+            {
+                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "[CLA In #%d]: Failed to ingress bundle. Error = %d",
+                                    ContId,
+                                    BpStatus);
+
+                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+            }
+            else
+            {
+                Status = CFE_SUCCESS;
+            }
         }
         else if (Status != CFE_PSP_ERROR_TIMEOUT)
         {
@@ -100,35 +147,6 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
                                 Status);
 
             Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-        }
-    }
-
-    /* Ingress received bundle to bplib CLA */
-    if (Status == CFE_SUCCESS && MsgSize != 0)
-    {
-        BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
-
-        BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
-                                     ContId,
-                                     BPNode_AppData.ClaInData[ContId].InBuffer,
-                                     MsgSize,
-                                     0);
-
-        BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-
-        /* If CLA did not timeout during ingress, but wasn't successful */
-        if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[CLA In #%d]: Failed to ingress bundle. Error = %d",
-                                ContId,
-                                BpStatus);
-
-            Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-        }
-        else
-        {
-            Status = CFE_SUCCESS;
         }
     }
 

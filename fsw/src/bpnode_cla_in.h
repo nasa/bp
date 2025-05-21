@@ -72,7 +72,8 @@ typedef struct
     CFE_SB_PipeId_t IngressPipe;
 
     /* CLA In bundle/packet */
-    uint8 InBuffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+    uint8 PSP_Buffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+    void* SB_Buffer;
 } BPNode_ClaInData_t;
 
 
