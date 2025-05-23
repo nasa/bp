@@ -39,7 +39,7 @@
 int32 BPNode_AduInCreateTasks(void)
 {
     int32  Status;
-    uint8  i;
+    uint32 i;
     char   NameBuff[OS_MAX_API_NAME];
     uint16 TaskPriority;
 
@@ -130,7 +130,7 @@ int32 BPNode_AduIn_TaskInit(uint32 *ChanId)
 {
     CFE_ES_TaskId_t TaskId;
     int32           Status;
-    uint8           i;
+    uint32          i;
     char            NameBuff[OS_MAX_API_NAME];
 
     /* Get the task ID of currently running child task */

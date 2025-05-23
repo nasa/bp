@@ -40,7 +40,7 @@
 CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
 {
     BPA_ADUP_Table_t *TblDataPtr = (BPA_ADUP_Table_t *) TblData;
-    uint8_t i, j;
+    uint32_t i, j;
 
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
     {
