@@ -187,7 +187,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint32_t ChanId)
                                   BPNode_AppData.AduInData[ChanId].AduPipe);
         if (Status != CFE_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_START_SUB_ERR_EID, BPLib_EM_EventType_DEBUG,
+            BPLib_EM_SendEvent(BPNODE_ADU_START_SUB_DBG_EID, BPLib_EM_EventType_DEBUG,
                                 "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x",
                                 ChanId,
                                 Status,
@@ -213,7 +213,7 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint32_t ChanId)
                                   BPNode_AppData.AduInData[ChanId].AduPipe);
         if (Status != CFE_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_STOP_UNSUB_ERR_EID, BPLib_EM_EventType_DEBUG,
+            BPLib_EM_SendEvent(BPNODE_ADU_STOP_UNSUB_DBG_EID, BPLib_EM_EventType_DEBUG,
                                 "Error unsubscribing from ADU on channel #%d, Error = %d, MsgId = 0x%x",
                                 ChanId,
                                 Status,

@@ -46,8 +46,8 @@
 #define BPNODE_FWP_INIT_ERR_EID                 16
 #define BPNODE_EXIT_CRIT_EID                    17
 #define BPNODE_AUTO_ADD_APP_INF_EID             18
-#define BPNODE_ADU_START_SUB_ERR_EID            23
-#define BPNODE_ADU_STOP_UNSUB_ERR_EID           26
+#define BPNODE_ADU_START_SUB_DBG_EID            23
+#define BPNODE_ADU_STOP_UNSUB_DBG_EID           26
 #define BPNODE_ADU_IN_TOO_BIG_ERR_EID           27
 #define BPNODE_ADU_IN_INIT_SEM_ERR_EID          28
 #define BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID        29
