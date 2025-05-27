@@ -107,7 +107,7 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Ingest was successful
  */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Out
@@ -125,7 +125,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint8_t ChanId);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout);
+BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout);
 
 /**
  * \brief FWP ADU Proxy Add Application
@@ -141,7 +141,7 @@ BPLib_Status_t BPA_ADUP_Out(uint8_t ChanId, uint32_t Timeout);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
-BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Start Application
@@ -157,7 +157,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint8_t ChanId);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
-BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_StartApplication(uint32_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Stop Application
@@ -173,7 +173,7 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint8_t ChanId);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
-BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_StopApplication(uint32_t ChanId);
 
 /**
  * \brief FWP ADU Proxy Remove Application
@@ -189,6 +189,6 @@ BPLib_Status_t BPA_ADUP_StopApplication(uint8_t ChanId);
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Operation was successful
  */
-BPLib_Status_t BPA_ADUP_RemoveApplication(uint8_t ChanId);
+BPLib_Status_t BPA_ADUP_RemoveApplication(uint32_t ChanId);
 
 #endif /* FWP_ADUP_H */

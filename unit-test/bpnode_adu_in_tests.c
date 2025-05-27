@@ -130,8 +130,8 @@ void Test_BPNode_AduInCreateTasks_TakeSemErr(void)
 /* Test BPNode_AduIn_TaskInit when everything succeeds */
 void Test_BPNode_AduIn_TaskInit_Nominal(void)
 {
-    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = 0;
+    uint32 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ExpChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -156,8 +156,8 @@ void Test_BPNode_AduIn_TaskInit_Nominal(void)
 /* Test BPNode_AduIn_TaskInit when it fails to get the task ID */
 void Test_BPNode_AduIn_TaskInit_GetIdErr(void)
 {
-    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ExpChanId = BPLIB_MAX_NUM_CHANNELS;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_GetTaskID), 1, CFE_ES_ERR_RESOURCEID_NOT_VALID);
@@ -177,8 +177,8 @@ void Test_BPNode_AduIn_TaskInit_GetIdErr(void)
 /* Test BPNode_AduIn_TaskInit when the task IDs don't match */
 void Test_BPNode_AduIn_TaskInit_MatchIdErr(void)
 {
-    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ExpChanId = BPLIB_MAX_NUM_CHANNELS;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -201,8 +201,8 @@ void Test_BPNode_AduIn_TaskInit_MatchIdErr(void)
 /* Test BPNode_AduIn_TaskInit when pipe creation fails */
 void Test_BPNode_AduIn_TaskInit_PipeErr(void)
 {
-    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = 0;
+    uint32 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ExpChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -226,8 +226,8 @@ void Test_BPNode_AduIn_TaskInit_PipeErr(void)
 /* Test BPNode_AduIn_TaskInit when init semaphore give fails */
 void Test_BPNode_AduIn_TaskInit_GiveSemErr(void)
 {
-    uint8 ChanId = BPLIB_MAX_NUM_CHANNELS;
-    uint8 ExpChanId = 0;
+    uint32 ChanId = BPLIB_MAX_NUM_CHANNELS;
+    uint32 ExpChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -253,7 +253,7 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -286,7 +286,7 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
     uint32 i;
 
@@ -318,7 +318,7 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
 void Test_BPNode_AduIn_AppMain_TakeSemErr(void)
 {
     CFE_ES_TaskId_t TaskId;
-    uint8 ChanId;
+    uint32 ChanId;
 
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
@@ -352,7 +352,7 @@ void Test_BPNode_AduIn_AppMain_TakeSemErr(void)
 void Test_BPNode_AduIn_AppMain_WakeupSemTimeout(void)
 {
     CFE_ES_TaskId_t TaskId;
-    uint8 ChanId;
+    uint32 ChanId;
 
     /* Force a failed task wakeup */
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
@@ -387,7 +387,7 @@ void Test_BPNode_AduIn_AppMain_WakeupSemTimeout(void)
 void Test_BPNode_AduIn_AppMain_NullBuf(void)
 {
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -417,7 +417,7 @@ void Test_BPNode_AduIn_AppMain_NullBuf(void)
 /* Test BPNode_AduIn_AppMain when initialization failed but channel ID is known */
 void Test_BPNode_AduIn_AppMain_InitErr(void)
 {
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -458,7 +458,7 @@ void Test_BPNode_AduIn_AppMain_ChanIdErr(void)
 /* Test BPNode_AduIn_AppMain when app state is stopped */
 void Test_BPNode_AduIn_AppMain_AppStopped(void)
 {
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -482,7 +482,7 @@ void Test_BPNode_AduIn_AppMain_ClearPipe(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
 
     /* Test setup */
@@ -514,7 +514,7 @@ void Test_BPNode_AduIn_AppMain_ClearPipe(void)
 /* Test BPNode_AduIn_TaskExit in nominal shutdown */
 void Test_BPNode_AduIn_TaskExit_Nominal(void)
 {
-    uint8 ChanId = 0;
+    uint32 ChanId = 0;
 
     UtAssert_VOIDCALL(BPNode_AduIn_TaskExit(ChanId));
 

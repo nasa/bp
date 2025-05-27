@@ -592,8 +592,8 @@ void Test_BPNode_AppInit_AutoAddApp(void)
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_AUTO_ADD_APP_INF_EID);
     UtAssert_STRINGBUF_EQ("Automatically added app configurations for ChanId=%d", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
-    UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
-    UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
+    UtAssert_STUB_COUNT(BPLib_PI_AddApplication, 1);
+    UtAssert_STUB_COUNT(BPLib_PI_StartApplication, 1);
 }
 
 /* Test adding one application automatically at startup failed */
@@ -603,12 +603,12 @@ void Test_BPNode_AppInit_AutoAddAppFail(void)
     TestChanTbl.Configs[0].AddAutomatically = true;
 
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
-    UT_SetDeferredRetcode(UT_KEY(BPA_ADUP_StartApplication), 1, BPLIB_ERROR);
+    UT_SetDeferredRetcode(UT_KEY(BPLib_PI_StartApplication), 1, BPLIB_ERROR);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), BPLIB_ERROR);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(BPA_ADUP_AddApplication, 1);
-    UtAssert_STUB_COUNT(BPA_ADUP_StartApplication, 1);
+    UtAssert_STUB_COUNT(BPLib_PI_AddApplication, 1);
+    UtAssert_STUB_COUNT(BPLib_PI_StartApplication, 1);
 }
 
 /* Test app exit in nominal case */

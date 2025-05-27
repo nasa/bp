@@ -105,7 +105,7 @@ int32 BPNode_AduInCreateTasks(void);
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  *  \retval OSAL or cFE error code
  */
-int32 BPNode_AduIn_TaskInit(uint8 *ChanId);
+int32 BPNode_AduIn_TaskInit(uint32 *ChanId);
 
 /**
  * \brief ADU In Main Task
@@ -129,7 +129,7 @@ void BPNode_AduIn_AppMain(void);
  *
  *  \param[in] ChanId Channel ID for this task
  */
-void BPNode_AduIn_TaskExit(uint8 ChanId);
+void BPNode_AduIn_TaskExit(uint32 ChanId);
 
 
 #endif /* BPNODE_ADU_IN_H */

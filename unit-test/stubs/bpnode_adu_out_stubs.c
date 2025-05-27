@@ -57,9 +57,9 @@ void BPNode_AduOut_AppMain(void)
  * Generated stub function for BPNode_AduOut_TaskExit()
  * ----------------------------------------------------
  */
-void BPNode_AduOut_TaskExit(uint8 ChanId)
+void BPNode_AduOut_TaskExit(uint32 ChanId)
 {
-    UT_GenStub_AddParam(BPNode_AduOut_TaskExit, uint8, ChanId);
+    UT_GenStub_AddParam(BPNode_AduOut_TaskExit, uint32, ChanId);
 
     UT_GenStub_Execute(BPNode_AduOut_TaskExit, Basic, NULL);
 }
@@ -69,11 +69,11 @@ void BPNode_AduOut_TaskExit(uint8 ChanId)
  * Generated stub function for BPNode_AduOut_TaskInit()
  * ----------------------------------------------------
  */
-int32 BPNode_AduOut_TaskInit(uint8 *ChanId)
+int32 BPNode_AduOut_TaskInit(uint32 *ChanId)
 {
     UT_GenStub_SetupReturnBuffer(BPNode_AduOut_TaskInit, int32);
 
-    UT_GenStub_AddParam(BPNode_AduOut_TaskInit, uint8 *, ChanId);
+    UT_GenStub_AddParam(BPNode_AduOut_TaskInit, uint32 *, ChanId);
 
     UT_GenStub_Execute(BPNode_AduOut_TaskInit, Basic, NULL);
 

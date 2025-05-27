@@ -497,9 +497,9 @@ CFE_Status_t BPNode_AppInit(void)
         if (BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[i].AddAutomatically == true)
         {
             /* Ignore return value, no failure conditions are possible here */
-            (void) BPA_ADUP_AddApplication(i);
+            (void) BPLib_PI_AddApplication(i);
 
-            BpStatus = BPA_ADUP_StartApplication(i);
+            BpStatus = BPLib_PI_StartApplication(i);
 
             if (BpStatus != BPLIB_SUCCESS)
             {
