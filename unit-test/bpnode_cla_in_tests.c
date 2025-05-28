@@ -606,10 +606,6 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
 
     UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
-
-    UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_IN_LIB_PROC_ERR_EID);
-    UtAssert_STRINGBUF_EQ("[CLA In #%d]: Failed to ingress bundle. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
-                            context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)

@@ -77,10 +77,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             /* If CLA did not timeout during ingress, but wasn't successful */
             if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
             {
-                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[CLA In #%d]: Failed to ingress bundle. Error = %d",
-                                    ContId,
-                                    BpStatus);
+                /* Event is issued within bplib */
 
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
@@ -126,10 +123,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             /* If CLA did not timeout during ingress, but wasn't successful */
             if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
             {
-                BPLib_EM_SendEvent(BPNODE_CLA_IN_LIB_PROC_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "[CLA In #%d]: Failed to ingress bundle. Error = %d",
-                                    ContId,
-                                    BpStatus);
+                /* Event is issued within bplib */
 
                 Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
             }
