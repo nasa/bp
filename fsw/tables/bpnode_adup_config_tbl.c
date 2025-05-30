@@ -37,6 +37,12 @@ BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
             CFE_SB_MSGID_WRAP_VALUE(0x080D),                /* CFE_SB_ALLSUBS */
             CFE_SB_MSGID_WRAP_VALUE(0x080E),                /* CFE_SB_ONESUB */
             CFE_SB_MSGID_WRAP_VALUE(0x083E),                /* CF_PDU */
+        },
+        .MsgLims = {
+            10,
+            10,
+            10,
+            10
         }
     },
     {
@@ -44,6 +50,9 @@ BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
         .NumRecvFrmMsgIds = 1,
         .RecvFrmMsgIds = {
             CFE_SB_MSGID_WRAP_VALUE(0x0806),                /* CFE_TIME_DIAG_HK */
+        },
+        .MsgLims = {
+            10
         }
     }
 };
