@@ -51,6 +51,7 @@
 #define BPNODE_CLA_OUT_SEM_INIT_WAIT_MSEC     (2000u)                /** \brief Wait time for init semaphore take, in milliseconds */
 #define BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC   (1100u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
+#define BPNODE_CLA_OUT_RATE_BITS_PER_CYCLE    (800000u)
 
 /*
 ** Type Definitions
@@ -99,11 +100,12 @@ typedef struct
  *       None
  *
  *  \param[in] ContId Contact ID
+ *  \param[out] MsgSize Size of bundle to output
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId);
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize);
 
 /**
   * \brief     Create all CLA Out tasks

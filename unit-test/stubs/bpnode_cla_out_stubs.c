@@ -69,11 +69,12 @@ void BPNode_ClaOut_DeleteSems(uint32 ContactId)
  * Generated stub function for BPNode_ClaOut_ProcessBundleOutput()
  * ----------------------------------------------------
  */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
 {
     UT_GenStub_SetupReturnBuffer(BPNode_ClaOut_ProcessBundleOutput, int32);
 
     UT_GenStub_AddParam(BPNode_ClaOut_ProcessBundleOutput, uint32, ContId);
+    UT_GenStub_AddParam(BPNode_ClaOut_ProcessBundleOutput, size_t *, MsgSize);
 
     UT_GenStub_Execute(BPNode_ClaOut_ProcessBundleOutput, Basic, NULL);
 
