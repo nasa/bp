@@ -205,6 +205,8 @@ void BPNode_AduIn_AppMain(void)
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint32 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
+    size_t AduSize;
+    size_t BytesIngressed;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduIn_TaskInit(&ChanId);
@@ -243,6 +245,7 @@ void BPNode_AduIn_AppMain(void)
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
+                BytesIngressed = 0;
                 /* Check for ADUs to ingest */
                 do
                 {
@@ -256,7 +259,18 @@ void BPNode_AduIn_AppMain(void)
 
                     if (Status == CFE_SUCCESS && BufPtr != NULL)
                     {
-                        Status = BPA_ADUP_In((void *) BufPtr, ChanId);
+                        Status = BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
+
+                        if (Status == CFE_SUCCESS)
+                        {
+                            BytesIngressed += AduSize;
+
+                            if ((BytesIngressed * 8) >=
+                                 BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle)
+                            {
+                                break;
+                            }
+                        }
                     }
                     else if (Status == CFE_SB_TIME_OUT)
                     {

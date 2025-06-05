@@ -196,6 +196,8 @@ void BPNode_AduOut_AppMain(void)
     BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     uint32 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
+    size_t AduSize;
+    size_t BytesEgressed;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -232,16 +234,27 @@ void BPNode_AduOut_AppMain(void)
 
         if (Status == OS_SUCCESS)
         {
-            do
+            AppState = BPLib_NC_GetAppState(ChanId);
+            if (AppState == BPLIB_NC_APP_STATE_STARTED &&
+                BPLib_PI_SetAutoEgress(ChanId, true) == BPLIB_SUCCESS)
             {
-                AppState = BPLib_NC_GetAppState(ChanId);
-                if (AppState == BPLIB_NC_APP_STATE_STARTED)
+                BytesEgressed = 0;
+
+                do
                 {
                     /* Poll bundle from PI out queue */
-                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT);
+                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT, &AduSize);
                     if (BpStatus == BPLIB_SUCCESS)
                     {
-                        /* Success */
+                        BytesEgressed += AduSize;
+
+                        if ((BytesEgressed * 8) >=
+                            BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle)
+                        {
+                            (void) BPLib_PI_SetAutoEgress(ChanId, false);
+                            break;
+                        }
+
                     }
                     else if (BpStatus == BPLIB_PI_TIMEOUT)
                     {
@@ -252,13 +265,8 @@ void BPNode_AduOut_AppMain(void)
                         // Event message
                         break;
                     }
-                }
-                else
-                {
-                    /* By breaking, we avoid busy-polling NC_GetAppState() */
-                    break;
-                }
-            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+                } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+            }
         }
         else if (Status == OS_SEM_TIMEOUT)
         {
