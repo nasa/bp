@@ -473,7 +473,8 @@ void BPNode_ClaOut_AppMain(void)
                     if (OsStatus == OS_SUCCESS)
                     {
                         /* Ingress bundles only when the contact has been started */
-                        if (RunState == BPLIB_CLA_STARTED)
+                        if (RunState == BPLIB_CLA_STARTED && 
+                            BPLib_CLA_SetAutoEgress(ContactId, true) == BPLIB_SUCCESS)
                         {
                             BytesEgressed = 0;
 
@@ -487,6 +488,7 @@ void BPNode_ClaOut_AppMain(void)
                                     if ((BytesEgressed * 8) >= 
                                         BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle)
                                     {
+                                        (void) BPLib_CLA_SetAutoEgress(ContactId, false);
                                         break;
                                     }
                                 }

@@ -92,11 +92,12 @@ typedef struct
  *       None
  *
  *  \param[in] ContId Contact ID
+ *  \param[out] BundleSize Size of bundle ingested
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId);
+int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize);
 
 /**
   * \brief     Create all CLA In tasks
