@@ -48,12 +48,13 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId)
  * Generated stub function for BPA_ADUP_In()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId)
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId, size_t *AduSize)
 {
     UT_GenStub_SetupReturnBuffer(BPA_ADUP_In, BPLib_Status_t);
 
     UT_GenStub_AddParam(BPA_ADUP_In, void *, AduPtr);
     UT_GenStub_AddParam(BPA_ADUP_In, uint32_t, ChanId);
+    UT_GenStub_AddParam(BPA_ADUP_In, size_t *, AduSize);
 
     UT_GenStub_Execute(BPA_ADUP_In, Basic, NULL);
 
@@ -65,12 +66,13 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId)
  * Generated stub function for BPA_ADUP_Out()
  * ----------------------------------------------------
  */
-BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout)
+BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout, size_t *AduSize)
 {
     UT_GenStub_SetupReturnBuffer(BPA_ADUP_Out, BPLib_Status_t);
 
     UT_GenStub_AddParam(BPA_ADUP_Out, uint32_t, ChanId);
     UT_GenStub_AddParam(BPA_ADUP_Out, uint32_t, Timeout);
+    UT_GenStub_AddParam(BPA_ADUP_Out, size_t *, AduSize);
 
     UT_GenStub_Execute(BPA_ADUP_Out, Basic, NULL);
 

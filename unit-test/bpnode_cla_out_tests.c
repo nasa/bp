@@ -554,10 +554,11 @@ void Test_BPNode_ClaOut_TaskExit_Nominal(void)
 void Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal(void)
 {
     uint32 ContactId;
+    size_t BundleSize;
 
     ContactId = BPNODE_CLA_SB_CONTACT_ID;
 
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
@@ -566,10 +567,11 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal(void)
 void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
 {
     uint32 ContactId;
+    size_t BundleSize;
 
     ContactId = 0;
 
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
@@ -578,8 +580,10 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
 void Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress(void)
 {
     uint32 ContactId = 0;
+    size_t BundleSize;
+
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_ERROR);
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
 
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_CLA_OUT_LIB_LOAD_ERR_EID);
     UtAssert_STRINGBUF_EQ("[CLA Out #%d]: Failed to get bundle for egress. Error = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
@@ -589,8 +593,10 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress(void)
 void Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout(void)
 {
     uint32 ContactId = 0;
+    size_t BundleSize;
+    
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Egress), 1, BPLIB_CLA_TIMEOUT);
-    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId), CFE_PSP_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_PSP_SUCCESS);
 }
 
 /* Register the test cases to execute with the unit test tool */

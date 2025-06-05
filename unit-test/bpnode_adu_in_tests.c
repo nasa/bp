@@ -255,6 +255,7 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     CFE_SB_Buffer_t *BufPtr = &Buf;
     uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
+    size_t AduSize = 10;
 
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
@@ -264,8 +265,10 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
     BPNode_UT_BundleProcessLoops(2);
+    UT_SetDataBuffer(UT_KEY(BPA_ADUP_In), &AduSize, sizeof(AduSize), false);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
+    BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle = 10000000000;
 
     BPNode_AduIn_AppMain();
 
@@ -289,6 +292,7 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
     uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
     uint32 i;
+    size_t AduSize = 10;
 
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
@@ -300,9 +304,11 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
     for (i = 0; i < BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE; i++)
     {
         UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
+        UT_SetDataBuffer(UT_KEY(BPA_ADUP_In), &AduSize, sizeof(AduSize), false);
     }
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
+    BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle = 10000000000;
 
     BPNode_AduIn_AppMain();
 

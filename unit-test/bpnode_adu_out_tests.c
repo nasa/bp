@@ -223,6 +223,8 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
 {
     uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
+    size_t AduSize = 10;
+    uint16 i;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -230,14 +232,20 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
     BPNode_UT_BundleProcessLoops(BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
 
+    for (i = 0; i < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE; i++)
+    {
+        UT_SetDataBuffer(UT_KEY(BPA_ADUP_Out), &AduSize, sizeof(AduSize), false);
+    }
+
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
+    BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle = 10000000000;
 
     BPNode_AduOut_AppMain();
 
     UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[ChanId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(BPLib_NC_GetAppState, BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
+    UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 1);
     UtAssert_STUB_COUNT(BPNode_NotifIsSet, BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
 }
 
