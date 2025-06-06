@@ -512,6 +512,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
 {
     uint8  ContactId;
     size_t MsgSize;
+    size_t InputMsgSize;
     CFE_SB_Buffer_t Buf;
     CFE_SB_Buffer_t* BufPtr;
 
@@ -523,7 +524,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
     /* Run function under test */
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId, &MsgSize), CFE_SUCCESS);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId, &InputMsgSize), CFE_SUCCESS);
 
     /* Verify that the function ran as expected */
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);

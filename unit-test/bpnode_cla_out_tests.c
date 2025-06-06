@@ -239,6 +239,8 @@ void Test_BPNode_ClaOut_AppMain_NoBundleAvailable(void)
     RunState1 = BPLIB_CLA_STARTED;
     RunState2 = BPLIB_CLA_EXITED;
 
+    BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle = 100000;
+
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
@@ -291,6 +293,7 @@ void Test_BPNode_ClaOut_AppMain_SingleBundle(void)
     BPNode_UT_BundleProcessLoops(1);
 
     BPNode_AppData.ClaOutData[ContactId].TaskId = TaskId;
+    BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle = 100000;
 
     // TODO How to add more bundles?
 
