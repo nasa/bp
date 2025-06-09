@@ -482,7 +482,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_STORAGE_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
             {
-                BPLib_NC_SendStorageHk();
+                BPLib_NC_SendStorageHk(&BPNode_AppData.BplibInst);
             }
 
             break;
