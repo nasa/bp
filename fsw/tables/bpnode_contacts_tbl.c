@@ -58,11 +58,11 @@ BPLib_CLA_ContactsTable_t ContactsTable = {
                 .ClaOutAddr          = "127.0.0.1", /* CL ip address */
                 .ClaInPort           = 4501, /* Port Number, int32 */
                 .ClaOutPort          = 4551,
-                .IngressBitsPerCycle = 100000000, /* Ingress rate, 100 Mb per cycle */
-                .EgressBitsPerCycle  = 100000000, /* Egress rate, 100 Mb per cycle */
                 .RetransmitTimeout   = 102, /*bundle reforwarding timeout in seconds, uint32*/
                 .CSTimeTrigger       = 103, /*Custody Signal time trigger in seconds, uint32*/
-                .CSSizeTrigger       = 10 /*Custody signal size trigger in bytes, size_t*/
+                .CSSizeTrigger       = 10, /*Custody signal size trigger in bytes, size_t*/
+                .IngressBitsPerCycle = 100000000, /* Ingress rate, 100 Mb per cycle */
+                .EgressBitsPerCycle  = 100000000  /* Egress rate, 100 Mb per cycle */
             },
             { /* SB CLA contact */
                 .DestEIDs = {
@@ -82,11 +82,11 @@ BPLib_CLA_ContactsTable_t ContactsTable = {
                 .ClaOutAddr             = "",
                 .ClaInPort              = 0,
                 .ClaOutPort             = 0,
-                .IngressBitsPerCycle    = 100000000, /* Ingress rate, 100 Mb per cycle */
-                .EgressBitsPerCycle     = 100000000, /* Egress rate, 100 Mb per cycle */
                 .RetransmitTimeout      = 0,
                 .CSTimeTrigger          = 0,
-                .CSSizeTrigger          = 0
+                .CSSizeTrigger          = 0,
+                .IngressBitsPerCycle    = 100000000, /* Ingress rate, 100 Mb per cycle */
+                .EgressBitsPerCycle     = 100000000  /* Egress rate, 100 Mb per cycle */
             }
         }
 };
