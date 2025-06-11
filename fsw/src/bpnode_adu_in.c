@@ -202,6 +202,7 @@ int32 BPNode_AduIn_TaskInit(uint32 *ChanId)
 void BPNode_AduIn_AppMain(void)
 {
     int32 Status;
+    BPLib_Status_t BpStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint32 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
@@ -259,9 +260,9 @@ void BPNode_AduIn_AppMain(void)
 
                     if (Status == CFE_SUCCESS && BufPtr != NULL)
                     {
-                        Status = BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
+                        BpStatus = BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
 
-                        if (Status == CFE_SUCCESS)
+                        if (BpStatus == BPLIB_SUCCESS)
                         {
                             BytesIngressed += AduSize;
 
