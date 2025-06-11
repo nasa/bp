@@ -60,6 +60,11 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
             {
                 return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
             }
+
+            if (TblDataPtr->Entries[i].MsgLims[j] > BPNODE_ADU_PIPE_DEPTH)
+            {
+                return BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE;
+            }
         }
     }
 
@@ -158,6 +163,7 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId)
     for (i = 0; i < BPNode_AppData.AduProxyTablePtr->Entries[ChanId].NumRecvFrmMsgIds; i++)
     {
         BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i] = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].RecvFrmMsgIds[i];
+        BPNode_AppData.AduInData[ChanId].MsgLims[i] = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].MsgLims[i];
     }
 
     /*
@@ -183,14 +189,15 @@ BPLib_Status_t BPA_ADUP_StartApplication(uint32_t ChanId)
     /* Subscribe to all configured message IDs */
     for(i = 0; i < BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds; i++)
     {
-        Status = CFE_SB_Subscribe(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i],
-                                  BPNode_AppData.AduInData[ChanId].AduPipe);
+        Status = CFE_SB_SubscribeEx(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i],
+                                    BPNode_AppData.AduInData[ChanId].AduPipe,
+                                    CFE_SB_DEFAULT_QOS, 
+                                    BPNode_AppData.AduInData[ChanId].MsgLims[i]);
         if (Status != CFE_SUCCESS)
         {
             BPLib_EM_SendEvent(BPNODE_ADU_START_SUB_DBG_EID, BPLib_EM_EventType_DEBUG,
                                 "Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x",
-                                ChanId,
-                                Status,
+                                ChanId, Status,
                                 CFE_SB_MsgIdToValue(BPNode_AppData.AduInData[ChanId].RecvFromMsgIds[i]));
 
             return BPLIB_ERROR;

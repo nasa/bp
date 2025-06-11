@@ -96,6 +96,24 @@ void Test_BPA_ADUP_ValidateConfigTbl_InvRecvFrm(void)
                                                 BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);
 }
 
+/* Test that ADU table validation fails when a MsgLim is not valid */
+void Test_BPA_ADUP_ValidateConfigTbl_InvMsgLim(void)
+{
+    BPA_ADUP_Table_t TestTblData;
+
+    memset(&TestTblData, 0, sizeof(TestTblData));
+
+    TestTblData.Entries[0].NumRecvFrmMsgIds = 1;
+
+    /* Bad msg limit */
+    TestTblData.Entries[0].MsgLims[0] = BPNODE_ADU_PIPE_DEPTH + 1;
+        
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_IsValidMsgId), true);
+
+    UtAssert_INT32_EQ((int32) BPA_ADUP_ValidateConfigTbl(&TestTblData), 
+                                                    BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE);     
+}
+
 /* Test BPA_ADUP_In */
 void Test_BPA_ADUP_In_Nominal(void)
 {
@@ -262,7 +280,7 @@ void Test_BPA_ADUP_StartApplication_Nominal(void)
     BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = 1;
 
     UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_SUCCESS);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
+    UtAssert_STUB_COUNT(CFE_SB_SubscribeEx, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);\
 }
 
@@ -274,10 +292,10 @@ void Test_BPA_ADUP_StartApplication_SubErr(void)
     BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = 1;
 
     /* Set CFE_SB_Subscribe to fail */
-    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_Subscribe), CFE_SB_BAD_ARGUMENT);
+    UT_SetDefaultReturnValue(UT_KEY(CFE_SB_SubscribeEx), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_INT32_EQ(BPA_ADUP_StartApplication(ChanId), BPLIB_ERROR);
-    UtAssert_STUB_COUNT(CFE_SB_Subscribe, 1);
+    UtAssert_STUB_COUNT(CFE_SB_SubscribeEx, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_ADU_START_SUB_DBG_EID);
     UtAssert_STRINGBUF_EQ("Error subscribing to ADU on channel #%d, Error = %d, MsgId = 0x%x", BPLIB_EM_EXPANDED_EVENT_SIZE, 
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
@@ -328,7 +346,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvNumRecv);
     ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvRecvFrm);
     ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvSendTo);
-
+    ADD_TEST(Test_BPA_ADUP_ValidateConfigTbl_InvMsgLim);
+    
     ADD_TEST(Test_BPA_ADUP_In_Nominal);
     ADD_TEST(Test_BPA_ADUP_In_SizeErr);
     ADD_TEST(Test_BPA_ADUP_In_IngressErr);

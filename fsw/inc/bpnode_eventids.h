@@ -82,7 +82,6 @@
 #define BPNODE_CLAP_INIT_SEM_DBG_EID            58
 #define BPNODE_CLAP_INIT_STATE_DBG_EID          59
 
-#define BPNODE_CLA_IN_LIB_PROC_ERR_EID          60
 #define BPNODE_CLA_IN_FIND_NAME_ERR_EID         61
 #define BPNODE_CLA_IN_CFG_PORT_ERR_EID          62
 #define BPNODE_CLA_IN_CFG_IP_ERR_EID            63

@@ -498,7 +498,7 @@ void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
         case BPNODE_SEND_NODE_MIB_REPORTS_HK_CC:
             if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibReportsHkCmd_t)))
             {
-                BPLib_NC_SendNodeMibReportsHk();
+                BPLib_NC_SendNodeMibReportsHk(&BPNode_AppData.BplibInst);
             }
 
             break;

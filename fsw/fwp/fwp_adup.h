@@ -59,6 +59,7 @@ typedef struct
 {
     CFE_SB_MsgId_t SendToMsgId;
     uint32         NumRecvFrmMsgIds;
+    uint32         MsgLims[BPNODE_MAX_CHAN_SUBSCRIPTION];
     CFE_SB_MsgId_t RecvFrmMsgIds[BPNODE_MAX_CHAN_SUBSCRIPTION];
 } BPA_ADUP_Config_t ;
 
