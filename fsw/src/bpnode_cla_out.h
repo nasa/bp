@@ -99,11 +99,12 @@ typedef struct
  *       None
  *
  *  \param[in] ContId Contact ID
+ *  \param[out] MsgSize Size of bundle to output
  *
  *  \return Execution status, see \ref CFEReturnCodes
  *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
  */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId);
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize);
 
 /**
   * \brief     Create all CLA Out tasks

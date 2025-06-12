@@ -104,11 +104,12 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData);
  *
  *  \param[in] AduPtr Pointer to the ADU
  *  \param[in] ChanId Channel ID
+ *  \param[out] AduSize Size of ADU ingested
  *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Ingest was successful
  */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId);
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId, size_t *AduSize);
 
 /**
  * \brief FWP ADU Proxy Out
@@ -122,11 +123,12 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId);
  *
  *  \param[in] ChanId Channel ID
  *  \param[in] Timeout Total time to pend on channel out queue (in milliseconds)
+ *  \param[out] AduSize Size of ADU egressed
  *
  *  \return Execution status
  *  \retval BPLIB_SUCCESS Output was successful
  */
-BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout);
+BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout, size_t *AduSize);
 
 /**
  * \brief FWP ADU Proxy Add Application

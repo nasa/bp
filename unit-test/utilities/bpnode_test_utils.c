@@ -143,6 +143,32 @@ void UT_Handler_BPLib_PI_Egress(void *UserObj, UT_EntryKey_t FuncKey, const UT_S
     }
 }
 
+void UT_Handler_BPA_ADUP_Out(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
+{
+    size_t *AduSize = UT_Hook_GetArgValueByName(Context, "AduSize", size_t *);
+    int32 Status;
+
+    UT_Stub_GetInt32StatusCode(Context, &Status);
+
+    if (Status >= 0)
+    {
+        UT_Stub_CopyToLocal(UT_KEY(BPA_ADUP_Out), AduSize, sizeof(size_t));
+    }
+}
+
+void UT_Handler_BPA_ADUP_In(void *UserObj, UT_EntryKey_t FuncKey, const UT_StubContext_t *Context)
+{
+    size_t *AduSize = UT_Hook_GetArgValueByName(Context, "AduSize", size_t *);
+    int32 Status;
+
+    UT_Stub_GetInt32StatusCode(Context, &Status);
+
+    if (Status >= 0)
+    {
+        UT_Stub_CopyToLocal(UT_KEY(BPA_ADUP_In), AduSize, sizeof(size_t));
+    }
+}
+
 void BPNode_Test_Verify_Event(uint16_t EventNum, int32_t EventID, const char* EventText)
 {
     /* Check the string */
@@ -234,6 +260,8 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_AS_Decrement), UT_Handler_BPLib_AS_Decrement, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_PI_Egress), UT_Handler_BPLib_PI_Egress, NULL);
     UT_SetHandlerFunction(UT_KEY(BPLib_CLA_GetContactRunState), UT_Handler_BPLib_CLA_GetContactRunState, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPA_ADUP_Out), UT_Handler_BPA_ADUP_Out, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPA_ADUP_In), UT_Handler_BPA_ADUP_In, NULL);
 
     BPNode_AppData.AduProxyTablePtr              = &TestAduTbl;
     BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;

@@ -34,16 +34,15 @@
 */
 
 /* Receive bundles from network CL and forward ingress bundles to CLA  */
-int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
+int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
     int32                               Status;
     BPLib_Status_t                      BpStatus;
-    size_t                              MsgSize;
     CFE_MSG_Message_t*                  MsgPtr;
 
     Status  = CFE_PSP_SUCCESS;
-    MsgSize = 0;
+    *BundleSize = 0;
 
     if (ContId == BPNODE_CLA_SB_CONTACT_ID)
     {
@@ -57,9 +56,9 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
         /* Grab the size of the bundle */
-        CFE_MSG_GetSize(MsgPtr, &MsgSize);
+        CFE_MSG_GetSize(MsgPtr, BundleSize);
 
-        if (Status == CFE_SUCCESS && MsgSize != 0)
+        if (Status == CFE_SUCCESS && *BundleSize != 0)
         { /* Ingress received bundle to bplib CLA */
             /* Extract the bundle from the space packet */
             BPNode_AppData.ClaInData[ContId].SB_Buffer = CFE_SB_GetUserData(MsgPtr);
@@ -69,7 +68,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
             BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
                                         ContId,
                                         BPNode_AppData.ClaInData[ContId].SB_Buffer,
-                                        MsgSize,
+                                        *BundleSize,
                                         0);
 
             BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
@@ -110,6 +109,8 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId)
 
         if (Status == CFE_PSP_SUCCESS && RdBuf.BufferSize != 0)
         { /* Ingress received bundle to bplib CLA */
+            *BundleSize = RdBuf.BufferSize;
+            
             BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContId].PerfId);
 
             BpStatus = BPLib_CLA_Ingress(&BPNode_AppData.BplibInst,
@@ -494,9 +495,10 @@ void BPNode_ClaIn_AppMain(void)
     CFE_Status_t                CFE_Status;
     BPLib_Status_t              Status;
     CFE_ES_TaskId_t             TaskId;
-    uint32                      BundlesReceived;
+    size_t                      BytesIngressed;
     uint32                      ContactId;
     BPLib_CLA_ContactRunState_t RunState;
+    size_t                      BundleSize;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
@@ -549,14 +551,20 @@ void BPNode_ClaIn_AppMain(void)
                         /* Ingress bundles only when the contact has been started */
                         if (RunState == BPLIB_CLA_STARTED)
                         {
-                            BundlesReceived = 0;
+                            BytesIngressed = 0;
 
                             do
                             {
-                                CFE_Status = BPNode_ClaIn_ProcessBundleInput(ContactId);
+                                CFE_Status = BPNode_ClaIn_ProcessBundleInput(ContactId, &BundleSize);
                                 if (CFE_Status == CFE_SUCCESS)
                                 {
-                                    BundlesReceived++;
+                                    BytesIngressed += BundleSize;
+
+                                    if ((BytesIngressed * 8) >= 
+                                        BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle)
+                                    {
+                                        break;
+                                    }
                                 }
 
                             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);

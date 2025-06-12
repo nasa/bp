@@ -36,15 +36,14 @@
 */
 
 /* Receive bundles from CLA and send egress bundles to network CL */
-int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
+int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
 {
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
     int32                                Status;
     BPLib_Status_t                       BpStatus;
-    size_t                               MsgSize;
 
     Status  = CFE_PSP_SUCCESS;
-    MsgSize = 0;
+    *MsgSize = 0;
 
     /* Get next bundle from CLA */
     BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
@@ -52,7 +51,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
     BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst,
                                 ContId,
                                 BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload,
-                                &MsgSize,
+                                MsgSize,
                                 BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
                                 BPNODE_CLA_OUT_QUEUE_PEND_TIME);
 
@@ -79,7 +78,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
 
             /* Set the size of the message */
             CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
-                            MsgSize + sizeof(CFE_MSG_TelemetryHeader_t));
+                            *MsgSize + sizeof(CFE_MSG_TelemetryHeader_t));
 
             /* Timestamp message before transmitting */
             CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader));
@@ -89,7 +88,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId)
         }
         else
         {
-            WrBuf.OutputSize = MsgSize;
+            WrBuf.OutputSize = *MsgSize;
             WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload;
 
             BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
@@ -420,9 +419,10 @@ void BPNode_ClaOut_AppMain(void)
     CFE_Status_t                CFE_Status;
     BPLib_Status_t              Status;
     CFE_ES_TaskId_t             TaskId;
-    uint32                      BundlesForwarded;
     uint32                      ContactId;
     BPLib_CLA_ContactRunState_t RunState;
+    size_t                      BundleSize;
+    size_t                      BytesEgressed;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
@@ -473,21 +473,30 @@ void BPNode_ClaOut_AppMain(void)
                     if (OsStatus == OS_SUCCESS)
                     {
                         /* Ingress bundles only when the contact has been started */
-                        if (RunState == BPLIB_CLA_STARTED)
+                        if (RunState == BPLIB_CLA_STARTED && 
+                            BPLib_CLA_SetAutoEgress(ContactId, true) == BPLIB_SUCCESS)
                         {
-                            BundlesForwarded = 0;
+                            BytesEgressed = 0;
 
                             do
                             {
-                                CFE_Status = BPNode_ClaOut_ProcessBundleOutput(ContactId);
+                                CFE_Status = BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize);
                                 if (CFE_Status == CFE_SUCCESS)
                                 {
-                                    BundlesForwarded++;
+                                    BytesEgressed += BundleSize;
+
+                                    if ((BytesEgressed * 8) >= 
+                                        BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle)
+                                    {
+                                        (void) BPLib_CLA_SetAutoEgress(ContactId, false);
+                                        break;
+                                    }
                                 }
                                 else
                                 {
                                     break;
                                 }
+                                
                             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
                         }
                     }
