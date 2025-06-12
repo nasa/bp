@@ -72,16 +72,15 @@ CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
 }
 
 /* Ingest an ADU */
-BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId)
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId, size_t *AduSize)
 {
     BPLib_Status_t  Status = BPLIB_SUCCESS;
     CFE_SB_Buffer_t *Buf   = (CFE_SB_Buffer_t *) AduPtr;
-    CFE_MSG_Size_t   Size;
 
-    CFE_MSG_GetSize(&Buf->Msg, &Size);
+    CFE_MSG_GetSize(&Buf->Msg, AduSize);
 
     /* Validate ADU is an acceptable size */
-    if (Size <= BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize)
+    if (*AduSize <= BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize)
     {
         /* Remove header from ADU */
         if (BPNode_AppData.AduInData[ChanId].AduUnwrapping == true)
@@ -90,7 +89,7 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId)
         }
 
         /* Pass ADU to PI */
-        Status = BPLib_PI_Ingress(&BPNode_AppData.BplibInst, ChanId, AduPtr, Size);
+        Status = BPLib_PI_Ingress(&BPNode_AppData.BplibInst, ChanId, AduPtr, *AduSize);
     }
     else
     {
@@ -98,22 +97,21 @@ BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId)
 
         BPLib_EM_SendEvent(BPNODE_ADU_IN_TOO_BIG_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[ADU In #%d]: Received an ADU too big to ingest, Size=%ld, MaxBundlePayloadSize=%d",
-                            ChanId, Size, BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize);
+                            ChanId, *AduSize, BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize);
     }
 
     return Status;
 }
 
 /* Send out an ADU */
-BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout)
+BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout, size_t *AduSize)
 {
     BPLib_Status_t Status;
-    size_t         AduSize;
 
     /* Get an ADU from PI */
     Status = BPLib_PI_Egress(&BPNode_AppData.BplibInst, ChanId,
                             (void *) &BPNode_AppData.AduOutData[ChanId].OutBuf.Payload,
-                            &AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
+                            AduSize, BPNODE_ADU_OUT_MAX_ADU_OUT_BYTES, Timeout);
 
     if (Status == BPLIB_SUCCESS)
     {
@@ -125,7 +123,7 @@ BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout)
             CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader),
                                         BPNode_AppData.AduOutData[ChanId].SendToMsgId);
             CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader),
-                                                AduSize + sizeof(CFE_MSG_TelemetryHeader_t));
+                                                *AduSize + sizeof(CFE_MSG_TelemetryHeader_t));
 
             /* Send wrapped ADU onto Software Bus */
             CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.AduOutData[ChanId].OutBuf.TelemetryHeader), true);

@@ -501,16 +501,18 @@ void Test_BPNode_ClaIn_AppMain_FailedProcBundle(void)
 void Test_BPNode_ClaIn_ProcessBundleInput_NominalUDP(void)
 {
     uint8 ContactId;
+    size_t BundleSize;
 
     /* UDP case */
     ContactId = 0;
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId, &BundleSize), CFE_SUCCESS);
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
 {
     uint8  ContactId;
     size_t MsgSize;
+    size_t InputMsgSize;
     CFE_SB_Buffer_t Buf;
     CFE_SB_Buffer_t* BufPtr;
 
@@ -522,7 +524,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_NominalSB(void)
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
     /* Run function under test */
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId, &InputMsgSize), CFE_SUCCESS);
 
     /* Verify that the function ran as expected */
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
@@ -538,7 +540,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferErr(void)
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_BAD_ARGUMENT);
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
 
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SB_BAD_ARGUMENT);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId, &MsgSize), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_RECV_BUFF_ERR_EID,
@@ -556,7 +558,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDefaultReturnValue(UT_KEY(CFE_SB_ReceiveBuffer), CFE_SB_TIME_OUT);
 
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SB_TIME_OUT);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId, &MsgSize), CFE_SB_TIME_OUT);
 
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
 }
@@ -564,9 +566,10 @@ void Test_BPNode_ClaIn_ProcessBundleInput_ReceiveBufferTimeout(void)
 void Test_BPNode_ClaIn_ProcessBundleInput_FailedIODCommand(void)
 {
     uint8 ContactId = 0;
+    size_t BundleSize;
 
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR);
-    UtAssert_UINT32_NEQ(BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_PSP_ERROR);
+    UtAssert_UINT32_NEQ(BPNode_ClaIn_ProcessBundleInput(ContactId, &BundleSize), CFE_PSP_ERROR);
 
     BPNode_Test_Verify_Event(0, BPNODE_CLA_IN_IO_READ_ERR_EID,
                             "[CLA In #%d]: Failed to read packet from UDP socket, RC = %d");
@@ -586,7 +589,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_SB_MsgSizeZero(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
-    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
+    UtAssert_EQ(CFE_Status_t, BPNode_ClaIn_ProcessBundleInput(ContactId, &MsgSize), CFE_SUCCESS);
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 0);
 }
 
@@ -605,7 +608,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_FailedBPLibIngress(void)
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_SetDeferredRetcode(UT_KEY(BPLib_CLA_Ingress), 1, BPLIB_ERROR);
 
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId, &MsgSize), CFE_STATUS_EXTERNAL_RESOURCE_FAIL);
 }
 
 void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)
@@ -623,7 +626,7 @@ void Test_BPNode_ClaIn_ProcessBundleInput_CLA_IngressTimeout(void)
     UT_SetDataBuffer(UT_KEY(CFE_MSG_GetSize), &MsgSize, sizeof(size_t), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
 
-    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId), CFE_SUCCESS);
+    UtAssert_UINT32_EQ(BPNode_ClaIn_ProcessBundleInput(ContactId, &MsgSize), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_CLA_Ingress, 1);
 }
