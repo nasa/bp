@@ -224,9 +224,6 @@ void Test_BPNode_WakeupProcess_STORFail(void)
 
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
-    /* Ensure Event Send was called */
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-
     /* Flush and GarbageCollect should still be called */
     UtAssert_STUB_COUNT(BPLib_STOR_FlushPending, 1);
     UtAssert_STUB_COUNT(BPLib_STOR_GarbageCollect, 1);

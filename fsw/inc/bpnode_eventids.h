@@ -153,8 +153,6 @@
 #define BPNODE_TBL_UPDATE_INF_EID               125
 #define BPNODE_NC_CFG_UPDATE_ERR_EID            126
 
-#define BPNODE_APP_STOR_FLUSH_ERR_EID           127
-
-#define BPNODE_INIT_SB_CONTACT_ERR_EID          128
+#define BPNODE_INIT_SB_CONTACT_ERR_EID          127
 
 #endif /* BPNODE_EVENTS_H */

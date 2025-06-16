@@ -163,14 +163,9 @@ CFE_Status_t BPNode_WakeupProcess(void)
     }
 
     /* Flush any bundles pending storage */
-    BpStatus = BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
-    if (BpStatus != BPLIB_SUCCESS)
-    {
-        /* Event message */
-        BPLib_EM_SendEvent(BPNODE_APP_STOR_FLUSH_ERR_EID, BPLib_EM_EventType_ERROR,
-            "Error batch-flushing bundles to storage, Status=0x%08X",
-            BpStatus);
-    }
+    (void) BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+
+    /* Flush error event issued by bplib */
 
     /* Wake up the Generic Worker Tasks */
     for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)

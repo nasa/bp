@@ -235,8 +235,7 @@ void BPNode_AduOut_AppMain(void)
         if (Status == OS_SUCCESS)
         {
             AppState = BPLib_NC_GetAppState(ChanId);
-            if (AppState == BPLIB_NC_APP_STATE_STARTED &&
-                BPLib_PI_SetAutoEgress(ChanId, true) == BPLIB_SUCCESS)
+            if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
                 BytesEgressed = 0;
 
@@ -251,7 +250,6 @@ void BPNode_AduOut_AppMain(void)
                         if ((BytesEgressed * 8) >=
                             BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle)
                         {
-                            (void) BPLib_PI_SetAutoEgress(ChanId, false);
                             break;
                         }
 
