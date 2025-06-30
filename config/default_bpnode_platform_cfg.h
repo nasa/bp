@@ -130,43 +130,43 @@
 
 /** 
  * @defgroup Child task priorities
- * \brief    These are listed in the order of their relative priorities. Generic workers
- *           have first priority since moving the bundles through BPNode is top priority.
- *           Out tasks have a higher priority than In tasks so that memory can be freed up
- *           for new incoming bundles. ADU tasks have higher priority than CLA tasks to
- *           prioritize delivering ADUs to their final destination.
+ * \brief    These are listed in the order of their relative priorities.
+ *           CLA tasks have the highest priority since those rates are typically
+ *           going to be higher than ADU rates. The Generic Worker task(s) also get
+ *           high priority to ensure bundles get offloaded to storage quickly.
  * @{
  */
-
- /**
- * \brief Generic Worker Task priority base 
- *          The worker ID is added to the base value to get the final task priority
- */
-#define BPNODE_GEN_WRKR_PRIORITY_BASE  (100u)
-
-/**
- * \brief ADU Out Task priority base 
- *          The channel ID is added to the base value to get the final task priority
- */
-#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_GEN_WRKR_PRIORITY_BASE + BPNODE_NUM_GEN_WRKR_TASKS)
-
-/**
- * \brief CLA Out Task priority base 
- *          The Contact ID is added to the base value to get the final task priority
- */
-#define BPNODE_CLA_OUT_PRIORITY_BASE (BPNODE_ADU_OUT_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
-
- /**
- * \brief ADU In Task priority base 
- *          The channel ID is added to the base value to get the final task priority
- */
-#define BPNODE_ADU_IN_PRIORITY_BASE  (BPNODE_CLA_OUT_PRIORITY_BASE + BPLIB_MAX_NUM_CONTACTS)
 
 /**
  * \brief CLA In Task priority base 
  *          The Contact ID is added to the base value to get the final task priority
  */
-#define BPNODE_CLA_IN_PRIORITY_BASE  (BPNODE_ADU_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
+#define BPNODE_CLA_IN_PRIORITY_BASE  (30u)
+
+/**
+ * \brief Generic Worker Task priority base 
+ *          The worker ID is added to the base value to get the final task priority
+ */
+#define BPNODE_GEN_WRKR_PRIORITY_BASE  (BPNODE_CLA_IN_PRIORITY_BASE + BPLIB_MAX_NUM_CONTACTS)
+
+/**
+ * \brief CLA Out Task priority base 
+ *          The Contact ID is added to the base value to get the final task priority
+ */
+#define BPNODE_CLA_OUT_PRIORITY_BASE (BPNODE_GEN_WRKR_PRIORITY_BASE + BPNODE_NUM_GEN_WRKR_TASKS)
+
+/**
+ * \brief ADU Out Task priority base 
+ *          The channel ID is added to the base value to get the final task priority
+ */
+#define BPNODE_ADU_OUT_PRIORITY_BASE (BPNODE_CLA_OUT_PRIORITY_BASE + BPLIB_MAX_NUM_CONTACTS)
+
+/**
+ * \brief ADU In Task priority base 
+ *          The channel ID is added to the base value to get the final task priority
+ */
+#define BPNODE_ADU_IN_PRIORITY_BASE  (BPNODE_ADU_OUT_PRIORITY_BASE + BPLIB_MAX_NUM_CHANNELS)
+
 
 /** @} */
 

@@ -43,7 +43,7 @@
 #define BPNODE_ADU_IN_PIPE_BASE_NAME       "BPNODE_ADU_PIPE" /** \brief ADU pipe base name */
 #define BPNODE_ADU_IN_SB_TIMEOUT           (10u)             /** \brief SB timeout */
 #define BPNODE_ADU_IN_SEM_INIT_WAIT_MSEC   (2000u)           /** \brief Wait time for init semaphore take, in milliseconds */
-#define BPNODE_ADU_IN_SEM_WAKEUP_WAIT_MSEC (1100u)           /** \brief Wait time for wakeup semaphore take, in milliseconds */
+#define BPNODE_ADU_IN_SEM_WAKEUP_WAIT_MSEC (2000u)           /** \brief Wait time for wakeup semaphore take, in milliseconds */
 #define BPNODE_ADU_IN_MAX_ADUS_PER_CYCLE   (10u)             /** \brief Maximum number of ADUs to ingest per wakeup cycle */
 
 /*

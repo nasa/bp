@@ -162,11 +162,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
         Status = CFE_SUCCESS;
     }
 
-    /* Flush any bundles pending storage */
-    (void) BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
-
-    /* Flush error event issued by bplib */
-
     /* Wake up the Generic Worker Tasks */
     for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
     {
@@ -177,6 +172,30 @@ CFE_Status_t BPNode_WakeupProcess(void)
                                 BPLib_EM_EventType_ERROR,
                                 "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d",
                                 TaskNum,
+                                OsStatus);
+        }
+    }
+
+    /* Wake up the CLA In and CLA Out tasks */
+    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
+    {
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
+                                ContactNum,
+                                OsStatus);
+        }
+
+        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
+        if (OsStatus != OS_SUCCESS)
+        {
+            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+                                BPLib_EM_EventType_ERROR,
+                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
+                                ContactNum,
                                 OsStatus);
         }
     }
@@ -205,29 +224,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
         }
     }
 
-    /* Wake up the CLA In and CLA Out tasks */
-    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
-                                ContactNum,
-                                OsStatus);
-        }
-
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
-                                ContactNum,
-                                OsStatus);
-        }
-    }
+    /* Flush any bundles pending storage - error event issued by bplib */
+    (void) BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
 
     /* Garbage Collect: Ideally, you should do this if nothing is busy. For B 7.0
     ** Calling it once a cycle is enough, but this comes with the caveat that removing bundles

@@ -49,7 +49,7 @@
 #define BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE     (BPLIB_MAX_BUNDLE_LEN) /** \brief IODriver output buffer size*/
 #define BPNODE_CLA_OUT_QUEUE_PEND_TIME        (100u)                 /** \brief Time to pend on bundle queue */
 #define BPNODE_CLA_OUT_SEM_INIT_WAIT_MSEC     (2000u)                /** \brief Wait time for init semaphore take, in milliseconds */
-#define BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC   (1100u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
+#define BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC   (2000u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 
 /*
