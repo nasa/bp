@@ -499,6 +499,8 @@ void BPNode_ClaIn_AppMain(void)
     uint32                      ContactId;
     BPLib_CLA_ContactRunState_t RunState;
     size_t                      BundleSize;
+    uint32                      RunCount = 0;
+    int64                       TimeStart;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
@@ -538,16 +540,20 @@ void BPNode_ClaIn_AppMain(void)
                 (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].InitSemId);
 
                 /* The contact task must not be exited */
-                Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
-                while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
+               Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
+               while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
+//                while (CFE_ES_RunLoop(&BPNode_AppData.ClaInData[ContactId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
                 {
                     /* Attempt to take the wakeup semaphore */
                     BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
-                    OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContactId].WakeupSemId, BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC);
+                    OsStatus = BPNode_NotifWait(&BPNode_AppData.ChildStartWorkNotif, RunCount, BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC);
+                    //OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContactId].WakeupSemId, BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC);
                     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContactId].PerfId);
 
                     if (OsStatus == OS_SUCCESS)
                     {
+                        TimeStart = BPA_TIMEP_GetMonotonicTime();
+                        RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
                         /* Ingress bundles only when the contact has been started */
                         if (RunState == BPLIB_CLA_STARTED)
                         {
@@ -566,11 +572,13 @@ void BPNode_ClaIn_AppMain(void)
                                         break;
                                     }
                                 }
-
                             } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+
+                            printf("bytes ingressed = %ld\n", BytesIngressed);
+                            printf("time elapsed = %ld\n", BPA_TIMEP_GetMonotonicTime() - TimeStart);
                         }
                     }
-                    else if (OsStatus == OS_SEM_TIMEOUT)
+                    else if (OsStatus == OS_ERROR_TIMEOUT)
                     {
                         BPLib_EM_SendEvent(BPNODE_CLA_IN_SEM_TK_TIMEOUT_INF_EID,
                                             BPLib_EM_EventType_INFORMATION,

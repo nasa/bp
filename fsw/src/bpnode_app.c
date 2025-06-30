@@ -115,9 +115,9 @@ CFE_Status_t BPNode_WakeupProcess(void)
 
     CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
     TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
-
     BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
 
+//    printf("clock time = %ld\n", BPA_TIMEP_GetMonotonicTime());
     /* Update time as needed */
     BpStatus = BPLib_TIME_MaintenanceActivities();
 
@@ -162,6 +162,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
         Status = CFE_SUCCESS;
     }
 
+    BPNode_NotifSet(&BPNode_AppData.ChildStartWorkNotif);
+
     /* Wake up the Generic Worker Tasks */
     for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
     {
@@ -179,15 +181,15 @@ CFE_Status_t BPNode_WakeupProcess(void)
     /* Wake up the CLA In and CLA Out tasks */
     for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
     {
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
-                                ContactNum,
-                                OsStatus);
-        }
+        // OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
+        // if (OsStatus != OS_SUCCESS)
+        // {
+        //     BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
+        //                         BPLib_EM_EventType_ERROR,
+        //                         "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
+        //                         ContactNum,
+        //                         OsStatus);
+        // }
 
         OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
         if (OsStatus != OS_SUCCESS)
@@ -428,6 +430,11 @@ CFE_Status_t BPNode_AppInit(void)
     {
         return NotifStatus;
     }
+    NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStartWorkNotif, BPNODE_CHILD_STRTWORKNOTIF_NAME);
+    if (NotifStatus != OS_SUCCESS)
+    {
+        return NotifStatus;
+    }
 
     /* Create ADU In child tasks */
     Status = BPNode_AduInCreateTasks();
@@ -521,6 +528,11 @@ CFE_Status_t BPNode_AppInit(void)
     BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION, "BPNode Initialized: %s",
                         VersionString);
 
+    if (BPLib_CLA_ContactSetup(0) != BPLIB_SUCCESS || 
+        BPLib_CLA_ContactStart(0) != BPLIB_SUCCESS)
+    {
+        fprintf(stderr, "Failed to setup and start contact 0\n");
+    }                        
     return CFE_SUCCESS;
 }
 
@@ -541,6 +553,7 @@ void BPNode_AppExit(void)
     ** logic below.
     */
     BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
+    BPNode_NotifClear(&BPNode_AppData.ChildStartWorkNotif);
 
     /* Signal to ADU child tasks to exit */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
@@ -593,6 +606,7 @@ void BPNode_AppExit(void)
 
     /* Cleanup Notifications */
     BPNode_NotifDestroy(&BPNode_AppData.ChildStopWorkNotif);
+    BPNode_NotifDestroy(&BPNode_AppData.ChildStartWorkNotif);
 
     /* Cleanup QM and MEM */
     BPLib_QM_QueueTableDestroy(&BPNode_AppData.BplibInst);

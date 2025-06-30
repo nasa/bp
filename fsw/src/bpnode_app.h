@@ -63,6 +63,7 @@
 #define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
 #define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
 #define BPNODE_CHILD_STOPWORKNOTIF_NAME     "BPNODE_CHLDSTOP"
+#define BPNODE_CHILD_STRTWORKNOTIF_NAME     "BPNODE_CHLDSTRT"
 
 #ifndef BPNODE_APP_RUNTIME_MSEC
 #define BPNODE_APP_RUNTIME_MSEC             (995u)  /** \brief The amount of time BPApp should run for after the wakeup, in milliseconds */
@@ -95,6 +96,7 @@ typedef struct
     BPNode_ClaOutData_t    ClaOutData[BPLIB_MAX_NUM_CONTACTS];       /** \brief Global data for CLA Out tasks */
     BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /** \brief Global data for Generic Worker tasks */
     BPNode_Notif_t         ChildStopWorkNotif;                       /** \brief Shared notification for stopping child task work */
+    BPNode_Notif_t         ChildStartWorkNotif;                      /** \brief Shared notification for starting child task work */
 
     /* BPLib Instance State */
     BPLib_Instance_t            BplibInst;

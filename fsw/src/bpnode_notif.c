@@ -23,6 +23,7 @@
 int32 BPNode_NotifInit(BPNode_Notif_t* Notif, const char* NotifName)
 {
     Notif->IsSet = false;
+    Notif->Count = 0;
     return OS_CondVarCreate(&Notif->CondVar, NotifName, 0);
 }
 
@@ -46,6 +47,22 @@ bool BPNode_NotifIsSet(BPNode_Notif_t* Notif)
     return IsSet;
 }
 
+uint32 BPNode_NotifGetCount(BPNode_Notif_t* Notif)
+{
+    uint32 Count;
+
+    if (Notif == NULL)
+    {
+        return 0;
+    }
+
+    OS_CondVarLock(Notif->CondVar);
+    Count = Notif->Count;
+    OS_CondVarUnlock(Notif->CondVar);
+    return Count;
+}
+
+
 void BPNode_NotifSet(BPNode_Notif_t* Notif)
 {
     if (Notif == NULL)
@@ -55,6 +72,7 @@ void BPNode_NotifSet(BPNode_Notif_t* Notif)
 
     OS_CondVarLock(Notif->CondVar);
     Notif->IsSet = true;
+    Notif->Count++;
     OS_CondVarBroadcast(Notif->CondVar);
     OS_CondVarUnlock(Notif->CondVar);
 }
@@ -74,32 +92,32 @@ void BPNode_NotifClear(BPNode_Notif_t* Notif)
 /* Currently unused code that appears to work but is untested.
 ** If this code is re-enabled, a new unit test is required for this feature
 */
-// int32 BPNode_NotifWait(BPNode_Notif_t* Notif, int32 TimeoutMs)
-// {
-//     OS_time_t AbsWaitTime;
-//     int32 OsStatus;
+int32 BPNode_NotifWait(BPNode_Notif_t* Notif, uint32 OldCount, int32 TimeoutMs)
+{
+    OS_time_t AbsWaitTime;
+    int32 OsStatus = OS_SUCCESS;
 
-//     /* Perform wait on the Notif availability */
-//     AbsWaitTime = OS_TimeFromRelativeMilliseconds(TimeoutMs);
-//     OS_CondVarLock(Notif->CondVar);
-//     while (Notif->IsSet == false)
-//     {
-//         OsStatus = OS_CondVarTimedWait(Notif->CondVar, &AbsWaitTime);
-//         if (OsStatus == OS_SUCCESS)
-//         {
-//             /* Note: No break here incase there's a spurious wakeup */
-//         }
-//         else if (OsStatus == OS_ERROR_TIMEOUT)
-//         {
-//             break;
-//         }
-//         else
-//         {
-//             /* Case is separate incase event message needed */
-//             break;
-//         }
-//     }
-//     OS_CondVarUnlock(Notif->CondVar);
+    /* Perform wait on the Notif availability */
+    AbsWaitTime = OS_TimeFromRelativeMilliseconds(TimeoutMs);
+    OS_CondVarLock(Notif->CondVar);
+    while (Notif->Count == OldCount)
+    {
+        OsStatus = OS_CondVarTimedWait(Notif->CondVar, &AbsWaitTime);
+        if (OsStatus == OS_SUCCESS)
+        {
+            /* Note: No break here incase there's a spurious wakeup */
+        }
+        else if (OsStatus == OS_ERROR_TIMEOUT)
+        {
+            break;
+        }
+        else
+        {
+            /* Case is separate incase event message needed */
+            break;
+        }
+    }
+    OS_CondVarUnlock(Notif->CondVar);
 
-//     return OsStatus;
-// }
+    return OsStatus;
+}
