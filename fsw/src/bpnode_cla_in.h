@@ -45,7 +45,7 @@
 #define BPNODE_CLA_IN_BASE_NAME              "BPNODE.CLA_IN"        /** \brief Task base name */
 #define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (BPLIB_MAX_BUNDLE_LEN) /** \brief IODriver buffer size*/
 #define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)                /** \brief Wait time for init semaphore take, in milliseconds */
-#define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (1100u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
+#define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (2000u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SB_TIMEOUT             (100u)                 /** \brief Time to wait for a buffer to be received from SB */
 #define BPNODE_CLA_INGRESS_PIPE_DEPTH        (32u)                  /** \brief CLA In SB pipe depth */
 
