@@ -260,10 +260,10 @@ void Test_BPNode_WakeupProcess_FailSem(void)
     /* Verify events */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 5);
     BPNode_Test_Verify_Event(0, BPNODE_WKP_SEM_ERR_EID, "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
 }
 
 /* Test wakeup process after failing Time maintenance activities */
