@@ -473,9 +473,9 @@ void BPNode_ClaOut_AppMain(void)
                     }
                     else if (OsStatus != OS_ERROR_TIMEOUT)
                     {
-                        BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
+                        BPLib_EM_SendEvent(BPNODE_CLA_OUT_NOTIF_ERR_EID,
                                             BPLib_EM_EventType_ERROR,
-                                            "[CLA Out #%d]: Wakeup semaphore take failed, RC = %d",
+                                            "[CLA Out #%d]: Error pending on notification, RC = %d",
                                             ContactId,
                                             OsStatus);
                     }

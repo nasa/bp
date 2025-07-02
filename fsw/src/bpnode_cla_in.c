@@ -482,7 +482,6 @@ void BPNode_ClaIn_AppMain(void)
     BPLib_CLA_ContactRunState_t RunState;
     size_t                      BundleSize;
     uint32                      RunCount = 0;
-    int64                       TimeStart;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
@@ -530,7 +529,6 @@ void BPNode_ClaIn_AppMain(void)
 
                     if (OsStatus == OS_SUCCESS)
                     {
-                        TimeStart = BPA_TIMEP_GetMonotonicTime();
                         RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
                         /* Ingress bundles only when the contact has been started */
                         if (RunState == BPLIB_CLA_STARTED)
@@ -546,16 +544,13 @@ void BPNode_ClaIn_AppMain(void)
                                 }
                             } while (CFE_Status == CFE_SUCCESS && ((BytesIngressed * 8) < 
                                      BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle));
-
-                            printf("bytes ingressed = %ld\n", BytesIngressed);
-                            printf("time elapsed = %ld\n", BPA_TIMEP_GetMonotonicTime() - TimeStart);
                         }
                     }
                     else if (OsStatus != OS_ERROR_TIMEOUT)
                     {
-                        BPLib_EM_SendEvent(BPNODE_CLA_IN_WAKEUP_SEM_ERR_EID,
+                        BPLib_EM_SendEvent(BPNODE_CLA_IN_NOTIF_ERR_EID,
                                             BPLib_EM_EventType_ERROR,
-                                            "[CLA In #%d]: Wakeup semaphore take failed, RC = %d",
+                                            "[CLA In #%d]: Error pending on notification, RC = %d",
                                             ContactId,
                                             OsStatus);
                     }

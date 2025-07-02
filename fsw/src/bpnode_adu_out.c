@@ -240,8 +240,8 @@ void BPNode_AduOut_AppMain(void)
         }
         else if (Status != OS_ERROR_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[ADU Out #%d]: Failed to take wakeup semaphore, RC = %d",
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_NOTIF_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[ADU Out #%d]: Error pending on notification, RC = %d",
                                 ChanId,
                                 Status);
         }

@@ -102,6 +102,11 @@
 #define BPNODE_WAKEUP_PIPE_DEPTH            (BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
+ * \brief Message limit of wakeup pipe
+ */
+#define BPNODE_WAKEUP_PIPE_LIM              (BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
  * \brief Timeout of wakeup pipe
  */
 #define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200 / BPNODE_MAX_EXP_WAKEUP_RATE)
@@ -113,7 +118,8 @@
 
 /**
  * \brief Number of generic worker jobs to process per cycle
- *        Note: Rule of thumb is 100,000 jobs per second for an ingress rate of 100Mbps
+ *        Note: Rule of thumb is 100,000 jobs per second for an ingress rate of 100Mbps.
+ *              Current value is set for our maximum rate of 150Mbps
  */
 #define BPNODE_NUM_JOBS_PER_CYCLE           (150000 / BPNODE_MAX_EXP_WAKEUP_RATE)
 

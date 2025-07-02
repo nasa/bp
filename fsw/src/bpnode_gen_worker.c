@@ -245,14 +245,12 @@ void BPNode_GenWorker_AppMain(void)
                     break;
                 }
             } while (BpStatus == BPLIB_SUCCESS && JobsRun < BPNODE_NUM_JOBS_PER_CYCLE);
-            // Very useful print for diagnosing performance
-            printf("Jobs Run This Control Cycle: %lu\n", JobsRun);
         }
         else if (Status != OS_ERROR_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_NOTIF_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[Generic Worker #%d]: Failed to take wakeup semaphore, RC = %d",
+                                "[Generic Worker #%d]: Error pending on notification, RC = %d",
                                 WorkerId,
                                 Status);
         }

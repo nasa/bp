@@ -186,7 +186,6 @@ int32 BPNode_AduIn_TaskInit(uint32 *ChanId)
 void BPNode_AduIn_AppMain(void)
 {
     int32 Status;
-    BPLib_Status_t BpStatus = BPLIB_SUCCESS;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint32 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
@@ -247,15 +246,14 @@ void BPNode_AduIn_AppMain(void)
 
                     if (Status == CFE_SUCCESS && BufPtr != NULL)
                     {
-                        BpStatus = BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
+                        /* Ignore return code, errors reported internally */
+                        (void) BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
 
-                        if (BpStatus == BPLIB_SUCCESS)
-                        {
-                            BytesIngressed += AduSize;
-                        }
+                        /* Even if bplib rejects the ADU, this ADU's size gets counted */
+                        BytesIngressed += AduSize;
                     }
-                } while (Status == CFE_SUCCESS && BpStatus == BPLIB_SUCCESS &&
-                        ((BytesIngressed * 8) < BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle));
+                } while (Status == CFE_SUCCESS && ((BytesIngressed * 8) < 
+                         BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle));
             }
             else
             {
@@ -278,9 +276,9 @@ void BPNode_AduIn_AppMain(void)
         }
         else if (Status != OS_ERROR_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_NOTIF_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[ADU In #%d]: Failed to take wakeup semaphore, RC = %d",
+                                "[ADU In #%d]: Error pending on notification, RC = %d",
                                 ChanId,
                                 Status);
         }

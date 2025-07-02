@@ -327,7 +327,7 @@ CFE_Status_t BPNode_AppInit(void)
 
     /* Subscribe to wakeup messages on the wakeup pipe */
     Status = CFE_SB_SubscribeEx(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID),
-                                BPNode_AppData.WakeupPipe, CFE_SB_DEFAULT_QOS, 10);
+                    BPNode_AppData.WakeupPipe, CFE_SB_DEFAULT_QOS, BPNODE_WAKEUP_PIPE_LIM);
 
     if (Status != CFE_SUCCESS)
     {
