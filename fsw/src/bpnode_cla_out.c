@@ -53,7 +53,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
                                 BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload,
                                 MsgSize,
                                 BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
-                                BPNODE_CLA_OUT_QUEUE_PEND_TIME);
+                                BPNODE_WAKEUP_WAIT_MSEC);
 
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
@@ -137,14 +137,14 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
         }
         else
         {
-            /* Create wakeup semaphore so main task can control workflow */
-            snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactId);
-            Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactId].WakeupSemId, NameBuff, 0, 0);
+            /* Create exit semaphore so main task knows when child finished shutdown */
+            snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactId);
+            Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactId].ExitSemId, NameBuff, 0, 0);
 
             if (Status != OS_SUCCESS)
             {
-                BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                    "Failed to create wakeup semaphore, %s, for CLA Out #%d. Error = %d",
+                BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
+                                    "Failed to create exit semaphore, %s, for CLA Out #%d. Error = %d",
                                     ContactId,
                                     NameBuff,
                                     Status);
@@ -154,16 +154,30 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
             }
             else
             {
-                /* Create exit semaphore so main task knows when child finished shutdown */
-                snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_CLA_OUT_SEM_BASE_NAME, ContactId);
-                Status = OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContactId].ExitSemId, NameBuff, 0, 0);
-
-                if (Status != OS_SUCCESS)
+                BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload = malloc(BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE);
+                if (BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload == NULL)
                 {
-                    BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                        "Failed to create exit semaphore, %s, for CLA Out #%d. Error = %d",
+                    printf("FRIG!\n");
+                    break;
+                }
+
+                /* Create child task */
+                snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_BASE_NAME, ContactId);
+                TaskPriority = BPNODE_CLA_OUT_PRIORITY_BASE + ContactId;
+
+                Status = CFE_ES_CreateChildTask(&BPNode_AppData.ClaOutData[ContactId].TaskId,
+                                                NameBuff,
+                                                BPNode_ClaOut_AppMain,
+                                                0,
+                                                BPNODE_CLA_OUT_STACK_SIZE,
+                                                TaskPriority,
+                                                0);
+
+                if (Status != CFE_SUCCESS)
+                {
+                    BPLib_EM_SendEvent(BPNODE_CLA_OUT_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
+                                        "Failed to create child task for CLA Out #%d. Error = %d",
                                         ContactId,
-                                        NameBuff,
                                         Status);
 
                     /* Stop creating tasks and return error code */
@@ -171,52 +185,20 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
                 }
                 else
                 {
-                    BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload = malloc(BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE);
-                    if (BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload == NULL)
+                    /* Verify initialization by trying to take the init semaphore */
+                    BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
+                    Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].InitSemId, BPNODE_CLA_OUT_SEM_INIT_WAIT_MSEC);
+                    BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
+
+                    if (Status != OS_SUCCESS)
                     {
-                        printf("FRIG!\n");
-                        break;
-                    }
-
-                    /* Create child task */
-                    snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_BASE_NAME, ContactId);
-                    TaskPriority = BPNODE_CLA_OUT_PRIORITY_BASE + ContactId;
-
-                    Status = CFE_ES_CreateChildTask(&BPNode_AppData.ClaOutData[ContactId].TaskId,
-                                                    NameBuff,
-                                                    BPNode_ClaOut_AppMain,
-                                                    0,
-                                                    BPNODE_CLA_OUT_STACK_SIZE,
-                                                    TaskPriority,
-                                                    0);
-
-                    if (Status != CFE_SUCCESS)
-                    {
-                        BPLib_EM_SendEvent(BPNODE_CLA_OUT_CREATE_ERR_EID, BPLib_EM_EventType_ERROR,
-                                            "Failed to create child task for CLA Out #%d. Error = %d",
+                        BPLib_EM_SendEvent(BPNODE_CLA_OUT_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
+                                            "CLA Out task #%d not running. Init Sem Error = %d.",
                                             ContactId,
                                             Status);
 
                         /* Stop creating tasks and return error code */
                         break;
-                    }
-                    else
-                    {
-                        /* Verify initialization by trying to take the init semaphore */
-                        BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-                        Status = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].InitSemId, BPNODE_CLA_OUT_SEM_INIT_WAIT_MSEC);
-                        BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
-
-                        if (Status != OS_SUCCESS)
-                        {
-                            BPLib_EM_SendEvent(BPNODE_CLA_OUT_RUN_ERR_EID, BPLib_EM_EventType_ERROR,
-                                                "CLA Out task #%d not running. Init Sem Error = %d.",
-                                                ContactId,
-                                                Status);
-
-                            /* Stop creating tasks and return error code */
-                            break;
-                        }
                     }
                 }
             }
@@ -423,6 +405,7 @@ void BPNode_ClaOut_AppMain(void)
     BPLib_CLA_ContactRunState_t RunState;
     size_t                      BundleSize;
     size_t                      BytesEgressed;
+    uint32                      RunCount = 0;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
@@ -458,20 +441,20 @@ void BPNode_ClaOut_AppMain(void)
             /* Initialization must succeed to start processing, exit task if unsuccessful */
             if (CFE_Status == CFE_SUCCESS)
             {
-                /* Confirm initialization with give on init semaphore */
-                (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].InitSemId);
-
                 /* The contact task must not be exited */
                 Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
                 while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
                 {
                     /* Attempt to take the wake up semaphore */
                     BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContactId].PerfId);
-                    OsStatus = OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].WakeupSemId, BPNODE_CLA_OUT_SEM_WAKEUP_WAIT_MSEC);
+                    OsStatus = BPNode_NotifWait(&BPNode_AppData.ChildStartWorkNotif, 
+                                                    RunCount, BPNODE_WAKEUP_WAIT_MSEC);
                     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContactId].PerfId);
 
                     if (OsStatus == OS_SUCCESS)
                     {
+                        RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
+
                         /* Ingress bundles only when the contact has been started */
                         if (RunState == BPLIB_CLA_STARTED)
                         {
@@ -483,29 +466,12 @@ void BPNode_ClaOut_AppMain(void)
                                 if (CFE_Status == CFE_SUCCESS)
                                 {
                                     BytesEgressed += BundleSize;
-
-                                    if ((BytesEgressed * 8) >= 
-                                        BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle)
-                                    {
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                                
-                            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+                                }                                
+                            } while (CFE_Status == CFE_SUCCESS && ((BytesEgressed * 8) < 
+                                     BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle));
                         }
                     }
-                    else if (OsStatus == OS_SEM_TIMEOUT)
-                    {
-                        BPLib_EM_SendEvent(BPNODE_CLA_OUT_SEM_TK_TIMEOUT_INF_EID,
-                                            BPLib_EM_EventType_INFORMATION,
-                                            "[CLA Out #%d]: Wakeup semaphore wait timed out",
-                                            ContactId);
-                    }
-                    else
+                    else if (OsStatus != OS_ERROR_TIMEOUT)
                     {
                         BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
                                             BPLib_EM_EventType_ERROR,
@@ -579,22 +545,12 @@ void BPNode_ClaOut_DeleteSems(uint32 ContactId)
     Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].InitSemId);
     if (Status == CFE_SUCCESS)
     {
-        Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].WakeupSemId);
-        if (Status == CFE_SUCCESS)
+        Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].ExitSemId);
+        if (Status != CFE_SUCCESS)
         {
-            Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].ExitSemId);
-            if (Status != CFE_SUCCESS)
-            {
-                BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID,
-                                    BPLib_EM_EventType_ERROR,
-                                    "Could not delete exit semaphore");
-            }
-        }
-        else
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_WAKEUP_SEM_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "Could not delete wake up semaphore");
+                                "Could not delete exit semaphore");
         }
     }
     else

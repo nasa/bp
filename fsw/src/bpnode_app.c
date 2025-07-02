@@ -80,14 +80,14 @@ void BPNode_AppMain(void)
         /* Performance Log Entry Stamp */
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
-        if (Status == CFE_SUCCESS || Status == CFE_SB_TIME_OUT || Status == CFE_SB_NO_MESSAGE)
+        if (Status == CFE_SUCCESS)
         {
             /* Process wakeup tasks */
             Status = BPNode_WakeupProcess();
         }
 
         /* Exit upon pipe read error */
-        if (Status != CFE_SUCCESS)
+        if (Status != CFE_SUCCESS && Status != CFE_SB_TIME_OUT && Status != CFE_SB_NO_MESSAGE)
         {
             BPLib_EM_SendEvent(BPNODE_PIPE_ERR_EID, BPLib_EM_EventType_ERROR,
                               "SB Pipe Read Error, App Will Exit");
@@ -105,19 +105,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
 {
     CFE_Status_t     Status;
     BPLib_Status_t   BpStatus;
-    int32            OsStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
-    uint8            TaskNum;
-    uint32           ContactNum;
-    OS_time_t        TimeMsec;
-    uint64_t         TimeWakeupStart;
-    uint64_t         TimeNow;
 
-    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
-    TimeWakeupStart = OS_TimeGetTotalMilliseconds(TimeMsec);
-    BPNode_NotifClear(&BPNode_AppData.ChildStopWorkNotif);
-
-//    printf("clock time = %ld\n", BPA_TIMEP_GetMonotonicTime());
     /* Update time as needed */
     BpStatus = BPLib_TIME_MaintenanceActivities();
 
@@ -162,69 +151,8 @@ CFE_Status_t BPNode_WakeupProcess(void)
         Status = CFE_SUCCESS;
     }
 
+    /* Tell child tasks to start processing */
     BPNode_NotifSet(&BPNode_AppData.ChildStartWorkNotif);
-
-    /* Wake up the Generic Worker Tasks */
-    for (TaskNum = 0; TaskNum < BPNODE_NUM_GEN_WRKR_TASKS; TaskNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.GenWorkerData[TaskNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d",
-                                TaskNum,
-                                OsStatus);
-        }
-    }
-
-    /* Wake up the CLA In and CLA Out tasks */
-    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CONTACTS; ContactNum++)
-    {
-        // OsStatus = OS_BinSemGive(BPNode_AppData.ClaInData[ContactNum].WakeupSemId);
-        // if (OsStatus != OS_SUCCESS)
-        // {
-        //     BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-        //                         BPLib_EM_EventType_ERROR,
-        //                         "Error giving CLA In Task #%d its wakeup semaphore, RC = %d",
-        //                         ContactNum,
-        //                         OsStatus);
-        // }
-
-        OsStatus = OS_BinSemGive(BPNode_AppData.ClaOutData[ContactNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d",
-                                ContactNum,
-                                OsStatus);
-        }
-    }
-
-    /* Wake up the ADU In and ADU Out tasks */
-    for (ContactNum = 0; ContactNum < BPLIB_MAX_NUM_CHANNELS; ContactNum++)
-    {
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduInData[ContactNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving ADU In Task #%d its wakeup semaphore, RC = %d",
-                                ContactNum,
-                                OsStatus);
-        }
-
-        OsStatus = OS_BinSemGive(BPNode_AppData.AduOutData[ContactNum].WakeupSemId);
-        if (OsStatus != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_WKP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d",
-                                ContactNum,
-                                OsStatus);
-        }
-    }
 
     /* Flush any bundles pending storage - error event issued by bplib */
     (void) BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
@@ -235,17 +163,6 @@ CFE_Status_t BPNode_WakeupProcess(void)
     ** such as detecting system "idle" time and doing a bulk delete then.
     */
     BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst);
-
-    /* Sleep for any remaining wakeup cycle time */
-    CFE_PSP_GetTime((OS_time_t *)&TimeMsec);
-    TimeNow = OS_TimeGetTotalMilliseconds(TimeMsec);
-    if ((TimeNow - TimeWakeupStart) < BPNODE_APP_RUNTIME_MSEC)
-    {
-        OS_TaskDelay(BPNODE_APP_RUNTIME_MSEC - (TimeNow - TimeWakeupStart));
-    }
-
-    /* Signal the child tasks to stop */
-    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
 
     return Status;
 }
@@ -409,8 +326,8 @@ CFE_Status_t BPNode_AppInit(void)
     }
 
     /* Subscribe to wakeup messages on the wakeup pipe */
-    Status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID),
-                                BPNode_AppData.WakeupPipe);
+    Status = CFE_SB_SubscribeEx(CFE_SB_ValueToMsgId(BPNODE_WAKEUP_MID),
+                                BPNode_AppData.WakeupPipe, CFE_SB_DEFAULT_QOS, 10);
 
     if (Status != CFE_SUCCESS)
     {
@@ -424,12 +341,7 @@ CFE_Status_t BPNode_AppInit(void)
     /* Call Telemetry Proxy Init Function */
     BPA_TLMP_Init();
 
-    /* Create Child Task Notifications */
-    NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStopWorkNotif, BPNODE_CHILD_STOPWORKNOTIF_NAME);
-    if (NotifStatus != OS_SUCCESS)
-    {
-        return NotifStatus;
-    }
+    /* Create Child Task Notification */
     NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStartWorkNotif, BPNODE_CHILD_STRTWORKNOTIF_NAME);
     if (NotifStatus != OS_SUCCESS)
     {
@@ -552,8 +464,6 @@ void BPNode_AppExit(void)
     ** creates the potential for a deadlock waiting on the child semaphores in the
     ** logic below.
     */
-    BPNode_NotifSet(&BPNode_AppData.ChildStopWorkNotif);
-    BPNode_NotifClear(&BPNode_AppData.ChildStartWorkNotif);
 
     /* Signal to ADU child tasks to exit */
     for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
@@ -604,8 +514,7 @@ void BPNode_AppExit(void)
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
-    /* Cleanup Notifications */
-    BPNode_NotifDestroy(&BPNode_AppData.ChildStopWorkNotif);
+    /* Cleanup Notification */
     BPNode_NotifDestroy(&BPNode_AppData.ChildStartWorkNotif);
 
     /* Cleanup QM and MEM */

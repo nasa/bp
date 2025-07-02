@@ -22,7 +22,6 @@
 
 int32 BPNode_NotifInit(BPNode_Notif_t* Notif, const char* NotifName)
 {
-    Notif->IsSet = false;
     Notif->Count = 0;
     return OS_CondVarCreate(&Notif->CondVar, NotifName, 0);
 }
@@ -32,20 +31,20 @@ void BPNode_NotifDestroy(BPNode_Notif_t* Notif)
     OS_CondVarDelete(Notif->CondVar);
 }
 
-bool BPNode_NotifIsSet(BPNode_Notif_t* Notif)
-{
-    bool IsSet;
+// bool BPNode_NotifIsSet(BPNode_Notif_t* Notif)
+// {
+//     bool IsSet;
 
-    if (Notif == NULL)
-    {
-        return false;
-    }
+//     if (Notif == NULL)
+//     {
+//         return false;
+//     }
 
-    OS_CondVarLock(Notif->CondVar);
-    IsSet = Notif->IsSet;
-    OS_CondVarUnlock(Notif->CondVar);
-    return IsSet;
-}
+//     OS_CondVarLock(Notif->CondVar);
+//     IsSet = Notif->IsSet;
+//     OS_CondVarUnlock(Notif->CondVar);
+//     return IsSet;
+// }
 
 uint32 BPNode_NotifGetCount(BPNode_Notif_t* Notif)
 {
@@ -71,27 +70,24 @@ void BPNode_NotifSet(BPNode_Notif_t* Notif)
     }
 
     OS_CondVarLock(Notif->CondVar);
-    Notif->IsSet = true;
     Notif->Count++;
     OS_CondVarBroadcast(Notif->CondVar);
     OS_CondVarUnlock(Notif->CondVar);
 }
 
-void BPNode_NotifClear(BPNode_Notif_t* Notif)
-{
-    if (Notif == NULL)
-    {
-        return;
-    }
+// void BPNode_NotifClear(BPNode_Notif_t* Notif)
+// {
+//     if (Notif == NULL)
+//     {
+//         return;
+//     }
 
-    OS_CondVarLock(Notif->CondVar);
-    Notif->IsSet = false;
-    OS_CondVarUnlock(Notif->CondVar);
-}
+//     OS_CondVarLock(Notif->CondVar);
+//     Notif->IsSet = false;
+//     OS_CondVarUnlock(Notif->CondVar);
+// }
 
-/* Currently unused code that appears to work but is untested.
-** If this code is re-enabled, a new unit test is required for this feature
-*/
+/* Wait until notif is incremented */
 int32 BPNode_NotifWait(BPNode_Notif_t* Notif, uint32 OldCount, int32 TimeoutMs)
 {
     OS_time_t AbsWaitTime;
@@ -113,7 +109,7 @@ int32 BPNode_NotifWait(BPNode_Notif_t* Notif, uint32 OldCount, int32 TimeoutMs)
         }
         else
         {
-            /* Case is separate incase event message needed */
+            /* Case is separate in case event message needed */
             break;
         }
     }

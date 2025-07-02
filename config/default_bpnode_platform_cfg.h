@@ -84,7 +84,6 @@
 
 /** @} */
 
-
 /** 
  * @defgroup Performance configurations
  * \brief    Note that adjusting these macros can radically change the performance of the
@@ -93,17 +92,30 @@
  */
 
 /**
- * \brief Number of generic worker jobs to process per cycle
+ * \brief Maximum expected wakeups per second (10Hz by default)
  */
-#define BPNODE_NUM_JOBS_PER_CYCLE           (1000)
+#define BPNODE_MAX_EXP_WAKEUP_RATE          (10)
 
 /**
- * \brief Number of bundles to enqueue for egress (from cache) during our wakeup
- *        To prevent the generic worker job list from completely filling
- *        (which allows us to receive new bundles/adus)
- *        this number should be less than BPNODE_NUM_JOBS_PER_CYCLE
+ * \brief Depth of wakeup pipe
  */
-#define BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN (BPNODE_NUM_JOBS_PER_CYCLE / 2)
+#define BPNODE_WAKEUP_PIPE_DEPTH            (BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief Timeout of wakeup pipe
+ */
+#define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200 / BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief How long child tasks can wait for the wakeup notification
+ */
+#define BPNODE_WAKEUP_WAIT_MSEC             (1000 / BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief Number of generic worker jobs to process per cycle
+ *        Note: Rule of thumb is 100,000 jobs per second for an ingress rate of 100Mbps
+ */
+#define BPNODE_NUM_JOBS_PER_CYCLE           (150000 / BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
  * \brief Size of BPLib's Memory Pool, in bytes
@@ -115,15 +127,6 @@
  */
 #define BPNODE_MAX_UNSORTED_JOBS          (1024u)
 
-/**
- *  \brief Maximum number of bundles to forward per wakeup 
- */
-#define BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE  (200u)
-
-/** 
- * \brief Maximum number of bundles to receive per wakeup 
- */
-#define BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE  (200u)           
 
 /** @} */
 

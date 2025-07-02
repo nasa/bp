@@ -39,9 +39,7 @@
 
 #define BPNODE_GEN_WRKR_SEM_BASE_NAME        "BPN_GEN_WRKR_SEM" /** \brief Semaphore base name */
 #define BPNODE_GEN_WRKR_BASE_NAME            "BPNODE.GEN_WRKR"  /** \brief Task base name */
-#define BPNODE_GEN_WRKR_SLEEP_MSEC           (100u)             /** \brief Sleep time */
 #define BPNODE_GEN_WRKR_SEM_INIT_WAIT_MSEC   (2000u)            /** \brief Wait time for init semaphore take, in milliseconds */
-#define BPNODE_GEN_WRKR_SEM_WAKEUP_WAIT_MSEC (1100u)            /** \brief Wait time for wakeup semaphore take, in milliseconds */
 
 /*
 ** Type Definitions
@@ -54,7 +52,6 @@ typedef struct
 {
     CFE_ES_TaskId_t TaskId;
     osal_id_t       InitSemId;
-    osal_id_t       WakeupSemId;
     osal_id_t       ExitSemId;
     uint32          PerfId;
     uint32          RunStatus;
