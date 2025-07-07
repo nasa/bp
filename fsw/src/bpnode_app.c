@@ -440,11 +440,11 @@ CFE_Status_t BPNode_AppInit(void)
     BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION, "BPNode Initialized: %s",
                         VersionString);
 
-    if (BPLib_CLA_ContactSetup(0) != BPLIB_SUCCESS || 
-        BPLib_CLA_ContactStart(0) != BPLIB_SUCCESS)
-    {
-        fprintf(stderr, "Failed to setup and start contact 0\n");
-    }                        
+    // if (BPLib_CLA_ContactSetup(0) != BPLIB_SUCCESS || 
+    //     BPLib_CLA_ContactStart(0) != BPLIB_SUCCESS)
+    // {
+    //     fprintf(stderr, "Failed to setup and start contact 0\n");
+    // }                        
     return CFE_SUCCESS;
 }
 
