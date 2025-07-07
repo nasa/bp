@@ -67,7 +67,16 @@ TO_LAB_Subs_t TO_LAB_Subs = {.Subs = {/* CFS App Subscriptions */
                                       {CFE_SB_MSGID_WRAP_VALUE(CFE_ES_MEMSTATS_TLM_MID), {0, 0}, 4},
                                       /* TO_LAB_UNUSED entry to mark the end of valid MsgIds */
 
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_NODE_MIB_CONFIG_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_SOURCE_MIB_CONFIG_HK_TLM_MID), {0, 0}, 4},
                                       {CFE_SB_MSGID_WRAP_VALUE(BPNODE_NODE_MIB_COUNTERS_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_NODE_MIB_REPORTS_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_SOURCE_MIB_COUNTERS_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_STORAGE_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_CHANNEL_CONTACT_STAT_HK_TLM_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_ADU_OUT_SEND_TO_MID), {0, 0}, 4},
+                                      {CFE_SB_MSGID_WRAP_VALUE(BPNODE_CLA_OUT_BUNDLE_MID), {0, 0}, 32},
+
                                       {CFE_SB_MSGID_RESERVED, {0, 0}, 0}}};
 
 CFE_TBL_FILEDEF(TO_LAB_Subs, TO_LAB_APP.TO_LAB_Subs, TO Lab Sub Tbl, to_lab_sub.tbl)
