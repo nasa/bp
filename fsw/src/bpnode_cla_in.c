@@ -516,7 +516,7 @@ void BPNode_ClaIn_AppMain(void)
                                 {
                                     BytesIngressed += BundleSize;
                                 }
-                            } while (Status == BPLIB_SUCCESS && ((BytesIngressed * 8) < 
+                            } while (Status == BPLIB_SUCCESS && ((BytesIngressed * BPNODE_BITS_PER_BYTE) < 
                                      BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle));
                         }
                     }

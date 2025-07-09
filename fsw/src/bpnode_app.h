@@ -64,6 +64,7 @@
 #define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
 #define BPNODE_CHILD_STRTWORKNOTIF_NAME     "BPNODE_CHLDSTRT"
 
+#define BPNODE_BITS_PER_BYTE                (8u)    /** \brief Number of bits in one byte */
 /**
 ** \brief Global Data
 */
