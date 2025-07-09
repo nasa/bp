@@ -229,7 +229,7 @@ void BPNode_AduOut_AppMain(void)
                 do
                 {
                     /* Poll bundle from PI out queue */
-                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_WAKEUP_WAIT_MSEC, &AduSize);
+                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_DATA_TIMEOUT_MSEC, &AduSize);
                     if (BpStatus == BPLIB_SUCCESS)
                     {
                         BytesEgressed += AduSize;

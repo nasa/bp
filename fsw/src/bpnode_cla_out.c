@@ -39,8 +39,7 @@
 int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
 {
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
-    int32                                Status;
-    BPLib_Status_t                       BpStatus;
+    BPLib_Status_t                       Status;
 
     Status  = CFE_PSP_SUCCESS;
     *MsgSize = 0;
@@ -48,27 +47,25 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
     /* Get next bundle from CLA */
     BPLib_PL_PerfLogExit(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-    BpStatus = BPLib_CLA_Egress(&BPNode_AppData.BplibInst,
+    Status = BPLib_CLA_Egress(&BPNode_AppData.BplibInst,
                                 ContId,
                                 BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload,
                                 MsgSize,
                                 BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE,
-                                BPNODE_WAKEUP_WAIT_MSEC);
+                                BPNODE_DATA_TIMEOUT_MSEC);
 
     BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
 
-    if (BpStatus != BPLIB_SUCCESS && BpStatus != BPLIB_CLA_TIMEOUT)
+    if (Status != BPLIB_SUCCESS && Status != BPLIB_CLA_TIMEOUT)
     {
         BPLib_EM_SendEvent(BPNODE_CLA_OUT_LIB_LOAD_ERR_EID, BPLib_EM_EventType_ERROR,
                             "[CLA Out #%d]: Failed to get bundle for egress. Error = %d",
                             ContId,
-                            BpStatus);
-
-        Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+                            Status);
     }
 
     /* Send egress bundle onto CL */
-    if (BpStatus == BPLIB_SUCCESS)
+    if (Status == BPLIB_SUCCESS)
     {
         if (ContId == BPNODE_CLA_SB_CONTACT_ID)
         { /* Contact is SB-type */
@@ -462,12 +459,12 @@ void BPNode_ClaOut_AppMain(void)
 
                             do
                             {
-                                CFE_Status = BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize);
-                                if (CFE_Status == CFE_SUCCESS)
+                                Status = BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize);
+                                if (Status == BPLIB_SUCCESS)
                                 {
                                     BytesEgressed += BundleSize;
                                 }                                
-                            } while (CFE_Status == CFE_SUCCESS && ((BytesEgressed * 8) < 
+                            } while (Status == BPLIB_SUCCESS && ((BytesEgressed * 8) < 
                                      BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle));
                         }
                     }

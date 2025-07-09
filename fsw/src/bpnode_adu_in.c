@@ -240,7 +240,7 @@ void BPNode_AduIn_AppMain(void)
 
                     Status = CFE_SB_ReceiveBuffer(&BufPtr,
                                                 BPNode_AppData.AduInData[ChanId].AduPipe,
-                                                BPNODE_WAKEUP_WAIT_MSEC);
+                                                BPNODE_DATA_TIMEOUT_MSEC);
 
                     BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
 

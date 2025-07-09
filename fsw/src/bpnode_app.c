@@ -154,15 +154,19 @@ CFE_Status_t BPNode_WakeupProcess(void)
     /* Tell child tasks to start processing */
     BPNode_NotifSet(&BPNode_AppData.ChildStartWorkNotif);
 
-    /* Flush any bundles pending storage - error event issued by bplib */
-    (void) BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
+    /* Activities that should only be done once per second */
+    if (BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif) % BPNODE_MAX_EXP_WAKEUP_RATE == 0)
+    {
+        /* Flush any bundles pending storage - error event issued by bplib */
+        (void) BPLib_STOR_FlushPending(&BPNode_AppData.BplibInst);
 
-    /* Garbage Collect: Ideally, you should do this if nothing is busy. For B 7.0
-    ** Calling it once a cycle is enough, but this comes with the caveat that removing bundles
-    ** from storage will take several cycles. There may be optimizations that can be done here
-    ** such as detecting system "idle" time and doing a bulk delete then.
-    */
-    BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst);
+        /* Garbage Collect: Ideally, you should do this if nothing is busy. For B 7.0
+        ** Calling it once a second is enough, but this comes with the caveat that removing bundles
+        ** from storage will take several cycles. There may be optimizations that can be done here
+        ** such as detecting system "idle" time and doing a bulk delete then.
+        */
+        BPLib_STOR_GarbageCollect(&BPNode_AppData.BplibInst);
+    }
 
     return Status;
 }
@@ -440,11 +444,6 @@ CFE_Status_t BPNode_AppInit(void)
     BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION, "BPNode Initialized: %s",
                         VersionString);
 
-    // if (BPLib_CLA_ContactSetup(0) != BPLIB_SUCCESS || 
-    //     BPLib_CLA_ContactStart(0) != BPLIB_SUCCESS)
-    // {
-    //     fprintf(stderr, "Failed to setup and start contact 0\n");
-    // }                        
     return CFE_SUCCESS;
 }
 

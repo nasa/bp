@@ -117,6 +117,11 @@
 #define BPNODE_WAKEUP_WAIT_MSEC             (1000 / BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
+ * \brief How long child tasks can wait for data before timing out
+ */
+#define BPNODE_DATA_TIMEOUT_MSEC            (100 / BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
  * \brief Number of generic worker jobs to process per cycle
  *        Note: Rule of thumb is 100,000 jobs per second for an ingress rate of 100Mbps.
  *              Current value is set for our maximum rate of 150Mbps

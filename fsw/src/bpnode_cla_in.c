@@ -38,7 +38,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
     int32                               Status;
-    BPLib_Status_t                      BpStatus;
+    BPLib_Status_t                      BpStatus = BPLIB_TIMEOUT;
     CFE_MSG_Message_t*                  MsgPtr;
 
     Status  = CFE_PSP_SUCCESS;
@@ -51,7 +51,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
         /* Read next bundle from SB */
         Status = CFE_SB_ReceiveBuffer((CFE_SB_Buffer_t**) &MsgPtr,
                                         BPNode_AppData.ClaInData[ContId].IngressPipe,
-                                        BPNODE_WAKEUP_WAIT_MSEC);
+                                        BPNODE_DATA_TIMEOUT_MSEC);
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
 
@@ -72,18 +72,6 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
                                         0);
 
             BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-
-            /* If CLA did not timeout during ingress, but wasn't successful */
-            if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
-            {
-                /* Event is issued within bplib */
-
-                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-            }
-            else
-            {
-                Status = CFE_SUCCESS;
-            }
         }
         else if (Status != CFE_SB_TIME_OUT)
         {
@@ -120,18 +108,6 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
                                         0);
 
             BPLib_PL_PerfLogEntry(BPNode_AppData.ClaInData[ContId].PerfId);
-
-            /* If CLA did not timeout during ingress, but wasn't successful */
-            if (BpStatus != BPLIB_CLA_TIMEOUT && BpStatus != BPLIB_SUCCESS)
-            {
-                /* Event is issued within bplib */
-
-                Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-            }
-            else
-            {
-                Status = CFE_SUCCESS;
-            }
         }
         else if (Status != CFE_PSP_ERROR_TIMEOUT)
         {
@@ -140,12 +116,10 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
                                 "[CLA In #%d]: Failed to read packet from UDP socket, RC = %d",
                                 ContId,
                                 Status);
-
-            Status = CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
         }
     }
 
-    return Status;
+    return BpStatus;
 }
 
 CFE_Status_t BPNode_ClaInCreateTasks(void)
@@ -537,12 +511,12 @@ void BPNode_ClaIn_AppMain(void)
 
                             do
                             {
-                                CFE_Status = BPNode_ClaIn_ProcessBundleInput(ContactId, &BundleSize);
-                                if (CFE_Status == CFE_SUCCESS)
+                                Status = BPNode_ClaIn_ProcessBundleInput(ContactId, &BundleSize);
+                                if (Status == BPLIB_SUCCESS)
                                 {
                                     BytesIngressed += BundleSize;
                                 }
-                            } while (CFE_Status == CFE_SUCCESS && ((BytesIngressed * 8) < 
+                            } while (Status == BPLIB_SUCCESS && ((BytesIngressed * 8) < 
                                      BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle));
                         }
                     }
