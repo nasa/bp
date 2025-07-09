@@ -70,24 +70,24 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
     /* Send egress bundle onto CL */
     if (BpStatus == BPLIB_SUCCESS)
     {
-        if (ContId == BPNODE_CLA_SB_CONTACT_ID)
-        { /* Contact is SB-type */
-            /* Set the MID for the outbound bundle */
-            CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
-                                CFE_SB_ValueToMsgId(BPNODE_CLA_OUT_BUNDLE_MID));
+        // if (ContId == BPNODE_CLA_SB_CONTACT_ID)
+        // { /* Contact is SB-type */
+        //     /* Set the MID for the outbound bundle */
+        //     CFE_MSG_SetMsgId(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
+                                // CFE_SB_ValueToMsgId(BPNODE_CLA_OUT_BUNDLE_MID));
 
-            /* Set the size of the message */
-            CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
-                            *MsgSize + sizeof(CFE_MSG_TelemetryHeader_t));
+        //     /* Set the size of the message */
+        //     CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader),
+        //                     *MsgSize + sizeof(CFE_MSG_TelemetryHeader_t));
 
-            /* Timestamp message before transmitting */
-            CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader));
+        //     /* Timestamp message before transmitting */
+        //     CFE_SB_TimeStampMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader));
 
-            /* Send the wrapped bundle onto the Software Bus */
-            CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), true);
-        }
-        else
-        {
+        //     /* Send the wrapped bundle onto the Software Bus */
+        //     CFE_SB_TransmitMsg(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), true);
+        // }
+        // else
+        // {
             WrBuf.OutputSize = *MsgSize;
             WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload;
 
@@ -100,7 +100,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
                                                     CFE_PSP_IODriver_VPARG(&WrBuf));
 
             BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
-        }
+        // }
 
         CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), 0);
     }
@@ -295,8 +295,8 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr
 
     Status = BPLIB_SUCCESS;
 
-    if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
-    {
+    // if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
+    // {
         #ifdef BPNODE_CLA_UDP_DRIVER
             /* Configure Port Number */
             snprintf(Str, sizeof(Str), "port=%d", PortNum);
@@ -338,7 +338,7 @@ BPLib_Status_t BPNode_ClaOut_Setup(uint32 ContactId, int32 PortNum, char* IpAddr
                 }
             }
         #endif
-    }
+    // }
 
     return Status;
 }
@@ -350,8 +350,8 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId)
 
     Status = BPLIB_SUCCESS;
 
-    if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
-    {
+    // if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
+    // {
         /* Set I/O to running */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
                                                 CFE_PSP_IODriver_SET_RUNNING,
@@ -366,7 +366,7 @@ BPLib_Status_t BPNode_ClaOut_Start(uint32 ContactId)
 
             Status = BPLIB_CLA_IO_ERROR;
         }
-    }
+    // }
 
     return Status;
 }
@@ -378,8 +378,8 @@ BPLib_Status_t BPNode_ClaOut_Stop(uint32 ContactId)
 
     Status = BPLIB_SUCCESS;
 
-    if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
-    {
+    // if (ContactId != BPNODE_CLA_SB_CONTACT_ID)
+    // {
         /* Set I/O to stop running */
         PspStatus = CFE_PSP_IODriver_Command(&BPNode_AppData.ClaOutData[ContactId].PspLocation,
                                                 CFE_PSP_IODriver_SET_RUNNING,
@@ -395,7 +395,7 @@ BPLib_Status_t BPNode_ClaOut_Stop(uint32 ContactId)
 
             Status = BPLIB_CLA_IO_ERROR;
         }
-    }
+    // }
 
     return Status;
 }

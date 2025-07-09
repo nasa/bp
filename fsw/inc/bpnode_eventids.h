@@ -99,9 +99,9 @@
 #define BPNODE_CLA_IN_SEM_TK_TIMEOUT_INF_EID    75
 #define BPNODE_CLA_IN_SETUP_INF_EID             76
 #define BPNODE_CLA_IN_UNK_EXIT_CRIT_EID         77
-#define BPNODE_CLA_IN_CREATE_PIPE_ERR_EID       78
-#define BPNODE_CLA_IN_SUB_ERR_EID               79
-#define BPNODE_CLA_IN_RECV_BUFF_ERR_EID         80
+// #define BPNODE_CLA_IN_CREATE_PIPE_ERR_EID       78
+// #define BPNODE_CLA_IN_SUB_ERR_EID               79
+// #define BPNODE_CLA_IN_RECV_BUFF_ERR_EID         80
 #define BPNODE_CLA_IN_IO_READ_ERR_EID           81
 
 #define BPNODE_CLA_OUT_LIB_LOAD_ERR_EID         82
