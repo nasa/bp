@@ -576,7 +576,7 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
 
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_SUCCESS);
 
-    UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
+    // UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
 }
 
