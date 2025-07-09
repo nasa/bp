@@ -40,10 +40,6 @@ void BPNode_NotifDestroy(BPNode_Notif_t* Event);
 
 void BPNode_NotifSet(BPNode_Notif_t* Event);
 
-//void BPNode_NotifClear(BPNode_Notif_t* Event);
-
-//bool BPNode_NotifIsSet(BPNode_Notif_t* Event);
-
 uint32 BPNode_NotifGetCount(BPNode_Notif_t* Notif);
 
 int32 BPNode_NotifWait(BPNode_Notif_t* Notif, uint32 OldCount, int32 TimeoutMs);

@@ -92,7 +92,11 @@
  */
 
 /**
- * \brief Maximum expected wakeups per second (10Hz by default)
+ * \brief Maximum expected wakeups per second (10Hz by default). If this rate is
+ *        expected to change in flight, this value should be set to the highest expected
+ *        value, otherwise this should just be the default wakeup rate. Rates slower than
+ *        once per second will require changing more than just this configuration and 
+ *        are not recommended
  */
 #define BPNODE_MAX_EXP_WAKEUP_RATE          (10)
 
@@ -107,17 +111,22 @@
 #define BPNODE_WAKEUP_PIPE_LIM              (BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
- * \brief Timeout of wakeup pipe
+ * \brief How many milliseconds to pend on wakeup pipe before timing out. Should be
+ *        a bit longer than the wakeup period (so for a wakeup rate of every 100 msec,
+ *        wait 120 msec for example)
  */
 #define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200 / BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
- * \brief How long child tasks can wait for the wakeup notification
+ * \brief How many milliseconds child tasks wait for the start work notification before
+ *        timing out. Should equal the length of the wakeup period.
  */
 #define BPNODE_WAKEUP_WAIT_MSEC             (1000 / BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
- * \brief How long child tasks can wait for data before timing out
+ * \brief How many milliseconds child tasks can wait for data to ingress/egress/work on
+ *        before timing out. Should be shorter than a full wakeup period in order to keep
+ *        the child task in sync with the start work notification.
  */
 #define BPNODE_DATA_TIMEOUT_MSEC            (100 / BPNODE_MAX_EXP_WAKEUP_RATE)
 

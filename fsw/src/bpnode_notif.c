@@ -31,21 +31,6 @@ void BPNode_NotifDestroy(BPNode_Notif_t* Notif)
     OS_CondVarDelete(Notif->CondVar);
 }
 
-// bool BPNode_NotifIsSet(BPNode_Notif_t* Notif)
-// {
-//     bool IsSet;
-
-//     if (Notif == NULL)
-//     {
-//         return false;
-//     }
-
-//     OS_CondVarLock(Notif->CondVar);
-//     IsSet = Notif->IsSet;
-//     OS_CondVarUnlock(Notif->CondVar);
-//     return IsSet;
-// }
-
 uint32 BPNode_NotifGetCount(BPNode_Notif_t* Notif)
 {
     uint32 Count;
@@ -74,18 +59,6 @@ void BPNode_NotifSet(BPNode_Notif_t* Notif)
     OS_CondVarBroadcast(Notif->CondVar);
     OS_CondVarUnlock(Notif->CondVar);
 }
-
-// void BPNode_NotifClear(BPNode_Notif_t* Notif)
-// {
-//     if (Notif == NULL)
-//     {
-//         return;
-//     }
-
-//     OS_CondVarLock(Notif->CondVar);
-//     Notif->IsSet = false;
-//     OS_CondVarUnlock(Notif->CondVar);
-// }
 
 /* Wait until notif is incremented */
 int32 BPNode_NotifWait(BPNode_Notif_t* Notif, uint32 OldCount, int32 TimeoutMs)
