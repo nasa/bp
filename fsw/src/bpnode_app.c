@@ -324,7 +324,7 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_SUB_CMD_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
+                            "Error subscribing to Commands, RC = 0x%08lX", (unsigned long)Status);
 
         return Status;
     }
@@ -336,7 +336,7 @@ CFE_Status_t BPNode_AppInit(void)
     if (Status != CFE_SUCCESS)
     {
         BPLib_EM_SendEvent(BPNODE_SUB_WKP_ERR_EID, BPLib_EM_EventType_ERROR,
-                            "Error Subscribing to wakeup messages, RC = 0x%08lX",
+                            "Error subscribing to wakeup messages, RC = 0x%08lX",
                             (unsigned long)Status);
 
         return Status;
@@ -503,6 +503,9 @@ void BPNode_AppExit(void)
         (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
         (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
+
+        BPNode_ClaIn_DeleteSems(i);
+        BPNode_ClaOut_DeleteSems(i);
     }
 
     /* Wait on the generic worker task exit semaphores */

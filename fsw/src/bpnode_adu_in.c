@@ -251,7 +251,7 @@ void BPNode_AduIn_AppMain(void)
 
                         /* Even if bplib rejects the ADU, this ADU's size gets counted */
                         BytesIngressed += AduSize;
-                    }
+                    }                    
                 } while (Status == CFE_SUCCESS && ((BytesIngressed * 8) < 
                          BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle));
             }

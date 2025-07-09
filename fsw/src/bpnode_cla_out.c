@@ -41,7 +41,6 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
     CFE_PSP_IODriver_WritePacketBuffer_t WrBuf;
     BPLib_Status_t                       Status;
 
-    Status  = CFE_PSP_SUCCESS;
     *MsgSize = 0;
 
     /* Get next bundle from CLA */
@@ -151,13 +150,6 @@ CFE_Status_t BPNode_ClaOutCreateTasks(void)
             }
             else
             {
-                BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload = malloc(BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE);
-                if (BPNode_AppData.ClaOutData[ContactId].OutBuffer.Payload == NULL)
-                {
-                    printf("FRIG!\n");
-                    break;
-                }
-
                 /* Create child task */
                 snprintf(NameBuff, OS_MAX_API_NAME, "%s_%d", BPNODE_CLA_OUT_BASE_NAME, ContactId);
                 TaskPriority = BPNODE_CLA_OUT_PRIORITY_BASE + ContactId;
@@ -434,7 +426,6 @@ void BPNode_ClaOut_AppMain(void)
         if (ContactId != BPLIB_MAX_NUM_CONTACTS)
         {
             CFE_Status = BPNode_ClaOut_TaskInit(ContactId);
-
             /* Initialization must succeed to start processing, exit task if unsuccessful */
             if (CFE_Status == CFE_SUCCESS)
             {
@@ -525,9 +516,6 @@ void BPNode_ClaOut_TaskExit(uint32 ContactId)
 
     /* Confirm exit with give on exit semaphore */
     (void) OS_BinSemGive(BPNode_AppData.ClaOutData[ContactId].ExitSemId);
-
-    /* Return semaphores */
-    BPNode_ClaOut_DeleteSems(ContactId);
 
     /* Stop execution */
     CFE_ES_ExitChildTask();

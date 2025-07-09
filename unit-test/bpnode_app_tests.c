@@ -90,10 +90,6 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 {
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
-    /* Set Data buffer for time to later */
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
     /* Receive wakeup message but no command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
@@ -108,10 +104,6 @@ void Test_BPNode_AppMain_WakeupRecvd(void)
 void Test_BPNode_AppMain_WakeupErr(void)
 {
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
-
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
 
     /* Wakeup pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
@@ -130,13 +122,9 @@ void Test_BPNode_AppMain_CommandErr(void)
 {
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
-
     /* Command pipe read error */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_TIME_OUT);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
 
     BPNode_AppMain();
@@ -155,13 +143,9 @@ void Test_BPNode_AppMain_CommandRecvd(void)
 
     UT_SetHandlerFunction(UT_KEY(BPA_TABLEP_TableInit), UT_BPA_TABLEP_Init_Handler, NULL);
 
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
-
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SUCCESS);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
@@ -179,30 +163,21 @@ void Test_BPNode_WakeupProcess_CommandRecvd(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
-    uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
 
     /* Successful receipt of one command */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 2, CFE_SB_NO_MESSAGE);
     UT_SetDataBuffer(UT_KEY(CFE_SB_ReceiveBuffer), &BufPtr, sizeof(BufPtr), false);
-
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
 
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
 }
 
 /* Test wakeup process calls STOR GarbageCollect and FlushPending */
 void Test_BPNode_WakeupProcess_STORNominal(void)
 {
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
 
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
@@ -229,48 +204,9 @@ void Test_BPNode_WakeupProcess_STORFail(void)
     UtAssert_STUB_COUNT(BPLib_STOR_GarbageCollect, 1);
 }
 
-/* Test wakeup process after failing to give a semaphore */
-void Test_BPNode_WakeupProcess_FailSem(void)
-{
-    uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
-
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
-
-    /* Fail sem gives to cause errors */
-    UT_SetDefaultReturnValue(UT_KEY(OS_BinSemGive), OS_SUCCESS);                        /* Guarantee only failures are those assigned below */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first generic worker sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPNODE_NUM_GEN_WRKR_TASKS, OS_ERROR);  /* Fail first ADU In sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first ADU Out sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), BPLIB_MAX_NUM_CHANNELS + 1, OS_ERROR); /* Fail first CLA In sem give call for wake up */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemGive), 1, OS_ERROR);                          /* Fail first CLA Out sem give call for wake up */
-
-    /* Exit function under tests without going to the task pipe */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_NO_MESSAGE);
-
-    /* Run function under test */
-    UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SUCCESS);
-
-    UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
-    UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
-
-    /* Verify events */
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 5);
-    BPNode_Test_Verify_Event(0, BPNODE_WKP_SEM_ERR_EID, "Error giving Generic Worker Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(1, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(2, BPNODE_WKP_SEM_ERR_EID, "Error giving CLA Out Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(3, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU In Task #%d its wakeup semaphore, RC = %d");
-    BPNode_Test_Verify_Event(4, BPNODE_WKP_SEM_ERR_EID, "Error giving ADU Out Task #%d its wakeup semaphore, RC = %d");
-}
-
 /* Test wakeup process after failing Time maintenance activities */
 void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 {
-    uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
-
     int64 TimeNow = 123450000;
     UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
                                                             sizeof(TimeNow), false);
@@ -284,7 +220,6 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_TIME_MaintenanceActivities, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_TIME_WKP_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error doing time maintenance activities, RC = %d", BPLIB_EM_EXPANDED_EVENT_SIZE,
@@ -294,8 +229,6 @@ void Test_BPNode_WakeupProcess_FailTimeMaint(void)
 /* Test wakeup process after failing NC Update */
 void Test_BPNode_WakeupProcess_FailNCUpdate(void)
 {
-    uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
-
     int64 TimeNow = 123450000;
     UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
                                                             sizeof(TimeNow), false);
@@ -310,7 +243,6 @@ void Test_BPNode_WakeupProcess_FailNCUpdate(void)
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_NC_ConfigUpdate, 1);
-    UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_NC_CFG_UPDATE_ERR_EID);
     UtAssert_STRINGBUF_EQ("Error managing configurations on wakeup, Status=0x%08X", BPLIB_EM_EXPANDED_EVENT_SIZE,
@@ -323,7 +255,6 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
 {
     CFE_SB_Buffer_t  Buf;
     CFE_SB_Buffer_t *BufPtr = &Buf;
-    uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
 
     int64 TimeNow = 123450000;
     UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
@@ -336,7 +267,6 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
     UtAssert_INT32_EQ(BPNode_WakeupProcess(), CFE_SB_PIPE_RD_ERR);
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 2);
-    UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
@@ -344,12 +274,6 @@ void Test_BPNode_WakeupProcess_NullBuf(void)
 /* Test wakeup process after command receive error */
 void Test_BPNode_WakeupProcess_RecvErr(void)
 {
-    uint32 TotalTaskNum = (2 * BPLIB_MAX_NUM_CHANNELS) + (2 * BPLIB_MAX_NUM_CONTACTS) + BPNODE_NUM_GEN_WRKR_TASKS;
-
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
-
     /* Command receive error */
     UT_SetDeferredRetcode(UT_KEY(CFE_SB_ReceiveBuffer), 1, CFE_SB_PIPE_RD_ERR);
 
@@ -357,17 +281,12 @@ void Test_BPNode_WakeupProcess_RecvErr(void)
 
     UtAssert_STUB_COUNT(CFE_SB_ReceiveBuffer, 1);
     UtAssert_STUB_COUNT(BPA_DP_TaskPipe, 0);
-    UtAssert_STUB_COUNT(OS_BinSemGive, TotalTaskNum);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
 }
 
 void Test_BPNode_WakeupProcess_TableUpdate_Nominal(void)
 {
     CFE_Status_t Status;
-
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
 
     /* Force a successful configuration update */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_TBL_UPDATED);
@@ -390,10 +309,6 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 {
     CFE_Status_t Status;
 
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
-
     /* Force the configuration updates to return success codes */
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
@@ -411,10 +326,6 @@ void Test_BPNode_WakeupProcess_TableSuccess_Nominal(void)
 void Test_BPNode_WakeupProcess_TableUpdate_Error(void)
 {
     CFE_Status_t Status;
-
-    int64 TimeNow = 123450000;
-    UT_SetDataBuffer(UT_KEY(CFE_PSP_GetTime), (OS_time_t *) &TimeNow, 
-                                                            sizeof(TimeNow), false);
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_ConfigUpdate), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(BPA_TABLEP_TableUpdate), BPLIB_ERROR);
@@ -502,7 +413,7 @@ void Test_BPNode_AppInit_FailedCommandSub(void)
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_SUB_CMD_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Subscribing to Commands, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_STRINGBUF_EQ("Error subscribing to Commands, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -510,13 +421,14 @@ void Test_BPNode_AppInit_FailedCommandSub(void)
 void Test_BPNode_AppInit_FailedWakeupSub(void)
 {
     /* Failure to subscribe to wakeups */
-    UT_SetDeferredRetcode(UT_KEY(CFE_SB_Subscribe), 1, CFE_SB_BAD_ARGUMENT);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_SubscribeEx), 1, CFE_SUCCESS);
+    UT_SetDeferredRetcode(UT_KEY(CFE_SB_SubscribeEx), 1, CFE_SB_BAD_ARGUMENT);
 
     UtAssert_INT32_EQ(BPNode_AppInit(), CFE_SB_BAD_ARGUMENT);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     UtAssert_INT32_EQ(context_BPLib_EM_SendEvent[0].EventID, BPNODE_SUB_WKP_ERR_EID);
-    UtAssert_STRINGBUF_EQ("Error Subscribing to wakeup messages, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
+    UtAssert_STRINGBUF_EQ("Error subscribing to wakeup messages, RC = 0x%08lX", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
 }
 
@@ -708,7 +620,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_WakeupProcess_CommandRecvd);
     ADD_TEST(Test_BPNode_WakeupProcess_STORNominal);
     ADD_TEST(Test_BPNode_WakeupProcess_STORFail);
-    ADD_TEST(Test_BPNode_WakeupProcess_FailSem);
     ADD_TEST(Test_BPNode_WakeupProcess_FailTimeMaint);
     ADD_TEST(Test_BPNode_WakeupProcess_FailNCUpdate);
     ADD_TEST(Test_BPNode_WakeupProcess_NullBuf);

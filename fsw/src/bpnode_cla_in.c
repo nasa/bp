@@ -578,9 +578,6 @@ void BPNode_ClaIn_TaskExit(uint32 ContactId)
     /* Confirm exit with give on exit semaphore */
     (void) OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].ExitSemId);
 
-    /* Return semaphores */
-    BPNode_ClaIn_DeleteSems(ContactId);
-
     /* Stop execution */
     CFE_ES_ExitChildTask();
 
