@@ -67,11 +67,11 @@
 /**
  * \brief Default EID Node Number to egress bundles to contact 1
  */
-#define BPNODE_EID_NODE_NUM_FOR_CONTACT_1 400
+// #define BPNODE_EID_NODE_NUM_FOR_CONTACT_1 400
 
 /**
  * \brief Default EID Service Number to egress bundles to contact 1
  */
-#define BPNODE_EID_SERVICE_NUM_FOR_CONTACT_1 42
+// #define BPNODE_EID_SERVICE_NUM_FOR_CONTACT_1 42
 
 #endif /* BPNODE_MISSION_CFG_H */
