@@ -454,7 +454,7 @@ void BPNode_ClaIn_AppMain(void)
     size_t                      BytesIngressed;
     uint32                      ContactId;
     BPLib_CLA_ContactRunState_t RunState;
-    size_t                      BundleSize;
+    size_t                      BundleSize = 0;
     uint32                      RunCount = 0;
 
     /* Get this tasks ID to reference later */
@@ -562,7 +562,7 @@ void BPNode_ClaIn_TaskExit(uint32 ContactId)
     BPNode_ClaIn_Teardown(ContactId);
 
     (void) BPLib_CLA_GetContactRunState(ContactId, &RunState);
-    BPLib_EM_SendEvent(BPNODE_CLA_IN_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
+    BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "[CLA In #%d]: Terminating Task. Run state = %d.",
                         ContactId,
                         RunState);

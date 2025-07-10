@@ -475,6 +475,53 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout(void)
     UtAssert_INT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), BPLIB_CLA_TIMEOUT);
 }
 
+void Test_BPNode_ClaOut_Setup_Nominal(void)
+{
+    BPLib_Status_t Status;
+    uint32 ContId = 0;
+    int32 PortNum = 100;
+    const char *IpAddr = "127.0.0.1";
+
+    Status = BPNode_ClaOut_Setup(ContId, PortNum, (char *) IpAddr);
+    
+    UtAssert_INT32_EQ(Status, BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+void Test_BPNode_ClaOut_Start_Nominal(void)
+{
+    BPLib_Status_t Status;
+    uint32 ContId = 0;
+
+    Status = BPNode_ClaOut_Start(ContId);
+    
+    UtAssert_INT32_EQ(Status, BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+void Test_BPNode_ClaOut_Stop_Nominal(void)
+{
+    BPLib_Status_t Status;
+    uint32 ContId = 0;
+
+    Status = BPNode_ClaOut_Stop(ContId);
+    
+    UtAssert_INT32_EQ(Status, BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
+}
+
+void Test_BPNode_ClaOut_DeleteSems_Nominal(void)
+{
+    uint32 ContId = 0;
+
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContId].InitSemId, "Name", 0, 0);
+    (void) OS_BinSemCreate(&BPNode_AppData.ClaOutData[ContId].ExitSemId, "Name", 0, 0);
+
+    BPNode_ClaOut_DeleteSems(ContId);
+    
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);    
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
@@ -483,10 +530,12 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_ClaOutCreateTasks_TakeSemErr);
+
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_FindByNameErr);
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_DirErr);
     ADD_TEST(Test_BPNode_ClaOut_TaskInit_GiveSemErr);
+
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoBundleAvailable);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_SingleBundle);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NotifErr);
@@ -495,9 +544,19 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_AppMain_ContactIdErr);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_FailedProcBundle);
+
     ADD_TEST(Test_BPNode_ClaOut_TaskExit_Nominal);
+
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout);
+
+    ADD_TEST(Test_BPNode_ClaOut_Setup_Nominal);
+
+    ADD_TEST(Test_BPNode_ClaOut_Start_Nominal);
+
+    ADD_TEST(Test_BPNode_ClaOut_Stop_Nominal);
+
+    ADD_TEST(Test_BPNode_ClaOut_DeleteSems_Nominal);
 }

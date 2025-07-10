@@ -533,14 +533,14 @@ void BPNode_ClaOut_DeleteSems(uint32 ContactId)
         Status = OS_BinSemDelete(BPNode_AppData.ClaOutData[ContactId].ExitSemId);
         if (Status != CFE_SUCCESS)
         {
-            BPLib_EM_SendEvent(BPNODE_CLA_OUT_EXIT_SEM_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_CLA_OUT_DEL_EXIT_SEM_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "Could not delete exit semaphore");
         }
     }
     else
     {
-        BPLib_EM_SendEvent(BPNODE_CLA_OUT_INIT_SEM_ERR_EID,
+        BPLib_EM_SendEvent(BPNODE_CLA_OUT_DEL_INIT_SEM_ERR_EID,
                             BPLib_EM_EventType_ERROR,
                             "Could not delete init semaphore");
     }
