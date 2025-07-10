@@ -203,31 +203,22 @@ int32 udpsock_intf_OpenPort(udpsock_intf_State_t *State, uint32 Instance)
 int32 udpsock_intf_Configure(udpsock_intf_State_t *State, uint32 Instance, const char *ConfigString)
 {
     int32 Result = CFE_PSP_ERROR;
-    const char *Div;
-    size_t KeyLen;
 
-    Div = strchr(ConfigString, '=');
-    if (Div != NULL)
+    if (strncmp(ConfigString, "name=", 5) == 0)
     {
-        KeyLen = Div - ConfigString;
-        ++Div;
-
-        if (KeyLen == 4 && memcmp(ConfigString, "name", KeyLen) == 0)
-        {
-            strncpy(State->IntfName, Div, sizeof(State->IntfName) - 1);
-            State->IntfName[sizeof(State->IntfName) - 1] = 0;
-            Result = CFE_PSP_SUCCESS;
-        }
-        else if(KeyLen == 4 && memcmp(ConfigString, "port", KeyLen) == 0)
-        {
-            State->LocalAddr.sin_port = htons(atoi(Div));
-            Result = CFE_PSP_SUCCESS;
-        }
-        else if(KeyLen == 6 && memcmp(ConfigString, "IpAddr", KeyLen) == 0)
-        {
-            State->LocalAddr.sin_addr.s_addr = inet_addr(Div);
-            Result = CFE_PSP_SUCCESS;
-        }
+        strncpy(State->IntfName, ConfigString + 5, sizeof(State->IntfName) - 1);
+        State->IntfName[sizeof(State->IntfName) - 1] = 0;
+        Result = CFE_PSP_SUCCESS;
+    }
+    else if (strncmp(ConfigString, "port=", 5) == 0)
+    {
+            State->LocalAddr.sin_port = htons(atoi(ConfigString + 5));
+            Result = CFE_PSP_SUCCESS;        
+    }
+    else if (strncmp(ConfigString, "IpAddr=", 7) == 0)
+    {
+        State->LocalAddr.sin_addr.s_addr = inet_addr(ConfigString + 7);
+        Result = CFE_PSP_SUCCESS;
     }
 
     return Result;

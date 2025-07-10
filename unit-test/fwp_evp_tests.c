@@ -260,45 +260,6 @@ void Test_BPA_EVP_SendEvent_BadReturn(void)
                             context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
 }
 
-// Test that BPA_EVP_SendEvent() returns BPLIB_EM_MSG_TRUNCATED when given a long string
-void Test_BPA_EVP_SendEvent_Truncation(void)
-{
-    BPLib_Status_t Status;
-    uint16_t ExpectedStubCount = 1;
-    uint16_t char_index;
-    char InputChar = 'a';
-    char InputStringAboveMaxLen[BPLIB_EM_MAX_MESSAGE_LENGTH+1]; // +1 for a null-term after
-
-    /* Fill the first part (what might get copied by the UUT) with a known value */
-    for (char_index = 0; char_index < BPLIB_EM_MAX_MESSAGE_LENGTH; char_index++)
-    {
-        InputStringAboveMaxLen[char_index] = InputChar;
-    }
-    InputStringAboveMaxLen[BPLIB_EM_MAX_MESSAGE_LENGTH+1] = '\0'; // input string must be null-terminated for strlen
-
-    /*
-    ** TODO: Add back if we can verify the EventStr passed to our CFE_EVS_SendEvent stub
-    ** Fill the first part (what should get copied by the UUT)
-    ** The last two chars should be overwritten by the UUT
-    char ExpectedOutputString[BPLIB_EM_MAX_MESSAGE_LENGTH];
-    for (char_index = 0; char_index < BPLIB_EM_MAX_MESSAGE_LENGTH-2; char_index++)
-    {
-        ExpectedOutputString[char_index] = InputChar;
-    }
-    ExpectedOutputString[BPLIB_EM_MAX_MESSAGE_LENGTH - 2] = BPLIB_EM_MSG_TRUNCATED;
-    ExpectedOutputString[BPLIB_EM_MAX_MESSAGE_LENGTH - 1] = '\0';
-    */
-
-    /* === INFO event message test === */
-    Status = BPA_EVP_SendEvent(42, BPLib_EM_EventType_INFORMATION, InputStringAboveMaxLen);
-
-    /* Verify that the EVS function that is being proxied, was called */
-    UtAssert_STUB_COUNT(CFE_EVS_SendEvent, ExpectedStubCount++);
-    UtAssert_EQ(BPLib_Status_t, Status, BPLIB_EM_MSG_TRUNCATED);
-    UtAssert_INT32_EQ(context_CFE_EVS_SendEvent[0].EventID, 42);
-    UtAssert_STRINGBUF_EQ("%s", CFE_MISSION_EVS_MAX_MESSAGE_LENGTH, 
-                            context_CFE_EVS_SendEvent[0].Spec, CFE_MISSION_EVS_MAX_MESSAGE_LENGTH);
-}
 
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
@@ -307,5 +268,4 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_EVP_Init_BadReturn);
     ADD_TEST(Test_BPA_EVP_SendEvent_Nominal);
     ADD_TEST(Test_BPA_EVP_SendEvent_BadReturn);
-    ADD_TEST(Test_BPA_EVP_SendEvent_Truncation);
 }

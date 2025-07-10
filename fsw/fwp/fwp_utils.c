@@ -31,21 +31,21 @@
 BPLib_Status_t BPA_CFE_Status_Translate(CFE_Status_t CFE_Status)
 { 
     BPLib_Status_t Status;
+    uint32_t ErrType = (CFE_Status & CFE_SEVERITY_BITMASK);
 
     Status = BPLIB_UNKNOWN;
 
-    if ((uint32_t) CFE_Status == (uint32_t) CFE_TBL_INFO_UPDATED)
+    if (CFE_Status == CFE_TBL_INFO_UPDATED)
     {
         Status = BPLIB_TBL_UPDATED;
     }
-    else if (((uint32_t) CFE_Status >= (uint32_t) CFE_SEVERITY_SUCCESS) &&
-             ((uint32_t) CFE_Status <  (uint32_t) CFE_SEVERITY_INFO))
-    {
-        Status = BPLIB_SUCCESS;
-    }
-    else if ((uint32_t) CFE_Status >= (uint32_t) CFE_SEVERITY_ERROR)
+    else if (ErrType == CFE_SEVERITY_ERROR)
     {
         Status = BPLIB_ERROR;
+    }
+    else if (ErrType == CFE_SEVERITY_INFO || ErrType == CFE_SEVERITY_SUCCESS)
+    {
+        Status = BPLIB_SUCCESS;
     }
 
     return Status;

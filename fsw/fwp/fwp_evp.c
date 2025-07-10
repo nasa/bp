@@ -66,29 +66,6 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
 {
     BPLib_Status_t Status;
     uint16 CfeEventType;
-    size_t SpecLen;
-    char EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH];
-    bool Truncated;
-
-    // Default to indicating that the string is nottruncated
-    Truncated = false;
-
-    // Copy the max message length amount of characters to the final event string
-    strncpy(EventStr, Spec, (size_t) BPLIB_EM_MAX_MESSAGE_LENGTH);
-
-    /* Verify that the max message length for EM is more than a truncation character and >= the pre-defined
-       max length of an EVS message according to CFE */
-    SpecLen = strlen(Spec);
-    if (SpecLen >= BPLIB_EM_MAX_MESSAGE_LENGTH)
-    {
-        /* Put the truncation character at the end of the string,
-           leaving a space for the null character */
-        EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH - 2u] = BPLIB_EM_MSG_TRUNCATED;
-        EventStr[BPLIB_EM_MAX_MESSAGE_LENGTH - 1u] = '\0';
-
-        // Indicate that truncation occured
-        Truncated = true;
-    }
 
     /* Translate BPLib event type to cFE event type */
     switch(EventType)
@@ -109,7 +86,6 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
             CfeEventType = CFE_EVS_EventType_CRITICAL;
             break;
 
-        /* BPLib warnings and errors both map to cFE errors */
         default:
             CfeEventType = CFE_EVS_EventType_ERROR;
             break;
@@ -117,15 +93,13 @@ BPLib_Status_t BPA_EVP_SendEvent(uint16_t EventID, BPLib_EM_EventType_t EventTyp
     }
 
     // Use host-specific event generator
-    Status = CFE_EVS_SendEvent(EventID, CfeEventType, "%s", EventStr);
+    Status = CFE_EVS_SendEvent(EventID, CfeEventType, "%s", Spec);
 
     // Translate host specific return codes into BPLib return codes
     switch(Status)
     {
         case CFE_SUCCESS:
-            /* BPLIB_EM_MSG_TRUNCATED == BPLIB_SUCCESS but for those
-               in the meatspace this distinction is meaningful */
-            Status = Truncated ? BPLIB_EM_MSG_TRUNCATED : BPLIB_SUCCESS;
+            Status = BPLIB_SUCCESS;
             break;
         case CFE_EVS_INVALID_PARAMETER:
             /* Returned by CFE_EVS_SendEvent() from cfe_evs.c */
