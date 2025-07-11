@@ -29,18 +29,6 @@
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_NotifClear()
- * ----------------------------------------------------
- */
-void BPNode_NotifClear(BPNode_Notif_t *Event)
-{
-    UT_GenStub_AddParam(BPNode_NotifClear, BPNode_Notif_t *, Event);
-
-    UT_GenStub_Execute(BPNode_NotifClear, Basic, NULL);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPNode_NotifDestroy()
  * ----------------------------------------------------
  */
@@ -49,6 +37,22 @@ void BPNode_NotifDestroy(BPNode_Notif_t *Event)
     UT_GenStub_AddParam(BPNode_NotifDestroy, BPNode_Notif_t *, Event);
 
     UT_GenStub_Execute(BPNode_NotifDestroy, Basic, NULL);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPNode_NotifGetCount()
+ * ----------------------------------------------------
+ */
+uint32 BPNode_NotifGetCount(BPNode_Notif_t *Notif)
+{
+    UT_GenStub_SetupReturnBuffer(BPNode_NotifGetCount, uint32);
+
+    UT_GenStub_AddParam(BPNode_NotifGetCount, BPNode_Notif_t *, Notif);
+
+    UT_GenStub_Execute(BPNode_NotifGetCount, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPNode_NotifGetCount, uint32);
 }
 
 /*
@@ -70,22 +74,6 @@ int32 BPNode_NotifInit(BPNode_Notif_t *Event, const char *EventName)
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_NotifIsSet()
- * ----------------------------------------------------
- */
-bool BPNode_NotifIsSet(BPNode_Notif_t *Event)
-{
-    UT_GenStub_SetupReturnBuffer(BPNode_NotifIsSet, bool);
-
-    UT_GenStub_AddParam(BPNode_NotifIsSet, BPNode_Notif_t *, Event);
-
-    UT_GenStub_Execute(BPNode_NotifIsSet, Basic, NULL);
-
-    return UT_GenStub_GetReturnValue(BPNode_NotifIsSet, bool);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPNode_NotifSet()
  * ----------------------------------------------------
  */
@@ -101,11 +89,12 @@ void BPNode_NotifSet(BPNode_Notif_t *Event)
  * Generated stub function for BPNode_NotifWait()
  * ----------------------------------------------------
  */
-int32 BPNode_NotifWait(BPNode_Notif_t *Event, int32 TimeoutMs)
+int32 BPNode_NotifWait(BPNode_Notif_t *Notif, uint32 OldCount, int32 TimeoutMs)
 {
     UT_GenStub_SetupReturnBuffer(BPNode_NotifWait, int32);
 
-    UT_GenStub_AddParam(BPNode_NotifWait, BPNode_Notif_t *, Event);
+    UT_GenStub_AddParam(BPNode_NotifWait, BPNode_Notif_t *, Notif);
+    UT_GenStub_AddParam(BPNode_NotifWait, uint32, OldCount);
     UT_GenStub_AddParam(BPNode_NotifWait, int32, TimeoutMs);
 
     UT_GenStub_Execute(BPNode_NotifWait, Basic, NULL);

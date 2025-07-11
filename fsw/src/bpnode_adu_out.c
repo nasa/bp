@@ -60,22 +60,6 @@ int32 BPNode_AduOutCreateTasks(void)
             return Status;
         }
 
-        /* Create wakeup semaphore so main task can control workflow */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_ADU_OUT_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.AduOutData[i].WakeupSemId, NameBuff, 0, 0);
-
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "[ADU Out #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
-                                i,
-                                NameBuff,
-                                Status);
-
-            return Status;
-        }
-
         /* Create exit semaphore so main task knows when child finished shutdown */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_ADU_OUT_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.AduOutData[i].ExitSemId, NameBuff, 0, 0);
@@ -198,6 +182,7 @@ void BPNode_AduOut_AppMain(void)
     BPLib_NC_ApplicationState_t AppState;
     size_t AduSize;
     size_t BytesEgressed;
+    uint32 RunCount = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduOut_TaskInit(&ChanId);
@@ -229,11 +214,13 @@ void BPNode_AduOut_AppMain(void)
     {
         /* Attempt to take the wakeup semaphore */
         BPLib_PL_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].WakeupSemId, BPNODE_ADU_OUT_SEM_WAKEUP_WAIT_MSEC);
+        Status = BPNode_NotifWait(&BPNode_AppData.ChildStartWorkNotif, 
+                                                    RunCount, BPNODE_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduOutData[ChanId].PerfId);
 
         if (Status == OS_SUCCESS)
         {
+            RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
@@ -242,41 +229,19 @@ void BPNode_AduOut_AppMain(void)
                 do
                 {
                     /* Poll bundle from PI out queue */
-                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT, &AduSize);
+                    BpStatus = BPA_ADUP_Out(ChanId, BPNODE_DATA_TIMEOUT_MSEC, &AduSize);
                     if (BpStatus == BPLIB_SUCCESS)
                     {
                         BytesEgressed += AduSize;
-
-                        if ((BytesEgressed * 8) >=
-                            BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle)
-                        {
-                            break;
-                        }
-
                     }
-                    else if (BpStatus == BPLIB_PI_TIMEOUT)
-                    {
-                        /* This is ok, don't need to break */
-                    }
-                    else
-                    {
-                        // Event message
-                        break;
-                    }
-                } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+                } while (BpStatus == BPLIB_SUCCESS && ((BytesEgressed * BPNODE_BITS_PER_BYTE) <
+                            BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle));
             }
         }
-        else if (Status == OS_SEM_TIMEOUT)
+        else if (Status != OS_ERROR_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_SEM_TK_TIMEOUT_INF_EID,
-                                BPLib_EM_EventType_INFORMATION,
-                                "[ADU Out #%d]: Timed out while waiting for the wakeup semaphore",
-                                ChanId);
-        }
-        else
-        {
-            BPLib_EM_SendEvent(BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, BPLib_EM_EventType_ERROR,
-                                "[ADU Out #%d]: Failed to take wakeup semaphore, RC = %d",
+            BPLib_EM_SendEvent(BPNODE_ADU_OUT_NOTIF_ERR_EID, BPLib_EM_EventType_ERROR,
+                                "[ADU Out #%d]: Error pending on notification, RC = %d",
                                 ChanId,
                                 Status);
         }

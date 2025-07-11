@@ -30,7 +30,7 @@
 
 typedef struct BPNode_Notif
 {
-    bool IsSet;
+    uint32    Count;
     osal_id_t CondVar;
 } BPNode_Notif_t;
 
@@ -40,10 +40,8 @@ void BPNode_NotifDestroy(BPNode_Notif_t* Event);
 
 void BPNode_NotifSet(BPNode_Notif_t* Event);
 
-void BPNode_NotifClear(BPNode_Notif_t* Event);
+uint32 BPNode_NotifGetCount(BPNode_Notif_t* Notif);
 
-bool BPNode_NotifIsSet(BPNode_Notif_t* Event);
-
-//int32 BPNode_NotifWait(BPNode_Notif_t* Event, int32 TimeoutMs);
+int32 BPNode_NotifWait(BPNode_Notif_t* Notif, uint32 OldCount, int32 TimeoutMs);
 
 #endif /* BPNODE_NOTIF_H */

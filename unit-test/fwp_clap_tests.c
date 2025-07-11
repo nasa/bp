@@ -107,10 +107,41 @@ void Test_BPA_CLAP_ContactSetup_ClaOutError(void)
     UtAssert_STUB_COUNT(BPNode_ClaOut_Setup, 1);
 }
 
+void Test_BPA_CLAP_ContactStart_Nominal(void)
+{
+    uint32 ContId = 0;
+
+    UtAssert_INT32_EQ(BPA_CLAP_ContactStart(ContId), BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(BPNode_ClaIn_Start, 1);
+    UtAssert_STUB_COUNT(BPNode_ClaOut_Start, 1);    
+}
+
+void Test_BPA_CLAP_ContactStop_Nominal(void)
+{
+    uint32 ContId = 0;
+
+    UtAssert_INT32_EQ(BPA_CLAP_ContactStop(ContId), BPLIB_SUCCESS);
+    UtAssert_STUB_COUNT(BPNode_ClaIn_Stop, 1);
+    UtAssert_STUB_COUNT(BPNode_ClaOut_Stop, 1);    
+}
+
+void Test_BPA_CLAP_ContactTeardown_Nominal(void)
+{
+    uint32 ContId = 0;
+
+    UtAssert_VOIDCALL(BPA_CLAP_ContactTeardown(ContId));
+    UtAssert_STUB_COUNT(BPNode_ClaIn_Teardown, 1);
+    UtAssert_STUB_COUNT(BPNode_ClaOut_Teardown, 1);    
+}
+
 /* Register the test cases to execute with the unit test tool */
 void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPA_CLAP_ContactSetup_Nominal);
     ADD_TEST(Test_BPA_CLAP_ContactSetup_ClaInError);
     ADD_TEST(Test_BPA_CLAP_ContactSetup_ClaOutError);
+
+    ADD_TEST(Test_BPA_CLAP_ContactStart_Nominal);
+    ADD_TEST(Test_BPA_CLAP_ContactStop_Nominal);
+    ADD_TEST(Test_BPA_CLAP_ContactTeardown_Nominal);
 }
