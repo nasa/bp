@@ -84,7 +84,6 @@
 
 /** @} */
 
-
 /** 
  * @defgroup Performance configurations
  * \brief    Note that adjusting these macros can radically change the performance of the
@@ -93,17 +92,50 @@
  */
 
 /**
- * \brief Number of generic worker jobs to process per cycle
+ * \brief Maximum expected wakeups per second (10Hz by default). If this rate is
+ *        expected to change in flight, this value should be set to the highest expected
+ *        value, otherwise this should just be the default wakeup rate. Rates slower than
+ *        once per second will require changing more than just this configuration and 
+ *        are not recommended
  */
-#define BPNODE_NUM_JOBS_PER_CYCLE           (1000)
+#define BPNODE_MAX_EXP_WAKEUP_RATE          (10)
 
 /**
- * \brief Number of bundles to enqueue for egress (from cache) during our wakeup
- *        To prevent the generic worker job list from completely filling
- *        (which allows us to receive new bundles/adus)
- *        this number should be less than BPNODE_NUM_JOBS_PER_CYCLE
+ * \brief Depth of wakeup pipe
  */
-#define BPNODE_MAX_BUNDLES_TO_ENQUEUE_DURING_CACHE_SCAN (BPNODE_NUM_JOBS_PER_CYCLE / 2)
+#define BPNODE_WAKEUP_PIPE_DEPTH            (BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief Message limit of wakeup pipe
+ */
+#define BPNODE_WAKEUP_PIPE_LIM              (BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief How many milliseconds to pend on wakeup pipe before timing out. Should be
+ *        a bit longer than the wakeup period (so for a wakeup rate of every 100 msec,
+ *        wait 120 msec for example)
+ */
+#define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200 / BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief How many milliseconds child tasks wait for the start work notification before
+ *        timing out. Should equal the length of the wakeup period.
+ */
+#define BPNODE_WAKEUP_WAIT_MSEC             (1000 / BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief How many milliseconds child tasks can wait for data to ingress/egress/work on
+ *        before timing out. Should be shorter than a full wakeup period in order to keep
+ *        the child task in sync with the start work notification.
+ */
+#define BPNODE_DATA_TIMEOUT_MSEC            (100 / BPNODE_MAX_EXP_WAKEUP_RATE)
+
+/**
+ * \brief Number of generic worker jobs to process per cycle
+ *        Note: Rule of thumb is 100,000 jobs per second for an ingress rate of 100Mbps.
+ *              Current value is set for our maximum rate of 150Mbps
+ */
+#define BPNODE_NUM_JOBS_PER_CYCLE           (150000 / BPNODE_MAX_EXP_WAKEUP_RATE)
 
 /**
  * \brief Size of BPLib's Memory Pool, in bytes
@@ -115,15 +147,6 @@
  */
 #define BPNODE_MAX_UNSORTED_JOBS          (1024u)
 
-/**
- *  \brief Maximum number of bundles to forward per wakeup 
- */
-#define BPNODE_CLA_OUT_MAX_BUNDLES_PER_CYCLE  (200u)
-
-/** 
- * \brief Maximum number of bundles to receive per wakeup 
- */
-#define BPNODE_CLA_IN_MAX_BUNDLES_PER_CYCLE  (200u)           
 
 /** @} */
 

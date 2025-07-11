@@ -61,8 +61,8 @@ BPLib_CLA_ContactsTable_t ContactsTable = {
                 .RetransmitTimeout   = 102, /*bundle reforwarding timeout in seconds, uint32*/
                 .CSTimeTrigger       = 103, /*Custody Signal time trigger in seconds, uint32*/
                 .CSSizeTrigger       = 10, /*Custody signal size trigger in bytes, size_t*/
-                .IngressBitsPerCycle = 200000000, /* Ingress rate, 100 Mb per cycle */
-                .EgressBitsPerCycle  = 200000000  /* Egress rate, 100 Mb per cycle */
+                .IngressBitsPerCycle = 20000000, /* Ingress rate, 20 Mb per cycle */
+                .EgressBitsPerCycle  = 20000000  /* Egress rate, 20 Mb per cycle */
             },
             { /* SB CLA contact */
                 .DestEIDs = {
@@ -85,8 +85,8 @@ BPLib_CLA_ContactsTable_t ContactsTable = {
                 .RetransmitTimeout      = 0,
                 .CSTimeTrigger          = 0,
                 .CSSizeTrigger          = 0,
-                .IngressBitsPerCycle    = 200000000, /* Ingress rate, 100 Mb per cycle */
-                .EgressBitsPerCycle     = 200000000  /* Egress rate, 100 Mb per cycle */
+                .IngressBitsPerCycle    = 20000000, /* Ingress rate, 20 Mb per cycle */
+                .EgressBitsPerCycle     = 20000000  /* Egress rate, 20 Mb per cycle */
             }
         }
 };

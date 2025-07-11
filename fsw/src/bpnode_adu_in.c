@@ -61,22 +61,6 @@ int32 BPNode_AduInCreateTasks(void)
             return Status;
         }
 
-        /* Create wakeup semaphore so main task can control ADU In tasks */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKE_%d", BPNODE_ADU_IN_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.AduInData[i].WakeupSemId, NameBuff, 0, 0);
-
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "[ADU In #%d]: Failed to create wakeup semaphore, %s. Error = %d.",
-                                i,
-                                NameBuff,
-                                Status);
-
-            return Status;
-        }
-
         /* Create exit semaphore so main task knows when child finished shutdown */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_ADU_IN_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.AduInData[i].ExitSemId, NameBuff, 0, 0);
@@ -202,12 +186,12 @@ int32 BPNode_AduIn_TaskInit(uint32 *ChanId)
 void BPNode_AduIn_AppMain(void)
 {
     int32 Status;
-    BPLib_Status_t BpStatus;
     CFE_SB_Buffer_t *BufPtr = NULL;
     uint32 ChanId = BPLIB_MAX_NUM_CHANNELS; /* Set to garbage value */
     BPLib_NC_ApplicationState_t AppState;
     size_t AduSize;
     size_t BytesIngressed;
+    uint32 RunCount = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_AduIn_TaskInit(&ChanId);
@@ -238,11 +222,13 @@ void BPNode_AduIn_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.AduInData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.AduInData[ChanId].WakeupSemId, BPNODE_ADU_IN_SEM_WAKEUP_WAIT_MSEC);
+        Status = BPNode_NotifWait(&BPNode_AppData.ChildStartWorkNotif, 
+                                                    RunCount, BPNODE_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
 
         if (Status == OS_SUCCESS)
         {
+            RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
             AppState = BPLib_NC_GetAppState(ChanId);
             if (AppState == BPLIB_NC_APP_STATE_STARTED)
             {
@@ -254,34 +240,20 @@ void BPNode_AduIn_AppMain(void)
 
                     Status = CFE_SB_ReceiveBuffer(&BufPtr,
                                                 BPNode_AppData.AduInData[ChanId].AduPipe,
-                                                BPNODE_ADU_IN_SB_TIMEOUT);
+                                                BPNODE_DATA_TIMEOUT_MSEC);
 
                     BPLib_PL_PerfLogEntry(BPNode_AppData.AduInData[ChanId].PerfId);
 
                     if (Status == CFE_SUCCESS && BufPtr != NULL)
                     {
-                        BpStatus = BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
+                        /* Ignore return code, errors reported internally */
+                        (void) BPA_ADUP_In((void *) BufPtr, ChanId, &AduSize);
 
-                        if (BpStatus == BPLIB_SUCCESS)
-                        {
-                            BytesIngressed += AduSize;
-
-                            if ((BytesIngressed * 8) >=
-                                 BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    else if (Status == CFE_SB_TIME_OUT)
-                    {
-                        /* This is ok, not a break condition */
-                    }
-                    else
-                    {
-                        break;
-                    }
-                } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
+                        /* Even if bplib rejects the ADU, this ADU's size gets counted */
+                        BytesIngressed += AduSize;
+                    }                    
+                } while (Status == CFE_SUCCESS && ((BytesIngressed * BPNODE_BITS_PER_BYTE) < 
+                         BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle));
             }
             else
             {
@@ -302,18 +274,11 @@ void BPNode_AduIn_AppMain(void)
                 }
             }
         }
-        else if (Status == OS_SEM_TIMEOUT)
+        else if (Status != OS_ERROR_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_ADU_IN_SEM_TK_TIMEOUT_INF_EID,
-                                BPLib_EM_EventType_INFORMATION,
-                                "[ADU In #%d]: Timed out while waiting for the wakeup semaphore",
-                                ChanId);
-        }
-        else
-        {
-            BPLib_EM_SendEvent(BPNODE_ADU_IN_WAKEUP_SEM_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_ADU_IN_NOTIF_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[ADU In #%d]: Failed to take wakeup semaphore, RC = %d",
+                                "[ADU In #%d]: Error pending on notification, RC = %d",
                                 ChanId,
                                 Status);
         }

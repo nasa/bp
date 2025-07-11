@@ -43,14 +43,8 @@
 
 #define BPNODE_CMD_MID_DEPTH                (8)    /* Default command pipe depth for a specific MID */
 
-#define BPNODE_WAKEUP_PIPE_DEPTH            (1)     /* Depth of wakeup pipe */
-
-#define BPNODE_WAKEUP_PIPE_TIMEOUT          (1200)  /* Timeout of wakeup pipe */
-
 #define BPNODE_NUMBER_OF_TABLES             (12)     /* Number of table(s) */
 
 #define BPNODE_TABLE_OUT_OF_RANGE_ERR_CODE  (-1)    /* Table validation error code */
-
-#define BPNODE_TBL_ELEMENT_1_MAX            (10)    /* Table entry maximum value */
 
 #endif /* BPNODE_INTERNAL_CFG_H */

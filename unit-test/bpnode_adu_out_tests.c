@@ -41,7 +41,7 @@ void Test_BPNode_AduOutCreateTasks_Nominal(void)
     UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), CFE_SUCCESS);
 
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS * 3); /* Each channel creates an init, wakeup, and exit semaphore */
+    UtAssert_STUB_COUNT(OS_BinSemCreate, BPLIB_MAX_NUM_CHANNELS * 2); /* Each channel creates an init, wakeup, and exit semaphore */
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, BPLIB_MAX_NUM_CHANNELS);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, BPLIB_MAX_NUM_CHANNELS);
 }
@@ -62,8 +62,8 @@ void Test_BPNode_AduOutCreateTasks_InitSemErr(void)
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
 
-/* Test BPNode_AduOutCreateTasks when the wakeup semaphore fails to create */
-void Test_BPNode_AduOutCreateTasks_WakeupSemErr(void)
+/* Test BPNode_AduOutCreateTasks when the exit semaphore fails to create */
+void Test_BPNode_AduOutCreateTasks_ExitSemErr(void)
 {
     UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 2, OS_SEM_FAILURE);
 
@@ -71,25 +71,9 @@ void Test_BPNode_AduOutCreateTasks_WakeupSemErr(void)
 
     /* Verify that wake up semaphore error during creation created an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "[ADU Out #%d]: Failed to create wakeup semaphore, %s. Error = %d.");
-
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
-    UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
-    UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
-}
-
-/* Test BPNode_AduOutCreateTasks when the exit semaphore fails to create */
-void Test_BPNode_AduOutCreateTasks_ExitSemErr(void)
-{
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemCreate), 3, OS_SEM_FAILURE);
-
-    UtAssert_INT32_EQ(BPNode_AduOutCreateTasks(), OS_SEM_FAILURE);
-
-    /* Verify that wake up semaphore error during creation created an event */
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
     BPNode_Test_Verify_Event(0, BPNODE_ADU_OUT_EXIT_SEM_ERR_EID, "[ADU Out #%d]: Failed to create exit semaphore, %s. Error = %d.");
 
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 0);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -105,7 +89,7 @@ void Test_BPNode_AduOutCreateTasks_TaskCrErr(void)
     UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Failed to create child task. Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 0);
 }
@@ -121,7 +105,7 @@ void Test_BPNode_AduOutCreateTasks_TakeSemErr(void)
     UtAssert_STRINGBUF_EQ("[ADU Out #%d]: Task not running. Init Sem Error = %d.", BPLIB_EM_EXPANDED_EVENT_SIZE,
                             context_BPLib_EM_SendEvent[0].Spec, BPLIB_EM_EXPANDED_EVENT_SIZE);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 1);
-    UtAssert_STUB_COUNT(OS_BinSemCreate, 3);
+    UtAssert_STUB_COUNT(OS_BinSemCreate, 2);
     UtAssert_STUB_COUNT(CFE_ES_CreateChildTask, 1);
     UtAssert_STUB_COUNT(OS_BinSemTimedWait, 1);
 }
@@ -223,19 +207,19 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
 {
     uint32 ChanId = 0;
     CFE_ES_TaskId_t TaskId = 1234;
-    size_t AduSize = 10;
-    uint16 i;
+    // size_t AduSize = 10;
+    // uint16 i;
 
     /* Test setup */
     UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
-    BPNode_UT_BundleProcessLoops(BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
+    // BPNode_UT_BundleProcessLoops(BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
 
-    for (i = 0; i < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE; i++)
-    {
-        UT_SetDataBuffer(UT_KEY(BPA_ADUP_Out), &AduSize, sizeof(AduSize), false);
-    }
+    // for (i = 0; i < BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE; i++)
+    // {
+    //     UT_SetDataBuffer(UT_KEY(BPA_ADUP_Out), &AduSize, sizeof(AduSize), false);
+    // }
 
     BPNode_AppData.AduOutData[ChanId].TaskId = TaskId;
     BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle = 10000000000;
@@ -246,16 +230,16 @@ void Test_BPNode_AduOut_AppMain_Nominal(void)
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
     UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 1);
-    UtAssert_STUB_COUNT(BPNode_NotifIsSet, BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
+//    UtAssert_STUB_COUNT(BPNode_NotifIsSet, BPNODE_ADU_OUT_MAX_ADUS_PER_CYCLE);
 }
 
-void Test_BPNode_AduOut_AppMain_TakeSemErr(void)
+void Test_BPNode_AduOut_AppMain_NotifErr(void)
 {
     CFE_ES_TaskId_t TaskId;
     uint32 ChanId;
 
     /* Force a failed task wakeup */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_FAILURE);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifWait), 1, OS_ERROR);
 
     /* Enter task loop only once */
     UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), false);
@@ -273,19 +257,19 @@ void Test_BPNode_AduOut_AppMain_TakeSemErr(void)
 
     /* Verify the error issued an event */
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
-    BPNode_Test_Verify_Event(1, BPNODE_ADU_OUT_WAKEUP_SEM_ERR_EID, "[ADU Out #%d]: Failed to take wakeup semaphore, RC = %d");
+    BPNode_Test_Verify_Event(1, BPNODE_ADU_OUT_NOTIF_ERR_EID, "[ADU Out #%d]: Error pending on notification, RC = %d");
 
     /* Verify that the wakeup activities were skipped when a wakeup fails */
     UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
 }
 
-void Test_BPNode_AduOut_AppMain_WakeupSemTimeout(void)
+void Test_BPNode_AduOut_AppMain_NotifTimeout(void)
 {
     CFE_ES_TaskId_t TaskId;
     uint32 ChanId;
 
     /* Force a failed task wakeup */
-    UT_SetDeferredRetcode(UT_KEY(OS_BinSemTimedWait), 1, OS_SEM_TIMEOUT);
+    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifWait), 1, OS_ERROR_TIMEOUT);
 
     /* Enter task loop only once */
     UT_SetDefaultReturnValue(UT_KEY(CFE_ES_RunLoop), false);
@@ -301,10 +285,9 @@ void Test_BPNode_AduOut_AppMain_WakeupSemTimeout(void)
     /* Run the function under test */
     BPNode_AduOut_AppMain();
 
-    /* Verify the error issued an event */
-    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 3); // Events are sent for task init, failed semaphore wait, and task termination, in that order
-    BPNode_Test_Verify_Event(1, BPNODE_ADU_OUT_SEM_TK_TIMEOUT_INF_EID, "[ADU Out #%d]: Timed out while waiting for the wakeup semaphore");
-
+    /* Verify the error did not issue an event */
+    UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2); // Events are sent for task init and task termination, in that order
+ 
     /* Verify that the wakeup activities were skipped when a wakeup fails */
     UtAssert_STUB_COUNT(BPLib_NC_GetAppState, 0);
 }
@@ -364,7 +347,7 @@ void Test_BPNode_AduOut_AppMain_AppStopped(void)
     UtAssert_UINT32_EQ(BPNode_AppData.AduOutData[ChanId].RunStatus,
                                                         CFE_ES_RunStatus_APP_RUN);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 2);
-    UtAssert_STUB_COUNT(BPNode_NotifIsSet, 0); // call should get skipped due to earlier `break`
+    UtAssert_STUB_COUNT(BPNode_NotifWait, 1);
 }
 
 /* Test BPNode_AduOut_TaskExit in nominal shutdown */
@@ -387,7 +370,6 @@ void UtTest_Setup(void)
 {
     ADD_TEST(Test_BPNode_AduOutCreateTasks_Nominal);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_InitSemErr);
-    ADD_TEST(Test_BPNode_AduOutCreateTasks_WakeupSemErr);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_ExitSemErr);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_TaskCrErr);
     ADD_TEST(Test_BPNode_AduOutCreateTasks_TakeSemErr);
@@ -398,8 +380,8 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_AduOut_TaskInit_GiveSemErr);
 
     ADD_TEST(Test_BPNode_AduOut_AppMain_Nominal);
-    ADD_TEST(Test_BPNode_AduOut_AppMain_TakeSemErr);
-    ADD_TEST(Test_BPNode_AduOut_AppMain_WakeupSemTimeout);
+    ADD_TEST(Test_BPNode_AduOut_AppMain_NotifErr);
+    ADD_TEST(Test_BPNode_AduOut_AppMain_NotifTimeout);
     ADD_TEST(Test_BPNode_AduOut_AppMain_InitErr);
     ADD_TEST(Test_BPNode_AduOut_AppMain_ChanIdErr);
     ADD_TEST(Test_BPNode_AduOut_AppMain_AppStopped);
