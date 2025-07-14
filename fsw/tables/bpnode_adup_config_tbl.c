@@ -31,7 +31,7 @@
 BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
     {
         .SendToMsgId = CFE_SB_MSGID_WRAP_VALUE(BPNODE_ADU_OUT_SEND_TO_MID),
-        .NumRecvFrmMsgIds = 4,
+        .NumRecvFrmMsgIds = 3,
         .RecvFrmMsgIds = {
             CFE_SB_MSGID_WRAP_VALUE(0x080A),                /* CFE_SB_STATS */
             CFE_SB_MSGID_WRAP_VALUE(0x080D),                /* CFE_SB_ALLSUBS */
