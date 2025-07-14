@@ -41,7 +41,6 @@ BPA_ADUP_Config_t ADUProxyTable[BPLIB_MAX_NUM_CHANNELS] = {
             10,
             10,
             10,
-            10
         }
     },
     {
