@@ -531,11 +531,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_AppMain_FailedProcBundle);
 
     ADD_TEST(Test_BPNode_ClaOut_TaskExit_Nominal);
-<<<<<<< HEAD
-=======
-
-    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal);
->>>>>>> 886adf78509bb946ad3716df3639bca4ef9f39b8
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout);
