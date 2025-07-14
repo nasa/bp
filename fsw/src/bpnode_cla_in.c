@@ -38,7 +38,7 @@ int32 BPNode_ClaIn_ProcessBundleInput(uint32 ContId, size_t *BundleSize)
 {
     CFE_PSP_IODriver_ReadPacketBuffer_t RdBuf;
     int32                               Status;
-    BPLib_Status_t                      BpStatus;
+    BPLib_Status_t                      BpStatus = BPLIB_TIMEOUT;
 
     Status  = CFE_PSP_SUCCESS;
     *BundleSize = 0;
