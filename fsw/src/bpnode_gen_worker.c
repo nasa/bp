@@ -58,18 +58,6 @@ int32 BPNode_GenWorkerCreateTasks(void)
             return Status;
         }
 
-        /* Create wakeup semaphore for main task control */
-        snprintf(NameBuff, OS_MAX_API_NAME, "%s_WAKEUP_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
-        Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].WakeupSemId, NameBuff, 0, 0);
-
-        if (Status != OS_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_CR_ERR_EID, BPLib_EM_EventType_ERROR,
-                        "[Generic Worker #%d]: Failed to create wakeup semaphore. Error = %d.",
-                        i, Status);
-            return Status;
-        }
-
         /* Create exit semaphore so main task knows when child finished shutdown */
         snprintf(NameBuff, OS_MAX_API_NAME, "%s_EXIT_%d", BPNODE_GEN_WRKR_SEM_BASE_NAME, i);
         Status = OS_BinSemCreate(&BPNode_AppData.GenWorkerData[i].ExitSemId, NameBuff, 0, 0);
@@ -193,8 +181,9 @@ void BPNode_GenWorker_AppMain(void)
 {
     int32 Status;
     uint8 WorkerId = BPNODE_NUM_GEN_WRKR_TASKS; /* Set to garbage value */
-    //size_t JobsRun;
+    size_t JobsRun;
     BPLib_Status_t BpStatus;
+    uint32 RunCount = 0;
 
     /* Perform task-specific initialization */
     Status = BPNode_GenWorker_TaskInit(&WorkerId);
@@ -225,21 +214,23 @@ void BPNode_GenWorker_AppMain(void)
     while (CFE_ES_RunLoop(&BPNode_AppData.GenWorkerData[WorkerId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
-        Status = OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].WakeupSemId, BPNODE_GEN_WRKR_SEM_WAKEUP_WAIT_MSEC);
+        Status = BPNode_NotifWait(&BPNode_AppData.ChildStartWorkNotif, 
+                                                    RunCount, BPNODE_WAKEUP_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
 
         if (Status == OS_SUCCESS)
         {
-            //JobsRun = 0;
+            RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
+            JobsRun = 0;
             do
             {
                 BPLib_PL_PerfLogExit(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
                 BpStatus = BPLib_QM_WorkerRunJob(&BPNode_AppData.BplibInst, BPNode_AppData.GenWorkerData[WorkerId].BPLibWorkerId,
-                    BPNODE_GEN_WRKR_SLEEP_MSEC);
+                    BPNODE_WAKEUP_WAIT_MSEC);
                 BPLib_PL_PerfLogEntry(BPNode_AppData.GenWorkerData[WorkerId].PerfId);
                 if (BpStatus == BPLIB_SUCCESS)
                 {
-                    //JobsRun++;
+                    JobsRun++;
                 }
                 else if (BpStatus == BPLIB_TIMEOUT)
                 {
@@ -253,22 +244,13 @@ void BPNode_GenWorker_AppMain(void)
                         WorkerId, BpStatus);
                     break;
                 }
-            } while (BPNode_NotifIsSet(&BPNode_AppData.ChildStopWorkNotif) == false);
-            // Very useful print for diagnosing performance
-            //printf("Jobs Run This Control Cycle: %lu\n", JobsRun);
+            } while (BpStatus == BPLIB_SUCCESS && JobsRun < BPNODE_NUM_JOBS_PER_CYCLE);
         }
-        else if (Status == OS_SEM_TIMEOUT)
+        else if (Status != OS_ERROR_TIMEOUT)
         {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_TIMEOUT_INF_EID,
-                                BPLib_EM_EventType_INFORMATION,
-                                "[Generic Worker #%d]: Timed out while waiting for the wakeup semaphore",
-                                WorkerId);
-        }
-        else
-        {
-            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_SEM_TK_ERR_EID,
+            BPLib_EM_SendEvent(BPNODE_GEN_WRKR_NOTIF_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
-                                "[Generic Worker #%d]: Failed to take wakeup semaphore, RC = %d",
+                                "[Generic Worker #%d]: Error pending on notification, RC = %d",
                                 WorkerId,
                                 Status);
         }

@@ -219,13 +219,6 @@ void Test_FWP_ADUP_VerifyDecrement(BPLib_EID_t EID, BPLib_AS_Counter_t Counter, 
     }
 }
 
-void BPNode_UT_BundleProcessLoops(uint32 NumLoops)
-{
-    /* Process NumLoops bundles, then exit */
-    UT_SetDefaultReturnValue(UT_KEY(BPNode_NotifIsSet), false);
-    UT_SetDeferredRetcode(UT_KEY(BPNode_NotifIsSet), NumLoops, true);
-}
-
 /* Setup function prior to every test */
 void BPNode_UT_Setup(void)
 {

@@ -180,7 +180,7 @@ void Test_BPA_ADUP_Out_Nominal(void)
 
     UT_SetDataBuffer(UT_KEY(BPLib_PI_Egress), &SizeVal, sizeof(SizeVal), false);
 
-    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT, &SizeVal), BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_DATA_TIMEOUT_MSEC, &SizeVal), BPLIB_SUCCESS);
     
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(BPLib_EM_SendEvent, 0);
@@ -197,7 +197,7 @@ void Test_BPA_ADUP_Out_Wrapping(void)
 
     BPNode_AppData.AduOutData[ChanId].AduWrapping = true;
 
-    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT, &SizeVal), BPLIB_SUCCESS);
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_DATA_TIMEOUT_MSEC, &SizeVal), BPLIB_SUCCESS);
     
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
     UtAssert_STUB_COUNT(CFE_MSG_SetMsgId, 1);
@@ -212,7 +212,7 @@ void Test_BPA_ADUP_Out_EgressErr(void)
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_PI_Egress), BPLIB_ERROR);
 
-    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT, &SizeVal), BPLIB_ERROR);
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_DATA_TIMEOUT_MSEC, &SizeVal), BPLIB_ERROR);
     
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
@@ -229,7 +229,7 @@ void Test_BPA_ADUP_Out_Timeout(void)
 
     UT_SetDefaultReturnValue(UT_KEY(BPLib_PI_Egress), BPLIB_PI_TIMEOUT);
 
-    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_ADU_IN_PI_Q_TIMEOUT, &SizeVal), BPLIB_PI_TIMEOUT);
+    UtAssert_INT32_EQ(BPA_ADUP_Out(ChanId, BPNODE_DATA_TIMEOUT_MSEC, &SizeVal), BPLIB_PI_TIMEOUT);
     
     UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
     UtAssert_STUB_COUNT(BPLib_AS_Increment, 0);
