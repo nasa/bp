@@ -64,7 +64,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
     }
 
     /* Send egress bundle onto CL */
-    if (Status == BPLIB_SUCCESS)
+    if (Status == BPLIB_SUCCESS && MsgSize != 0)
     {
         WrBuf.OutputSize = *MsgSize;
         WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload;
@@ -78,8 +78,6 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
                                                 CFE_PSP_IODriver_VPARG(&WrBuf));
 
         BPLib_PL_PerfLogEntry(BPNode_AppData.ClaOutData[ContId].PerfId);
-
-        CFE_MSG_SetSize(CFE_MSG_PTR(BPNode_AppData.ClaOutData[ContId].OutBuffer.TelemetryHeader), 0);
     }
 
     return Status;
