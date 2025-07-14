@@ -46,8 +46,6 @@
 #define BPNODE_CLA_PSP_INPUT_BUFFER_SIZE     (BPLIB_MAX_BUNDLE_LEN) /** \brief IODriver buffer size*/
 #define BPNODE_CLA_IN_SEM_INIT_WAIT_MSEC     (2000u)                /** \brief Wait time for init semaphore take, in milliseconds */
 #define BPNODE_CLA_IN_SEM_WAKEUP_WAIT_MSEC   (2000u)                /** \brief Wait time for wakeup semaphore take, in milliseconds */
-// #define BPNODE_CLA_IN_SB_TIMEOUT             (100u)                 /** \brief Time to wait for a buffer to be received from SB */
-// #define BPNODE_CLA_INGRESS_PIPE_DEPTH        (32u)                  /** \brief CLA In SB pipe depth */
 
 /*
 ** Type Definitions
@@ -68,12 +66,8 @@ typedef struct
     CFE_PSP_IODriver_Direction_t Dir;
     CFE_PSP_IODriver_Location_t  PspLocation;
 
-    /* CFE_SB_ReceiveBuffer related */
-    // CFE_SB_PipeId_t IngressPipe;
-
     /* CLA In bundle/packet */
     uint8 PSP_Buffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
-    // void* SB_Buffer;
 } BPNode_ClaInData_t;
 
 

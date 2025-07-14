@@ -554,19 +554,6 @@ void Test_BPNode_ClaOut_TaskExit_Nominal(void)
     UtAssert_STUB_COUNT(CFE_ES_ExitChildTask, 1);
 }
 
-void Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal(void)
-{
-    // uint32 ContactId;
-    // size_t BundleSize;
-
-    // ContactId = BPNODE_CLA_SB_CONTACT_ID;
-
-    // UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_SUCCESS);
-
-    // UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 1);
-    // UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 0);
-}
-
 void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
 {
     uint32 ContactId;
@@ -575,8 +562,6 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
     ContactId = 0;
 
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_SUCCESS);
-
-    // UtAssert_STUB_COUNT(CFE_SB_TransmitMsg, 0);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
 }
 
@@ -624,7 +609,6 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPNode_ClaOut_AppMain_NoEgress);
     ADD_TEST(Test_BPNode_ClaOut_AppMain_FailedProcBundle);
     ADD_TEST(Test_BPNode_ClaOut_TaskExit_Nominal);
-    ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_SB_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_FailedBPLibEgress);
     ADD_TEST(Test_BPNode_ClaOut_ProcessBundleOutput_CLATimeout);
