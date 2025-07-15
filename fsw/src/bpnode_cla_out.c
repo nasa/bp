@@ -64,7 +64,7 @@ int32 BPNode_ClaOut_ProcessBundleOutput(uint32 ContId, size_t *MsgSize)
     }
 
     /* Send egress bundle onto CL */
-    if (Status == BPLIB_SUCCESS && MsgSize != 0)
+    if (Status == BPLIB_SUCCESS && *MsgSize != 0)
     {
         WrBuf.OutputSize = *MsgSize;
         WrBuf.BufferMem  = BPNode_AppData.ClaOutData[ContId].OutBuffer.Payload;
