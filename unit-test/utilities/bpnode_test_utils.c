@@ -255,6 +255,7 @@ void BPNode_UT_Setup(void)
     UT_SetHandlerFunction(UT_KEY(BPLib_CLA_GetContactRunState), UT_Handler_BPLib_CLA_GetContactRunState, NULL);
     UT_SetHandlerFunction(UT_KEY(BPA_ADUP_Out), UT_Handler_BPA_ADUP_Out, NULL);
     UT_SetHandlerFunction(UT_KEY(BPA_ADUP_In), UT_Handler_BPA_ADUP_In, NULL);
+    UT_SetHandlerFunction(UT_KEY(BPLib_CLA_Egress), UT_Handler_BPLib_CLA_Egress, NULL);
 
     BPNode_AppData.AduProxyTablePtr              = &TestAduTbl;
     BPNode_AppData.ConfigPtrs.AuthConfigPtr      = &TestAuthTbl;

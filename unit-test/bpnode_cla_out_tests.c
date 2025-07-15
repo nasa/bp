@@ -431,8 +431,12 @@ void Test_BPNode_ClaOut_ProcessBundleOutput_PSP_Nominal(void)
 {
     uint32 ContactId;
     size_t BundleSize;
+    size_t ActualSize;
 
-    ContactId = 0;
+    ContactId  = 0;
+    ActualSize = 10; /* Just needs to be non-zero */
+
+    UT_SetDataBuffer(UT_KEY(BPLib_CLA_Egress), (void*) &ActualSize, sizeof(size_t), false);
 
     UtAssert_UINT32_EQ(BPNode_ClaOut_ProcessBundleOutput(ContactId, &BundleSize), CFE_SUCCESS);
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 1);
