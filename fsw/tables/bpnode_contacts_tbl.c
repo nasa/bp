@@ -64,30 +64,6 @@ BPLib_CLA_ContactsTable_t ContactsTable = {
                 .IngressBitsPerCycle = 20000000, /* Ingress rate, 20 Mb per cycle */
                 .EgressBitsPerCycle  = 20000000  /* Egress rate, 20 Mb per cycle */
             },
-            { /* SB CLA contact */
-                .DestEIDs = {
-                    {
-                        .Scheme       = BPLIB_EID_SCHEME_IPN,
-                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
-                        .MaxAllocator = 0,
-                        .MinAllocator = 0,
-                        .MaxNode      = BPNODE_EID_NODE_NUM_FOR_CONTACT_1,
-                        .MinNode      = BPNODE_EID_NODE_NUM_FOR_CONTACT_1,
-                        .MaxService   = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_1,
-                        .MinService   = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_1
-                    }
-                },
-                .CLAType                = 0,
-                .ClaInAddr              = "",
-                .ClaOutAddr             = "",
-                .ClaInPort              = 0,
-                .ClaOutPort             = 0,
-                .RetransmitTimeout      = 0,
-                .CSTimeTrigger          = 0,
-                .CSSizeTrigger          = 0,
-                .IngressBitsPerCycle    = 20000000, /* Ingress rate, 20 Mb per cycle */
-                .EgressBitsPerCycle     = 20000000  /* Egress rate, 20 Mb per cycle */
-            }
         }
 };
 
