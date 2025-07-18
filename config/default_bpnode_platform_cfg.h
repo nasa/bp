@@ -140,7 +140,7 @@
 /**
  * \brief Size of BPLib's Memory Pool, in bytes
  */
-#define BPNODE_MEM_POOL_LEN               (8000000u)
+#define BPNODE_MEM_POOL_LEN               (16000000u)
 
 /**
  * \brief Maximum number of simultaneous unsorted BPLib generic worker jobs
