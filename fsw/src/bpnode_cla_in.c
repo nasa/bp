@@ -465,7 +465,7 @@ void BPNode_ClaIn_AppMain(void)
 
 void BPNode_ClaIn_TaskExit(uint32 ContactId)
 {
-    BPLib_CLA_ContactRunState_t RunState;
+    BPLib_CLA_ContactRunState_t RunState = BPLIB_CLA_EXITED;
 
     /* Teardown CLA In task, in case that hasn't been done already */
     BPNode_ClaIn_Teardown(ContactId);

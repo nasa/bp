@@ -92,6 +92,17 @@ void Test_BPA_CFE_Info_Status_Translate(void)
     BPLib_Status = BPA_CFE_Status_Translate(CFE_ES_CDS_ALREADY_EXISTS);
 
     /* Verify the return code is an error type, accounting for different types of errors */
+    UtAssert_EQ(BPLib_Status_t, BPLib_Status, BPLIB_SUCCESS);
+}
+
+void Test_BPA_CFE_Unknown_Status_Translate(void)
+{
+    BPLib_Status_t BPLib_Status;
+
+    /* Convert cFE info-type return code into a BPLib error-type return code */
+    BPLib_Status = BPA_CFE_Status_Translate(0x8FFFFFFF);
+
+    /* Verify the return code is an error type, accounting for different types of errors */
     UtAssert_EQ(BPLib_Status_t, BPLib_Status, BPLIB_UNKNOWN);
 }
 
@@ -104,4 +115,5 @@ void UtTest_Setup(void)
     ADD_TEST(Test_BPA_CFE_Error_Status_Translate);
     ADD_TEST(Test_BPA_CFE_TblUpdate_Status_Translate);
     ADD_TEST(Test_BPA_CFE_Info_Status_Translate);
+    ADD_TEST(Test_BPA_CFE_Unknown_Status_Translate);
 }

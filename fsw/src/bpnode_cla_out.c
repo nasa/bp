@@ -465,7 +465,7 @@ void BPNode_ClaOut_AppMain(void)
 
 void BPNode_ClaOut_TaskExit(uint32 ContactId)
 {
-    BPLib_CLA_ContactRunState_t RunState;
+    BPLib_CLA_ContactRunState_t RunState = BPLIB_CLA_EXITED;
 
     /* Teardown CLA Out task, in case that hasn't been done already */
     BPNode_ClaOut_Teardown(ContactId);
