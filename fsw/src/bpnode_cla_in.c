@@ -557,7 +557,8 @@ void BPNode_ClaIn_AppMain(void)
 
 void BPNode_ClaIn_TaskExit(uint32 ContactId)
 {
-    /* Teardown CLA In task, in case that hasn't been done already */
+    /* Stop and teardown CLA In task, in case that hasn't been done already */
+    (void) BPNode_ClaIn_Stop(ContactId);
     BPNode_ClaIn_Teardown(ContactId);
 
     BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,

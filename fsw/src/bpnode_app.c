@@ -479,6 +479,7 @@ void BPNode_AppExit(void)
     {
         BPNode_AppData.ClaOutData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
         BPNode_AppData.ClaInData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPLib_CLA_SetContactExited(ContactId);
     }
 
     /* Signal to generic worker tasks to exit */
