@@ -493,7 +493,7 @@ void BPNode_ClaOut_AppMain(void)
 
 void BPNode_ClaOut_TaskExit(uint32 ContactId)
 {
-    /* Teardown CLA Out task, in case that hasn't been done already */
+    /* Stop and teardown CLA Out task, in case that hasn't been done already */
     (void) BPNode_ClaOut_Stop(ContactId);
     BPNode_ClaOut_Teardown(ContactId);
 
