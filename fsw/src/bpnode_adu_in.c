@@ -293,14 +293,6 @@ void BPNode_AduIn_AppMain(void)
 /* Exit child task */
 void BPNode_AduIn_TaskExit(uint32 ChanId)
 {
-    /* Stop and remove the application if it isn't on channel 0 */
-    if (ChanId != 0)
-    {
-        (void) BPA_ADUP_StopApplication(ChanId);
-        (void) BPA_ADUP_RemoveApplication(ChanId);
-        BPLib_NC_SetAppState(ChanId, BPLIB_NC_APP_STATE_REMOVED);
-    }
-
     BPLib_EM_SendEvent(BPNODE_ADU_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                       "[ADU In #%d]: Terminating Task. RunStatus = %d.",
                       ChanId, BPNode_AppData.AduInData[ChanId].RunStatus);
