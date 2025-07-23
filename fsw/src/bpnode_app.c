@@ -349,7 +349,9 @@ CFE_Status_t BPNode_AppInit(void)
     NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStartWorkNotif, BPNODE_CHILD_STRTWORKNOTIF_NAME);
     if (NotifStatus != OS_SUCCESS)
     {
-        printf("err: Status = %d\n", NotifStatus);
+        BPLib_EM_SendEvent(BPNODE_INIT_SB_CONTACT_ERR_EID, BPLib_EM_EventType_ERROR,
+                    "Error creating start work notification, RC = 0x%08lX",
+                    (unsigned long)Status);
         return NotifStatus;
     }
 

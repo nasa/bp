@@ -526,8 +526,6 @@ void BPNode_ClaIn_AppMain(void)
                     }
                     else if (OsStatus != OS_ERROR_TIMEOUT)
                     {
-
-                        printf("runstate=%d\n",BPNode_AppData.ClaInData[ContactId].RunStatus);
                         BPLib_EM_SendEvent(BPNODE_CLA_IN_NOTIF_ERR_EID,
                                             BPLib_EM_EventType_ERROR,
                                             "[CLA In #%d]: Error pending on notification, RC = %d",
