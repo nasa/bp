@@ -349,6 +349,7 @@ CFE_Status_t BPNode_AppInit(void)
     NotifStatus = BPNode_NotifInit(&BPNode_AppData.ChildStartWorkNotif, BPNODE_CHILD_STRTWORKNOTIF_NAME);
     if (NotifStatus != OS_SUCCESS)
     {
+        printf("err: Status = %d\n", NotifStatus);
         return NotifStatus;
     }
 
@@ -474,11 +475,8 @@ void BPNode_AppExit(void)
     /* Signal to CLA child tasks to exit */
     for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        /*
-        ** Exit all CLA child tasks. Upon exit, return ignored
-        ** since contact IDs are all but guaranteed to be valid
-        */
-        (void) BPLib_CLA_SetContactExited(ContactId);
+        BPNode_AppData.ClaOutData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.ClaInData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
 
     /* Signal to generic worker tasks to exit */
@@ -503,9 +501,6 @@ void BPNode_AppExit(void)
         (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
         (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
-
-        BPNode_ClaIn_DeleteSems(i);
-        BPNode_ClaOut_DeleteSems(i);
     }
 
     /* Wait on the generic worker task exit semaphores */
