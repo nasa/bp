@@ -493,10 +493,6 @@ void BPNode_ClaOut_AppMain(void)
 
 void BPNode_ClaOut_TaskExit(uint32 ContactId)
 {
-    /* Stop and teardown CLA Out task, in case that hasn't been done already */
-    (void) BPNode_ClaOut_Stop(ContactId);
-    BPNode_ClaOut_Teardown(ContactId);
-
     BPLib_EM_SendEvent(BPNODE_CLA_OUT_UNK_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "[CLA Out #%d]: Terminating Task. Run state = %d.",
                         ContactId,
