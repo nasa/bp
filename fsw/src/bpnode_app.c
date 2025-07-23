@@ -453,8 +453,9 @@ CFE_Status_t BPNode_AppInit(void)
 /* Exit app */
 void BPNode_AppExit(void)
 {
-    uint8  i;
+    uint32 ChanId;
     uint32 ContactId;
+    uint32 WorkerId;
 
     BPLib_EM_SendEvent(BPNODE_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "App terminating, error = %d", BPNode_AppData.RunStatus);
@@ -468,57 +469,56 @@ void BPNode_AppExit(void)
     */
 
     /* Signal to ADU child tasks to exit */
-    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+    for (ChanId = 0; ChanId < BPLIB_MAX_NUM_CHANNELS; ChanId++)
     {
-        BPNode_AppData.AduOutData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        BPNode_AppData.AduInData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-
         /* Stop and remove the application */
         (void) BPLib_PI_StopApplication(ChanId);
-        (void) BPLib_PI_RemoveApplication(ChanId);
+        (void) BPLib_PI_RemoveApplication(&BPNode_AppData.BplibInst, ChanId);
 
+        BPNode_AppData.AduOutData[ChanId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.AduInData[ChanId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
 
     /* Signal to CLA child tasks to exit */
     for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
-        BPNode_AppData.ClaOutData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        BPNode_AppData.ClaInData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
-        
         /* Change the BPLib contact state and clean up the contacts */
         (void) BPLib_CLA_ContactStop(ContactId);
         (void) BPLib_CLA_ContactTeardown(&BPNode_AppData.BplibInst, ContactId);
+
+        BPNode_AppData.ClaOutData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.ClaInData[ContactId].RunStatus = CFE_ES_RunStatus_APP_EXIT;        
     }
 
     /* Signal to generic worker tasks to exit */
-    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    for (WorkerId = 0; WorkerId < BPNODE_NUM_GEN_WRKR_TASKS; WorkerId++)
     {
-        BPNode_AppData.GenWorkerData[i].RunStatus = CFE_ES_RunStatus_APP_EXIT;
+        BPNode_AppData.GenWorkerData[WorkerId].RunStatus = CFE_ES_RunStatus_APP_EXIT;
     }
 
     /* Wait on the ADU task exit semaphores */
-    for (i = 0; i < BPLIB_MAX_NUM_CHANNELS; i++)
+    for (ChanId = 0; ChanId < BPLIB_MAX_NUM_CHANNELS; ChanId++)
     {
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        (void) OS_BinSemTimedWait(BPNode_AppData.AduInData[i].ExitSemId, BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC);
-        (void) OS_BinSemTimedWait(BPNode_AppData.AduOutData[i].ExitSemId, BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduInData[ChanId].ExitSemId, BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.AduOutData[ChanId].ExitSemId, BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Wait on the CLA task exit semaphores */
-    for (i = 0; i < BPLIB_MAX_NUM_CONTACTS; i++)
+    for (ContactId = 0; ContactId < BPLIB_MAX_NUM_CONTACTS; ContactId++)
     {
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[i].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
-        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[i].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaInData[ContactId].ExitSemId, BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.ClaOutData[ContactId].ExitSemId, BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
     /* Wait on the generic worker task exit semaphores */
-    for (i = 0; i < BPNODE_NUM_GEN_WRKR_TASKS; i++)
+    for (WorkerId = 0; WorkerId < BPNODE_NUM_GEN_WRKR_TASKS; WorkerId++)
     {
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
-        (void) OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[i].ExitSemId, BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC);
+        (void) OS_BinSemTimedWait(BPNode_AppData.GenWorkerData[WorkerId].ExitSemId, BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
     }
 
