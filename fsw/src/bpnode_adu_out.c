@@ -210,7 +210,7 @@ void BPNode_AduOut_AppMain(void)
     }
 
     /* ADU Out task loop */
-    while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
+    while (CFE_ES_RunLoop(&BPNode_AppData.AduOutData[ChanId].RunStatus) == true)
     {
         /* Attempt to take the wakeup semaphore */
         BPLib_PL_PerfLogExit(BPNode_AppData.AduOutData[ChanId].PerfId);

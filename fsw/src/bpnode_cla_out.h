@@ -69,6 +69,7 @@ typedef struct
     osal_id_t       InitSemId;
     osal_id_t       ExitSemId;
     uint32          PerfId;
+    uint32          RunStatus;
 
     /* IODriver usock_intf related*/
     CFE_PSP_IODriver_Direction_t Dir;
@@ -188,13 +189,5 @@ void BPNode_ClaOut_AppMain(void);
  *  \param[in] ContactId Contacts ID for this task
  */
 void BPNode_ClaOut_TaskExit(uint32 ContactId);
-
-/**
-  * \brief     Delete semaphores associated with the task with the given contact ID
-  * \param[in] ContactId (uint32) Index into the various contact info tracking
-  *                                 arrays that corresponds to that contact's info
-  * \return    void
-  */
-void BPNode_ClaOut_DeleteSems(uint32 ContactId);
 
 #endif /* BPNODE_CLA_OUT_H */

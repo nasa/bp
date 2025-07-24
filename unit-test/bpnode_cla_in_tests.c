@@ -308,8 +308,7 @@ void Test_BPNode_ClaIn_AppMain_NotifOtherErr(void)
 {
     CFE_ES_TaskId_t             TaskId;
     uint32_t                    ContactId;
-    BPLib_CLA_ContactRunState_t RunState1;
-    BPLib_CLA_ContactRunState_t RunState2;
+    BPLib_CLA_ContactRunState_t RunState;
 
     TaskId    = 1234;
     ContactId = 0;
@@ -323,11 +322,11 @@ void Test_BPNode_ClaIn_AppMain_NotifOtherErr(void)
     UT_SetDeferredRetcode(UT_KEY(BPNode_NotifWait), 1, OS_ERROR);
 
     /* Enter task loop only once */
-    RunState1 = BPLIB_CLA_STARTED;
-    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, false);
+    RunState = BPLIB_CLA_STARTED;
+    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState, sizeof(BPLib_CLA_ContactRunState_t), false);
 
-    RunState2 = BPLIB_CLA_EXITED;
-    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
 
     /* Run the function under test */
     BPNode_ClaIn_AppMain();
@@ -355,13 +354,14 @@ void Test_BPNode_ClaIn_AppMain_NoIngress(void)
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
     UT_SetDefaultReturnValue(UT_KEY(OS_BinSemTimedWait), OS_SUCCESS);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState, sizeof(BPLib_CLA_ContactRunState_t), false);
 
     BPNode_AppData.ClaInData[ContactId].TaskId = TaskId;
 
     BPNode_ClaIn_AppMain();
 
-    UtAssert_STUB_COUNT(BPLib_CLA_GetContactRunState, 2);
+    UtAssert_STUB_COUNT(BPLib_CLA_GetContactRunState, 1);
     UtAssert_STUB_COUNT(BPNode_ClaIn_ProcessBundleInput, 0);
 }
 
@@ -392,18 +392,16 @@ void Test_BPNode_ClaIn_AppMain_OneBundle(void)
 {
     uint32_t                    ContactId;
     CFE_ES_TaskId_t             TaskId;
-    BPLib_CLA_ContactRunState_t RunState1;
-    BPLib_CLA_ContactRunState_t RunState2;
+    BPLib_CLA_ContactRunState_t RunState;
 
     ContactId = 0;
     TaskId    = 1234;
-    RunState1 = BPLIB_CLA_STARTED;
-    RunState2 = BPLIB_CLA_EXITED;
+    RunState = BPLIB_CLA_STARTED;
 
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
-    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
+    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState, sizeof(BPLib_CLA_ContactRunState_t), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_GetContactRunState), BPLIB_SUCCESS);
 
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_SUCCESS);
@@ -423,18 +421,16 @@ void Test_BPNode_ClaIn_AppMain_MaxLimit(void)
 {
     uint32_t                    ContactId;
     CFE_ES_TaskId_t             TaskId;
-    BPLib_CLA_ContactRunState_t RunState1;
-    BPLib_CLA_ContactRunState_t RunState2;
+    BPLib_CLA_ContactRunState_t RunState;
 
     ContactId = 0;
     TaskId    = 1234;
-    RunState1 = BPLIB_CLA_STARTED;
-    RunState2 = BPLIB_CLA_EXITED;
+    RunState = BPLIB_CLA_STARTED;
 
     /* Test setup */
     UT_SetDataBuffer(UT_KEY(CFE_ES_GetTaskID), &TaskId, sizeof(TaskId), false);
-    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState1, sizeof(BPLib_CLA_ContactRunState_t), false);
-    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState2, sizeof(BPLib_CLA_ContactRunState_t), false);
+    UT_SetDataBuffer(UT_KEY(BPLib_CLA_GetContactRunState), &RunState, sizeof(BPLib_CLA_ContactRunState_t), false);
+    UT_SetDeferredRetcode(UT_KEY(CFE_ES_RunLoop), 1, true);
     UT_SetDefaultReturnValue(UT_KEY(BPLib_CLA_GetContactRunState), BPLIB_SUCCESS);
     UT_SetDefaultReturnValue(UT_KEY(CFE_PSP_IODriver_Command), BPLIB_SUCCESS);
 

@@ -213,13 +213,15 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
 
     if (Status == CFE_PSP_SUCCESS)
     {
-        /* Verify initialization by trying to give on the init sempahore */
+        /* Verify initialization by trying to give on the init semaphore */
         BPLib_PL_PerfLogExit(BPNODE_PERF_ID);
         Status = OS_BinSemGive(BPNode_AppData.ClaInData[ContactId].InitSemId);
         BPLib_PL_PerfLogEntry(BPNODE_PERF_ID);
 
         if (Status == OS_SUCCESS)
         {
+            BPNode_AppData.ClaInData[ContactId].RunStatus = CFE_ES_RunStatus_APP_RUN;
+
             BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_INF_EID,
                                 BPLib_EM_EventType_INFORMATION,
                                 "[CLA In #%d]: Child task initialized",
@@ -227,6 +229,8 @@ CFE_Status_t BPNode_ClaIn_TaskInit(uint32 ContactId)
         }
         else
         {
+            BPNode_AppData.ClaInData[ContactId].RunStatus = CFE_ES_RunStatus_APP_ERROR;
+
             BPLib_EM_SendEvent(BPNODE_CLA_IN_RUN_ERR_EID,
                                 BPLib_EM_EventType_ERROR,
                                 "[CLA In #%d]: Task not running. Error = %d",
@@ -400,9 +404,7 @@ void BPNode_ClaIn_AppMain(void)
             /* Initialization must succeed to start processing, exit task if unsuccessful */
             if (CFE_Status == CFE_SUCCESS)
             {
-                /* The contact task must not be exited */
-               Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
-               while (RunState != BPLIB_CLA_EXITED && Status == BPLIB_SUCCESS)
+                while (CFE_ES_RunLoop(&BPNode_AppData.ClaInData[ContactId].RunStatus) == true)
                 {
                     /* Attempt to take the wakeup semaphore */
                     BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
@@ -413,8 +415,10 @@ void BPNode_ClaIn_AppMain(void)
                     if (OsStatus == OS_SUCCESS)
                     {
                         RunCount = BPNode_NotifGetCount(&BPNode_AppData.ChildStartWorkNotif);
+                        Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
+
                         /* Ingress bundles only when the contact has been started */
-                        if (RunState == BPLIB_CLA_STARTED)
+                        if (RunState == BPLIB_CLA_STARTED && Status == BPLIB_SUCCESS)
                         {
                             BytesIngressed = 0;
 
@@ -437,9 +441,6 @@ void BPNode_ClaIn_AppMain(void)
                                             ContactId,
                                             OsStatus);
                     }
-
-                    /* Update run state of the contact task */
-                    Status = BPLib_CLA_GetContactRunState(ContactId, &RunState);
                 }
             }
 
@@ -465,21 +466,15 @@ void BPNode_ClaIn_AppMain(void)
 
 void BPNode_ClaIn_TaskExit(uint32 ContactId)
 {
-    BPLib_CLA_ContactRunState_t RunState = BPLIB_CLA_EXITED;
-
-    /* Teardown CLA In task, in case that hasn't been done already */
-    BPNode_ClaIn_Teardown(ContactId);
-
-    (void) BPLib_CLA_GetContactRunState(ContactId, &RunState);
     BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_CRIT_EID, BPLib_EM_EventType_CRITICAL,
                         "[CLA In #%d]: Terminating Task. Run state = %d.",
                         ContactId,
-                        RunState);
+                        BPNode_AppData.ClaInData[ContactId].RunStatus);
 
     /* In case event services is not working, add a message to the system log */
     CFE_ES_WriteToSysLog("[CLA In #%d]: Terminating Task. Run state = %d.",
                             ContactId,
-                            RunState);
+                            BPNode_AppData.ClaInData[ContactId].RunStatus);
 
     /* Exit the perf log */
     BPLib_PL_PerfLogExit(BPNode_AppData.ClaInData[ContactId].PerfId);
@@ -491,27 +486,4 @@ void BPNode_ClaIn_TaskExit(uint32 ContactId)
     CFE_ES_ExitChildTask();
 
     return;
-}
-
-void BPNode_ClaIn_DeleteSems(uint32 ContactId)
-{
-    CFE_Status_t Status;
-
-    Status = OS_BinSemDelete(BPNode_AppData.ClaInData[ContactId].InitSemId);
-    if (Status == CFE_SUCCESS)
-    {
-        Status = OS_BinSemDelete(BPNode_AppData.ClaInData[ContactId].ExitSemId);
-        if (Status != CFE_SUCCESS)
-        {
-            BPLib_EM_SendEvent(BPNODE_CLA_IN_EXIT_SEM_ERR_EID,
-                                BPLib_EM_EventType_ERROR,
-                                "Could not delete exit semaphore");
-        }
-    }
-    else
-    {
-        BPLib_EM_SendEvent(BPNODE_CLA_IN_INIT_SEM_ERR_EID,
-                            BPLib_EM_EventType_ERROR,
-                            "Could not delete init semaphore");
-    }
 }

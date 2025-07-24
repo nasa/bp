@@ -54,18 +54,6 @@ void BPNode_ClaOut_AppMain(void)
 
 /*
  * ----------------------------------------------------
- * Generated stub function for BPNode_ClaOut_DeleteSems()
- * ----------------------------------------------------
- */
-void BPNode_ClaOut_DeleteSems(uint32 ContactId)
-{
-    UT_GenStub_AddParam(BPNode_ClaOut_DeleteSems, uint32, ContactId);
-
-    UT_GenStub_Execute(BPNode_ClaOut_DeleteSems, Basic, NULL);
-}
-
-/*
- * ----------------------------------------------------
  * Generated stub function for BPNode_ClaOut_ProcessBundleOutput()
  * ----------------------------------------------------
  */
