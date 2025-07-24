@@ -219,7 +219,7 @@ void BPNode_AduIn_AppMain(void)
     }
 
     /* ADU In task loop */
-    while (CFE_ES_RunLoop(&BPNode_AppData.AduInData[ChanId].RunStatus) == CFE_ES_RunStatus_APP_RUN)
+    while (CFE_ES_RunLoop(&BPNode_AppData.AduInData[ChanId].RunStatus) == true)
     {
         BPLib_PL_PerfLogExit(BPNode_AppData.AduInData[ChanId].PerfId);
         Status = BPNode_NotifWait(&BPNode_AppData.ChildStartWorkNotif, 
