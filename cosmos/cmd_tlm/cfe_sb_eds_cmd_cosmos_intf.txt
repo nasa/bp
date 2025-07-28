@@ -1,0 +1,28 @@
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_NOOP',  1,  0, "SB task command packet command codes") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_RESET_COUNTERS',  1,  1, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_SEND_SB_STATS',  1,  2, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_WRITE_ROUTING_INFO',  1,  3, "Telecommand Message") %>
+   APPEND_PARAMETER FILENAME 512 STRING "" "Path and Filename of data to be loaded"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_ENABLE_ROUTE',  1,  4, "Telecommand Message") %>
+   APPEND_PARAMETER MSG_ID_VALUE 32 UINT 0 4294967295 0 "Internal MsgId Value"
+   APPEND_PARAMETER PIPE_BASE_TYPE 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER SPARE 32 UINT 0 255 0 "Spare bytes to make command even number of bytes"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_DISABLE_ROUTE',  1,  5, "Telecommand Message") %>
+   APPEND_PARAMETER MSG_ID_VALUE 32 UINT 0 4294967295 0 "Internal MsgId Value"
+   APPEND_PARAMETER PIPE_BASE_TYPE 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER SPARE 32 UINT 0 255 0 "Spare bytes to make command even number of bytes"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_WRITE_PIPE_INFO',  1,  7, "Telecommand Message") %>
+   APPEND_PARAMETER FILENAME 512 STRING "" "Path and Filename of data to be loaded"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_CMD_WRITE_MAP_INFO',  1,  8, "Telecommand Message") %>
+   APPEND_PARAMETER FILENAME 512 STRING "" "Path and Filename of data to be loaded"
+
+
+
+

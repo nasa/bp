@@ -1,0 +1,6 @@
+<%= dtnfsw_tlm_hdr(target_name, 'TO_LAB_HK', 1, "TO_LAB Hk Tlm") %>
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "Unsigned 8 bit integer"
+<% if $dtnfsw_globals_eds_enabled == false %>
+   APPEND_ITEM SPARE_TO_ALIGN 16 UINT "Spare padding for alignment"
+<% end %>

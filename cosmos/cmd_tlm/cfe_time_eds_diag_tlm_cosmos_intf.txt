@@ -1,0 +1,83 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_TIME_DIAG', 1, "CFE_TIME Diagnostics Tlm") %>
+   APPEND_ITEM AT_TONE_MET_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_MET_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_STCF_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_STCF_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_DELAY_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_DELAY_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_LATCH_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_LATCH_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM AT_TONE_LEAP_SECONDS 16 INT "Leap Seconds at time of tone"
+   APPEND_ITEM CLOCK_STATE_API 16 INT "Enumerated types identifying the quality of the current time"
+      STATE INVALID -1
+      STATE VALID    0
+      STATE FLYWHEEL 1
+   APPEND_ITEM TIME_SINCE_TONE_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TIME_SINCE_TONE_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_LATCH_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_LATCH_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_MET_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_MET_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_TAI_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_TAI_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_UTC_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CURRENT_UTC_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM CLOCK_SET_STATE 16 UINT "Time has been set"
+      STATE NOT_SET 0
+      STATE WAS_SET 1   
+   APPEND_ITEM CLOCK_FLY_STATE 16 UINT "Current fly-wheel state"
+      STATE NO_FLY 0
+      STATE IS_FLY 1   
+   APPEND_ITEM CLOCK_SOURCE 16 UINT "Internal vs external, etc."
+      STATE INTERNAL 1
+      STATE EXTERNAL 2
+   APPEND_ITEM CLOCK_SIGNAL 16 UINT "Primary vs redundant, etc."
+      STATE PRIMARY   1
+      STATE REDUNDANT 2  
+   APPEND_ITEM SERVER_FLY_STATE 16 UINT "Used by clients only"
+      STATE NO_FLY 0
+      STATE IS_FLY 1   
+   APPEND_ITEM FORCED_2_FLY 16 INT "Signed 16 bit integer"
+      STATE FALSE    0
+      STATE TRUE     1
+   APPEND_ITEM CLOCK_STATE_FLAGS 16 UINT "Unsigned 16 bit integer"
+      FORMAT_STRING "0x%04X"
+   APPEND_ITEM ONE_TIME_DIRECTION 16 UINT "One time STCF adjustment direction (Add = 1, Sub = 2)"
+      STATE ADD      1
+      STATE SUBTRACT 2   
+   APPEND_ITEM ONE_HZ_DIRECTION 16 UINT "1Hz STCF adjustment direction"
+      STATE ADD      1
+      STATE SUBTRACT 2   
+   APPEND_ITEM DELAY_DIRECTION 16 INT "Signed 16 bit integer"
+      STATE ADD      1
+      STATE SUBTRACT 2   
+   APPEND_ITEM ONE_TIME_ADJUST_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM ONE_TIME_ADJUST_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM ONE_HZ_ADJUST_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM ONE_HZ_ADJUST_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TONE_SIGNAL_LATCH_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TONE_SIGNAL_LATCH_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TONE_DATA_LATCH_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TONE_DATA_LATCH_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TONE_MATCH_COUNTER 32 UINT "Tone signal / data verification count"
+   APPEND_ITEM TONE_MATCH_ERROR_COUNTER 32 UINT "Tone signal / data verification error count"
+   APPEND_ITEM TONE_SIGNAL_COUNTER 32 UINT "Tone signal detected SB message count"
+   APPEND_ITEM TONE_DATA_COUNTER 32 UINT "Time at the tone data SB message count"
+   APPEND_ITEM TONE_INT_COUNTER 32 UINT "Tone signal ISR execution count"
+   APPEND_ITEM TONE_INT_ERROR_COUNTER 32 UINT "Tone signal ISR error count"
+   APPEND_ITEM TONE_TASK_COUNTER 32 UINT "Tone task execution count"
+   APPEND_ITEM VERSION_COUNTER 32 UINT "Count of mods to time at tone reference data (version)"
+   APPEND_ITEM LOCAL_INT_COUNTER 32 UINT "Local 1Hz ISR execution count"
+   APPEND_ITEM LOCAL_TASK_COUNTER 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM VIRTUAL_MET 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM MIN_ELAPSED 32 UINT "Min tone signal / data pkt arrival window (Sub-seconds)"
+   APPEND_ITEM MAX_ELAPSED 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM MAX_LOCAL_CLOCK_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM MAX_LOCAL_CLOCK_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TONE_OVER_LIMIT 32 UINT "Max between tone signal interrupts"
+   APPEND_ITEM TONE_UNDER_LIMIT 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM DATA_STORE_STATUS 32 UINT "Unsigned 32 bit integer"
+
+
+
+

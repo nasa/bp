@@ -1,0 +1,20 @@
+<%= dtnfsw_tbl_hdr('MIB_Config_PS_Table', 'MIB Config Per Source Table', 'BPNODE', 'MIBConfigPSTable') %>
+  <% $dtnfsw_globals_max_num_mib_sets.times do |tbl_entry_idx| %>    
+    <% $dtnfsw_globals_num_eid_patterns_per_mib_set.times do |eid_idx| %>
+      <%= dtnfsw_gen_tbl_param_eid_pattern_t("SOURCE_#{tbl_entry_idx}_EID_#{eid_idx}") %>
+    <% end %>
+    APPEND_PARAMETER PARAM_SET_MAX_LIFETIME_<%= tbl_entry_idx %>                32 UINT 0 0xFFFFFFFF 20000
+    APPEND_PARAMETER PARAM_SET_MAX_BSR_GENERATION_RATE_<%= tbl_entry_idx %>     32 UINT 0 0xFFFFFFFF 20000
+    APPEND_PARAMETER PARAM_SET_MAX_CBR_GENERATION_RATE_<%= tbl_entry_idx %>     32 UINT 0 0xFFFFFFFF 20000
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_RCVD_BSR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_ACPT_BSR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_FWRD_BSR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_DLVR_BSR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_DLTD_BSR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_RCVD_CBR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_ACPT_CBR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_FWRD_CBR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_DLVR_CBR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER BUNDLE_SET_BEHAVIOR_DLTD_CBR_GENERATE_<%= tbl_entry_idx %> 32 UINT 0 1 0
+    APPEND_PARAMETER SPARE_<%= tbl_entry_idx %>                                 32 UINT 0 0 0
+  <% end %>

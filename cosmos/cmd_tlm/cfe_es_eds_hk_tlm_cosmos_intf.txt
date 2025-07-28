@@ -1,0 +1,66 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_ES_HK', 1, "CFE_ES Hk Tlm") %>
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "The ES Application Command Counter"
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "The ES Application Command Error Counter"
+   APPEND_ITEM CFE_CORE_CHECKSUM 16 UINT "Checksum of cFE Core Code"
+   APPEND_ITEM CFE_MAJOR_VERSION 8 UINT "Major Version Number of cFE"
+   APPEND_ITEM CFE_MINOR_VERSION 8 UINT "Minor Version Number of cFE"
+   APPEND_ITEM CFE_REVISION 8 UINT "Sub-Minor Version Number of cFE"
+   APPEND_ITEM CFE_MISSION_REVISION 8 UINT "Mission Version Number of cFE"
+   APPEND_ITEM OSAL_MAJOR_VERSION 8 UINT "OS Abstraction Layer Major Version Number"
+   APPEND_ITEM OSAL_MINOR_VERSION 8 UINT "OS Abstraction Layer Minor Version Number"
+   APPEND_ITEM OSAL_REVISION 8 UINT "OS Abstraction Layer Revision Number"
+   APPEND_ITEM OSAL_MISSION_REVISION 8 UINT "OS Abstraction Layer MissionRevision Number"
+   APPEND_ITEM PSP_MAJOR_VERSION 8 UINT "Platform Support Package Major Version Number"
+   APPEND_ITEM PSP_MINOR_VERSION 8 UINT "Platform Support Package Minor Version Number"
+   APPEND_ITEM PSP_REVISION 8 UINT "Platform Support Package Revision Number"
+   APPEND_ITEM PSP_MISSION_REVISION 8 UINT "Platform Support Package MissionRevision Number"
+<% if $dtnfsw_globals_mem_size == 64 %>
+   APPEND_ITEM SYS_LOG_BYTES_USED 64 UINT "Total number of bytes used in system log"
+   APPEND_ITEM SYS_LOG_SIZE 64 UINT "Total size of the system log"
+<% else %>
+   APPEND_ITEM SYS_LOG_BYTES_USED 32 UINT "Total number of bytes used in system log"
+   APPEND_ITEM SYS_LOG_SIZE 32 UINT "Total size of the system log"
+<% end %>
+   APPEND_ITEM SYS_LOG_ENTRIES 32 UINT "Number of entries in the system log"
+   APPEND_ITEM SYS_LOG_MODE 32 UINT "Write/Overwrite Mode"
+   APPEND_ITEM ER_LOG_INDEX 32 UINT "Current index of the ER Log (wraps around)"
+   APPEND_ITEM ER_LOG_ENTRIES 32 UINT "Number of entries made in the ER Log since the power on"
+   APPEND_ITEM REGISTERED_CORE_APPS 32 UINT "Number of Applications registered with ES"
+   APPEND_ITEM REGISTERED_EXTERNAL_APPS 32 UINT "Number of Applications registered with ES"
+   APPEND_ITEM REGISTERED_TASKS 32 UINT "Number of Tasks ( main AND child tasks ) registered with ES"
+   APPEND_ITEM REGISTERED_LIBS 32 UINT "Number of Libraries registered with ES"
+   APPEND_ITEM RESET_TYPE 32 UINT "Reset type ( PROCESSOR or POWERON )"
+   APPEND_ITEM RESET_SUBTYPE 32 UINT "Reset Sub Type"
+   APPEND_ITEM PROCESSOR_RESETS 32 UINT "Number of processor resets since last power on"
+   APPEND_ITEM MAX_PROCESSOR_RESETS 32 UINT "Max processor resets before a power on is done"
+   APPEND_ITEM BOOT_SOURCE 32 UINT "Boot source ( as provided from BSP )"
+   APPEND_ITEM PERF_STATE 32 UINT "Current state of Performance Analyzer"
+      STATE IDLE                0
+      STATE WAITING_FOR_TRIGGER 1
+      STATE TRIGGERED           2
+
+   APPEND_ITEM PERF_MODE 32 UINT "Current mode of Performance Analyzer"
+      STATE START  0
+      STATE CENTER 1
+      STATE END    2
+
+   APPEND_ITEM PERF_TRIGGER_COUNT 32 UINT "Number of Times Performance Analyzer has Triggered"
+<% 128.times do |perf_id_index| %>
+   APPEND_ITEM PERF_FILTER_MASK_<%= perf_id_index %> 1 UINT "Single true/false status bit"
+<% end %>
+<% 128.times do |perf_id_index| %>
+   APPEND_ITEM PERF_TRIGGER_MASK_<%= perf_id_index %> 1 UINT "Single true/false status bit"
+<% end %>
+   APPEND_ITEM PERF_DATA_START 32 UINT "Identifies First Stored Entry in Performance Analyzer Log"
+   APPEND_ITEM PERF_DATA_END 32 UINT "Identifies Last Stored Entry in Performance Analyzer Log"
+   APPEND_ITEM PERF_DATA_COUNT 32 UINT "Number of Entries Put Into the Performance Analyzer Log"
+   APPEND_ITEM PERF_DATA_TO_WRITE 32 UINT "Number of Performance Analyzer Log Entries Left to be Written to Log Dump File"
+<% if $dtnfsw_globals_mem_size == 64 %>
+   APPEND_ITEM HEAP_BYTES_FREE 64 UINT "Number of free bytes remaining in the OS heap"
+   APPEND_ITEM HEAP_BLOCKS_FREE 64 UINT "Number of free blocks remaining in the OS heap"
+   APPEND_ITEM HEAP_MAX_BLOCK_SIZE 64 UINT "Number of bytes in the largest free block"
+<% else %>
+   APPEND_ITEM HEAP_BYTES_FREE 32 UINT "Number of free bytes remaining in the OS heap"
+   APPEND_ITEM HEAP_BLOCKS_FREE 32 UINT "Number of free blocks remaining in the OS heap"
+   APPEND_ITEM HEAP_MAX_BLOCK_SIZE 32 UINT "Number of bytes in the largest free block"
+<% end %>

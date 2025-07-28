@@ -1,0 +1,15 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_EVS_LONG_EVENT_MSG', 1, "Long Event Message") %>
+   APPEND_ITEM PACKET_ID_APP_NAME 160 STRING "Application name"
+   APPEND_ITEM PACKET_ID_EVENT_ID 16 UINT "Numerical event identifier"
+   APPEND_ITEM PACKET_ID_EVENT_TYPE 16 UINT "Numerical event type identifier"
+   STATE DEBUG 1
+   STATE INFO 2
+   STATE ERROR 3
+   STATE CRIT 4
+   APPEND_ITEM PACKET_ID_SPACECRAFT_ID 32 UINT "Spacecraft identifier"
+   APPEND_ITEM PACKET_ID_PROCESSOR_ID 32 UINT "Numeric processor identifier"
+   APPEND_ITEM MESSAGE 976 STRING "Event message string"
+<% if $dtnfsw_globals_eds_enabled == false %>
+   APPEND_ITEM SPARE_TO_ALIGN_1 8 UINT "Spare padding for alignment"
+   APPEND_ITEM SPARE_TO_ALIGN_2 8 UINT "Spare padding for alignment"
+<% end %>

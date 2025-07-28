@@ -1,0 +1,10 @@
+<%= dtnfsw_tbl_hdr('Storage_Table', 'Storage Policy Table', 'BPNODE', 'StorageTable') %>
+<% $dtnfsw_globals_num_stor_alloc_tbl_entries.times do |tbl_entry_idx| %>
+  <% $dtnfsw_globals_num_eid_patterns_per_stor_alloc_tbl_entry.times do |eid_pattern_idx| %>
+    <%= dtnfsw_gen_tbl_param_eid_pattern_t("STOR_ALLOC_IDX_#{tbl_entry_idx}_SRC_EID_PAT_#{eid_pattern_idx}") %>
+  <% end %>
+  APPEND_PARAMETER STOR_ALLOC_IDX_<%= tbl_entry_idx %>_STORAGE_SIZE 32 UINT 0 0xFFFFFFFF 10000
+    FORMAT_STRING "0x%08X"
+  APPEND_PARAMETER SPARE<%= tbl_entry_idx %> 32 UINT 0 0 0
+<% end %>
+

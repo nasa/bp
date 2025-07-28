@@ -1,0 +1,19 @@
+<%= dtnfsw_tlm_hdr(target_name, 'BPNODE_NODE_MIB_CONFIG_HK', 1, "BPNode Node MIB Config Tlm") %>
+   <%= dtnfsw_gen_tlm_param_eid_t("INSTANCE_EID") %>
+
+   APPEND_ITEM PARAM_BUNDLE_SIZE_NO_FRAGMENT                 32 UINT   "Max bundle size before fragmentation"
+   APPEND_ITEM PARAM_SET_MAX_SEQUENCE_NUM                    32 UINT   "Max bundle sequence number allowable"
+   APPEND_ITEM PARAM_SET_MAX_PAYLOAD_LENGTH                  32 UINT   "Max payload length for fragmentation"
+   APPEND_ITEM PARAM_SET_MAX_BUNDLE_LENGTH                   32 UINT   "Max bundle length for processing"
+   APPEND_ITEM PARAM_SET_NODE_DTN_TIME                       32 UINT   "Time being tracked by the node"
+   APPEND_ITEM PARAM_SET_BEHAVIOR_EVENT_REPORTING            32 UINT   "Inclusive level of events to be generated"
+   APPEND_ITEM PARAM_SET_MAX_LIFETIME                        32 UINT   "Max bundle lifetime for retention of the bundle"
+
+   APPEND_ITEM SPARE                                         32 UINT   "Spare"
+   APPEND_ITEM TIME_MONOTONIC_CNT                            64 INT    "Monotonic Time Counter"
+   APPEND_ITEM TIME_CF                                       64 INT    "Time Correlation Factor (CF)"
+
+   ITEM DTN_TIME_RAW                         0 0 DERIVED "DTN Timestamp (raw)"
+      READ_CONVERSION dtn_time_raw_conversion.rb TIME_MONOTONIC_CNT TIME_CF
+   ITEM DTN_TIME_FORMATTED                  0 0 DERIVED "DTN Timestamp (formatted)"
+      READ_CONVERSION dtn_time_formatted_conversion.rb TIME_MONOTONIC_CNT TIME_CF

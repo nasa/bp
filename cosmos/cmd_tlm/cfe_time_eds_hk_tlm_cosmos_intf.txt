@@ -1,0 +1,20 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_TIME_HK', 1, "CFE_TIME Hk Tlm") %>
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "Time Command Execution Counter"
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM CLOCK_STATE_FLAGS 16 UINT "State Flags"
+      FORMAT_STRING "0x%04X"
+   APPEND_ITEM CLOCK_STATE_API 16 INT "Enumerated types identifying the quality of the current time"
+      STATE INVALID -1
+      STATE VALID    0
+      STATE FLYWHEEL 1
+   APPEND_ITEM LEAP_SECONDS 16 INT "Signed 16 bit integer"
+   APPEND_ITEM SECONDS_MET 32 UINT "Current MET (seconds)"
+   APPEND_ITEM SUBSECS_MET 32 UINT "Current MET (sub-seconds)"
+   APPEND_ITEM SECONDS_STCF 32 UINT "Current STCF (seconds)"
+   APPEND_ITEM SUBSECS_STCF 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM ADJUSTMENT_FACTOR_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM ADJUSTMENT_FACTOR_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+
+
+
+

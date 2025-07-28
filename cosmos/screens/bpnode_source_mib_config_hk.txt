@@ -1,0 +1,59 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+
+VERTICAL
+  TITLE "<%= target_name %> BPNode Source MIB Config HK" Courier 20 Normal true
+  SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+END
+
+BUTTON 'Request Tlm Update' 'api.cmd("<%= target_name %> BPNODE_CMD_SEND_SOURCE_MIB_CONFIG_HK")'
+
+VERTICAL
+  TABBOOK
+  <% $dtnfsw_globals_max_num_mib_sets.times do |src_id| %>
+    TABITEM "SrcID <%= src_id %>"
+      <% $dtnfsw_globals_num_eid_patterns_per_mib_set.times do |eid_idx| %>
+        LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK SOURCE_<%= src_id %>_EID_<%= eid_idx %>_EidStr
+      <% end %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK PARAM_SET_MAX_LIFETIME_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK PARAM_SET_MAX_BSR_GEN_RATE_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK PARAM_SET_MAX_CBR_GEN_RATE_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_RECV_BSR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_ACCPT_BSR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_FORW_BSR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_DELIVR_BSR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_DEL_BSR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_RECV_CBR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_ACCPT_CBR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_FORW_CBR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_DELIVR_CBR_GEN_<%= src_id %>
+      LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK BUNDLE_SET_BEH_DEL_CBR_GEN_<%= src_id %>
+    END
+  <% end %>
+  END
+
+  VERTICALBOX
+    LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK TIME_MONOTONIC_CNT
+    LABELVALUE <%= target_name %> BPNODE_SOURCE_MIB_CONFIG_HK TIME_CF
+  END
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet cFS Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet DTN Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packets Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  BPNODE_SOURCE_MIB_CONFIG_HK PACKET_TIMEFORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_SOURCE_MIB_CONFIG_HK DTN_TIME_FORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_SOURCE_MIB_CONFIG_HK RECEIVED_TIMEFORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_SOURCE_MIB_CONFIG_HK RECEIVED_COUNT   
+  END
+END

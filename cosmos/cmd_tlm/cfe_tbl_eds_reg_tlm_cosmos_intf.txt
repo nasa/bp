@@ -1,0 +1,23 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_TBL_REG', 1, "CFE_TBL Reg Tlm") %>
+   APPEND_ITEM SIZE 64 UINT "Size, in bytes, of Table"
+   APPEND_ITEM CRC 32 UINT "Most recently calculated CRC of Table"
+   APPEND_ITEM ACTIVE_BUFFER_ADDR 64 UINT "Address of Active Buffer"
+   APPEND_ITEM INACTIVE_BUFFER_ADDR 64 UINT "Address of Inactive Buffer"
+   APPEND_ITEM VALIDATION_FUNC_PTR 64 UINT "Ptr to Owner App's function that validates tbl contents"
+   APPEND_ITEM TIME_OF_LAST_UPDATE_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM TIME_OF_LAST_UPDATE_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM FILE_CREATE_TIME_SECS 32 UINT "File creation time from last file loaded into table"
+   APPEND_ITEM FILE_CREATE_TIME_SUB_SECS 32 UINT "File creation time from last file loaded into table"
+   APPEND_ITEM TABLE_LOADED_ONCE 8 UINT "Flag indicating whether table has been loaded once or not"
+   APPEND_ITEM LOAD_PENDING 8 UINT "Flag indicating an inactive buffer is ready to be copied"
+   APPEND_ITEM DUMP_ONLY 8 UINT "Flag indicating Table is NOT to be loaded"
+   APPEND_ITEM DOUBLE_BUFFERED 8 UINT "Flag indicating Table has a dedicated inactive buffer"
+   APPEND_ITEM NAME 320 STRING "Processor specific table name"
+   APPEND_ITEM LAST_FILE_LOADED 512 STRING "Filename of last file loaded into table"
+   APPEND_ITEM OWNER_APP_NAME 160 STRING "Name of owning application"
+   APPEND_ITEM CRITICAL 8 UINT "Indicates whether table is Critical or not"
+   APPEND_ITEM BYTE_ALIGN_4 8 UINT "Spare byte to maintain byte alignment"
+
+
+
+

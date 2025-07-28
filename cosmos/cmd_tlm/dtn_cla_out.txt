@@ -1,0 +1,2 @@
+# <%= dtnfsw_tlm_hdr(target_name, 'SB_CLA_OUT', 1, "DTN CLA Out packet") %>
+#    APPEND_ARRAY_ITEM DATA 8 UINT 0 "BUNDLE"

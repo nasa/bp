@@ -1,0 +1,177 @@
+SCREEN AUTO AUTO 1.0
+################################################################
+# Screen: CFE Software Bus All Subscriptions Screen 
+# Released: 07/15/2024
+# Author: S. Bozievich
+################################################################
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> CFE Software Bus all Subscriptions Data" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS CCSDS_STREAMID
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS CCSDS_SEQUENCE
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS PKT_SEGMENT "Packet Segment:"
+  LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS TOTAL_SEGMENTS "Total Segments"
+  LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRIES "All Subscription Entries:"
+  
+  TABBOOK
+  
+    TABITEM "SB Entries 0-3" 
+    	HORIZONTAL
+      VERTICALBOX "Subscription Data for Entries 0-1" 
+      	LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_0_MSG_ID_VALUE "0 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_0_QOS_PRIORITY "0 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_0_QOS_RELIABILITY "0 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_0_PIPE_BASE_TYPE "0 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_1_MSG_ID_VALUE "1 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_1_QOS_PRIORITY "1 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_1_QOS_RELIABILITY "1 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_1_PIPE_BASE_TYPE "1 - Pipe Base Type:"
+    	END
+      SPACER 75 0  
+      VERTICALBOX "Subscription Data for Entries 2-3"
+        LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_2_MSG_ID_VALUE "2 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_2_QOS_PRIORITY "2 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_2_QOS_RELIABILITY "2 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_2_PIPE_BASE_TYPE "2 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_3_MSG_ID_VALUE "3 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_3_QOS_PRIORITY "3 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_3_QOS_RELIABILITY "3 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_3_PIPE_BASE_TYPE "3 - Pipe Base Type:"  
+      END
+      END
+    END
+
+    TABITEM "SB Entries 4-7" 
+    	HORIZONTAL
+      VERTICALBOX "Subscription Data for Entries 4-5" 
+      	LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_4_MSG_ID_VALUE "4 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_4_QOS_PRIORITY "4 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_4_QOS_RELIABILITY "4 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_4_PIPE_BASE_TYPE "4 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_5_MSG_ID_VALUE "5 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_5_QOS_PRIORITY "5 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_5_QOS_RELIABILITY "5 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_5_PIPE_BASE_TYPE "5 - Pipe Base Type:"
+    	END
+      SPACER 75 0  
+      VERTICALBOX "Subscription Data for Entries 6-7"
+        LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_6_MSG_ID_VALUE "6 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_6_QOS_PRIORITY "6 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_6_QOS_RELIABILITY "6 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_6_PIPE_BASE_TYPE "6 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_7_MSG_ID_VALUE "7 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_7_QOS_PRIORITY "7 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_7_QOS_RELIABILITY "7 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_7_PIPE_BASE_TYPE "7 - Pipe Base Type:"  
+      END
+      END
+    END
+
+    TABITEM "SB Entries 8-11" 
+    	HORIZONTAL
+      VERTICALBOX "Subscription Data for Entries 8-9" 
+      	LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_8_MSG_ID_VALUE "8 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_8_QOS_PRIORITY "8 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_8_QOS_RELIABILITY "8 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_8_PIPE_BASE_TYPE "8 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_9_MSG_ID_VALUE "9 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_9_QOS_PRIORITY "9 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_9_QOS_RELIABILITY "9 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_9_PIPE_BASE_TYPE "9 - Pipe Base Type:"
+    	END
+      SPACER 75 0  
+      VERTICALBOX "Subscription Data for Entries 10-11"
+        LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_10_MSG_ID_VALUE "10 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_10_QOS_PRIORITY "10 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_10_QOS_RELIABILITY "10 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_10_PIPE_BASE_TYPE "10 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_MSG_ID_VALUE "11 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_QOS_PRIORITY "11 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_QOS_RELIABILITY "11 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_PIPE_BASE_TYPE "11 - Pipe Base Type:"  
+      END
+      END
+    END
+ 
+     TABITEM "SB Entries 12-15" 
+    	HORIZONTAL
+      VERTICALBOX "Subscription Data for Entries 12-13" 
+      	LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_MSG_ID_VALUE "12 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_QOS_PRIORITY "12 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_QOS_RELIABILITY "12 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_12_PIPE_BASE_TYPE "12 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_13_MSG_ID_VALUE "13 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_13_QOS_PRIORITY "13 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_13_QOS_RELIABILITY "13 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_13_PIPE_BASE_TYPE "13 - Pipe Base Type:"
+    	END
+      SPACER 75 0  
+      VERTICALBOX "Subscription Data for Entries 14-15"
+        LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_14_MSG_ID_VALUE "14 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_14_QOS_PRIORITY "14 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_14_QOS_RELIABILITY "14 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_14_PIPE_BASE_TYPE "14 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_15_MSG_ID_VALUE "15 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_15_QOS_PRIORITY "15 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_15_QOS_RELIABILITY "15 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_15_PIPE_BASE_TYPE "15 - Pipe Base Type:"  
+      END
+      END
+    END
+ 
+     TABITEM "SB Entries 16-19" 
+    	HORIZONTAL
+      VERTICALBOX "Subscription Data for Entries 16-17" 
+      	LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_16_MSG_ID_VALUE "16 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_16_QOS_PRIORITY "16 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_16_QOS_RELIABILITY "16 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_16_PIPE_BASE_TYPE "16 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_17_MSG_ID_VALUE "17 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_17_QOS_PRIORITY "17 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_17_QOS_RELIABILITY "17 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_17_PIPE_BASE_TYPE "17 - Pipe Base Type:"
+    	END
+      SPACER 75 0  
+      VERTICALBOX "Subscription Data for Entries 18-19"
+        LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_18_MSG_ID_VALUE "18 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_18_QOS_PRIORITY "18 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_18_QOS_RELIABILITY "18 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_18_PIPE_BASE_TYPE "28 - Pipe Base Type:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_19_MSG_ID_VALUE "19 - Message ID Value:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_19_QOS_PRIORITY "19 - QOS Priority:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_19_QOS_RELIABILITY "19 - QOS Reliablity:"
+  			LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS ENTRY_19_PIPE_BASE_TYPE "19 - Pipe Base Type:"  
+      END
+      END
+    END
+
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS PACKET_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS PACKET_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS RECEIVED_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS RECEIVED_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ALLSUBS RECEIVED_COUNT
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS SB all Subscriptions Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %> CFE_SB_ALLSUBS PACKET_TIMEFORMATTED  CONVERTED 23
+    VALUE <%= target_name %> CFE_SB_ALLSUBS RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CFE_SB_ALLSUBS RECEIVED_COUNT 
+  END    
+END
+

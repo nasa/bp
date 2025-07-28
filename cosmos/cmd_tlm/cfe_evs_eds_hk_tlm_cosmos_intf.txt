@@ -1,0 +1,21 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_EVS_HK', 1, "CFE_EVS Hk Tlm") %>
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "EVS Command Counter"
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "EVS Command Error Counter"
+   APPEND_ITEM MESSAGE_FORMAT_MODE 8 UINT "Event message format mode (short/long)"
+   APPEND_ITEM MESSAGE_TRUNC_COUNTER 8 UINT "Event message truncation counter"
+   APPEND_ITEM UNREGISTERED_APP_COUNTER 8 UINT "Unregistered application message send counter"
+   APPEND_ITEM OUTPUT_PORT 8 UINT "Output port mask"
+   APPEND_ITEM LOG_FULL_FLAG 8 UINT "Local event log full flag"
+   APPEND_ITEM LOG_MODE 8 UINT "Local event logging mode (overwrite/discard)"
+   APPEND_ITEM MESSAGE_SEND_COUNTER 16 UINT "Event message send counter"
+   APPEND_ITEM LOG_OVERFLOW_COUNTER 16 UINT "Local event log overflow counter"
+   APPEND_ITEM LOG_ENABLED 8 UINT "Current event log enable/disable state"
+   APPEND_ITEM SPARE_1 8 UINT "Spare Alignment Byte 1"
+   APPEND_ITEM SPARE_2 8 UINT "Spare Alignment Byte 2"
+   APPEND_ITEM SPARE_3 8 UINT "Spare Alignment Byte 3"
+<% 16.times do |app_data_index| %>
+   APPEND_ITEM APP_DATA_<%= app_data_index %>_APP_ID_BASE_TYPE 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM APP_DATA_<%= app_data_index %>_APP_MESSAGE_SENT_COUNTER 16 UINT "Application message sent counter"
+   APPEND_ITEM APP_DATA_<%= app_data_index %>_APP_ENABLE_STATUS 8 UINT "Application event service enable status"
+   APPEND_ITEM APP_DATA_<%= app_data_index %>_APP_MESSAGE_SQUELCHED_COUNTER 8 UINT "Application event squelch count"
+<% end %>

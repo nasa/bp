@@ -1,0 +1,115 @@
+SCREEN AUTO AUTO 1.0
+#############################
+# Screen: CFDP Housekeeping Information 
+# Released: 07/16/2024
+# Author: S. Bozievich
+#############################
+
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> CFDP Housekeeping" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  #LABELVALUEDESC <%= target_name %> CF_HK CCSDS_STREAMID
+  #LABELVALUEDESC <%= target_name %> CF_HK CCSDS_SEQUENCE
+  #LABELVALUEDESC <%= target_name %> CF_HK CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %> CF_HK COUNTERS_CMD "Command Counter:"
+  LABELVALUEDESC <%= target_name %> CF_HK COUNTERS_ERR "Error Counter:"
+  #TITLE "HK Counters -       Channel 0     Channel 1"
+  #SETTING TEXTCOLOR YELLOW
+  HORIZONTAL
+    VERTICALBOX
+      TITLE "Housekeeping Counters - Channel 0"
+      SETTING TEXTCOLOR YELLOW
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_SENT_FILE_DATA_BYTES "Sent File Data Bytes:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_SENT_PDU "Sent PDU:"
+ 		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_SENT_NAK_SEGMENT_REQUESTS "Sent NAK Segment Requests:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_FILE_DATA_BYTES "Received File Date Bytes:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_PDU "Received PDU:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_ERROR "Received Error:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_SPURIOUS "Received Spurious:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_DROPPED "Received Dropped:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_NAK_SEGMENT_REQUESTS "Received NAK segment Request:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_FILE_OPEN "Fault File Open:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_FILE_READ "Fault File Read:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_FILE_SEEK "Fault File Seek:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_FILE_WRITE "Fault File Write:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_FILE_RENAME "Fault File Rename:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_DIRECTORY_READ "Fault Directory Read:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_CRC_MISMATCH "Fault CRC Mismatch:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_FILE_SIZE_MISMATCH "Fault File Size Mismatch:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_NAK_LIMIT "Fault NAK Limit:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_ACK_LIMIT "Fault ACK Limit:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_COUNTERS_FAULT_INACTIVITY_TIMER "Fault Inactivity Timer:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_PEND "Size Pending:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_TXA "Size TXA:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_TXW "Size TXW:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_RX "Size RX:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_HIST "Size History:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_HIST_FREE "Size History Free:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_Q_SIZE_FREE "Size Free:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_POLL_COUNTER "Poll Counter:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_PLAYBACK_COUNTER "Playback Counter:"
+  		LABELVALUEDESC <%= target_name %> CF_HK CHANNEL_HK_0_FROZEN "Frozen:"
+  	END
+  	SPACER 25 0
+  	VERTICALBOX
+  	  TITLE "Channel 1"
+      SETTING TEXTCOLOR YELLOW
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_SENT_FILE_DATA_BYTES 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_SENT_PDU 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_SENT_NAK_SEGMENT_REQUESTS 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_RECV_FILE_DATA_BYTES 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_RECV_PDU 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_RECV_ERROR 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_RECV_SPURIOUS 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_RECV_DROPPED 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_RECV_NAK_SEGMENT_REQUESTS 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_FILE_OPEN 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_FILE_READ 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_FILE_SEEK 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_FILE_WRITE 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_FILE_RENAME 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_DIRECTORY_READ 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_CRC_MISMATCH 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_FILE_SIZE_MISMATCH 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_NAK_LIMIT 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_ACK_LIMIT 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_COUNTERS_FAULT_INACTIVITY_TIMER 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_PEND 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_TXA 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_TXW 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_RX 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_HIST 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_HIST_FREE 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_Q_SIZE_FREE 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_POLL_COUNTER 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_PLAYBACK_COUNTER 
+  		VALUE <%= target_name %> CF_HK CHANNEL_HK_1_FROZEN   	
+  	END
+  END
+  	
+  	
+ END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS TBL App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  
+  VERTICALBOX
+    VALUE <%= target_name %> CF_HK PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CF_HK RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CF_HK RECEIVED_COUNT 
+  END 
+ END
+

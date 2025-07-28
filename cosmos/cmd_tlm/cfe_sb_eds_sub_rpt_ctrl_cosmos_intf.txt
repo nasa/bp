@@ -1,0 +1,9 @@
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_SUB_RPT_CTRL_ENABLE_SUB_REPORTING', 1, 9, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_SUB_RPT_CTRL_DISABLE_SUB_REPORTING', 1, 10, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_SB_SUB_RPT_CTRL_SEND_PREV_SUBS', 1, 11, "Telecommand Message") %>
+
+
+
+

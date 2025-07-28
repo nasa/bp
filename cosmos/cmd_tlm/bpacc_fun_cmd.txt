@@ -1,0 +1,5 @@
+<%= dtnfsw_cmd_hdr(target_name, 'BPACC_FUN_CMD_NOOP',           1, 0, "BPAccel Function Test App No-Op Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPACC_FUN_CMD_RESET_COUNTERS', 1, 1, "BPAccel Function Test App Reset Counters Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPACC_FUN_REQ_HK',             1, 0, "BPAccel Function Test App HK Request Command") %>

@@ -1,0 +1,222 @@
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_NOOP',                              1, 0, "BPNode No-Op Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_ALL_APPLICATIONS',              1, 1, "Add All Applications Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_START_ALL_APPLICATIONS',            1, 2, "Start All Applications Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_VERIFY_BUNDLE_STORAGE',             1, 3, "Verify Bundle Storage Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_INIT_BUNDLE_STORAGE',               1, 4, "Initialize Bundle Storage Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_VERIFY_BUNDLE_METADATA',            1, 5, "Verify Bundle Metadata (7.2) Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REBUILD_BUNDLE_METADATA',           1, 6, "Rebuild Bundle Metadata Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_CLEAR_VOLATILE',                    1, 7, "Clear Volatile Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_RELOAD_SAVED_DATA',                 1, 8, "Reload Saved Data (7.2) Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_RESET_ALL_COUNTERS',                1, 9, "Reset All Counters Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_RESET_COUNTER',              1, 10, "Reset Counter Cmd") %>
+    APPEND_PARAMETER MIB_ARRAY_INDEX 16 UINT 0 16 10 "Source counters array index for source to reset (if resetting Node MIB, should be 10)"
+        STATE NODE_COUNTER_INDICATOR 10
+    APPEND_PARAMETER SPARE           16 UINT 0  0 0 "Spare for alignment"
+    APPEND_PARAMETER COUNTER         32 UINT 0 75 0 "Numerical representation of the counter to be reset"
+        STATE ADU_COUNT_DELIVERED                     0
+        STATE ADU_COUNT_RECEIVED                      1
+        STATE BUNDLE_COUNT_ABANDONED                  2
+        STATE BUNDLE_COUNT_CUSTODY_REJECTED           3
+        STATE BUNDLE_COUNT_CUSTODY_REQUEST            4
+        STATE BUNDLE_COUNT_CUSTODY_RE_FORWARDED       5
+        STATE BUNDLE_COUNT_CUSTODY_TRANSFERRED        6
+        STATE BUNDLE_COUNT_DELETED                    7
+        STATE BUNDLE_COUNT_DELETED_BAD_EID            8
+        STATE BUNDLE_COUNT_DELETED_CANCELLED          9
+        STATE BUNDLE_COUNT_DELETED_EXPIRED            10
+        STATE BUNDLE_COUNT_DELETED_FORWARD_FAILED     11
+        STATE BUNDLE_COUNT_DELETED_HOP_EXCEEDED       12
+        STATE BUNDLE_COUNT_DELETED_INVALID_PAYLOAD    13
+        STATE BUNDLE_COUNT_DELETED_NO_STORAGE         14
+        STATE BUNDLE_COUNT_DELETED_TOO_LONG           15
+        STATE BUNDLE_COUNT_DELETED_TRAFFIC_PARED      16
+        STATE BUNDLE_COUNT_DELETED_UNAUTHORIZED       17
+        STATE BUNDLE_COUNT_DELETED_UNINTELLIGIBLE     18
+        STATE BUNDLE_COUNT_DELETED_UNSUPPORTED_BLOCK  19
+        STATE BUNDLE_COUNT_DELIVERED                  20
+        STATE BUNDLE_COUNT_DEPLETED                   21
+        STATE BUNDLE_COUNT_DISCARDED                  22
+        STATE BUNDLE_COUNT_FORWARDED                  23
+        STATE BUNDLE_COUNT_FORWARDED_FAILED           24
+        STATE BUNDLE_COUNT_FRAGMENTED                 25
+        STATE BUNDLE_COUNT_FRAGMENT_ERROR             26
+        STATE BUNDLE_COUNT_GENERATED_ACCEPTED         27
+        STATE BUNDLE_COUNT_GENERATED_CUSTODY_SIGNAL   28
+        STATE BUNDLE_COUNT_GENERATED_FRAGMENT         29
+        STATE BUNDLE_COUNT_GENERATED_REJECTED         30
+        STATE BUNDLE_COUNT_MAX_BSR_RATE_EXCEEDED      31
+        STATE BUNDLE_COUNT_NO_CONTACT                 32
+        STATE BUNDLE_COUNT_NO_FURTHER_INFO            33
+        STATE BUNDLE_COUNT_NO_ROUTE                   34
+        STATE BUNDLE_COUNT_REASSEMBLED                35
+        STATE BUNDLE_COUNT_RECEIVED                   36
+        STATE BUNDLE_COUNT_RECEIVED_ADMIN_RECORD      37
+        STATE BUNDLE_COUNT_RECEIVED_BSR_ACCEPTED      38
+        STATE BUNDLE_COUNT_RECEIVED_BSR_DELETED       39
+        STATE BUNDLE_COUNT_RECEIVED_BSR_DELIVERED     40
+        STATE BUNDLE_COUNT_RECEIVED_BSR_FORWARDED     41
+        STATE BUNDLE_COUNT_RECEIVED_BSR_RECEIVED      42
+        STATE BUNDLE_COUNT_RECEIVED_CRS_ACCEPTED      43
+        STATE BUNDLE_COUNT_RECEIVED_CRS_DELETED       44
+        STATE BUNDLE_COUNT_RECEIVED_CRS_DELIVERED     45
+        STATE BUNDLE_COUNT_RECEIVED_CRS_FORWARDED     46
+        STATE BUNDLE_COUNT_RECEIVED_CRS_RECEIVED      47
+        STATE BUNDLE_COUNT_RECEIVED_CUSTODY_SIGNAL    48
+        STATE BUNDLE_COUNT_RECEIVED_FRAGMENT          49
+        STATE BUNDLE_COUNT_REDUNDANT                  50
+        STATE BUNDLE_COUNT_REJECTED_CUSTODY           51
+        STATE BUNDLE_COUNT_RETURNED                   52
+        STATE BUNDLE_COUNT_UNINTELLIGIBLE_BLOCK       53
+        STATE BUNDLE_COUNT_UNINTELLIGIBLE_EID         54
+        STATE BUNDLE_COUNT_UNPROCESSED_BLOCKS         55
+        STATE BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT   56
+        STATE BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT   57
+        STATE BUNDLE_COUNT_CUSTODY_SIGNAL_RECEIVED    58
+        STATE BUNDLE_COUNT_GENERATED_ANONYMOUS        59
+        STATE BUNDLE_COUNT_GENERATED_BSR_ACCEPTED     60
+        STATE BUNDLE_COUNT_GENERATED_BSR_DELETED      61
+        STATE BUNDLE_COUNT_GENERATED_BSR_DELIVERED    62
+        STATE BUNDLE_COUNT_GENERATED_BSR_FORWARDED    63
+        STATE BUNDLE_COUNT_GENERATED_BSR_RECEIVED     64
+        STATE BUNDLE_COUNT_GENERATED_CRS              65
+        STATE BUNDLE_COUNT_GENERATED_CRS_ACCEPTED     66
+        STATE BUNDLE_COUNT_GENERATED_CRS_DELETED      67
+        STATE BUNDLE_COUNT_GENERATED_CRS_DELIVERED    68
+        STATE BUNDLE_COUNT_GENERATED_CRS_FORWARDED    69
+        STATE BUNDLE_COUNT_GENERATED_CRS_RECEIVED     70
+        STATE BUNDLE_COUNT_GENERATED_CUSTODY          71
+        STATE BUNDLE_COUNT_INVALID_PRIMARY_BLOCK      72
+        STATE BUNDLE_COUNT_IN_CUSTODY                 73
+        STATE BUNDLE_COUNT_MAX_CRS_RATE_EXCEEDED      74
+        STATE BUNDLE_COUNT_RECEIVED_CRS               75
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_RESET_SOURCE_COUNTERS',      1, 11, "Reset Source Counters Cmd") %>
+    APPEND_PARAMETER MIB_ARRAY_INDEX 16 UINT 0 16 0 "EID of source whose counter is to be reset"
+    APPEND_PARAMETER SPARE           16 UINT 0  0 0 "Spare for alignment"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_RESET_BUNDLE_COUNTERS',      1, 12, "Reset Bundle Counters Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_RESET_ERROR_COUNTERS',       1, 13, "Reset Error Counters Cmd") %>
+    APPEND_PARAMETER MIB_ARRAY_INDEX 16 UINT 0 16 0 "Index into source MIB counter array to reset"
+    APPEND_PARAMETER SPARE_2         16 UINT 0  0 0 "Spare for alignment"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_APPLICATION',                   1, 14, "Add Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID 32 UINT 0 255 0 "Channel ID"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_APPLICATION',                1, 15, "Remove Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID 32 UINT 0 255 0 "Channel ID"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SET_REGISTRATION_STATE',            1, 16, "Set Registration State Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_START_APPLICATION',                 1, 17, "Start Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID 32 UINT 0 255 0 "Channel ID"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_STOP_APPLICATION',                  1, 18, "Stop Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID 32 UINT 0 255 0 "Channel ID"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_AUTH_SOURCES',                  1, 19, "Add Authorized Sources Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_AUTH_SOURCES',               1, 20, "Remove Authorized Sources Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_AUTH_CUSTODY_SOURCES',          1, 21, "Add Authorized Custody Sources Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_AUTH_CUSTODY_SOURCES',       1, 22, "Remove Authorized Custody Sources Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_AUTH_CUSTODIANS',               1, 23, "Add Authorized Custodians Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_AUTH_CUSTODIANS',            1, 24, "Remove Authorized Custodians Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_AUTH_REPORT_TO_EID',            1, 25, "Add Authorized Report-to EID Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_AUTH_REPORT_TO_EID',         1, 26, "Remove Authorized Report-to EID Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_LATENCY',                       1, 27, "Add Latency Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_LATENCY',                    1, 28, "Remove Latency Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_CONTACT_SETUP',                     1, 29, "Contact Setup Cmd") %>
+    APPEND_PARAMETER CONTACT_ID 32 UINT 0 0xFFFFFFFF 0 "Contact ID from the Contacts Configuration to setup"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_CONTACT_START',                     1, 30, "Contact Start Cmd") %>
+    APPEND_PARAMETER CONTACT_ID 32 UINT 0 0xFFFFFFFF 0 "Contact ID from the Contacts Configuration to start"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_CONTACT_STOP',                      1, 31, "Contact Stop Cmd") %>
+    APPEND_PARAMETER CONTACT_ID 32 UINT 0 0xFFFFFFFF 0 "Contact ID from the Contacts Configuration to stop"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_CONTACT_TEARDOWN',                  1, 32, "Contact Teardown Cmd") %>
+    APPEND_PARAMETER CONTACT_ID 32 UINT 0 0xFFFFFFFF 0 "Contact ID from the Contacts Configuration to teardown"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_MIB_ARRAY_KEY',                 1, 33, "Add MIB Array Key Cmd") %>
+    <% $dtnfsw_globals_num_eid_patterns_per_mib_set.times do |key_num| %>
+        <%= dtnfsw_gen_cmd_param_eid_pattern_t("#{key_num}") %>
+    <% end %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_MIB_ARRAY_KEY',              1, 34, "Remove MIB Array Key Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SET_MIB_ITEM',                      1, 35, "Set MIB Item Cmd") %>
+    <%= dtnfsw_gen_cmd_param_eid_pattern_t("EID") %>
+    APPEND_PARAMETER MIB_ITEM               32 UINT 0 18         0 "MIB item identifier to set"
+        STATE PARAM_BUNDLE_SIZE_NO_FRAGMENT         0
+        STATE PARAM_SET_MAX_SEQUENCE_NUM            1
+        STATE PARAM_SET_MAX_PAYLOAD_LENGTH          2
+        STATE PARAM_SET_MAX_BUNDLE_LENGTH           3 
+        STATE PARAM_SET_NODE_DTN_TIME               4
+        STATE PARAM_SET_BEHAVIOR_EVENT_REPORTING    5
+        STATE PARAM_SET_MAX_LIFETIME                6
+        STATE PARAM_SET_MAX_BSR_GENERATION_RATE     7
+        STATE PARAM_SET_MAX_CBR_GENERATION_RATE     8
+        STATE BUNDLE_SET_BEHAVIOR_RCVD_BSR_GENERATE 9
+        STATE BUNDLE_SET_BEHAVIOR_ACPT_BSR_GENERATE 10
+        STATE BUNDLE_SET_BEHAVIOR_FWRD_BSR_GENERATE 11
+        STATE BUNDLE_SET_BEHAVIOR_DLVR_BSR_GENERATE 12
+        STATE BUNDLE_SET_BEHAVIOR_DLTD_BSR_GENERATE 13
+        STATE BUNDLE_SET_BEHAVIOR_RCVD_CBR_GENERATE 14
+        STATE BUNDLE_SET_BEHAVIOR_ACPT_CBR_GENERATE 15
+        STATE BUNDLE_SET_BEHAVIOR_FWRD_CBR_GENERATE 16
+        STATE BUNDLE_SET_BEHAVIOR_DLVR_CBR_GENERATE 17
+        STATE BUNDLE_SET_BEHAVIOR_DLTD_CBR_GENERATE 18
+    APPEND_PARAMETER VALUE                  32 UINT 0 0xFFFFFFFF         0 "Value to set MIB item to"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_ADD_STORAGE_ALLOCATION',            1, 36, "Add Storage Allocation Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_REMOVE_STORAGE_ALLOCATION',         1, 37, "Remove Storage Allocation Cmd") %>
+    APPEND_PARAMETER EXAMPLE_PARAMETER 32 UINT 0 0xFFFFFFFF 0 "A placeholder parameter"
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_PERFORM_SELF_TEST',                 1, 38, "Perform Self Test (7.2) Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_NODE_MIB_CONFIG_HK',           1, 40, "Send Node MIB Config HK Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_SOURCE_MIB_CONFIG_HK',         1, 41, "Send Per-Source MIB Config HK Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_NODE_MIB_COUNTERS_HK',         1, 42, "Send Node MIB Counter HK Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_SOURCE_MIB_COUNTERS_HK',       1, 43, "Send Per-Source MIB Config HK Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_STORAGE_HK',                   1, 44, "Send Storage HK Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_CHANNEL_CONTACT_STAT_HK',      1, 45, "Send Channel/Contact Status HK Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'BPNODE_CMD_SEND_NODE_MIB_REPORTS_HK',          1, 46, "Send Node MIB Reports HK Cmd") %>

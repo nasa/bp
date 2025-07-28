@@ -1,0 +1,56 @@
+SCREEN AUTO AUTO 1.0
+##################################################
+# Screen: Cfe_Bus_Aps_Event_Messages_Screen.txt
+# Author: Stuart Bozievich
+# Creation Date: 4/29/2024
+# Description: Used Auto generate cfe_evs_long_vent_msg.txt and formatting from PACE/COSMOS
+#             Demo page, dtn_gs_demo.txt
+##################################################
+
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+    TITLE "<%= target_name %> CFE Bus App Long Messages" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+  
+#  LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG CCSDS_STREAMID
+#  LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG CCSDS_SEQUENCE
+#  LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG CCSDS_LENGTH
+#Change to Label and Text box 
+  LABELVALUEDESC <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_ID_APP_NAME "Application Name:"
+  SUBSETTING 1 WIDTH 140
+  LABELVALUEDESC <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_ID_EVENT_ID "Packet/Event ID:"
+  LABELVALUEDESC <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_ID_EVENT_TYPE "Event Type:"
+  LABELVALUEDESC <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_ID_SPACECRAFT_ID "Spacecraft ID:"
+  LABELVALUEDESC <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_ID_PROCESSOR_ID "Processor ID:"
+  HORIZONTAL 
+    VERTICALBOX "Event Message:"
+      TEXTBOX <%= target_name %>  CFE_EVS_LONG_EVENT_MSG MESSAGE 390 125
+    END
+  END
+  
+  #LABELVALUE  CFE_EVS_LONG_EVENT_MSG PACKET_TIMESECONDS
+  #LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_TIMEFORMATTED 
+  #LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG RECEIVED_TIMESECONDS
+  #LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG RECEIVED_TIMEFORMATTED
+  #LABELVALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG RECEIVED_COUNT
+  HORIZONTAL
+    VERTICALBOX
+      LABEL "Packet Time Created:"
+      SETTING TEXTALIGN RIGHT
+      LABEL "Packet Time Received:"
+      SETTING TEXTALIGN RIGHT
+      LABEL "CFS Bus App Pkts Received:"
+      SETTING TEXTALIGN RIGHT
+    END
+    VERTICALBOX
+      VALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG PACKET_TIMEFORMATTED CONVERTED 23
+      VALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG RECEIVED_TIMEFORMATTED CONVERTED 23
+      VALUE <%= target_name %>  CFE_EVS_LONG_EVENT_MSG RECEIVED_COUNT 
+    END  
+  END     
+END
+

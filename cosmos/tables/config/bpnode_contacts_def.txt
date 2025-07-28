@@ -1,0 +1,29 @@
+<%= dtnfsw_tbl_hdr('Contacts_Table', 'Contacts Config Table', 'BPNODE', 'ContactsTable') %>
+<% $dtnfsw_globals_num_contacts.times do |cont_idx| %>
+
+  <% $dtnfsw_globals_num_dest_eid_pats_per_contact.times do |dest_eid_pat_idx| %>
+    <%= dtnfsw_gen_tbl_param_eid_pattern_t("CONT_#{cont_idx}_DEST_ID_PAT_#{dest_eid_pat_idx}") %>
+  <% end %>
+
+  APPEND_PARAMETER CONT_<%= cont_idx %>_CLA_TYPE 32 UINT 0 3 0
+    STATE UDP 0
+    STATE TCP 1
+    STATE EPP 2
+    STATE LTP 3
+
+  APPEND_PARAMETER CONT_<%= cont_idx %>_IN_ADDR  128 STRING "0.0.0.0"
+  APPEND_PARAMETER CONT_<%= cont_idx %>_OUT_ADDR 128 STRING "127.0.0.1"
+
+  APPEND_PARAMETER CONT_<%= cont_idx %>_IN_PORT  16 UINT 0 MAX_UINT16 4501
+  APPEND_PARAMETER CONT_<%= cont_idx %>_OUT_PORT 16 UINT 0 MAX_UINT16 4551
+
+  APPEND_PARAMETER CONT_<%= cont_idx %>_RETRANSMIT_TIMEOUT 32 UINT 0 MAX_UINT32 102
+  APPEND_PARAMETER CONT_<%= cont_idx %>_CS_TIME_TRIGGER    32 UINT 0 MAX_UINT32 103
+  APPEND_PARAMETER CONT_<%= cont_idx %>_CS_SIZE_TRIGGER    32 UINT 0 MAX_UINT32 10
+
+  APPEND_PARAMETER CONT_<%= cont_idx %>_PADDING            32 UINT 0 MAX_UINT32 0
+
+  APPEND_PARAMETER CONT_<%= cont_idx %>_Ingress_Bits_Per_Cycle  64 UINT 0 MAX_UINT64 0
+  APPEND_PARAMETER CONT_<%= cont_idx %>_Egress_Bits_Per_Cycle   64 UINT 0 MAX_UINT64 0
+
+<% end %>

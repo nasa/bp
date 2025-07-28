@@ -1,0 +1,42 @@
+SCREEN AUTO AUTO 1.0
+#############################
+# Author: Stuart Bozievich
+#############################
+
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> TO Lab Housekeeping" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  #LABELVALUE <%= target_name %>  TO_LAB_HK CCSDS_STREAMID
+  #LABELVALUE <%= target_name %>  TO_LAB_HK CCSDS_SEQUENCE
+  #LABELVALUE <%= target_name %>  TO_LAB_HK CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %>  TO_LAB_HK COMMAND_COUNTER "TO LAB Command Counter:"
+  LABELVALUEDESC <%= target_name %>  TO_LAB_HK COMMAND_ERROR_COUNTER "TO Lab Command Error Counter:"
+  #LABELVALUE <%= target_name %>  TO_LAB_HK PACKET_TIMESECONDS
+  #LABELVALUE <%= target_name %>  TO_LAB_HK PACKET_TIMEFORMATTED
+  #LABELVALUE <%= target_name %>  TO_LAB_HK RECEIVED_TIMESECONDS
+  #LABELVALUE <%= target_name %>  TO_LAB_HK RECEIVED_TIMEFORMATTED
+  #LABELVALUE <%= target_name %>  TO_LAB_HK RECEIVED_COUNT
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS TBL App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  TO_LAB_HK PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  TO_LAB_HK RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  TO_LAB_HK RECEIVED_COUNT 
+  END
+END
+
