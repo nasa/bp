@@ -1,0 +1,64 @@
+<% require 'dtnfsw_packet_headers' %>
+<% require 'dtnfsw_globals' %>
+<% require 'dtnfsw_gen_param' %>
+<% require 'dtnfsw_get_port_nums' %>
+<% require 'fleet_globals' %>
+
+# To expose the EDS enabled flag to the plugin install, uncomment the lines below
+# VARIABLE dtnfsw_eds_enabled false
+# <% dtnfsw_globals_set_eds_enabled(dtnfsw_eds_enabled) %>
+
+# To set the memory size, uncomment the lines below
+# VARIABLE dtnfsw_mem_size 32
+# <% dtnfsw_globals_set_mem_size(dtnfsw_mem_size) %>
+
+# To expose the endianness config to the plugin install, uncomment the lines below
+# VARIABLE dtnfsw_endianness LITTLE_ENDIAN
+# <% dtnfsw_globals_set_endianness(dtnfsw_endianness) %>
+
+VARIABLE dtnfsw_intf_ip_1 X.X.X.X
+VARIABLE dtnfsw_intf_ip_2 X.X.X.X
+VARIABLE dtnfsw_intf_ip_3 X.X.X.X
+VARIABLE dtnfsw_intf_ip_4 X.X.X.X
+VARIABLE dtnfsw_intf_ip_5 X.X.X.X
+VARIABLE dtnfsw_intf_ip_6 X.X.X.X
+
+<% (1..$fleet_globals_num_dtnfsw_targets).each do |dtnfsw_cpu_index| %>
+
+    # Declare a new instance of the DTNFSW target
+    TARGET DTNFSW <%= dtnfsw_target_name_from_cpu_num(dtnfsw_cpu_index) %>
+
+    # Select the appropriate IP config input variable (declared above) for this cpu number
+    <% if dtnfsw_cpu_index == 1 %>
+        <% dtnfsw_intf_ip = dtnfsw_intf_ip_1 %>
+    <% elsif dtnfsw_cpu_index == 2 %>
+        <% dtnfsw_intf_ip = dtnfsw_intf_ip_2 %>
+    <% elsif dtnfsw_cpu_index == 3 %>
+        <% dtnfsw_intf_ip = dtnfsw_intf_ip_3 %>
+    <% elsif dtnfsw_cpu_index == 4 %>
+        <% dtnfsw_intf_ip = dtnfsw_intf_ip_4 %>
+    <% elsif dtnfsw_cpu_index == 5 %>
+        <% dtnfsw_intf_ip = dtnfsw_intf_ip_5 %>
+    <% elsif dtnfsw_cpu_index == 6 %>
+        <% dtnfsw_intf_ip = dtnfsw_intf_ip_6 %>
+    <% else %>
+        # This line should cause a plugin compilation error
+        # If this line is hit, the loop count doesn't match the supported number of interfaces
+        <% dtnfsw_intf_ip = error %>
+    <% end %>
+
+    # Set up the FSW cmd/tlm interface
+    INTERFACE DTNFSW_<%= dtnfsw_cpu_index %>_INT udp_interface.rb &
+            <%= dtnfsw_intf_ip %> &
+            <%= dtnfsw_get_port_num_cmd(dtnfsw_cpu_index) %> &
+            <%= dtnfsw_get_port_num_tlm(dtnfsw_cpu_index) %> &
+            nil nil 128 nil nil
+        MAP_TARGET <%= dtnfsw_target_name_from_cpu_num(dtnfsw_cpu_index) %>
+        PROTOCOL WRITE ProtocolCcsdsChecksum
+        PROTOCOL WRITE ProtocolCcsdsLength
+        PROTOCOL READ LengthProtocol 32 16 7 1 BIG_ENDIAN 0 nil
+        PROTOCOL READ ProtocolEvsLog
+<% end %>
+
+
+TARGET FLEET FLEET
