@@ -1,5 +1,0 @@
-<%= dtnfsw_tlm_hdr(target_name, 'CFE_TESTCASE_HK', 1, "CFE_TESTCASE Hk Tlm") %>
-
-
-
-
