@@ -433,12 +433,6 @@ $DTNFSW_CMD_TLM_LIST = {
             "BPACC_FUN_HK",
         ]
     ),
-    # "SB_CLA_OUT" => FswMsgInfo.new(
-    #     base_stream_id: 0x08B1,
-    #     packet_names: [
-    #         "SB_CLA_OUT",
-    #     ]
-    # ),
 }
 
 
