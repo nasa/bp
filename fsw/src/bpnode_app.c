@@ -177,8 +177,6 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_Status_t Status;
     BPLib_Status_t BpStatus;
     int32 NotifStatus;
-    char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
-    char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
     uint8 i;
     CFE_SB_Qos_t PipeQOS = {0, 0};
 
