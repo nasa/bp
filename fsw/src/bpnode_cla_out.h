@@ -57,8 +57,7 @@
  */
 typedef struct
 {
-    CFE_MSG_TelemetryHeader_t TelemetryHeader; /** \brief Telemtry header for space packet wrapped around bundle */
-    uint8                     Payload[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
+    uint8 Payload[BPNODE_CLA_PSP_OUTPUT_BUFFER_SIZE];
 } BPNode_ClaOut_Buffer_t;
 
 /**
