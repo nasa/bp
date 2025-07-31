@@ -41,7 +41,7 @@
 
 #define BPNODE_MAJOR_VERSION 7  /*!< @brief Major version number. */
 #define BPNODE_MINOR_VERSION 0  /*!< @brief Minor version number. */
-#define BPNODE_REVISION      0  /*!< @brief Revision version number. Value of 0 indicates a development version.*/
+#define BPNODE_REVISION      1  /*!< @brief Revision version number. Value of 0 indicates a development version.*/
 
 /*!
  * @brief Mission revision.
@@ -50,7 +50,7 @@
  * Values 1-254 are reserved for mission use to denote patches/customizations as needed. NOTE: Reserving 0 and 0xFF for
  * cFS open-source development use (pending resolution of nasa/cFS#440)
  */
-#define BPNODE_MISSION_REV 0xFF
+#define BPNODE_MISSION_REV 0
 
 #define BPNODE_STR_HELPER(x) #x /*!< @brief Helper function to concatenate strings from integer macros */
 #define BPNODE_STR(x) \

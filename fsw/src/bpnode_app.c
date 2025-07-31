@@ -177,8 +177,6 @@ CFE_Status_t BPNode_AppInit(void)
     CFE_Status_t Status;
     BPLib_Status_t BpStatus;
     int32 NotifStatus;
-    char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
-    char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
     uint8 i;
     CFE_SB_Qos_t PipeQOS = {0, 0};
 
@@ -436,16 +434,12 @@ CFE_Status_t BPNode_AppInit(void)
     /* App has initialized properly */
     BPNode_AppData.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
-                    BPNODE_MAJOR_VERSION,
-                    BPNODE_MINOR_VERSION,
-                    BPNODE_REVISION);
-
-    CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
-                                BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
-
-    BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION, "BPNode Initialized: %s",
-                        VersionString);
+    BPLib_EM_SendEvent(BPNODE_INIT_INF_EID, BPLib_EM_EventType_INFORMATION,
+                        "BPNode Initialized. Version %d.%d.%d.%d",
+                        BPNODE_MAJOR_VERSION,
+                        BPNODE_MINOR_VERSION,
+                        BPNODE_REVISION,
+                        BPNODE_MISSION_REV);
 
     return CFE_SUCCESS;
 }
