@@ -2,13 +2,6 @@
 
 See the [OpenC3](https://openc3.com) documentation for all things OpenC3.
 
-Update this comment with your own description.
-
-## Getting Started
-
-1. Edit the .gemspec file fields: name, summary, description, authors, email, and homepage
-1. Update the LICENSE.txt file with your company name
-
 ## Building non-tool / widget plugins
 
 1. <Path to COSMOS installation>/openc3.sh cli rake build VERSION=X.Y.Z (or openc3.bat for Windows)
@@ -18,7 +11,7 @@ Update this comment with your own description.
 ## Building tool / widget plugins using a local Ruby/Node/Yarn/Rake Environment
 
 1. yarn
-1. rake build VERSION=1.0.0
+2. rake build VERSION=1.0.0
 
 ## Building tool / widget plugins using Docker and the openc3-node container
 
@@ -37,30 +30,15 @@ docker run -it -v %cd%:/openc3/local -w /openc3/local docker.io/openc3inc/openc3
 ```
 
 1. yarn
-1. rake build VERSION=1.0.0
+2. rake build VERSION=1.0.0
 
 ## Installing into OpenC3 COSMOS
 
 1. Go to the OpenC3 Admin Tool, Plugins Tab
-1. Click the paperclip icon and choose your plugin.gem file
-1. Fill out plugin parameters
-1. Click Install
+2. Click the paperclip icon and choose your plugin.gem file
+3. Fill out plugin parameters
+4. Click Install
 
-## Contributing
+## DTN Tool Integration
 
-We encourage you to contribute to OpenC3!
-
-Contributing is easy.
-
-1. Fork the project
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-Before any contributions can be incorporated we do require all contributors to agree to a Contributor License Agreement
-
-This protects both you and us and you retain full rights to any code you write.
-
-## License
-
-This OpenC3 plugin is released under the MIT License. See [LICENSE.txt](LICENSE.txt)
+The DTN Tools Suite require COSMOS version 5.12 and later, due to a Python package dependency. You can install DTN Tools wheel file (.whl) through the COSMOS Administrator Console via the Packages tab (Don't forget to click Upload!). When configuring test environments, any host ports or folders accessed by the DTN test scripts must be explicitly defined in the COSMOS compose.yaml file to ensure proper container communication. After integration you can use DTN Tools in scripts and procedures within the COSMOS Script Runner tab. See the [BPNode User Guide](https://github.com/nasa/bp/tree/main/docs) for more details.
