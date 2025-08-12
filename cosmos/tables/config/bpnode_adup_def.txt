@@ -1,0 +1,15 @@
+<%= dtnfsw_tbl_hdr('ADU_Proxy_Table', 'ADU Proxy Config Table', 'BPNODE', 'ADUProxyTable') %>
+<% $dtnfsw_globals_num_channels.times do |chan_idx| %>
+    APPEND_PARAMETER Send_To_MID_<%= chan_idx %>  32 UINT 0 0xFFFFFFFF 0x1801
+      FORMAT_STRING "0x%08X"
+    APPEND_PARAMETER Num_Recv_Frm_MIDs_<%= chan_idx %>  32 UINT 0 0xFFFFFFFF 4
+
+  <% 10.times do |msgid_idx| %>
+    APPEND_PARAMETER Msg_Lims<%= chan_idx %>_Mid<%= msgid_idx %> 32 UINT 0 0xFFFF 10
+  <% end %>
+  <% 10.times do |msgid_idx| %>
+    APPEND_PARAMETER Recv_Frm_MIDs_Chan<%= chan_idx %>_Mid<%= msgid_idx %> 32 UINT 0 0xFFFFFFFF 0x00001801
+      FORMAT_STRING "0x%08X"
+  <% end %>
+<% end %>
+

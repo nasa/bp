@@ -1,0 +1,13 @@
+<%= dtnfsw_tlm_hdr(target_name, 'BPNODE_STORAGE_HK', 1, "BPNode Storage Tlm") %>
+   APPEND_ITEM BYTES_MEM_IN_USE     64 UINT "Bytes of memory in use"
+   APPEND_ITEM BYTES_MEM_FREE       64 UINT "Bytes of memory free for use"
+   APPEND_ITEM BYTES_MEM_HIGH_WATER 64 UINT "Highest number of bytes in memory since last reset"
+   APPEND_ITEM KB_STORAGE_IN_USE    64 UINT "Kilobytes of SQLite3 storage currently in use"
+   APPEND_ITEM KB_BUNDLES_IN_STOR   64 UINT "Kilobytes of SQLite3 storage currently being occupied by bundles"
+   APPEND_ITEM TIME_MONOTONIC_CNT   64 INT  "Monotonic Time Counter"
+   APPEND_ITEM TIME_CF              64 INT  "Time Correlation Factor (CF)"
+
+   ITEM DTN_TIME_RAW                         0 0 DERIVED "DTN Timestamp (raw)"
+      READ_CONVERSION dtn_time_raw_conversion.rb TIME_MONOTONIC_CNT TIME_CF
+   ITEM DTN_TIME_FORMATTED                  0 0 DERIVED "DTN Timestamp (formatted)"
+      READ_CONVERSION dtn_time_formatted_conversion.rb TIME_MONOTONIC_CNT TIME_CF

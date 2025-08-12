@@ -1,0 +1,173 @@
+<%= dtnfsw_tbl_hdr('CF_config_table', 'CF Config Table', 'CF', 'config_table') %>
+
+    APPEND_PARAMETER "ticks_per_second" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "rx_crc_calc_bytes_per_wakeup" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "local_eid" 32 UINT 0 0xFFFFFFFF 0
+    
+    APPEND_PARAMETER "chan_0_max_outgoing_messages_per_wakeup" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_rx_max_messages_per_wakeup" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_ack_timer_s" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_nak_timer_s" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_inactivity_timer_s" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_ack_limit" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "chan_0_nak_limit" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_1" 16 UINT 0 0 0
+    APPEND_PARAMETER "chan_0_mid_input" 32 UINT 0 0xFFFF 0x183F
+      FORMAT_STRING "0x%04X" 
+    APPEND_PARAMETER "chan_0_mid_output" 32 UINT 0 0xFFFF 0x083E
+      FORMAT_STRING "0x%04X" 
+    APPEND_PARAMETER "chan_0_pipe_depth_input" 16 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_0_poll_0_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_0_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_3" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_4" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_0_poll_0_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_0_dest_eid" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_0_src_dir" 352 STRING "abcd"
+    APPEND_PARAMETER "chan_0_poll_0_dst_dir" 352 STRING ""
+    APPEND_PARAMETER "chan_0_poll_0_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_0_poll_1_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_1_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_0_poll_1_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_1_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_0_poll_1_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_0_poll_1_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_0_poll_1_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_0_poll_2_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_2_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_0_poll_2_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_2_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_0_poll_2_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_0_poll_2_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_0_poll_2_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_0_poll_3_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_3_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_0_poll_3_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_3_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_0_poll_3_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_0_poll_3_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_0_poll_3_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_0_poll_4_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_4_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_0_poll_4_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_0_poll_4_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_0_poll_4_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_0_poll_4_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_0_poll_4_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_0_sem_name" 160 STRING ""
+    APPEND_PARAMETER "chan_0_dequeue_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "chan_0_move_dir" 512 STRING ""
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_max_outgoing_messages_per_wakeup" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_rx_max_messages_per_wakeup" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_ack_timer_s" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_nak_timer_s" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_inactivity_timer_s" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_ack_limit" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "chan_1_nak_limit" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_1" 16 UINT 0 0 0
+    APPEND_PARAMETER "chan_1_mid_input" 32 UINT 0 0xFFFF 0
+      FORMAT_STRING "0x%04X" 
+    APPEND_PARAMETER "chan_1_mid_output" 32 UINT 0 0xFFFF 0
+      FORMAT_STRING "0x%04X" 
+    APPEND_PARAMETER "chan_1_pipe_depth_input" 16 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_poll_0_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_0_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_7" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_8" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_1_poll_0_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_0_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_1_poll_0_src_dir" 352 STRING ""
+    APPEND_PARAMETER "chan_1_poll_0_dst_dir" 352 STRING ""
+    APPEND_PARAMETER "chan_1_poll_0_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_poll_1_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_1_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_9" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_10" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_1_poll_1_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_1_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_1_poll_1_src_dir" 352 STRING ""
+    APPEND_PARAMETER "chan_1_poll_1_dst_dir" 352 STRING ""
+    APPEND_PARAMETER "chan_1_poll_1_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_poll_2_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_2_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_1_poll_2_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_2_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_1_poll_2_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_1_poll_2_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_1_poll_2_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_poll_3_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_3_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_1_poll_3_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_3_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_1_poll_3_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_1_poll_3_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_1_poll_3_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_poll_4_interval_sec" 32 UINT 0 0xFFFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_4_priority" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_5" 16 UINT 0 0 0
+    APPEND_PARAMETER "spare_6" 8 UINT 0 0 0
+    APPEND_PARAMETER "chan_1_poll_4_cfdp_class" 32 UINT 0 0xFFFFFF 0
+    APPEND_PARAMETER "chan_1_poll_4_dest_eid" 32 UINT 0 0xFFFF 0
+    APPEND_PARAMETER "chan_1_poll_4_src_dir" 352 STRING "efgh"
+    APPEND_PARAMETER "chan_1_poll_4_dst_dir" 352 STRING "ijkl"
+    APPEND_PARAMETER "chan_1_poll_4_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    APPEND_PARAMETER "chan_1_sem_name" 160 STRING ""
+    APPEND_PARAMETER "chan_1_dequeue_enabled" 8 UINT 0 0xFF 0
+    APPEND_PARAMETER "chan_1_move_dir" 512 STRING ""
+    APPEND_PARAMETER "spare_2" 8 UINT 0 0 0
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0
+    
+    
+    APPEND_PARAMETER "outgoing_file_chunk_size" 16 UINT 0 0xFFFF 0  
+    APPEND_PARAMETER "tmp_dir" 352 STRING ""
+    APPEND_PARAMETER "fail_dir" 352 STRING ""
+    APPEND_PARAMETER "spare_2" 16 UINT 0 0 0

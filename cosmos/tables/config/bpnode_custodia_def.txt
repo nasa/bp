@@ -1,0 +1,4 @@
+<%= dtnfsw_tbl_hdr('Custodian_Table', 'Custodian Config Table', 'BPNODE', 'CustodianTable') %>
+<% $dtnfsw_globals_num_auth_custodian_eids.times do |auth_custodian_eid_idx| %>
+  <%= dtnfsw_gen_tbl_param_eid_pattern_t("AUTH_CUSTODIAN_EID_PAT_#{auth_custodian_eid_idx}") %>
+<% end %>

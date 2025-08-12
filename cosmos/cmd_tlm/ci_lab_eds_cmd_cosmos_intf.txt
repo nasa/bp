@@ -1,0 +1,7 @@
+<%= dtnfsw_cmd_hdr(target_name, 'CI_LAB_CMD_NOOP', 1, 0, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CI_LAB_CMD_RESET_COUNTERS', 1, 1, "Telecommand Message") %>
+
+
+
+

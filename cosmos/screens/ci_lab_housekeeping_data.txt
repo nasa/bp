@@ -1,0 +1,47 @@
+SCREEN AUTO AUTO 1.0
+################################################################
+# Screen: CI_Lab_Housekeeping_Data
+# Released: 07/15/2024
+# Author: S. Bozievich
+################################################################
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> CI Lab Housekeeping Data" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  #LABELVALUE <%= target_name %>  CI_LAB_HK CCSDS_STREAMID
+  #LABELVALUE <%= target_name %>  CI_LAB_HK CCSDS_SEQUENCE
+  #LABELVALUE <%= target_name %>  CI_LAB_HK CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %>  CI_LAB_HK COMMAND_COUNTER "CI LAB Command Counter:"
+  LABELVALUEDESC <%= target_name %>  CI_LAB_HK COMMAND_ERROR_COUNTER "CI LAB Command Error Counter:"
+  LABELVALUEDESC <%= target_name %>  CI_LAB_HK ENABLE_CHECKSUMS "Enable Checksums:"
+  LABELVALUEDESC <%= target_name %>  CI_LAB_HK SOCKET_CONNECTED "Command Socket Connected:"
+  LABELVALUEDESC <%= target_name %>  CI_LAB_HK INGEST_PACKETS "Ingested Command Packets:"
+  LABELVALUEDESC <%= target_name %>  CI_LAB_HK INGEST_ERRORS "Ingestion Error Command Packets:"
+  #LABELVALUE <%= target_name %>  CI_LAB_HK PACKET_TIMESECONDS
+  #LABELVALUE <%= target_name %>  CI_LAB_HK PACKET_TIMEFORMATTED
+  #LABELVALUE <%= target_name %>  CI_LAB_HK RECEIVED_TIMESECONDS
+  #LABELVALUE <%= target_name %>  CI_LAB_HK RECEIVED_TIMEFORMATTED
+  #LABELVALUE <%= target_name %>  CI_LAB_HK RECEIVED_COUNT
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS TBL App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  CI_LAB_HK PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  CI_LAB_HK RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  CI_LAB_HK RECEIVED_COUNT 
+  END  
+END
+

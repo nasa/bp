@@ -1,0 +1,16 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CF_EOT', 1, "CF EOT Tlm Packet") %>
+   APPEND_ITEM SEQ_NUM 32 UINT "Transaction identifier"
+   APPEND_ITEM CHANNEL 32 UINT "Channel number"
+   APPEND_ITEM DIRECTION 32 UINT "Direction of this transaction"
+   APPEND_ITEM STATE 32 UINT "Transaction state"
+   APPEND_ITEM TXN_STAT 32 UINT "Final status code of transaction"
+   APPEND_ITEM SRC_EID 32 UINT "Source eid of the transaction"
+   APPEND_ITEM PEER_EID 32 UINT "peer_eid is always the 'other guy', same src_eid for RX"
+   APPEND_ITEM FSIZE 32 UINT "File size"
+   APPEND_ITEM CRC_RESULT 32 UINT "CRC result"
+   APPEND_ITEM FNAMES_SRC_FILENAME 512 STRING "Source filename"
+   APPEND_ITEM FNAMES_DST_FILENAME 512 STRING "Destination filename"
+
+
+
+

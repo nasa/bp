@@ -1,0 +1,43 @@
+SCREEN AUTO AUTO 1.0
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> CFE Time Housekeeping Data" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK COMMAND_COUNTER "Time Command Counter:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK COMMAND_ERROR_COUNTER "Time Command Counter:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK CLOCK_STATE_FLAGS "Clock State Flags"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK CLOCK_STATE_API "Clock State:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK LEAP_SECONDS "Leap Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK SECONDS_MET "MET Seconds"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK SUBSECS_MET "MET Sub Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK SECONDS_STCF "STCF Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK SUBSECS_STCF "STCF Sub Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK ADJUSTMENT_FACTOR_SECONDS "Adjustment Factor Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK ADJUSTMENT_FACTOR_SUBSECONDS "Adjustment Factor Sub Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TIME_HK PACKET_TIMESECONDS "Packet Time Seconds:"
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "cFE TIME App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+    BUTTON 'Request cFE TIME Diagnostic Telemetry' 'api.cmd("<%= target_name %>  CFE_TIME_CMD_SEND_DIAGNOSTIC")'
+    BUTTON 'Open Time Diagnostics Screen' "screen.open('<%= target_name %>', 'cfe_time_diag')"
+    BUTTON 'Close Time Diagnostics Screen' "screen.close('<%= target_name %>', 'cfe_time_diag')"
+
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  CFE_TIME_HK PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  CFE_TIME_HK RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  CFE_TIME_HK RECEIVED_COUNT 
+  END  
+END
+

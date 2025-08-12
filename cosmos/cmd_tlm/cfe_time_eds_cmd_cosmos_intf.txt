@@ -1,0 +1,60 @@
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_NOOP',  1,  0, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_RESET_COUNTERS',  1,  1, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SEND_DIAGNOSTIC',  1,  2, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_SOURCE',  1,  3, "Telecommand Message") %>
+   APPEND_PARAMETER TIME_SOURCE 16 UINT 1 2 1 "Clock Source Selection Parameters"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_STATE',  1,  4, "Telecommand Message") %>
+   APPEND_PARAMETER CLOCK_STATE 16 INT -1 1 0 "Enumerated types identifying the quality of the current time"
+      STATE INVALID -1
+      STATE VALID    0
+      STATE FLYWHEEL 1
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_ADD_DELAY',  1,  5, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SUB_DELAY',  1,  6, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_TIME',  1,  7, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_MET',  1,  8, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_STCF',  1,  9, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_LEAP_SECONDS',  1,  10, "Telecommand Message") %>
+   APPEND_PARAMETER LEAP_SECONDS 16 INT -32768 32767 0 "Signed 16 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_ADD_ADJUST',  1,  11, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SUB_ADJUST',  1,  12, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER MICRO_SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_ADD_ONE_HZ_ADJUSTMENT',  1,  13, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER SUBSECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SUB_ONE_HZ_ADJUSTMENT',  1,  14, "Telecommand Message") %>
+   APPEND_PARAMETER SECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+   APPEND_PARAMETER SUBSECONDS 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_TIME_CMD_SET_SIGNAL',  1,  15, "Telecommand Message") %>
+   APPEND_PARAMETER TONE_SOURCE 16 INT 1 2 1 "Tone Signal Selection Parameters"
+
+
+
+

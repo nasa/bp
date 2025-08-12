@@ -1,0 +1,9 @@
+<%= dtnfsw_tbl_hdr('CRS_Table', 'CRS Config Table', 'BPNODE', 'CRSTable') %>
+<% $dtnfsw_globals_num_crs_tbl_entries.times do |crs_tbl_idx| %>
+  <%= dtnfsw_gen_tbl_param_eid_t("CRS_ID_#{crs_tbl_idx}_Dest_EID") %>
+  APPEND_PARAMETER CRS_ID_<%= crs_tbl_idx %>_Time_Trigger 32 UINT 0 0xFFFFFFFF 10000
+    FORMAT_STRING "0x%08X"
+  APPEND_PARAMETER CRS_ID_<%= crs_tbl_idx %>_Size_Trigger 32 UINT 0 0xFFFFFFFF 10000
+    FORMAT_STRING "0x%08X"
+<% end %>
+

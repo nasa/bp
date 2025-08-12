@@ -1,0 +1,28 @@
+<%= dtnfsw_tlm_hdr(target_name, 'BPNODE_SOURCE_MIB_CONFIG_HK', 1, "BPNode SOURCE MIB Config Tlm") %>
+<% $dtnfsw_globals_max_num_mib_sets.times do |src_id| %>
+    <% $dtnfsw_globals_num_eid_patterns_per_mib_set.times do |eid_idx| %>
+      <%= dtnfsw_gen_tlm_param_eid_pattern_t("SOURCE_#{src_id}_EID_#{eid_idx}") %>
+    <% end %>
+   APPEND_ITEM PARAM_SET_MAX_LIFETIME_<%= src_id %>           32 UINT "Maximum Bundle Lifetime"
+   APPEND_ITEM PARAM_SET_MAX_BSR_GEN_RATE_<%= src_id %>       32 UINT "Maximum number of BSR per minute"
+   APPEND_ITEM PARAM_SET_MAX_CBR_GEN_RATE_<%= src_id %>       32 UINT "Maximum number of CBR per minute"
+
+   APPEND_ITEM BUNDLE_SET_BEH_RECV_BSR_GEN_<%= src_id %>      32 UINT "Flag for Generating BSR for Received bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_ACCPT_BSR_GEN_<%= src_id %>     32 UINT "Flag for Generating BSR for Accepted bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_FORW_BSR_GEN_<%= src_id %>      32 UINT "Flag for Generating BSR for Forwarded bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_DELIVR_BSR_GEN_<%= src_id %>    32 UINT "Flag for Generating BSR for Delivered bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_DEL_BSR_GEN_<%= src_id %>       32 UINT "Flag for Generating BSR for Deleted bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_RECV_CBR_GEN_<%= src_id %>      32 UINT "Flag for Generating CBR for Received bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_ACCPT_CBR_GEN_<%= src_id %>     32 UINT "Flag for Generating CBR for Accepted bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_FORW_CBR_GEN_<%= src_id %>      32 UINT "Flag for Generating CBR for Forwarded bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_DELIVR_CBR_GEN_<%= src_id %>    32 UINT "Flag for Generating CBR for Delivered bundle"
+   APPEND_ITEM BUNDLE_SET_BEH_DEL_CBR_GEN_<%= src_id %>       32 UINT "Flag for Generating CBR for Deleted bundle"
+   APPEND_ITEM SPARE_<%= src_id %>                            32 UINT "Spare"
+<% end %>
+   APPEND_ITEM TIME_MONOTONIC_CNT               64 INT  "Monotonic Time Counter"
+   APPEND_ITEM TIME_CF                          64 INT  "Time Correlation Factor (CF)"
+
+   ITEM DTN_TIME_RAW                         0 0 DERIVED "DTN Timestamp (raw)"
+      READ_CONVERSION dtn_time_raw_conversion.rb TIME_MONOTONIC_CNT TIME_CF
+   ITEM DTN_TIME_FORMATTED                  0 0 DERIVED "DTN Timestamp (formatted)"
+      READ_CONVERSION dtn_time_formatted_conversion.rb TIME_MONOTONIC_CNT TIME_CF

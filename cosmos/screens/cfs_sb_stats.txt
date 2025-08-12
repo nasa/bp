@@ -1,0 +1,47 @@
+SCREEN AUTO AUTO 1.0
+#***********************************************************************************
+# Description: cfs_sb_stats_screen is the master screen for cfs_sb_stats telemetry. It will have
+#   three buttons, one which displays the child screen, cfs_sb_pipe_stat_0_63_tabs_screen, one which
+#   sends the command to broadcast one frame of cfs_sb_stats telemetry, 
+# Created Date: 05/21/2024
+# Author: Stuart Bozievich
+#************************************************************************************
+<% require 'dtnfsw_target_num_color' %>
+
+HORIZONTAL
+
+
+VERTICALBOX
+  TITLE "<%= target_name %> cFS Sofware Bus Status Data" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>  
+  #LABELVALUEDESC <%= target_name %>  CFE_SB_STATS CCSDS_STREAMID
+  #LABELVALUEDESC <%= target_name %>  CFE_SB_STATS CCSDS_SEQUENCE
+  #LABELVALUEDESC <%= target_name %>  CFE_SB_STATS CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MSG_IDS_IN_USE "Message IDs in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PEAK_MSG_IDS_IN_USE "Peak Message IDs in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MAX_MSG_IDS_ALLOWED "Maximum Message IDs allowed:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPES_IN_USE "Pipes in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PEAK_PIPES_IN_USE "Peak Pipes in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MAX_PIPES_ALLOWED "Maximum Pipes allowed:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MEM_IN_USE "Memory in use:" 
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PEAK_MEM_IN_USE "Peak Memory in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MAX_MEM_ALLOWED "Maximun Memory allowed:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS SUBSCRIPTIONS_IN_USE "Subscriptions in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PEAK_SUBSCRIPTIONS_IN_USE "Peak Subscriptions in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MAX_SUBSCRIPTIONS_ALLOWED "Maximum Subscriptions allowed:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS SB_BUFFERS_IN_USE "Software Bus Buffers in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PEAK_SB_BUFFERS_IN_USE "Peak Software Bus Buffers in use:"
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS MAX_PIPE_DEPTH_ALLOWED "Maximum Pipe Depth allowed:"
+  #LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PACKET_TIMESECONDS
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PACKET_TIMEFORMATTED "Packet Time:"
+  SUBSETTING 1 WIDTH 230
+  #LABELVALUEDESC <%= target_name %>  CFE_SB_STATS RECEIVED_TIMESECONDS
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS RECEIVED_TIMEFORMATTED "Ground Receipt Time:"
+  SUBSETTING 1 WIDTH 230
+  LABELVALUEDESC <%= target_name %>  CFE_SB_STATS RECEIVED_COUNT "Ground Receipt Count:"
+  BUTTON 'Send cfs_sb_stats Telemetry' 'api.cmd("<%= target_name %>  CFE_SB_CMD_SEND_SB_STATS")'
+  BUTTON 'Pipe Stats' "screen.open('<%= target_name %> ', 'cfe_sb_pipe_stats_0_63_tabs')"
+  BUTTON 'Close Pipe Stats' "screen.close('<%= target_name %> ', 'cfe_sb_pipe_stats_0_63_tabs')"
+
+END
+

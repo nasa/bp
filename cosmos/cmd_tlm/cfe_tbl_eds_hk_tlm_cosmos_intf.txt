@@ -1,0 +1,28 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_TBL_HK', 1, "CFE_TBL Hk Tlm") %>
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "Count of valid commands received"
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM NUM_TABLES 16 UINT "Number of Tables Registered"
+   APPEND_ITEM NUM_LOAD_PENDING 16 UINT "Unsigned 16 bit integer"
+   APPEND_ITEM VALIDATION_COUNTER 16 UINT "Number of completed table validations"
+   APPEND_ITEM LAST_VAL_CRC 32 UINT "Data Integrity Value computed for last table validated"
+   APPEND_ITEM LAST_VAL_STATUS 32 INT "Returned status from validation function for last table validated"
+   APPEND_ITEM ACTIVE_BUFFER 8 UINT "Indicator of whether table buffer validated was 0=Inactive, 1=Active"
+   APPEND_ITEM LAST_VAL_TABLE_NAME 320 STRING "Name of last table validated"
+   APPEND_ITEM SUCCESS_VAL_COUNTER 8 UINT "Total number of successful table validations"
+   APPEND_ITEM FAILED_VAL_COUNTER 8 UINT "Total number of unsuccessful table validations"
+   APPEND_ITEM NUM_VAL_REQUESTS 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM NUM_FREE_SHARED_BUFS 8 UINT "Number of free Shared Working Buffers"
+   APPEND_ITEM SPARE_1 8 UINT "Spare Alignment Byte 1"
+   APPEND_ITEM SPARE_2 8 UINT "Spare Alignment Byte 2"
+   APPEND_ITEM SPARE_3 8 UINT "Spare Alignment Byte 3"
+   APPEND_ITEM MEM_POOL_HANDLE_BASE_TYPE 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM LAST_UPDATE_TIME_SECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM LAST_UPDATE_TIME_SUBSECONDS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM LAST_UPDATED_TABLE 320 STRING "Name of the last table updated"
+   APPEND_ITEM LAST_FILE_LOADED 512 STRING "Path and Name of last table image file loaded"
+   APPEND_ITEM LAST_FILE_DUMPED 512 STRING "Path and Name of last file dumped to"
+   APPEND_ITEM LAST_TABLE_LOADED 320 STRING "Name of the last table loaded"
+
+
+
+

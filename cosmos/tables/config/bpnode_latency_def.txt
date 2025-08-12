@@ -1,0 +1,10 @@
+<%= dtnfsw_tbl_hdr('Src_Latency_Table', 'Source Latency Table', 'BPNODE', 'SrcLatencyTable') %>
+<% $dtnfsw_globals_num_latency_source_tbl_entries.times do |tbl_entry_idx| %>
+  <% $dtnfsw_globals_num_eids_per_src_latency_tbl_entry.times do |src_eid_idx| %>
+    <%= dtnfsw_gen_tbl_param_eid_pattern_t("LATENCY_IDX_#{tbl_entry_idx}_SRC_EID_#{src_eid_idx}") %>
+  <% end %>
+  APPEND_PARAMETER LATENCY_IDX_<%= tbl_entry_idx %>_LATENCY 32 UINT 0 0xFFFFFFFF 10000
+    FORMAT_STRING "0x%08X"
+  APPEND_PARAMETER LATENCY_IDX_<%= tbl_entry_idx %>_SPARE 32 UINT 0 0xFFFFFFFF 10000
+    FORMAT_STRING "0x%08X"
+<% end %>

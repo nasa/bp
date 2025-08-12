@@ -1,0 +1,82 @@
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_NOOP',                         1, 0, "BPNode No-Op Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_VERIFY_BUNDLE_STORAGE',        1, 3, "Verify Bundle Storage Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_INIT_BUNDLE_STORAGE',          1, 4, "Initialize Bundle Storage Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_VERIFY_BUNDLE_METADATA',       1, 5, "Verify Bundle Metadata (7.2) Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_REBUILD_BUNDLE_METADATA',      1, 6, "Rebuild Bundle Metadata (7.2) Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_CLEAR_VOLATILE',               1, 7, "Clear Volatile Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_RELOAD_SAVED_DATA',            1, 8, "Reload Saved Data (7.2) Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_RESET_ALL_COUNTERS',           1, 9, "Reset All Counters Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_RESET_COUNTER',               1, 10, "Reset Counter Cmd") %>
+    APPEND_PARAMETER SOURCE_EID 16 INT  0 16 0 "EID of source whose counter is to be reset"
+    APPEND_PARAMETER SPARE      16 UINT 0  0 0 "Spare for alignment"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_RESET_COUNTER',                1, 10, "Reset Counter Cmd") %>
+    APPEND_PARAMETER SOURCE_EID 16 INT  0 16 0 "EID of source whose counter is to be reset"
+    APPEND_PARAMETER SPARE      16 UINT 0  0 0 "Spare for alignment"
+    APPEND_PARAMETER COUNTER    32 UINT 0 78 0 "Numerical representation of the counter to be reset"
+    APPEND_PARAMETER INVALID    8  INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_RESET_SOURCE_COUNTERS',       1, 11, "Reset Source Counters Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_RESET_SOURCE_COUNTERS',        1, 11, "Reset Source Counters Cmd") %>
+    APPEND_PARAMETER SOURCE_EID 16 INT  0 16 0 "EID of source whose counter is to be reset"
+    APPEND_PARAMETER SPARE      16 UINT 0  0 0 "Spare for alignment"
+    APPEND_PARAMETER INVALID     8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_RESET_BUNDLE_COUNTERS',        1, 12, "Reset Bundle Counters Cmd") %>
+    APPEND_PARAMETER INVALID 8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_RESET_ERROR_COUNTERS',        1, 13, "Reset Error Counters Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_RESET_ERROR_COUNTERS',         1, 13, "Reset Error Counters Cmd") %>
+    APPEND_PARAMETER SOURCE_EID 16 INT  0 16 0 "EID of source whose counter is to be reset"
+    APPEND_PARAMETER SPARE      16 UINT 0  0 0 "Spare for alignment"
+    APPEND_PARAMETER INVALID     8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_ADD_APPLICATION',              1, 14, "Add Application Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_ADD_APPLICATION',               1, 14, "Add Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID  8 UINT 0 255 0 "Channel ID"
+    APPEND_PARAMETER SPARE_1  8 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER SPARE_2 16 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER INVALID  8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_REMOVE_APPLICATION',           1, 15, "Remove Application Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_REMOVE_APPLICATION',            1, 15, "Remove Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID  8 UINT 0 255 0 "Channel ID"
+    APPEND_PARAMETER SPARE_1  8 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER SPARE_2 16 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER INVALID  8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_START_APPLICATION',            1, 17, "Start Application Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_START_APPLICATION',             1, 17, "Start Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID  8 UINT 0 255 0 "Channel ID"
+    APPEND_PARAMETER SPARE_1  8 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER SPARE_2 16 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER INVALID  8 INT  0 0 0 "Invalid parameter for testing"
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_SHORT_BPNODE_CMD_STOP_APPLICATION',             1, 18, "Stop Application Cmd") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'INVALID_LONG_BPNODE_CMD_STOP_APPLICATION',              1, 18, "Stop Application Cmd") %>
+    APPEND_PARAMETER CHAN_ID  8 UINT 0 255 0 "Channel ID"
+    APPEND_PARAMETER SPARE_1  8 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER SPARE_2 16 UINT 0   0 0 "Spare"
+    APPEND_PARAMETER INVALID  8 INT  0 0 0 "Invalid parameter for testing"

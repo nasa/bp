@@ -1,0 +1,46 @@
+SCREEN AUTO AUTO 1.0
+################################################################
+# Screen: Software Bus One Subscription
+# Released: 07/15/2024
+# Author: S. Bozievich
+################################################################
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> Software Bus One Subscription" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB CCSDS_STREAMID
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB CCSDS_SEQUENCE
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB SUB_TYPE "Subscription Type:"
+  LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB MSG_ID_VALUE "Message ID Value:"
+  LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB QOS_PRIORITY "QOS Priority:"
+  LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB QOS_RELIABILITY "QOS Reliability:"
+  LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB PIPE_BASE_TYPE "Pipe Base Type:"
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB PACKET_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB PACKET_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB RECEIVED_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB RECEIVED_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_SB_ONESUB RECEIVED_COUNT
+END
+ 
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFE SB One Subscription Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %> CFE_SB_ONESUB PACKET_TIMEFORMATTED  CONVERTED 23
+    VALUE <%= target_name %> CFE_SB_ONESUB RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CFE_SB_ONESUB RECEIVED_COUNT 
+  END    
+END
+

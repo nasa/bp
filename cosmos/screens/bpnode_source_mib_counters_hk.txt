@@ -1,0 +1,101 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+
+VERTICAL
+    TITLE "<%= target_name %> BPNode Source MIB Counters HK Data" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+    TABBOOK
+    <% $dtnfsw_globals_max_num_mib_sets.times do |src_id| %>
+        TABITEM "SrcID <%= src_id %>"
+            <% $dtnfsw_globals_num_eid_patterns_per_mib_set.times do |key_num| %>
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_SCHEME         "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected scheme for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_IPN_SSP_FORMAT "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected IPN SSP format for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_MAX_ALLOCATOR  "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected maximum allocator value for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_MIN_ALLOCATOR  "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected minimum allocator value for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_MAX_NODE       "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected maximum node value for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_MIN_NODE       "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected minimum node value for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_MAX_SERVICE    "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected maximum service value for matching purposes"
+                LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK EID<%=src_id%>_KEY<%=key_num%>_MIN_SERVICE    "Src ID <%= src_id %>, key <%= key_num %>: The pattern's expected minimum service value for matching purposes"
+            <% end %>
+
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK ACTIVE_KEYS_<%=src_id%>                              "Src ID <%= src_id %>: Tracks how many keys are actively being used"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK ADU_COUNT_DELIVERED_<%= src_id %>                    "Src ID <%= src_id %>: Number of ADUs Delivered to the application"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK ADU_COUNT_RECEIVED_<%= src_id %>                     "Src ID <%= src_id %>: Number of ADUs Received from the application"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_ABANDONED_<%= src_id %>                 "Src ID <%= src_id %>: Number of Abandoned Bundle Payloads"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_CUSTODY_REJECTED_<%= src_id %>          "Src ID <%= src_id %>: Number of unsuccessful Custody Transfers from the Local node to the next neighboring Custodian Node"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_CUSTODY_REQUEST_<%= src_id %>           "Src ID <%= src_id %>: Number of bundles received that are requesting Custody Transfer"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_CUSTODY_RE_FORWARDED_<%= src_id %>      "Src ID <%= src_id %>: Number of Bundles reforward due to custody timeout"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_CUSTODY_TRANSFERRED_<%= src_id %>       "Src ID <%= src_id %>: Number of successful Custody Transfers from the Local node to the next neighboring Custodian Node"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_<%= src_id %>                   "Src ID <%= src_id %>: Total Number of Bundle Deletions"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_BAD_EID_<%= src_id %>           "Src ID <%= src_id %>: Number of Bundles deleted due to having a unrecognized destination EID"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_CANCELLED_<%= src_id %>         "Src ID <%= src_id %>: Number of Bundles Deletions due to Transmission Cancelled Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_EXPIRED_<%= src_id %>           "Src ID <%= src_id %>: Number of Bundles Deletions due to Lifetime Expired Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_FORWARD_FAILED_<%= src_id %>    "Src ID <%= src_id %>: Number of Bundles Deletions due to Forwarding Failed Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_HOP_EXCEEDED_<%= src_id %>      "Src ID <%= src_id %>: Number of Bundles Deletions due to Hop Limit Exceeded Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_INVALID_PAYLOAD_<%= src_id %>   "Src ID <%= src_id %>: Number of Bundle Deletions due having a Corrupted Payload Block"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_NO_STORAGE_<%= src_id %>        "Src ID <%= src_id %>: Number of Bundles deleted due to insufficient storage"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_TOO_LONG_<%= src_id %>          "Src ID <%= src_id %>: Number of Bundles deleted due to being longer than paramSetMaxBundleLength"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_TRAFFIC_PARED_<%= src_id %>     "Src ID <%= src_id %>: Number of Bundles Deletions due to Traffic Pared Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_UNAUTHORIZED_<%= src_id %>      "Src ID <%= src_id %>: Number of Bundles deleted due to having a unrecognized source EID. Incremented if the bundle is not in the set of authorized source EIDs configured for the node."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_UNINTELLIGIBLE_<%= src_id %>    "Src ID <%= src_id %>: Number of Bundles Deletions due to Block Unintelligible Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_UNSUPPORTED_BLOCK_<%= src_id %> "Src ID <%= src_id %>: Number of Bundles Deletions due to Unsupported Block Condition"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DELIVERED_<%= src_id %>                 "Src ID <%= src_id %>: Total number of Bundles Delivered to this node, including fragments"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DEPLETED_<%= src_id %>                  "Src ID <%= src_id %>: Number of bundles for which rejected Custody Signals generated indicating rejection due to depleted storage"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_DISCARDED_<%= src_id %>                 "Src ID <%= src_id %>: Number of Bundles Discarded"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_FORWARDED_<%= src_id %>                 "Src ID <%= src_id %>: Number of Bundles Forwarded to another DTN Node"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_FORWARDED_FAILED_<%= src_id %>          "Src ID <%= src_id %>: Number of Bundles where forwarding to another DTN Node failed"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_FRAGMENTED_<%= src_id %>                "Src ID <%= src_id %>: Number of Bundles that needed to be Fragmented"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_FRAGMENT_ERROR_<%= src_id %>            "Src ID <%= src_id %>: Number of Fragments discarded due to bad offset or ADU length"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_GENERATED_ACCEPTED_<%= src_id %>        "Src ID <%= src_id %>: Number of Accepted Bundle Transmission Requests"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_GENERATED_CUSTODY_SIGNAL_<%= src_id %>  "Src ID <%= src_id %>: Number of bundles for which Custody Signals Generated"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_GENERATED_FRAGMENT_<%= src_id %>        "Src ID <%= src_id %>: Number of Bundle Fragments that were Generated"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_GENERATED_REJECTED_<%= src_id %>        "Src ID <%= src_id %>: Number of Rejected Bundle Transmission Requests"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_MAX_BSR_RATE_EXCEEDED_<%= src_id %>     "Src ID <%= src_id %>: Number of BSR bundles not sent because sending would exceed a maximum rate."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_NO_CONTACT_<%= src_id %>                "Src ID <%= src_id %>: Number of bundles for which rejected Custody Signals generated indicating the Destination is not reachable before the Bundle expires"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_NO_FURTHER_INFO_<%= src_id %>           "Src ID <%= src_id %>: Number of bundles for which successful Custody Signals generated with No Further Information"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_NO_ROUTE_<%= src_id %>                  "Src ID <%= src_id %>: Number of bundles for which rejected Custody Signals generated indicating the Destination is not reachable"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_REASSEMBLED_<%= src_id %>               "Src ID <%= src_id %>: Total number of Bundles delivered that were fragments and needed to be reassembled"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_<%= src_id %>                  "Src ID <%= src_id %>: Number of Bundles Received from another DTN Node"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_ADMIN_RECORD_<%= src_id %>     "Src ID <%= src_id %>: Number of admin record bundles received for this DTN Node."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_BSR_ACCEPTED_<%= src_id %>     "Src ID <%= src_id %>: Number of Bundle Custody Accepted Status Report received since the last counter reset"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_BSR_DELETED_<%= src_id %>      "Src ID <%= src_id %>: Number of Bundle Deleted Status Report received since the last counter reset"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_BSR_DELIVERED_<%= src_id %>    "Src ID <%= src_id %>: Number of Bundle Delivered Status Report received since the last counter reset"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_BSR_FORWARDED_<%= src_id %>    "Src ID <%= src_id %>: Number of Bundle Forwarded Status Report received since the last counter reset"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_BSR_RECEIVED_<%= src_id %>     "Src ID <%= src_id %>: Number of Bundle Reception Status Report received since the last counter reset"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_CRS_ACCEPTED_<%= src_id %>     "Src ID <%= src_id %>: Number of accepted bundle reports included in received Compressed Reporting Signals (CRSs) since the last counter reset. Also includes total number of accepted bundles per source node ID."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_CRS_DELETED_<%= src_id %>      "Src ID <%= src_id %>: Number of deleted bundle reports included in received Compressed Reporting Signals (CRSs) since the last counter reset. Also includes total number of deleted bundles per source node ID."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_CRS_DELIVERED_<%= src_id %>    "Src ID <%= src_id %>: Number of delivered bundle reports included in received Compressed Reporting Signals (CRSs) since the last counter reset. Also includes total number of delivered bundles per source node ID."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_CRS_FORWARDED_<%= src_id %>    "Src ID <%= src_id %>: Number of forwarded bundle reports included in received Compressed Reporting Signals (CRSs) since the last counter reset. Also includes total number of forwarded bundles per source node ID."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_CRS_RECEIVED_<%= src_id %>     "Src ID <%= src_id %>: Number of received bundle reports included in received Compressed Reporting Signals (CRSs) since the last counter reset. Also includes total number of received bundles per source node ID."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_CUSTODY_SIGNAL_<%= src_id %>   "Src ID <%= src_id %>: Number of bundles for which Custody Signals Received"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED_FRAGMENT_<%= src_id %>         "Src ID <%= src_id %>: Number of Bundles Received that were Marked as Fragments"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_REDUNDANT_<%= src_id %>                 "Src ID <%= src_id %>: Number of bundles for which successful Custody Signals generated for Duplicate Bundle reception"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_REJECTED_CUSTODY_<%= src_id %>          "Src ID <%= src_id %>: Number of Bundles where this node rejected custody."
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_RETURNED_<%= src_id %>                  "Src ID <%= src_id %>: Number of Bundles Returned to Sender"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_UNINTELLIGIBLE_BLOCK_<%= src_id %>      "Src ID <%= src_id %>: Number of bundles for which Custody Signals indicating the Bundle contained an unknown block type"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_UNINTELLIGIBLE_EID_<%= src_id %>        "Src ID <%= src_id %>: Number of bundles for which rejected Custody Signals generated indicating the any EID in the Primary Header is unknown"
+            LABELVALUEDESC <%= target_name %> BPNODE_SOURCE_MIB_COUNTERS_HK BUNDLE_COUNT_UNPROCESSED_BLOCKS_<%= src_id %>        "Src ID <%= src_id %>: Number of Unprocessed Blocks Removed from Received Bundles"
+        END
+    <% end %>
+    END
+END
+
+HORIZONTAL
+    VERTICALBOX
+        LABEL "Packet cFS Time Created:"
+        SETTING TEXTALIGN RIGHT
+        LABEL "Packet DTN Time Created:"
+        SETTING TEXTALIGN RIGHT
+        LABEL "Packet Time Received:"
+        SETTING TEXTALIGN RIGHT
+        LABEL "Packets Received:"
+        SETTING TEXTALIGN RIGHT
+    END
+    VERTICALBOX
+        VALUE <%= target_name %>  BPNODE_SOURCE_MIB_COUNTERS_HK PACKET_TIMEFORMATTED CONVERTED 25
+        VALUE <%= target_name %>  BPNODE_SOURCE_MIB_COUNTERS_HK DTN_TIME_FORMATTED CONVERTED 25
+        VALUE <%= target_name %>  BPNODE_SOURCE_MIB_COUNTERS_HK RECEIVED_TIMEFORMATTED CONVERTED 25
+        VALUE <%= target_name %>  BPNODE_SOURCE_MIB_COUNTERS_HK RECEIVED_COUNT   
+    END
+END

@@ -1,0 +1,4 @@
+<%= dtnfsw_tbl_hdr('Src_Auth_Table', 'Source Auth Table', 'BPNODE', 'SrcAuthTable') %>
+<% $dtnfsw_globals_num_auth_source_eids.times do |eid_pattern_idx| %>
+  <%= dtnfsw_gen_tbl_param_eid_pattern_t("SRC_AUTH_EID_PAT_#{eid_pattern_idx}") %>
+<% end %>

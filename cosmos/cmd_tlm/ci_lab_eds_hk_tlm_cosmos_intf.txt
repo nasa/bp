@@ -1,0 +1,18 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CI_LAB_HK', 1, "CI_LAB Hk Tlm") %>
+<% if $dtnfsw_globals_eds_enabled == true %>
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "Unsigned 8 bit integer"
+<% else %>
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "Unsigned 8 bit integer"
+<% end %>
+   APPEND_ITEM ENABLE_CHECKSUMS 8 UINT "Unsigned 8 bit integer"
+   APPEND_ITEM SOCKET_CONNECTED 8 UINT "Unsigned 8 bit integer"
+<% if $dtnfsw_globals_eds_enabled == false %>
+   APPEND_ITEM SPARE_TO_ALIGN_1 64 UINT "Spare padding for alignment"
+<% end %>
+   APPEND_ITEM INGEST_PACKETS 32 UINT "Unsigned 32 bit integer"
+   APPEND_ITEM INGEST_ERRORS 32 UINT "Unsigned 32 bit integer"
+<% if $dtnfsw_globals_eds_enabled == false %>
+   APPEND_ITEM SPARE_TO_ALIGN_2 32 UINT "Spare padding for alignment"
+<% end %>
