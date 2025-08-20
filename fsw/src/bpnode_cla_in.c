@@ -369,6 +369,7 @@ void BPNode_ClaIn_AppMain(void)
     BPLib_CLA_ContactRunState_t RunState;
     size_t                      BundleSize = 0;
     uint32                      RunCount = 0;
+    size_t                      RateLimit;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
@@ -430,7 +431,7 @@ void BPNode_ClaIn_AppMain(void)
                                     BytesIngressed += BundleSize;
                                 }
                             } while (Status != BPLIB_TIMEOUT && ((BytesIngressed * BPNODE_BITS_PER_BYTE) < 
-                                     BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle));
+                                     BPNode_AppData.ClaInData[ContactId].RateLimit));
                         }
                     }
                     else if (OsStatus != OS_ERROR_TIMEOUT)

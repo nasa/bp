@@ -77,6 +77,8 @@ typedef struct
 
     /* CLA Out bundle/packet */
     BPNode_ClaOut_Buffer_t OutBuffer;
+
+    size_t RateLimit;
 } BPNode_ClaOutData_t;
 
 

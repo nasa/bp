@@ -427,7 +427,7 @@ void BPNode_ClaOut_AppMain(void)
                                     BytesEgressed += BundleSize;
                                 }                                
                             } while (Status == BPLIB_SUCCESS && ((BytesEgressed * BPNODE_BITS_PER_BYTE) < 
-                                     BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].EgressBitsPerCycle));
+                                     BPNode_AppData.ClaOutData[ContactId].RateLimit));
                         }
                     }
                     else if (OsStatus != OS_ERROR_TIMEOUT)

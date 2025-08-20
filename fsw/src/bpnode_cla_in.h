@@ -67,6 +67,8 @@ typedef struct
 
     /* CLA In bundle/packet */
     uint8 PSP_Buffer[BPNODE_CLA_PSP_INPUT_BUFFER_SIZE];
+
+    size_t RateLimit;
 } BPNode_ClaInData_t;
 
 

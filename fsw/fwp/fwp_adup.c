@@ -155,6 +155,8 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId)
     ** Set ADU proxy configurations
     */
 
+    BPLib_NC_ReaderLock();
+
     BPNode_AppData.AduOutData[ChanId].SendToMsgId = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].SendToMsgId;
     BPNode_AppData.AduInData[ChanId].NumRecvFromMsgIds = BPNode_AppData.AduProxyTablePtr->Entries[ChanId].NumRecvFrmMsgIds;
 
@@ -174,6 +176,11 @@ BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId)
     BPNode_AppData.AduInData[ChanId].MaxBundlePayloadSize = BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].MaxBundlePayloadSize;
 
     BPNode_AppData.AduOutData[ChanId].AduWrapping = BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].AduWrapping;
+
+    BPNode_AppData.AduOutData[ChanId].RateLimit = BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].EgressBitsPerCycle;
+    BPNode_AppData.AduInData[ChanId].RateLimit = BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle;
+
+    BPLib_NC_ReaderUnlock();
 
     return BPLIB_SUCCESS;
 }
