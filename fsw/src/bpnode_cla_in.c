@@ -369,7 +369,6 @@ void BPNode_ClaIn_AppMain(void)
     BPLib_CLA_ContactRunState_t RunState;
     size_t                      BundleSize = 0;
     uint32                      RunCount = 0;
-    size_t                      RateLimit;
 
     /* Get this tasks ID to reference later */
     CFE_Status = CFE_ES_GetTaskID(&TaskId);
