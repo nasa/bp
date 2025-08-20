@@ -409,7 +409,7 @@ void Test_BPNode_ClaIn_AppMain_OneBundle(void)
     UT_SetDeferredRetcode(UT_KEY(CFE_PSP_IODriver_Command), 1, CFE_PSP_ERROR_TIMEOUT);
 
     BPNode_AppData.ClaInData[ContactId].TaskId = TaskId;
-    BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle = 80000;
+    BPNode_AppData.ClaInData[ContactId].RateLimit = 80000;
 
     BPNode_ClaIn_AppMain();
 
@@ -436,8 +436,8 @@ void Test_BPNode_ClaIn_AppMain_MaxLimit(void)
 
     BPNode_AppData.ClaInData[ContactId].TaskId = TaskId;
     /* Rate limit will be reached by two bundles of max default size */
-    BPNode_AppData.ConfigPtrs.ContactsConfigPtr->ContactSet[ContactId].IngressBitsPerCycle = 8192 * 2 * 8;
-
+    BPNode_AppData.ClaInData[ContactId].RateLimit = 8192 * 2 * 8;
+    
     BPNode_ClaIn_AppMain();
 
     UtAssert_STUB_COUNT(CFE_PSP_IODriver_Command, 3);
