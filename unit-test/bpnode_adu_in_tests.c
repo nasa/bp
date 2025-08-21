@@ -251,7 +251,7 @@ void Test_BPNode_AduIn_AppMain_Nominal(void)
     UT_SetDataBuffer(UT_KEY(BPA_ADUP_In), &AduSize, sizeof(AduSize), false);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-    BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle = 10000000000;
+    BPNode_AppData.AduInData[ChanId].RateLimit = 100000;
 
     BPNode_AduIn_AppMain();
 
@@ -291,7 +291,8 @@ void Test_BPNode_AduIn_AppMain_MaxAdus(void)
     // }
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-    BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle = 10000000000;
+    BPNode_AppData.AduInData[ChanId].RateLimit = 100000;
+
 
     BPNode_AduIn_AppMain();
 
@@ -386,8 +387,7 @@ void Test_BPNode_AduIn_AppMain_NullBuf(void)
     UT_SetDefaultReturnValue(UT_KEY(BPLib_NC_GetAppState), BPLIB_NC_APP_STATE_STARTED);
 
     BPNode_AppData.AduInData[ChanId].TaskId = TaskId;
-
-    BPNode_AppData.ConfigPtrs.ChanConfigPtr->Configs[ChanId].IngressBitsPerCycle = 100000;
+    BPNode_AppData.AduInData[ChanId].RateLimit = 100000;
 
     BPNode_AduIn_AppMain();
 
