@@ -41,7 +41,7 @@
 
 #define BPNODE_MAJOR_VERSION 7  /*!< @brief Major version number. */
 #define BPNODE_MINOR_VERSION 0  /*!< @brief Minor version number. */
-#define BPNODE_REVISION      1  /*!< @brief Revision version number. Value of 0 indicates a development version.*/
+#define BPNODE_REVISION      2  /*!< @brief Revision version number. Value of 0 indicates a development version.*/
 
 /*!
  * @brief Mission revision.
