@@ -573,12 +573,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_contact_configuration">5.4. Contact Configuration</a></li>
 <li><a href="#_mib_node_configuration">5.5. MIB Node Configuration</a></li>
 <li><a href="#_mib_source_configuration">5.6. MIB Source Configuration*</a></li>
-<li><a href="#_policy_by_eid_pattern_authorization_tables">5.7. Policy by EID Pattern Authorization Tables*</a></li>
-<li><a href="#_source_authorization_policy">5.8. Source Authorization Policy*</a></li>
-<li><a href="#_custodian_authorization_policy">5.9. Custodian Authorization Policy*</a></li>
-<li><a href="#_report_to_eid_authorization_policy">5.10. Report-To-EID Authorization Policy*</a></li>
-<li><a href="#_source_latency_policy">5.11. Source Latency Policy*</a></li>
-<li><a href="#_storage">5.12. Storage*</a></li>
+<li><a href="#_policy_by_eid_pattern_authorization_tables">5.7. Policy by EID Pattern Authorization Tables*</a>
+<ul class="sectlevel3">
+<li><a href="#_source_authorization_policy">5.7.1. Source Authorization Policy*</a></li>
+<li><a href="#_custodian_authorization_policy">5.7.2. Custodian Authorization Policy*</a></li>
+<li><a href="#_report_to_eid_authorization_policy">5.7.3. Report-To-EID Authorization Policy*</a></li>
+<li><a href="#_source_latency_policy">5.7.4. Source Latency Policy*</a></li>
+</ul>
+</li>
+<li><a href="#_storage">5.8. Storage*</a></li>
 </ul>
 </li>
 <li><a href="#_events">6. Events</a>
@@ -626,22 +629,12 @@ Questions or comments concerning this document should be addressed to: GSFC DTN 
 <h3 id="_introduction">1.1. Introduction</h3>
 <div class="paragraph">
 <p>The Interface Control Document (ICD) is a controlled document that defines data interfaces and exchange formats between the Delay/Disruption-Tolerant Networking (DTN) Bundle Protocol (BP) nodes and Monitor and Control (M&amp;C) ground systems.
-BP is a networking protocol that transmits data between nodes even when in the absence of continuous connectivity.
+BP is a networking protocol that transmits data between nodes even when connectivity is not continuous.
 It is designed to provide reliable end-to-end communication where other networking protocols may not be effective.</p>
 </div>
 <div class="paragraph">
 <p>The current Bundle Protocol Node (BPNode) is a DTN Node application that implements the Bundle Protocol version 7 (BPv7).
-GSFC developed BPNode for a mixed-safety-criticality deployment environment, which means that the node may be hosted on:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Class B architecture with symmetric multiprocessing, such as Linux, or</p>
-</li>
-<li>
-<p>Class A architecture with asymmetric multiprocessing, such as a real-time operating system.</p>
-</li>
-</ul>
+GSFC developed BPNode for a mixed-architecture deployment environment, which means that the node may run on a variety of operating systems, although it has been only tested on Linux so far.</p>
 </div>
 <div class="paragraph">
 <p>This document is developed to ensure that each side of the interface is correctly designed and compatible.</p>
@@ -1056,7 +1049,8 @@ It is the first data point in the User Data Field, which also contains parameter
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Directives followed by an asterisk are deferred to a future build.
+Directives followed by an asterisk are deferred to a future build (disclaimer: future build items may be subject to change).
+The subsequent sections discuss each directive in greater detail.
 </td>
 </tr>
 </table>
@@ -1080,7 +1074,7 @@ None of the startup directives have parameters.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-None of the functionality of the startup directives has been implemented as of this build.
+None of the functionality of the startup directives has been implemented as of build 7.0.
 </td>
 </tr>
 </table>
@@ -2046,7 +2040,7 @@ Description
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-None of the functionality of the policy directives has been implemented as of this build.
+None of the functionality of the policy directives has been implemented as of build 7.0.
 </td>
 </tr>
 </table>
@@ -2893,7 +2887,7 @@ Parameter(s)
 <div class="ulist">
 <ul>
 <li>
-<p>EID Pattern <em>eid</em>: EID(s) to set MIB item for. Only the node MIB is supported for this build.</p>
+<p>EID Pattern <em>eid</em>: EID(s) for which to set the MIB item. Only the node MIB is supported for build 7.0.</p>
 </li>
 <li>
 <p>uint32 enum <em>mibId</em>: MIB item ID. See the Field IDs of the Node and Source MIB Configuration Packets/Tables for the enumeration values.</p>
@@ -2921,7 +2915,7 @@ Description
 <h3 id="_storage_directives">3.7. Storage Directives</h3>
 <div class="paragraph">
 <p>Storage directives add and remove storage allocation.
-None of the functionality of the storage directives has been implemented as of this build.</p>
+None of the functionality of the storage directives has been implemented as of build 7.0.</p>
 </div>
 <div class="sect3">
 <h4 id="_add_storage_allocation">3.7.1. Add Storage Allocation*</h4>
@@ -3620,6 +3614,7 @@ The DTN Node generates the following telemetry packets:</p>
 <td class="content">
 Although the per-source packets are generated by BPNode, in build 7.0 none of the fields are implemented, so they will always be set to 0.
 For the remaining packets, any fields in <em>italics</em> are similarly not implemented and will always be set to 0.
+(Disclaimer: future build items may be subject to change.)
 </td>
 </tr>
 </table>
@@ -3785,14 +3780,14 @@ None of the fields in this packet are implemented.
 <td class="tableblock halign-left valign-top"><p class="tableblock">ParamSetMaxBSRGenerationRate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of bundles per minute that can be generated for each source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of BSRs per minute that can be generated for each source</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ParamSetMaxCBRGenerationRate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of bundles per minute that can be generated for each source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of CBRs per minute that can be generated for each source</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
@@ -3941,7 +3936,7 @@ None of the fields in this packet are implemented.
 <td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountDeletedBadEid</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bundles deleted to to having an unrecognized destination EID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bundles deleted due to having an unrecognized destination EID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
@@ -4121,61 +4116,61 @@ None of the fields in this packet are implemented.
 <td class="tableblock halign-left valign-top"><p class="tableblock">38</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedBsrAccepted</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Accepted BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Accepted" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">39</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedBsrDeleted</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Deleted BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Deleted" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">40</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedBsrDelivered</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Delivered BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Delivered" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedBsrForwarded</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Forwarded BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Forwarded" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">42</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedBsrReceived</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Received BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Received" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">43</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedCrsAccepted</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Accepted CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Accepted" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedCrsDeleted</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Deleted CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Deleted" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">45</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedCrsDelivered</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Delivered CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Delivered" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">46</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedCrsForwarded</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Forwarded CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Forwarded" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">47</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>bundleCountReceivedCrsReceived</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Received CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Received" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">48</p></td>
@@ -4480,7 +4475,7 @@ None of the fields in this packet are implemented.
 <td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountDeletedBadEid</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bundles deleted to to having an unrecognized destination EID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bundles deleted due to having an unrecognized destination EID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
@@ -4660,61 +4655,61 @@ None of the fields in this packet are implemented.
 <td class="tableblock halign-left valign-top"><p class="tableblock">38</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedBsrAccepted</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Accepted BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Accepted" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">39</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedBsrDeleted</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Deleted BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Deleted" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">40</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedBsrDelivered</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Delivered BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Delivered" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedBsrForwarded</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Forwarded BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Forwarded" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">42</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedBsrReceived</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Received BSRs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Received" BSRs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">43</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedCrsAccepted</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Accepted CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Accepted" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">44</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedCrsDeleted</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Deleted CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Deleted" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">45</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedCrsDelivered</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Delivered CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Delivered" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">46</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedCrsForwarded</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Forwarded CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Forwarded" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">47</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleCountReceivedCrsReceived</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of Received CRSs received</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of "Bundle Received" CRSs received</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">48</p></td>
@@ -4840,7 +4835,7 @@ None of the fields in this packet are implemented.
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">bundleAgentAvailableStorage</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amount of memory initially allocated for bundle storage.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kilobytes of memory initially allocated for bundle storage.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">kbytesCountStorageAvailable</p></td>
@@ -5165,6 +5160,7 @@ BPNode has the following tables and directives for their implementation:</p>
 Build 7.0 implements only the MIB configuration per node, ADU proxy, channel configuration, and contact configuration tables.
 Non-implemented fields in those tables are <em>italicized</em>.
 The remaining tables are part of BPNode but not yet used.
+(Disclaimer: future build items may be subject to change.)
 </td>
 </tr>
 </table>
@@ -5174,7 +5170,7 @@ The remaining tables are part of BPNode but not yet used.
 <div class="paragraph">
 <p>This table can be updated by a ground table load.
 A <code>contact-stop</code> directive as well as CRS time or size triggers will prompt the processor to send an in-progress CRS.
-This table&#8217;s functionality has not been implemented as of this build.
+This table&#8217;s functionality has not been implemented as of build 7.0.
 This table contains the following components:</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
@@ -5333,7 +5329,7 @@ The table contains the following components:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">EgressBitsPerCycle</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">size_t</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of bits to ingress per wakeup cycle. Note: default wakeup rate is 10Hz.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of bits to egress per wakeup cycle. Note: default wakeup rate is 10Hz.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">LocalServiceNumber</p></td>
@@ -5625,7 +5621,7 @@ The following Convergence Layer Protocols are planned to be supported:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>csSizeTrigger</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Custody signal size trigger.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custody signal size trigger in bytes.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ingressBitsPerCycle</p></td>
@@ -5678,25 +5674,25 @@ The following Convergence Layer Protocols are planned to be supported:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">paramSetMaxSequenceNum</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum bundle sequence number.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum bundle sequence number</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>paramSetMaxPayloadLength</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum payload length for fragmentation.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum payload length for fragmentation (in bytes)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">paramSetMaxBundleLength</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum bundle length.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum bundle length (in bytes)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>paramSetNodeDtnTime</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Time being tracked by the node</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time being tracked by the node (in msec)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
@@ -5708,7 +5704,7 @@ The following Convergence Layer Protocols are planned to be supported:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">paramSetMaxLifetime</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum bundle lifetime allowed on node</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum bundle lifetime allowed on node (in msec)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
@@ -5718,12 +5714,24 @@ The following Convergence Layer Protocols are planned to be supported:</p>
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Fields with a field ID can be modified via the <code>set-MIB-item</code> directive.
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_mib_source_configuration">5.6. MIB Source Configuration*</h3>
 <div class="paragraph">
 <p>This table defines the MIB configurations for each specified source.
-This table&#8217;s functionality has not been implemented as of this build.</p>
+This table&#8217;s functionality has not been implemented as of build 7.0.</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
 <caption class="title">Table 28. Source Configuration</caption>
@@ -5791,100 +5799,111 @@ This table&#8217;s functionality has not been implemented as of this build.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ParamSetMaxBSRGenerationRate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of bundles per minute that can be generated for each source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of BSRs per minute that can be generated for each source</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">ParamSetMaxCBRGenerationRate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of bundles per minute that can be generated for each source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of CBRs per minute that can be generated for each source</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorReceivedBSRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle reception status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle reception BSRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorAcceptedBSRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle custody accepted status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle custody accepted BSRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorForwardedBSRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle forwarded status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle forwarded BSRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorDeliveredBSRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle delivered status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle delivered BSRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorDeletedBSRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle deleted status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle deleted BSRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorReceivedCBRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle reception status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle reception CBRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorAcceptedCBRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle custody accepted status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle custody accepted CBRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorForwardedCBRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle forwarded status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle forwarded CBRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorDeliveredCBRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle delivered status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle delivered CBRs should be generated</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BundleSetBehaviorDeletedCBRGenerate</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle deleted status reports should be generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flag indicating bundle deleted CBRs should be generated</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Fields with a field ID can be modified via the <code>set-MIB-item</code> directive.
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_policy_by_eid_pattern_authorization_tables">5.7. Policy by EID Pattern Authorization Tables*</h3>
 <div class="paragraph">
 <p>The Policy by EID Pattern Authorization Tables are: Source Authorization Policy, Custodian Authorization Policy, Report-To-EID Authorization Policy, Source Latency Policy, and Storage Allocation.
-These tables' functionality have not been implemented as of this build.</p>
+These tables' functionality have not been implemented as of build 7.0.</p>
 </div>
 <div class="paragraph">
 <p>Note: When a table has only one field its entry is simplified to two columns.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_source_authorization_policy">5.8. Source Authorization Policy*</h3>
+<div class="sect3">
+<h4 id="_source_authorization_policy">5.7.1. Source Authorization Policy*</h4>
 <div class="paragraph">
 <p>This table contains the following components:</p>
 </div>
@@ -5901,8 +5920,8 @@ authorizedSources
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_custodian_authorization_policy">5.9. Custodian Authorization Policy*</h3>
+<div class="sect3">
+<h4 id="_custodian_authorization_policy">5.7.2. Custodian Authorization Policy*</h4>
 <div class="paragraph">
 <p>This table contains the following components:</p>
 </div>
@@ -5919,8 +5938,8 @@ authorizedCustodians
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_report_to_eid_authorization_policy">5.10. Report-To-EID Authorization Policy*</h3>
+<div class="sect3">
+<h4 id="_report_to_eid_authorization_policy">5.7.3. Report-To-EID Authorization Policy*</h4>
 <div class="paragraph">
 <p>This table contains the following components:</p>
 </div>
@@ -5937,8 +5956,8 @@ authorizedReportToEIDs
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_source_latency_policy">5.11. Source Latency Policy*</h3>
+<div class="sect3">
+<h4 id="_source_latency_policy">5.7.4. Source Latency Policy*</h4>
 <div class="paragraph">
 <p>This table contains the following components:</p>
 </div>
@@ -5997,11 +6016,12 @@ spare
 </table>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_storage">5.12. Storage*</h3>
+<h3 id="_storage">5.8. Storage*</h3>
 <div class="paragraph">
 <p>The storage allocation defines how to partition the storage database by source EIDs.
-This table&#8217;s functionality has not been implemented as of this build.
+This table&#8217;s functionality has not been implemented as of build 7.0.
 This table contains the following components:</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even stretch">
@@ -6420,7 +6440,7 @@ Since there can be multiple ADU In tasks (one for each allowed channel), the cha
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BPNODE_ADU_IN_NO_ID_ERR_EID</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Critical</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Failed to get task ID</p></td>
 </tr>
 <tr>
@@ -6518,7 +6538,7 @@ Since there can be multiple ADU Out tasks (one for each allowed channel), the ch
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BPNODE_ADU_OUT_NO_ID_ERR_EID</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">48</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Critical</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Failed to get task ID</p></td>
 </tr>
 <tr>
@@ -6612,12 +6632,6 @@ Since there can be multiple CLA In tasks (one for each allowed contact), the con
 <td class="tableblock halign-left valign-top"><p class="tableblock">72</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Critical</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Child task is shutting down</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BPNODE_CLA_IN_NO_ID_ERR_EID</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">73</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Critical</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Failed to get task ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BPNODE_CLA_IN_INV_ID_ERR_EID</p></td>
@@ -7492,7 +7506,7 @@ They can be issued by any of the specified tasks, although the task name should 
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">BPLIB_BI_INGRESS_CBOR_DECODE_INF_EID</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">650</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Informational</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Error ingressing a bundle</p></td>
 </tr>
 <tr>
@@ -7853,7 +7867,7 @@ They can be issued by any of the specified tasks, although the task name should 
 <div id="footer">
 <div id="footer-text">
 Version 7.0<br>
-Last updated 2025-09-15 11:45:30 -0400
+Last updated 2025-09-30 14:10:40 -0400
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
