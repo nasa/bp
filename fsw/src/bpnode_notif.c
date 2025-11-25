@@ -14,8 +14,11 @@
  * included in the software is as follows: 
  *
  * Copyright 2025 United States Government as represented by the Administrator of the 
- * National Aeronautics and Space Administration. All Rights Reserved. */
-#include "bpnode_notif.h"
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
+
+ #include "bpnode_notif.h"
 #include "osapi.h"
 
 int32 BPNode_NotifInit(BPNode_Notif_t* Notif, const char* NotifName)

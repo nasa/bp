@@ -14,7 +14,9 @@
  * included in the software is as follows: 
  *
  * Copyright 2025 United States Government as represented by the Administrator of the 
- * National Aeronautics and Space Administration. All Rights Reserved. */
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
 
 /**
 ** \file

@@ -14,7 +14,9 @@
  * included in the software is as follows: 
  *
  * Copyright 2025 United States Government as represented by the Administrator of the 
- * National Aeronautics and Space Administration. All Rights Reserved. */
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
 
 #include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "sch_lab_tbl.h"
