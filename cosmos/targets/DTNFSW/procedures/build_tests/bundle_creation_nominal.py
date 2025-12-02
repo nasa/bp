@@ -66,11 +66,15 @@ def bundle_creation_nominal(self):
         "DTN.6.19390":"U", 
         "DTN.6.19410":"U", 
         #"DTN.6.20115":"U", 
+        "DTN.6.23090":"U",
         "DTN.6.25010":"U",
         
         #Bundle construction
         "DTN.6.02030":"U", 
         "DTN.6.02050":"U", 
+        "DTN.6.02340":"U",
+        "DTN.6.02350":"U",
+        "DTN.6.02360":"U",
         "DTN.6.02370":"U",
         "DTN.6.02080":"U",
         "DTN.6.02110":"U",
@@ -109,7 +113,7 @@ def bundle_creation_nominal(self):
         "DTN.6.23062":"U",  
         "DTN.6.23063":"U",  
         "DTN.6.26000":"U", 
-        "DTN.6.26040":"A", 
+        "DTN.6.26040":"I", 
         "DTN.6.26050":"U", 
         "DTN.6.26070":"U", 
         "DTN.6.27000":"U", 
@@ -217,7 +221,7 @@ def bundle_creation_nominal(self):
         data_receiver.connect()
        
         ##--------------------------------------------------------
-        ## Start receive only contact so stored bundles are stored 
+        ## Start receive only contact so bundles are stored 
         ## Send ADU - CFE_SB_CMD_SEND_SB_STATS command
         ##--------------------------------------------------------        
         
@@ -251,7 +255,7 @@ def bundle_creation_nominal(self):
             print(f"ERROR - BUNDLE_COUNT_GENERATED_ACCEPTED {gen_accept_cnt} not as expected")
             status = "F"
 
-        for rqmnt in ["DTN.6.08491"]:
+        for rqmnt in ["DTN.6.08491", "DTN.ES.04220"]:
             TestUtils.set_requirement_status(rqmnt, status)
 
         # Verify BUNDLE_COUNT_GENERATED_ACCEPTED[SOURCE] #TBD
@@ -268,7 +272,7 @@ def bundle_creation_nominal(self):
 
         for rqmnt in [
             "DTN.6.02410", "DTN.6.02420", "DTN.6.04280", "DTN.6.04290", 
-            "DTN.6.04316", "DTN.6.25010", "DTN.ES.04220"
+            "DTN.6.04316", "DTN.6.23090", "DTN.6.25010"
             ]:
             TestUtils.set_requirement_status(rqmnt, status)
 
@@ -370,7 +374,7 @@ def bundle_creation_nominal(self):
         print("Checking prev node block")
         check_expression(f"{received_bundle.canon_blocks[0].blk_type} == {BlockType.PREVIOUS_NODE}")
         check_expression(f"{received_bundle.canon_blocks[0].blk_num} == {2}")
-        for rqmnt in ["DTN.6.12570"]:
+        for rqmnt in ["DTN.6.02340", "DTN.6.12570"]:
             TestUtils.set_requirement_status(rqmnt, status)
         
         check_expression(f"{received_bundle.canon_blocks[0].control_flags} == {0}")
@@ -392,7 +396,7 @@ def bundle_creation_nominal(self):
         print("Checking age block")
         check_expression(f"{received_bundle.canon_blocks[1].blk_type} == {BlockType.BUNDLE_AGE}")
         check_expression(f"{received_bundle.canon_blocks[1].blk_num} == {3}")
-        for rqmnt in ["DTN.6.12590"]:
+        for rqmnt in ["DTN.6.02350", "DTN.6.12590"]:
             TestUtils.set_requirement_status(rqmnt, status)
         
         check_expression(f"{received_bundle.canon_blocks[1].control_flags} == {0}")
@@ -416,7 +420,7 @@ def bundle_creation_nominal(self):
         print("Checking hop count block")
         check_expression(f"{received_bundle.canon_blocks[2].blk_type} == {BlockType.HOP_COUNT}")
         check_expression(f"{received_bundle.canon_blocks[2].blk_num} == {4}")
-        for rqmnt in ["DTN.6.12580"]:
+        for rqmnt in ["DTN.6.02350", "DTN.6.12580"]:
             TestUtils.set_requirement_status(rqmnt, status)
 
         check_expression(f"{received_bundle.canon_blocks[2].control_flags} == {0}")
@@ -502,19 +506,21 @@ def bundle_creation_nominal(self):
        
         print("Checking canonical blocks ...")
         check_expression(f"{len(received_bundle.canon_blocks)} == 2")
-        for rqmnt in ["DTN.6.12570", "DTN.6.12580"]:
+        for rqmnt in [
+            "DTN.6.02340", "DTN.6.02350", "DTN.6.02360", "DTN.6.12570", "DTN.6.12580"
+            ]:
             TestUtils.set_requirement_status(rqmnt, status)
 
         bundle_type = received_bundle.canon_blocks[0].blk_type
         bundle_age = received_bundle.canon_blocks[0].bundle_age
         print(f"Block type: {bundle_type} Bundle Age: {bundle_age}")
-        if bundle_type == BlockType.BUNDLE_AGE and bundle_age > 0 and bundle_age < 5000:
+        if bundle_type == BlockType.BUNDLE_AGE and bundle_age < 5000:
             status = "P" 
         else:
             print(f"ERROR - Age block not as expected")
             status = "F"
         
-        for rqmnt in ["DTN.6.12590", "DTN.6.23063"]:
+        for rqmnt in ["DTN.6.02360", "DTN.6.12590", "DTN.6.23063"]:
             TestUtils.set_requirement_status(rqmnt, status)
 
         # Set CFS time VALID

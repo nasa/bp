@@ -74,6 +74,7 @@ $dtnfsw_globals_num_channels = 2
 # -------------------------------------------------------------------------------------------------
 # Maximum number of contacts BPNode is configured for
 # -------------------------------------------------------------------------------------------------
+# $dtnfsw_globals_num_contacts = 2
 $dtnfsw_globals_num_contacts = 1
 
 # -------------------------------------------------------------------------------------------------
@@ -182,6 +183,18 @@ $dtnfsw_globals_contact_0_dest_eid_node = 200
 # Ref: BPNODE_EID_SERVICE_NUM_FOR_CONTACT_0
 # -------------------------------------------------------------------------------------------------
 $dtnfsw_globals_contact_0_dest_eid_service = 64
+
+# -------------------------------------------------------------------------------------------------
+# Destination EID's node number for contact 1 egress
+# Ref: BPNODE_EID_NODE_NUM_FOR_CONTACT_1
+# -------------------------------------------------------------------------------------------------
+# $dtnfsw_globals_contact_1_dest_eid_node = 400
+
+# -------------------------------------------------------------------------------------------------
+# Destination EID's service number for contact 0 egress
+# Ref: BPNODE_EID_SERVICE_NUM_FOR_CONTACT_0
+# -------------------------------------------------------------------------------------------------
+# $dtnfsw_globals_contact_1_dest_eid_service = 42
 
 # -------------------------------------------------------------------------------------------------
 # Destination EID's node number for egress to the local node

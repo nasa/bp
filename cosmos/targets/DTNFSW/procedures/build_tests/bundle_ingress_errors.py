@@ -209,7 +209,7 @@ def bundle_ingress_errors(self):
         "DTN.6.06160":"U",
         "DTN.6.06170":"U",
         "DTN.6.06172":"U",
-        #"DTN.6.06173":"U",
+        "DTN.6.06173":"U",
         "DTN.6.06174":"U",
         #"DTN.6.06175":"U",
         #"DTN.6.06176":"U",
@@ -235,7 +235,7 @@ def bundle_ingress_errors(self):
         "DTN.6.06350":"U",
         "DTN.6.06352":"U",
         #"DTN.6.06353":"U",
-        #"DTN.6.06358":"U",
+        "DTN.6.06358":"U",
         "DTN.6.06360":"U",
         #"DTN.6.06370":"U",
         "DTN.6.06380":"U",
@@ -320,7 +320,7 @@ def bundle_ingress_errors(self):
     dest_service = 53
     '''
     ## Address/port configuration
-    dest_ip   = "10.2.4.20"
+    dest_ip   = DTN_NODE_IP_ADDR
     dest_port = 4501
 
     local_ip = "0.0.0.0"
@@ -552,7 +552,7 @@ def bundle_ingress_errors(self):
     cmd(f"{target} BPNODE_CMD_CONTACT_TEARDOWN with CONTACT_ID 0")
     cmd(f"{target} BPNODE_CMD_CONTACT_SETUP with CONTACT_ID 0")
     cmd(f"{target} BPNODE_CMD_CONTACT_START with CONTACT_ID 0")
-
+    wait(6)
     cmd(f"{target} BPNODE_CMD_RESET_ALL_COUNTERS")
     
     
@@ -1320,7 +1320,8 @@ def bundle_ingress_errors(self):
     status = verify_telem_and_event()
     
     for rqmnt in [
-        "DTN.6.06000", "DTN.6.06230", "DTN.6.26240", "DTN.6.26250"        
+        "DTN.6.06000", "DTN.6.06230", "DTN.6.06358", "DTN.6.06360", 
+        "DTN.6.26240", "DTN.6.26250",        
         ]:
         TestUtils.set_requirement_status(rqmnt, status)
         
@@ -1430,7 +1431,9 @@ def bundle_ingress_errors(self):
         print(f"!!! ERROR - Error not {HOP_BLOCK_EXCEEDED_ERR} as expected")
         status = "F"
             
-    # Array has payload block is reported
+    # Array has payload block followed by hop block
+    get_initial_counts()
+
     bundle_inv = Bundle(pri_block=primary_block, canon_blocks=[payload_block_inv, hop_count_block])
     data_sender.write(bundle_inv.to_bytes())
     
@@ -1571,7 +1574,7 @@ def bundle_ingress_errors(self):
     status = verify_telem_and_event()
         
 
-    for rqmnt in ["DTN.6.06000", "DTN.6.06360", "DTN.6.06640", "DTN.6.04030"]:
+    for rqmnt in ["DTN.6.06000", "DTN.6.06640", "DTN.6.04030"]:
         TestUtils.set_requirement_status(rqmnt, status)
 
     print(".................................................................")
@@ -1925,20 +1928,20 @@ def bundle_ingress_errors(self):
     
     ## Restore MIB PN Config table 
     load_new_table('/cf/bpnode_mib_pn.tbl')
-    
+    '''
 
     print(".................................................................")
-    print("15.3 Bundle Age >= Lifetime") #04100
+    print("15.3 Bundle Age >= Lifetime") #06173, 06174
     print("     Expected - BPLIB_BI_EXPIRED_BUNDLE_ERR: -241")
     print(".................................................................")
-    primary_block_1 = PrimaryBlock(
+    primary_block_inv = PrimaryBlock(
         version=7,
         control_flags=BundlePCFlags.MUST_NOT_FRAGMENT,
         crc_type=CRCType.CRC16_X25,
         dest_eid=EID({"uri": 2, "ssp": {"node_num": dest_node, "service_num": dest_service}}),
         src_eid=EID({"uri": 2, "ssp": {"node_num": 101, "service_num": 1}}),
         rpt_eid=EID({"uri": 2, "ssp": {"node_num": 100, "service_num": 1}}),
-        creation_timestamp=CreationTimestamp({"time": DtnTimeNowMs(), "sequence": 0}),
+        creation_timestamp=CreationTimestamp({"time": 0, "sequence": 0}),
         lifetime=600000,
         crc=CRCFlag.CALCULATE,
     )
@@ -1948,23 +1951,28 @@ def bundle_ingress_errors(self):
         blk_num=3,
         control_flags=BlockPCFlags.FRAG_REPLICATE | BlockPCFlags.DEL_UNPROC,
         crc_type=CRCType.CRC16_X25,
-        bundle_age=600000, # same as lifetime
+        bundle_age=605000, # > lifetime
         crc=CRCFlag.CALCULATE,
     )
 
     get_initial_counts()
+    del_exp_cnt = tlm(f"{target} {mib_counts_pkt} BUNDLE_COUNT_DELETED_EXPIRED")
+    print(f"BUNDLE_COUNT_DELETED_EXPIRED: {del_exp_cnt}")
     
-    bundle_inv = Bundle(pri_block=primary_block, canon_blocks=[bundle_age_block, payload_block])
+    bundle_inv = Bundle(pri_block=primary_block_inv, canon_blocks=[bundle_age_block, payload_block])
     data_sender.write(bundle_inv.to_bytes())
     
     status = verify_telem_and_event()
 
-    # Verify canonical block error counts
-    verify_canon_error_counts()
-
-    for rqmnt in ["DTN.6.04100"]:
+    # Verify BUNDLE_COUNT_DELETED_EXPIRED
+    if wait(f"{target} {mib_counts_pkt} BUNDLE_COUNT_DELETED_EXPIRED == {del_exp_cnt+1}", 6):
+        status = "P"
+    else:
+        status = "F"
+    
+    for rqmnt in ["DTN.6.06173", "DTN.6.06174"]:
         TestUtils.set_requirement_status(rqmnt, status)
-    '''
+
     '''
     TBD - Future
     print(".................................................................")

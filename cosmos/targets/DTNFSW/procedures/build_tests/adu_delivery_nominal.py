@@ -13,7 +13,6 @@ def adu_delivery_nominal(self):
 
     # Initialize requirement status
     rqmnt_status = {
-        "DTN.ES.04220":"U",
         "DTN.6.01000":"U",
         "DTN.6.01010":"U",
         "DTN.6.01030":"U",
@@ -74,7 +73,7 @@ def adu_delivery_nominal(self):
     dest_service = 53
     
     ## Address/port configuration
-    dest_ip   = "10.2.4.20"
+    dest_ip   = DTN_NODE_IP_ADDR
     dest_port = 4501
 
     cmd(f"{target} BPNODE_CMD_RESET_ALL_COUNTERS")
@@ -185,8 +184,8 @@ def adu_delivery_nominal(self):
     status = TestUtils.verify_item(mib_counts_pkt, item_name, exp_val)
     
     # Set requirement status
-    for rqmnt in ["DTN.6.03000", "DTN.6.03010", "DTN.6.03060", "DTN.6.12642", 
-                  "DTN.6.12644", "DTN.6.12971", "DTN.6.19020", "DTN.ES.04220"
+    for rqmnt in ["DTN.6.03000", "DTN.6.03010", "DTN.6.03060", 
+                  "DTN.6.12642", "DTN.6.12644", "DTN.6.12971", "DTN.6.19020"
                  ]:
         TestUtils.set_requirement_status(rqmnt, status)
         

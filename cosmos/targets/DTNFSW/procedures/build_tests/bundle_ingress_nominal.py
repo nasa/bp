@@ -59,6 +59,7 @@ def bundle_ingress_nominal(self):
         "DTN.6.19360":"U", 
         "DTN.6.19390":"U", 
         "DTN.6.19410":"U", 
+        "DTN.6.23090":"U",
         "DTN.6.25010":"I",
 
         #reset requirements
@@ -90,7 +91,7 @@ def bundle_ingress_nominal(self):
     dest_service = 53
     '''
     ## Address/port configuration
-    dest_ip   = "10.2.4.20"
+    dest_ip   = DTN_NODE_IP_ADDR
     dest_port = 4501
 
     ## Configure and connect Data Sender
@@ -186,9 +187,8 @@ def bundle_ingress_nominal(self):
         status = "F"
     
     for rqmnt in [
-            "DTN.6.12360", "DTN.6.15041", "DTN.6.15051", 
-            "DTN.6.15281", "DTN.6.04316", 
-            "DTN.6.06552"
+            "DTN.6.04316", "DTN.6.06552", "DTN.6.12360", "DTN.6.15041", 
+            "DTN.6.15051", "DTN.6.15281", "DTN.6.23090",             
             ]:
         TestUtils.set_requirement_status(rqmnt, status)
 

@@ -102,7 +102,7 @@ def bundle_egress_nominal(self):
     dest_service = 53
     '''
     ## Address/port configuration
-    dest_ip   = "10.2.4.20"
+    dest_ip   = DTN_NODE_IP_ADDR
     dest_port = 4501
     local_ip = "0.0.0.0"
     local_port = 4551
