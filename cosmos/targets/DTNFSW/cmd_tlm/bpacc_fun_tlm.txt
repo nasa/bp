@@ -1,0 +1,4 @@
+<%= dtnfsw_tlm_hdr(target_name, 'BPACC_FUN_HK', 1, "BPAccel Function Test App HK") %>
+   APPEND_ITEM COMMAND_ERROR_COUNTER 8 UINT "Application Command Error Counter"
+   APPEND_ITEM COMMAND_COUNTER 8 UINT "Application Command Counter"
+   APPEND_ITEM SPARE_TO_ALIGN 16 UINT "Spare padding for alignment"

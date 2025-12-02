@@ -1,0 +1,64 @@
+SCREEN AUTO AUTO 1.0
+#############################
+# Screen: CFE_Table_Registration_Screeen
+# Released: 07/15/2024
+# Author: S. Bozievich
+#############################
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+	TITLE "<%= target_name %> CFE Table Registration Data" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG CCSDS_STREAMID
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG CCSDS_SEQUENCE
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG SIZE "Size"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG CRC "CRC:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG ACTIVE_BUFFER_ADDR "Acitive_Buffer_Address:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG INACTIVE_BUFFER_ADDR "Inactive Buffer Address:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG VALIDATION_FUNC_PTR "Validation Function Pointer:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG TIME_OF_LAST_UPDATE_SECONDS "TIme of Last Update Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG TIME_OF_LAST_UPDATE_SUBSECONDS "Time o Last Update Sub Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG FILE_CREATE_TIME_SECS "File Creation Time Seconds;"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG FILE_CREATE_TIME_SUB_SECS "File Creation Time Sub Seconds:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG TABLE_LOADED_ONCE "Table Loaded Once:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG LOAD_PENDING "Load Pending:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG DUMP_ONLY "Dumponly:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG DOUBLE_BUFFERED "Double Buffered;"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG NAME "Processor Specific Name:"
+  SUBSETTING 1 WIDTH 300
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG LAST_FILE_LOADED "Last File Loaded:"
+  SUBSETTING 1 WIDTH 300
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG OWNER_APP_NAME "Owner Application Name:"
+  SUBSETTING 1 WIDTH 300
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG CRITICAL  "Critical:"
+  LABELVALUEDESC <%= target_name %>  CFE_TBL_REG BYTE_ALIGN_4 "Bye Align 4:"
+  
+  
+  
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG PACKET_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG PACKET_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG RECEIVED_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG RECEIVED_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %>  CFE_TBL_REG RECEIVED_COUNT
+END
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS TBL App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  CFE_TBL_REG PACKET_TIMESECONDS CONVERTED 23
+    VALUE <%= target_name %>  CFE_TBL_REG PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  CFE_TBL_REG RECEIVED_COUNT 
+  END  
+END
+

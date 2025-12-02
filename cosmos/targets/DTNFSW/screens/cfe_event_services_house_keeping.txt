@@ -1,0 +1,223 @@
+SCREEN AUTO AUTO 1.0
+################################################################
+# Screen: CFE Event Services House Keeping 
+# Released: 07/15/2024
+# Author: S. Bozievich
+################################################################
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> CFE Event Services Housekeeping" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK CCSDS_STREAMID
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK CCSDS_SEQUENCE
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK CCSDS_LENGTH
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK COMMAND_COUNTER "Command Counter:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK COMMAND_ERROR_COUNTER "Command Error Counter:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK MESSAGE_FORMAT_MODE "Message Format Mode:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK MESSAGE_TRUNC_COUNTER "Message Truncated Counter:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK UNREGISTERED_APP_COUNTER "Unregistered Application Counter:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK OUTPUT_PORT "Output Port:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK LOG_FULL_FLAG "Log Full Flag:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK LOG_MODE "Log Mode:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK MESSAGE_SEND_COUNTER "Message Send Counter:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK LOG_OVERFLOW_COUNTER "Log Overflow Counter:"
+  LABELVALUEDESC <%= target_name %> CFE_EVS_HK LOG_ENABLED "Log Enabled:"
+  
+  TABBOOK
+    TABITEM "App Data 0-7" 
+    	HORIZONTAL
+      VERTICALBOX "Application Data 0-3"         
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_0_APP_ID_BASE_TYPE "0 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_0_APP_MESSAGE_SENT_COUNTER "0 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_0_APP_ENABLE_STATUS "0 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_0_APP_MESSAGE_SQUELCHED_COUNTER "0 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_1_APP_ID_BASE_TYPE "1 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_1_APP_MESSAGE_SENT_COUNTER "1 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_1_APP_ENABLE_STATUS "1 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_1_APP_MESSAGE_SQUELCHED_COUNTER "1 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_2_APP_ID_BASE_TYPE "2 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_2_APP_MESSAGE_SENT_COUNTER "2 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_2_APP_ENABLE_STATUS "2 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_2_APP_MESSAGE_SQUELCHED_COUNTER "2 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_3_APP_ID_BASE_TYPE "3 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_3_APP_MESSAGE_SENT_COUNTER "3 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_3_APP_ENABLE_STATUS "3 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_3_APP_MESSAGE_SQUELCHED_COUNTER  "3 - Message Squelched Counter:"        
+    	END
+      SPACER 25 0  
+      VERTICALBOX "Application Data 4-7" 
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_4_APP_ID_BASE_TYPE "4 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_4_APP_MESSAGE_SENT_COUNTER "4 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_4_APP_ENABLE_STATUS "4 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_4_APP_MESSAGE_SQUELCHED_COUNTER "4 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_5_APP_ID_BASE_TYPE "5 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_5_APP_MESSAGE_SENT_COUNTER "5 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_5_APP_ENABLE_STATUS "5 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_5_APP_MESSAGE_SQUELCHED_COUNTER "5 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_6_APP_ID_BASE_TYPE "6 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_6_APP_MESSAGE_SENT_COUNTER "6 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_6_APP_ENABLE_STATUS "6 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_6_APP_MESSAGE_SQUELCHED_COUNTER "6 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_7_APP_ID_BASE_TYPE "7 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_7_APP_MESSAGE_SENT_COUNTER "7 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_7_APP_ENABLE_STATUS "7 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_7_APP_MESSAGE_SQUELCHED_COUNTER  "7 - Message Squelched Counter:"       
+      END
+      END
+    END
+    
+    
+    TABITEM "App Data 8-15"
+      HORIZONTAL
+      VERTICALBOX "Application Data 8-11" 
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_8_APP_ID_BASE_TYPE "8 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_8_APP_MESSAGE_SENT_COUNTER "8 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_8_APP_ENABLE_STATUS "8 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_8_APP_MESSAGE_SQUELCHED_COUNTER "8 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_9_APP_ID_BASE_TYPE "9 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_9_APP_MESSAGE_SENT_COUNTER "9 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_9_APP_ENABLE_STATUS "9 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_9_APP_MESSAGE_SQUELCHED_COUNTER "9 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_10_APP_ID_BASE_TYPE "10 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_10_APP_MESSAGE_SENT_COUNTER "20 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_10_APP_ENABLE_STATUS "10 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_10_APP_MESSAGE_SQUELCHED_COUNTER "10 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_11_APP_ID_BASE_TYPE "11 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_11_APP_MESSAGE_SENT_COUNTER "11 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_11_APP_ENABLE_STATUS "11 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_11_APP_MESSAGE_SQUELCHED_COUNTER  "11 - Message Squelched Counter:"           
+      END
+			SPACER 25 0
+    	VERTICALBOX "App Data 12-15"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_12_APP_ID_BASE_TYPE "12 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_12_APP_MESSAGE_SENT_COUNTER "12 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_12_APP_ENABLE_STATUS "12 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_12_APP_MESSAGE_SQUELCHED_COUNTER "12 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_13_APP_ID_BASE_TYPE "13 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_13_APP_MESSAGE_SENT_COUNTER "13 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_13_APP_ENABLE_STATUS "13 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_13_APP_MESSAGE_SQUELCHED_COUNTER "13 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_14_APP_ID_BASE_TYPE "14 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_14_APP_MESSAGE_SENT_COUNTER "14 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_14_APP_ENABLE_STATUS "14 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_14_APP_MESSAGE_SQUELCHED_COUNTER "14 - Message Squelched Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_15_APP_ID_BASE_TYPE "15 - ID Base Type:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_15_APP_MESSAGE_SENT_COUNTER "15 - Message Sent Counter:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_15_APP_ENABLE_STATUS "15 - Enable Status:"
+      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_15_APP_MESSAGE_SQUELCHED_COUNTER  "15 - Message Squelched Counter:"     
+      END  
+      END
+    END
+# original file had 0-21 channels, current release has 0-15 Commenting out code.
+#    TABITEM "App Data 16-23"
+#      HORIZONTAL
+#      VERTICALBOX "Application Data 16-19" 
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_16_APP_ID_BASE_TYPE "16 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_16_APP_MESSAGE_SENT_COUNTER "16 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_16_APP_ENABLE_STATUS "16 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_16_APP_MESSAGE_SQUELCHED_COUNTER "16 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_17_APP_ID_BASE_TYPE "17 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_17_APP_MESSAGE_SENT_COUNTER "17 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_17_APP_ENABLE_STATUS "17 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_17_APP_MESSAGE_SQUELCHED_COUNTER "17 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_18_APP_ID_BASE_TYPE "18 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_18_APP_MESSAGE_SENT_COUNTER "18 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_18_APP_ENABLE_STATUS "18 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_18_APP_MESSAGE_SQUELCHED_COUNTER "18 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_19_APP_ID_BASE_TYPE "19 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_19_APP_MESSAGE_SENT_COUNTER "19 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_19_APP_ENABLE_STATUS "19 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_19_APP_MESSAGE_SQUELCHED_COUNTER  "19 - Message Squelched Counter:"       
+#      END
+#			SPACER 25 0
+#      VERTICALBOX "Application Data 20-23" 
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_20_APP_ID_BASE_TYPE "20 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_20_APP_MESSAGE_SENT_COUNTER "20 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_20_APP_ENABLE_STATUS "20 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_20_APP_MESSAGE_SQUELCHED_COUNTER "20 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_21_APP_ID_BASE_TYPE "21 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_21_APP_MESSAGE_SENT_COUNTER "21 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_21_APP_ENABLE_STATUS "21 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_21_APP_MESSAGE_SQUELCHED_COUNTER "21 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_22_APP_ID_BASE_TYPE "22 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_22_APP_MESSAGE_SENT_COUNTER "22 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_22_APP_ENABLE_STATUS "22 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_22_APP_MESSAGE_SQUELCHED_COUNTER "22 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_23_APP_ID_BASE_TYPE "23 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_23_APP_MESSAGE_SENT_COUNTER "23 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_23_APP_ENABLE_STATUS "23 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_23_APP_MESSAGE_SQUELCHED_COUNTER  "23 - Message Squelched Counter:"     
+#      END  
+#      END
+# 		END
+ 		
+#    TABITEM "App Data 24-31"
+#      HORIZONTAL
+#      VERTICALBOX "Application Data 24-27" 
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_24_APP_ID_BASE_TYPE "24 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_24_APP_MESSAGE_SENT_COUNTER "24 - Message Sent Counter:"
+#     	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_24_APP_ENABLE_STATUS "24 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_24_APP_MESSAGE_SQUELCHED_COUNTER "24 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_25_APP_ID_BASE_TYPE "25 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_25_APP_MESSAGE_SENT_COUNTER "25 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_25_APP_ENABLE_STATUS "25 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_25_APP_MESSAGE_SQUELCHED_COUNTER "25 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_26_APP_ID_BASE_TYPE "26 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_26_APP_MESSAGE_SENT_COUNTER "26 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_26_APP_ENABLE_STATUS "26 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_26_APP_MESSAGE_SQUELCHED_COUNTER "26 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_27_APP_ID_BASE_TYPE "27 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_27_APP_MESSAGE_SENT_COUNTER "27 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_27_APP_ENABLE_STATUS "27 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_27_APP_MESSAGE_SQUELCHED_COUNTER  "27 - Message Squelched Counter:"      
+#      END
+#			SPACER 25 0
+#      VERTICALBOX "Application Data 28-31" 
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_28_APP_ID_BASE_TYPE "28 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_28_APP_MESSAGE_SENT_COUNTER "28 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_28_APP_ENABLE_STATUS "28 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_28_APP_MESSAGE_SQUELCHED_COUNTER "28 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_29_APP_ID_BASE_TYPE "29 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_29_APP_MESSAGE_SENT_COUNTER "29 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_29_APP_ENABLE_STATUS "29 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_29_APP_MESSAGE_SQUELCHED_COUNTER "29 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_30_APP_ID_BASE_TYPE "30 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_30_APP_MESSAGE_SENT_COUNTER "30 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_30_APP_ENABLE_STATUS "30 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_30_APP_MESSAGE_SQUELCHED_COUNTER "30 - Message Squelched Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_31_APP_ID_BASE_TYPE "31 - ID Base Type:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_31_APP_MESSAGE_SENT_COUNTER "31 - Message Sent Counter:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_31_APP_ENABLE_STATUS "31 - Enable Status:"
+#      	LABELVALUEDESC <%= target_name %> CFE_EVS_HK APP_DATA_31_APP_MESSAGE_SQUELCHED_COUNTER  "31 - Message Squelched Counter:"     
+#      END  
+#      END
+#    END
+   
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK PACKET_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK PACKET_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK RECEIVED_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK RECEIVED_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_EVS_HK RECEIVED_COUNT
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFE EVS HK Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  
+  VERTICALBOX
+    VALUE <%= target_name %> CFE_EVS_HK PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CFE_EVS_HK RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CFE_EVS_HK RECEIVED_COUNT 
+  END 
+ END
+

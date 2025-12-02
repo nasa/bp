@@ -1,0 +1,79 @@
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_NOOP',  1,  0, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_RESET_COUNTERS',  1,  1, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_ENABLE_EVENT_TYPE',  1,  2, "Telecommand Message") %>
+   APPEND_PARAMETER BIT_MASK 8 UINT 0 255 0 "BitMask to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_DISABLE_EVENT_TYPE',  1,  3, "Telecommand Message") %>
+   APPEND_PARAMETER BIT_MASK 8 UINT 0 255 0 "BitMask to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_SET_EVENT_FORMAT_MODE',  1,  4, "Telecommand Message") %>
+   APPEND_PARAMETER MSG_FORMAT 8 UINT 0 1 0 "Format to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_ENABLE_APP_EVENT_TYPE',  1,  5, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+   APPEND_PARAMETER BIT_MASK 8 UINT 0 255 0 "BitMask to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_DISABLE_APP_EVENT_TYPE',  1,  6, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+   APPEND_PARAMETER BIT_MASK 8 UINT 0 255 0 "BitMask to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_ENABLE_APP_EVENTS',  1,  7, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_DISABLE_APP_EVENTS',  1,  8, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_RESET_APP_COUNTER',  1,  9, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_SET_FILTER',  1,  10, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+   APPEND_PARAMETER EVENT_ID 16 UINT 0 65535 0 "Event ID to use in the command"
+   APPEND_PARAMETER MASK 16 UINT 0 65535 0 "Mask to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_ENABLE_PORTS',  1,  11, "Telecommand Message") %>
+   APPEND_PARAMETER BIT_MASK 8 UINT 0 255 0 "BitMask to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_DISABLE_PORTS',  1,  12, "Telecommand Message") %>
+   APPEND_PARAMETER BIT_MASK 8 UINT 0 255 0 "BitMask to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_RESET_FILTER',  1,  13, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+   APPEND_PARAMETER EVENT_ID 16 UINT 0 65535 0 "Event ID to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_RESET_ALL_FILTERS',  1,  14, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_ADD_EVENT_FILTER',  1,  15, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+   APPEND_PARAMETER EVENT_ID 16 UINT 0 65535 0 "Event ID to use in the command"
+   APPEND_PARAMETER MASK 16 UINT 0 65535 0 "Mask to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_DELETE_EVENT_FILTER',  1,  16, "Telecommand Message") %>
+   APPEND_PARAMETER APP_NAME 160 STRING "" "Application name to use in the command"
+   APPEND_PARAMETER EVENT_ID 16 UINT 0 65535 0 "Event ID to use in the command"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_WRITE_APP_DATA_FILE',  1,  17, "Telecommand Message") %>
+   APPEND_PARAMETER APP_DATA_FILENAME 512 STRING "" "Filename where application data is to be written"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_WRITE_LOG_DATA_FILE',  1,  18, "Telecommand Message") %>
+   APPEND_PARAMETER LOG_FILENAME 512 STRING "" "Filename where log data is to be written"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_SET_LOG_MODE',  1,  19, "Telecommand Message") %>
+   APPEND_PARAMETER LOG_MODE 8 UINT 0 1 0 "Mode to use in the command"
+   APPEND_PARAMETER SPARE 8 UINT 0 255 0 "Pad to even byte"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_EVS_CMD_CLEAR_LOG',  1,  20, "Telecommand Message") %>
+
+
+
+

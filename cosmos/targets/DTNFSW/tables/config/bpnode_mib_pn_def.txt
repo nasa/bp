@@ -1,0 +1,10 @@
+<%= dtnfsw_tbl_hdr('MIB_Config_PN_Table', 'MIB Config Per Node Table', 'BPNODE', 'MIBConfigPNTable') %>
+  <%= dtnfsw_gen_tbl_param_eid_t("INSTANCE_EID") %>
+  APPEND_PARAMETER PARAM_BUNDLE_SIZE_NO_FRAGMENT                 32 UINT   0 0xFFFFFFFF         1000         "Max bundle size before fragmentation"
+  APPEND_PARAMETER PARAM_SET_MAX_SEQUENCE_NUM                    32 UINT   0 0xFFFFFFFF         100000       "Max bundle sequence number allowable"
+  APPEND_PARAMETER PARAM_SET_MAX_PAYLOAD_LENGTH                  32 UINT   0 0xFFFFFFFF         100000       "Max payload length for fragmentation"
+  APPEND_PARAMETER PARAM_SET_MAX_BUNDLE_LENGTH                   32 UINT   0 0xFFFFFFFF         100000       "Max bundle length for processing"
+  APPEND_PARAMETER PARAM_SET_NODE_DTN_TIME                       32 UINT   0 0xFFFFFFFF         0            "Time being tracked by the node"
+  APPEND_PARAMETER PARAM_SET_BEHAVIOR_EVENT_REPORTING            32 UINT   0 0xFFFFFFFF         10           "Inclusive level of events to be generated"
+  APPEND_PARAMETER PARAM_SET_MAX_LIFETIME                        32 UINT   0 0xFFFFFFFF         0            "Max bundle lifetime for retention of the bundle"
+  APPEND_PARAMETER SPARE                                         32 UINT   0 0                  0            "Spare"

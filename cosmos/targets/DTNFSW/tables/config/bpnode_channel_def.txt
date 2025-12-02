@@ -1,0 +1,41 @@
+<%= dtnfsw_tbl_hdr('Channel_Table', 'Channel Config Table', 'BPNODE', 'ChannelTable') %>
+<% $dtnfsw_globals_num_channels.times do |chan_idx| %>
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Add_Automatically        8 UINT 0 1          0
+    STATE FALSE 0
+    STATE TRUE  1
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Request_Custody          8 UINT 0 1          0
+    STATE FALSE 0
+    STATE TRUE  1
+  APPEND_PARAMETER Chan_<%= chan_idx %>_ADU_Wrapping             8 UINT 0 1          0
+    STATE FALSE 0
+    STATE TRUE  1
+  APPEND_PARAMETER Chan_<%= chan_idx %>_ADU_Unwrapping           8 UINT 0 1          0
+    STATE FALSE 0
+    STATE TRUE  1
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Reg_State                8 UINT 0 0xFF       0
+    STATE ACTIVE          0
+    STATE PASSIVE_DEFER   1
+    STATE PASSIVE_ABANDON 2
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Hop_Limit                8 UINT 1 0xFF       10
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Crc_Type                 8 UINT 0 2          1
+    STATE NONE   0
+    STATE CRC_16 1
+    STATE CRC_32 2
+  APPEND_PARAMETER Chan_<%= chan_idx %>_SPARE                    8 UINT 0 0          0
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Ingress_Bits_Per_Cycle  64 UINT 0 MAX_UINT64 0
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Egress_Bits_Per_Cycle   64 UINT 0 MAX_UINT64 0
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Local_Service_Number    64 UINT 0 MAX_UINT64 2
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Max_Bundle_Payload_Size 64 UINT 0 MAX_UINT64 1024
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Bundle_Proc_Flags       64 UINT 0 MAX_UINT64 4
+    FORMAT_STRING "0x%016X"
+  APPEND_PARAMETER Chan_<%= chan_idx %>_Lifetime                64 UINT 0 MAX_UINT64 10000
+
+  <%= dtnfsw_gen_tbl_param_eid_t("CHAN_#{chan_idx}_Destination_EID") %>
+  <%= dtnfsw_gen_tbl_param_eid_t("CHAN_#{chan_idx}_Report_To_EID") %>
+
+  <%= dtnfsw_gen_tbl_param_can_blk_cfg_t("CHAN_#{chan_idx}_PrevNodeBlkConfig") %>
+  <%= dtnfsw_gen_tbl_param_can_blk_cfg_t("CHAN_#{chan_idx}_AgeBlkConfig") %>
+  <%= dtnfsw_gen_tbl_param_can_blk_cfg_t("CHAN_#{chan_idx}_HopCountBlkConfig") %>
+  <%= dtnfsw_gen_tbl_param_can_blk_cfg_t("CHAN_#{chan_idx}_PayloadBlkConfig") %>
+
+<% end %>

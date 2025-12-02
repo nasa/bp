@@ -1,0 +1,97 @@
+/*
+ * NASA Docket No. GSC-19,559-1, and identified as "Delay/Disruption Tolerant Networking 
+ * (DTN) Bundle Protocol (BP) v7 Core Flight System (cFS) Application Build 7.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this 
+ * file except in compliance with the License. You may obtain a copy of the License at 
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under 
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF 
+ * ANY KIND, either express or implied. See the License for the specific language 
+ * governing permissions and limitations under the License. The copyright notice to be 
+ * included in the software is as follows: 
+ *
+ * Copyright 2025 United States Government as represented by the Administrator of the 
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
+
+/**
+ * \file
+ *   This file contains the header definitions for the FWP Time Proxy.
+ */
+
+
+#ifndef FWP_TIMEP_H
+#define FWP_TIMEP_H
+
+/*
+** Include Files
+*/
+
+#include <stdint.h>
+#include "bplib.h"
+
+
+/*
+** Exported Functions
+*/
+
+/**
+ * \brief FWP Time Proxy Get Monotonic Time
+ *
+ *  \par Description
+ *       Returns the current monotonic time in milliseconds
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \return Monotonic time in milliseconds
+ */
+int64_t BPA_TIMEP_GetMonotonicTime(void);
+
+
+/**
+ * \brief FWP Time Proxy Get Host Epoch
+ *
+ *  \par Description
+ *       Sets the provided pointer to the host epoch
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \param[in] Epoch Pointer to host epoch
+ */
+void BPA_TIMEP_GetHostEpoch(BPLib_TIME_Epoch_t *Epoch);
+
+/**
+ * \brief FWP Time Proxy Get Host Clock State
+ *
+ *  \par Description
+ *       Returns the current host clock state
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \return Host clock state
+ *  \retval BPA_TIMEP_CLOCK_INVALID
+ *  \retval BPA_TIMEP_CLOCK_VALID
+ */
+BPLib_TIME_ClockState_t BPA_TIMEP_GetHostClockState(void);
+
+/**
+ * \brief FWP Time Proxy Get Host Time
+ *
+ *  \par Description
+ *       Returns the current host time in milliseconds
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ * 
+ *  \return Host time in milliseconds
+ */
+int64_t BPA_TIMEP_GetHostTime(void);
+
+#endif /* FWP_TIMEP_H */

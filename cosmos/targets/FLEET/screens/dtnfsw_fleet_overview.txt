@@ -1,0 +1,89 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+<% require 'dtnfsw_globals' %>
+<% require 'fleet_globals' %>
+
+VERTICAL
+    TITLE "DTN FSW Fleet Overview" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+    TABBOOK
+        <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+            TABITEM "<%= dtnfsw_target_name_from_cpu_num(cpu_index) %>"
+                MATRIXBYCOLUMNS 6 2
+                    LABEL "App Name"
+                    LABEL "Seq Count"
+                    LABEL "Cmd Count"
+                    LABEL "Err Count"
+                    LABEL "No-Op Cmd"
+                    LABEL "Reset Cmd"
+
+                    LABEL "CFE_ES"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_ES_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_ES_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_ES_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_ES_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_ES_CMD_RESET_COUNTERS")'
+
+                    LABEL "CFE_EVS"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_EVS_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_EVS_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_EVS_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_EVS_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_EVS_CMD_RESET_COUNTERS")'
+
+                    LABEL "CFE_SB"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_SB_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_SB_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_SB_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_SB_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_SB_CMD_RESET_COUNTERS")'
+
+                    LABEL "CFE_TBL"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TBL_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TBL_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TBL_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TBL_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TBL_CMD_RESET_COUNTERS")'
+
+                    LABEL "CFE_TIME"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TIME_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TIME_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TIME_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TIME_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CFE_TIME_CMD_RESET_COUNTERS")'
+
+                    LABEL "CI_LAB"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CI_LAB_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CI_LAB_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CI_LAB_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CI_LAB_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CI_LAB_CMD_RESET_COUNTERS")'
+
+                    LABEL "TO_LAB"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> TO_LAB_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> TO_LAB_HK COMMAND_COUNTER
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> TO_LAB_HK COMMAND_ERROR_COUNTER
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> TO_LAB_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> TO_LAB_CMD_RESET_COUNTERS")'
+
+                    LABEL "CF"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK COUNTERS_CMD
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK COUNTERS_ERR
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_CMD_RESET")'
+
+                    LABEL "BPNODE"
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK CCSDS_SEQUENCE
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_AGENT_ACCEPTED_DIRECTIVE_COUNT
+                    VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT
+                    BUTTON 'No-Op' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_CMD_NOOP")'
+                    BUTTON 'Reset' 'api.cmd("<%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_CMD_RESET_ALL_COUNTERS")'
+
+                END
+            END
+        <% end %>
+    END
+
+END

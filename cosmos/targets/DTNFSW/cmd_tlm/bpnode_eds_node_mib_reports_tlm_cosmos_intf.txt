@@ -1,0 +1,37 @@
+<%= dtnfsw_tlm_hdr(target_name, 'BPNODE_NODE_MIB_REPORTS_HK', 1, "BPNode Node MIB Reports Tlm") %>
+   APPEND_ITEM SYSTEM_NODE_NAME                             256 STRING "Human readable name given to entity"
+   APPEND_ITEM SYSTEM_NODE_OWNER                            256 STRING "Primary manager of the node"
+   APPEND_ITEM SYSTEM_SOFTWARE_EXEC                         256 STRING "ID of the OS or executive controlling the resources"
+   APPEND_ITEM SYSTEM_SOFTWARE_EXEC_VERSION                 256 STRING "Version of software"
+
+   APPEND_ITEM BUNDLE_AGENT_SOFTWARE_VERSION                256 STRING "Version of the Bundle Protocol Agent"
+   APPEND_ITEM BUNDLE_AGENT_OPERATIONAL_STATE               256 STRING "Operational state of Bundle Protocol Agent"
+   APPEND_ITEM BUNDLE_AGENT_CONFIGURATION                   256 STRING "Configuration of Bundle Protocol Agent"
+   APPEND_ITEM PARAM_SUPPORTED_CLAS                         256 STRING "Supported CLAs"
+   APPEND_ITEM NODE_ACTIVE_ENDPOINTS                        256 STRING "List of active endpoints on the Node"
+
+   APPEND_ITEM SYSTEM_NODE_UP_TIME                           32 UINT   "The time in seconds since this node has been reinitialized"
+   APPEND_ITEM BUNDLE_AGENT_AVAILABLE_STORAGE                32 UINT   "Total amount of memory allocated for bundle storage for the node "
+   APPEND_ITEM KBYTES_COUNT_STORAGE_AVAILABLE                32 UINT   "Kilobytes free space left to store additional Bundles"
+   APPEND_ITEM BUNDLE_COUNT_STORED                           32 UINT   "Number of bundles currently in storage"
+
+   APPEND_ITEM BUNDLE_INGRESS_RATE_BYTES_PER_SEC             32 UINT   "Rate of bundles received from CLAs in bytes per second"
+   APPEND_ITEM BUNDLE_INGRESS_RATE_BUNDLES_PER_SEC           32 UINT   "Rate of bundles received from CLAs in bundles per second"
+   APPEND_ITEM BUNDLE_EGRESS_RATE_BYTES_PER_SEC              32 UINT   "Rate of bundles forwarded from CLAs in bytes per second"
+   APPEND_ITEM BUNDLE_EGRESS_RATE_BUNDLES_PER_SEC            32 UINT   "Rate of bundle forwarded from CLAs in bundles per second"
+   APPEND_ITEM BUNDLE_INGESTED_RATE_BUNDLES_PER_SEC          32 UINT   "Rate of bundles ingested locally in bundles per second"
+   APPEND_ITEM BUNDLE_INGESTED_RATE_BYTES_PER_SEC            32 UINT   "Rate of bundles ingested locally in bytes per second"
+   APPEND_ITEM BUNDLE_DELIVERY_RATE_BUNDLES_PER_SEC          32 UINT   "Rate of bundles delivered locally in bundles per second"
+   APPEND_ITEM BUNDLE_DELIVERY_RATE_BYTES_PER_SEC            32 UINT   "Rate of bundles delivered locally in bytes per second"
+   APPEND_ITEM BUNDLE_INGRESS_REJECTED_RATE_BYTES_PER_SEC    32 UINT   "Rate of bundles received from CLAs in bytes per second and then rejected"
+   APPEND_ITEM BUNDLE_INGRESS_REJECTED_RATE_BUNDLES_PER_SEC  32 UINT   "Rate of bundles received from CLAs in bundles per second and then rejected"
+
+   APPEND_ITEM SPARE                                         32 UINT   "Spare"
+   APPEND_ITEM NODE_STARTUP_COUNTER                          32 UINT   "Node Startup Counter (aka boot era)"
+   APPEND_ITEM TIME_MONOTONIC_CNT                            64 INT    "Monotonic Time Counter"
+   APPEND_ITEM TIME_CF                                       64 INT    "Time Correlation Factor (CF)"
+
+   ITEM DTN_TIME_RAW                         0 0 DERIVED "DTN Timestamp (raw)"
+      READ_CONVERSION dtn_time_raw_conversion.rb TIME_MONOTONIC_CNT TIME_CF
+   ITEM DTN_TIME_FORMATTED                  0 0 DERIVED "DTN Timestamp (formatted)"
+      READ_CONVERSION dtn_time_formatted_conversion.rb TIME_MONOTONIC_CNT TIME_CF

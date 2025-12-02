@@ -1,0 +1,537 @@
+/*
+ * NASA Docket No. GSC-19,559-1, and identified as "Delay/Disruption Tolerant Networking 
+ * (DTN) Bundle Protocol (BP) v7 Core Flight System (cFS) Application Build 7.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this 
+ * file except in compliance with the License. You may obtain a copy of the License at 
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under 
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF 
+ * ANY KIND, either express or implied. See the License for the specific language 
+ * governing permissions and limitations under the License. The copyright notice to be 
+ * included in the software is as follows: 
+ *
+ * Copyright 2025 United States Government as represented by the Administrator of the 
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
+
+/**
+ * \file
+ *   This file contains the source code for the BPNode command-handling functions
+ */
+
+
+/* ======== */
+/* Includes */
+/* ======== */
+
+#include "fwp_dp.h"
+#include "bpnode_app.h"
+#include "bpnode_eventids.h"
+#include "bpnode_msgids.h"
+#include "bpnode_msg.h"
+
+#include "bplib_nc_directives.h"
+
+/* ==================== */
+/* Function Definitions */
+/* ==================== */
+
+/* Verify command packet length */
+bool BPA_DP_VerifyCmdLength(const CFE_MSG_Message_t *MsgPtr, size_t ExpectedLength)
+{
+    bool              Result       = true;
+    size_t            ActualLength = 0;
+    CFE_SB_MsgId_t    MsgId        = CFE_SB_INVALID_MSG_ID;
+    CFE_MSG_FcnCode_t FcnCode      = 0;
+
+    CFE_MSG_GetSize(MsgPtr, &ActualLength);
+
+    /* Check that actual length matches expected length */
+    if (ExpectedLength != ActualLength)
+    {
+        CFE_MSG_GetMsgId(MsgPtr, &MsgId);
+        CFE_MSG_GetFcnCode(MsgPtr, &FcnCode);
+
+        BPLib_EM_SendEvent(BPNODE_CMD_LEN_ERR_EID, BPLib_EM_EventType_ERROR,
+                          "Invalid Msg length: ID = 0x%X,  CC = %u, Len = %u, Expected = %u",
+                          (uint16) CFE_SB_MsgIdToValue(MsgId), (uint8) FcnCode,
+                          (uint16) ActualLength, (uint16) ExpectedLength);
+
+        Result = false;
+
+        BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
+    }
+
+    return Result;
+}
+
+/* Ground command processing */
+void BPA_DP_ProcessGroundCommand(const CFE_SB_Buffer_t *SBBufPtr)
+{
+    CFE_MSG_FcnCode_t CommandCode;
+
+    CommandCode = 0;
+
+    CFE_MSG_GetFcnCode(&SBBufPtr->Msg, &CommandCode);
+
+    /* Process ground command */
+    switch (CommandCode)
+    {
+        case BPNODE_NOOP_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_NoopCmd_t)))
+            {
+                char VersionString[BPNODE_CFG_MAX_VERSION_STR_LEN];
+                char LastOfficialRelease[BPNODE_CFG_MAX_VERSION_STR_LEN];
+
+                (void) snprintf(LastOfficialRelease, BPNODE_CFG_MAX_VERSION_STR_LEN, "v%u.%u.%u",
+                                BPNODE_MAJOR_VERSION,
+                                BPNODE_MINOR_VERSION,
+                                BPNODE_REVISION);
+
+                CFE_Config_GetVersionString(VersionString, BPNODE_CFG_MAX_VERSION_STR_LEN, "BPNode",
+                                            BPNODE_VERSION, BPNODE_BUILD_CODENAME, LastOfficialRelease);
+
+                BPLib_EM_SendEvent(BPNODE_NOOP_INF_EID, BPLib_EM_EventType_INFORMATION,
+                                    "No-op command. %s", VersionString);
+
+                BPLib_NC_Noop();
+            }
+            break;
+
+        case BPNODE_ADD_ALL_APPLICATIONS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddAllApplicationsCmd_t)))
+            {
+                BPLib_NC_AddAllApplications();
+            }
+            break;
+
+        case BPNODE_START_ALL_APPLICATIONS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_StartAllApplicationsCmd_t)))
+            {
+                BPLib_NC_StartAllApplications();
+            }
+            break;
+
+        case BPNODE_VERIFY_BUNDLE_STORAGE_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_VerifyBundleStorageCmd_t)))
+            {
+                BPLib_NC_VerifyBundleStorage();
+            }
+            break;
+
+        case BPNODE_INIT_BUNDLE_STORAGE_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_InitBundleStorageCmd_t)))
+            {
+                BPLib_NC_InitBundleStorage();
+            }
+            break;
+
+        case BPNODE_VERIFY_BUNDLE_METADATA_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_VerifyBundleMetadataCmd_t)))
+            {
+                BPLib_NC_VerifyBundleMetadata();
+            }
+            break;
+
+        case BPNODE_REBUILD_BUNDLE_METADATA_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RebuildBundleMetadataCmd_t)))
+            {
+                BPLib_NC_RebuildBundleMetadata();
+            }
+            break;
+
+        case BPNODE_CLEAR_VOLATILE_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ClearVolatileCmd_t)))
+            {
+                BPLib_NC_ClearVolatile();
+            }
+            break;
+
+        case BPNODE_RELOAD_SAVED_DATA_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ReloadSavedDataCmd_t)))
+            {
+                BPLib_NC_ReloadSavedData();
+            }
+            break;
+
+        case BPNODE_RESET_ALL_COUNTERS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetAllCountersCmd_t)))
+            {
+                BPLib_NC_ResetAllCounters();
+            }
+            break;
+
+        case BPNODE_RESET_COUNTER_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetCounterCmd_t)))
+            {
+                const BPNode_ResetCounterCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ResetCounterCmd_t*) SBBufPtr;
+
+                BPLib_NC_ResetCounter(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_RESET_SOURCE_COUNTERS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetSourceCountersCmd_t)))
+            {
+                const BPNode_ResetSourceCountersCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ResetSourceCountersCmd_t*) SBBufPtr;
+
+                BPLib_NC_ResetSourceCounters(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_RESET_BUNDLE_COUNTERS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetBundleCountersCmd_t)))
+            {
+                BPLib_NC_ResetBundleCounters();
+            }
+            break;
+
+        case BPNODE_RESET_ERROR_COUNTERS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ResetErrorCountersCmd_t)))
+            {
+                const BPNode_ResetErrorCountersCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ResetErrorCountersCmd_t*) SBBufPtr;
+
+                BPLib_NC_ResetErrorCounters(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_APPLICATION_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddApplicationCmd_t)))
+            {
+                const BPNode_AddApplicationCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddApplicationCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddApplication(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_APPLICATION_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveApplicationCmd_t)))
+            {
+                const BPNode_RemoveApplicationCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveApplicationCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveApplication(&BPNode_AppData.BplibInst, MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_SET_REGISTRATION_STATE_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SetRegistrationStateCmd_t)))
+            {
+                const BPNode_SetRegistrationStateCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_SetRegistrationStateCmd_t*) SBBufPtr;
+
+                BPLib_NC_SetRegistrationState(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_START_APPLICATION_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_StartApplicationCmd_t)))
+            {
+                const BPNode_StartApplicationCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_StartApplicationCmd_t*) SBBufPtr;
+
+                BPLib_NC_StartApplication(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_STOP_APPLICATION_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_StopApplicationCmd_t)))
+            {
+                const BPNode_StopApplicationCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_StopApplicationCmd_t*) SBBufPtr;
+
+                BPLib_NC_StopApplication(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_AUTH_SOURCES_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddAuthSourcesCmd_t)))
+            {
+                const BPNode_AddAuthSourcesCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddAuthSourcesCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddAuthSources(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_AUTH_SOURCES_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveAuthSourcesCmd_t)))
+            {
+                const BPNode_RemoveAuthSourcesCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveAuthSourcesCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveAuthSources(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_AUTH_CUSTODY_SOURCES_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddAuthCustodySourcesCmd_t)))
+            {
+                const BPNode_AddAuthCustodySourcesCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddAuthCustodySourcesCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddAuthCustodySources(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_AUTH_CUSTODY_SOURCES_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveAuthCustodySourcesCmd_t)))
+            {
+                const BPNode_RemoveAuthCustodySourcesCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveAuthCustodySourcesCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveAuthCustodySources(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_AUTH_CUSTODIANS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddAuthCustodiansCmd_t)))
+            {
+                const BPNode_AddAuthCustodiansCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddAuthCustodiansCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddAuthCustodians(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_AUTH_CUSTODIANS_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveAuthCustodiansCmd_t)))
+            {
+                const BPNode_RemoveAuthCustodiansCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveAuthCustodiansCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveAuthCustodians(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_AUTH_REPORT_TO_EID_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddAuthReportToEidCmd_t)))
+            {
+                const BPNode_AddAuthReportToEidCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddAuthReportToEidCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddAuthReportToEid(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_AUTH_REPORT_TO_EID_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveAuthReportToEidCmd_t)))
+            {
+                const BPNode_RemoveAuthReportToEidCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveAuthReportToEidCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveAuthReportToEid(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_LATENCY_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddLatencyCmd_t)))
+            {
+                const BPNode_AddLatencyCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddLatencyCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddLatency(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_LATENCY_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveLatencyCmd_t)))
+            {
+                const BPNode_RemoveLatencyCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveLatencyCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveLatency(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_CONTACT_SETUP_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ContactSetupCmd_t)))
+            {
+                const BPNode_ContactSetupCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ContactSetupCmd_t*) SBBufPtr;
+
+                BPLib_NC_ContactSetup(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_CONTACT_START_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ContactStartCmd_t)))
+            {
+                const BPNode_ContactStartCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ContactStartCmd_t*) SBBufPtr;
+
+                BPLib_NC_ContactStart(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_CONTACT_STOP_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ContactStopCmd_t)))
+            {
+                const BPNode_ContactStopCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ContactStopCmd_t*) SBBufPtr;
+
+                BPLib_NC_ContactStop(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_CONTACT_TEARDOWN_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_ContactTeardownCmd_t)))
+            {
+                const BPNode_ContactTeardownCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_ContactTeardownCmd_t*) SBBufPtr;
+
+                BPLib_NC_ContactTeardown(&BPNode_AppData.BplibInst, MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_MIB_ARRAY_KEY_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddMibArrayKeyCmd_t)))
+            {
+                const BPNode_AddMibArrayKeyCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddMibArrayKeyCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddMibArrayKey(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_MIB_ARRAY_KEY_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveMibArrayKeyCmd_t)))
+            {
+                const BPNode_RemoveMibArrayKeyCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveMibArrayKeyCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveMibArrayKey(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_SET_MIB_ITEM_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SetMibItemCmd_t)))
+            {
+                const BPNode_SetMibItemCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_SetMibItemCmd_t*) SBBufPtr;
+
+                BPLib_NC_SetMibItem(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_ADD_STORAGE_ALLOCATION_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_AddStorageAllocationCmd_t)))
+            {
+                const BPNode_AddStorageAllocationCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_AddStorageAllocationCmd_t*) SBBufPtr;
+
+                BPLib_NC_AddStorageAllocation(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_REMOVE_STORAGE_ALLOCATION_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_RemoveStorageAllocationCmd_t)))
+            {
+                const BPNode_RemoveStorageAllocationCmd_t* MsgPtr;
+                MsgPtr = (const BPNode_RemoveStorageAllocationCmd_t*) SBBufPtr;
+
+                BPLib_NC_RemoveStorageAllocation(MsgPtr->Payload);
+            }
+            break;
+
+        case BPNODE_PERFORM_SELF_TEST_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_PerformSelfTestCmd_t)))
+            {
+                BPLib_NC_PerformSelfTest();
+            }
+            break;
+
+        case BPNODE_SEND_NODE_MIB_CONFIG_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibConfigHkCmd_t)))
+            {
+                BPLib_NC_SendNodeMibConfigHk();
+            }
+            break;
+
+        case BPNODE_SEND_SOURCE_MIB_CONFIG_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibConfigHkCmd_t)))
+            {
+                BPLib_NC_SendSourceMibConfigHk();
+            }
+            break;
+
+        case BPNODE_SEND_NODE_MIB_COUNTERS_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibCountersHkCmd_t)))
+            {
+                BPLib_NC_SendNodeMibCountersHk();
+            }
+
+            break;
+
+        case BPNODE_SEND_SOURCE_MIB_COUNTERS_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendSourceMibCountersHkCmd_t)))
+            {
+                BPLib_NC_SendSourceMibCountersHk();
+            }
+
+            break;
+
+        case BPNODE_SEND_STORAGE_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendStorageHkCmd_t)))
+            {
+                BPLib_NC_SendStorageHk(&BPNode_AppData.BplibInst);
+            }
+
+            break;
+
+        case BPNODE_SEND_CHANNEL_CONTACT_STAT_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendChannelContactStatHkCmd_t)))
+            {
+                BPLib_NC_SendChannelContactStatHk();
+            }
+
+            break;
+
+        case BPNODE_SEND_NODE_MIB_REPORTS_HK_CC:
+            if (BPA_DP_VerifyCmdLength(&SBBufPtr->Msg, sizeof(BPNode_SendNodeMibReportsHkCmd_t)))
+            {
+                BPLib_NC_SendNodeMibReportsHk(&BPNode_AppData.BplibInst);
+            }
+
+            break;
+
+        /* Default case already found during FC vs length test */
+        default:
+            BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
+            BPLib_EM_SendEvent(BPNODE_CC_ERR_EID, BPLib_EM_EventType_ERROR,
+                            "Invalid ground command code: CC = %d", CommandCode);
+
+            break;
+    }
+}
+
+/* Process packets received on command pipe */
+void BPA_DP_TaskPipe(const CFE_SB_Buffer_t *SBBufPtr)
+{
+    CFE_SB_MsgId_t MsgId = CFE_SB_INVALID_MSG_ID;
+
+    CFE_MSG_GetMsgId(&SBBufPtr->Msg, &MsgId);
+
+    switch (CFE_SB_MsgIdToValue(MsgId))
+    {
+        case BPNODE_CMD_MID:
+            BPA_DP_ProcessGroundCommand(SBBufPtr);
+            break;
+
+        default:
+            BPLib_AS_Increment(BPLIB_EID_INSTANCE, BUNDLE_AGENT_REJECTED_DIRECTIVE_COUNT, 1);
+
+            BPLib_EM_SendEvent(BPNODE_MID_ERR_EID, BPLib_EM_EventType_ERROR,
+                              "Invalid command packet,MID = 0x%x",
+                              (uint16) CFE_SB_MsgIdToValue(MsgId));
+            break;
+    }
+}

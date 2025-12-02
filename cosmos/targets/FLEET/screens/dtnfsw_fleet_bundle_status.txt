@@ -1,0 +1,136 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+<% require 'dtnfsw_globals' %>
+<% require 'fleet_globals' %>
+
+VERTICAL
+  TITLE "DTN FSW Fleet Bundle Status" Courier 20 Normal true
+  MATRIXBYCOLUMNS <%= $fleet_globals_num_dtnfsw_targets + 1 %> 2
+    LABEL "Counter"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      LABEL <%= dtnfsw_target_name_from_cpu_num(cpu_index) %>
+    <% end %>
+
+    LABEL "CHANNEL_1_STATE"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_CHAN_CON_STAT_HK CHAN_STAT_STATE_1
+    <% end %>
+
+    LABEL "CONTACT_0_STATE"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_CHAN_CON_STAT_HK CON_STAT_RUN_STATE_0
+    <% end %>
+
+    LABEL "CFDP PDU_COUNT_SENT"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK CHANNEL_HK_0_COUNTERS_SENT_PDU
+    <% end %>
+
+    LABEL "ADU_COUNT_RECEIVED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK ADU_COUNT_RECEIVED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_GENERATED_ACCEPTED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_GENERATED_ACCEPTED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_GENERATED_REJECTED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_GENERATED_REJECTED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_STORED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_REPORTS_HK BUNDLE_COUNT_STORED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELETED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELETED_EXPIRED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_EXPIRED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELETED_HOP_EXCEEDED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_HOP_EXCEEDED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELETED_UNINTELLIGIBLE"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_UNINTELLIGIBLE
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELETED_UNSUPPORTED_BLOCK"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_UNSUPPORTED_BLOCK
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_UNPROCESSED_BLOCKS"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_UNPROCESSED_BLOCKS
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELETED_NO_STORAGE"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELETED_NO_STORAGE
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DISCARDED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DISCARDED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_FORWARDED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_FORWARDED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_FORWARDED_FAILED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_FORWARDED_FAILED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_RECEIVED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_RECEIVED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_DELIVERED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_DELIVERED
+    <% end %>
+
+    LABEL "BUNDLE_COUNT_ABANDONED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK BUNDLE_COUNT_ABANDONED
+    <% end %>
+
+    LABEL "ADU_COUNT_DELIVERED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> BPNODE_NODE_MIB_COUNTERS_HK ADU_COUNT_DELIVERED
+    <% end %>
+
+    LABEL "CFDP PDU_COUNT_RECEIVED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_PDU
+    <% end %>
+
+    LABEL "CFDP PDU_COUNT_RECEIVED_DROPPED"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_DROPPED
+    <% end %>
+
+    LABEL "CFDP PDU_COUNT_RECEIVED_ERROR"
+    <% (1..$fleet_globals_num_dtnfsw_targets).each do |cpu_index| %>
+      VALUE <%= dtnfsw_target_name_from_cpu_num(cpu_index) %> CF_HK CHANNEL_HK_0_COUNTERS_RECV_ERROR
+    <% end %>
+
+  END
+END

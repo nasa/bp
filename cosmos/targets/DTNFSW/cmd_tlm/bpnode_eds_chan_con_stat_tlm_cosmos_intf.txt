@@ -1,0 +1,36 @@
+<%= dtnfsw_tlm_hdr(target_name, 'BPNODE_CHAN_CON_STAT_HK', 1, "BPNode Channel/Contact Status Tlm") %>
+<% $dtnfsw_globals_num_channels.times do |chan_id| %>
+   APPEND_ITEM CHAN_STAT_LOCAL_SERVICE_NUM_<%= chan_id %> 32 UINT "Channel Status: Local Service Number"
+   APPEND_ITEM CHAN_STAT_STATE_<%= chan_id %>             32 UINT "Channel Status: State"
+      STATE REMOVED   0
+      STATE STOPPED   1
+      STATE ADDED     2
+      STATE STARTED   3
+   APPEND_ITEM CHAN_STAT_REG_STATE_<%= chan_id %>         32 UINT "Channel Status: Registration State"
+      STATE ACTIVE            0
+      STATE PASSIVEDEFERED    1
+      STATE PASSIVEABANDON    2
+   APPEND_ITEM SPARE_<%= chan_id %>                       32 UINT "Channel Status: Spare"
+<% end %>
+<% $dtnfsw_globals_num_contacts.times do |contact_id| %>
+   APPEND_ITEM CON_STAT_RUN_STATE_<%= contact_id %>       32 UINT "Contact Status: Run State"
+      STATE TORNDOWN 0
+      STATE SETUP    1
+      STATE STARTED  2
+      STATE STOPPED  3
+      STATE EXITED   4
+
+   APPEND_ITEM CON_SPARE_<%= contact_id %>                32 UINT "Contact Status: Spare"
+
+  <% $dtnfsw_globals_num_dest_eid_pats_per_contact.times do |dest_eid_pat_idx| %>
+    <%= dtnfsw_gen_tlm_param_eid_pattern_t("CON_#{contact_id}_DEST_EID_#{dest_eid_pat_idx}") %>
+  <% end %>
+
+<% end %>
+   APPEND_ITEM TIME_MONOTONIC_CNT     64 INT  "Monotonic Time Counter"
+   APPEND_ITEM TIME_CF                64 INT  "Time Correlation Factor (CF)"
+
+   ITEM DTN_TIME_RAW                         0 0 DERIVED "DTN Timestamp (raw)"
+      READ_CONVERSION dtn_time_raw_conversion.rb TIME_MONOTONIC_CNT TIME_CF
+   ITEM DTN_TIME_FORMATTED                  0 0 DERIVED "DTN Timestamp (formatted)"
+      READ_CONVERSION dtn_time_formatted_conversion.rb TIME_MONOTONIC_CNT TIME_CF

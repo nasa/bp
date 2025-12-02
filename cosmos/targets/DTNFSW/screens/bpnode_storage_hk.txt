@@ -1,0 +1,39 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+
+VERTICAL
+  TITLE "<%= target_name %> BPNode Storage HK" Courier 20 Normal true
+  SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+END
+
+BUTTON 'Request Tlm Update' 'api.cmd("<%= target_name %> BPNODE_CMD_SEND_STORAGE_HK")'
+
+VERTICAL
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK BYTES_MEM_IN_USE
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK BYTES_MEM_FREE
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK BYTES_MEM_HIGH_WATER
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK KB_STORAGE_IN_USE
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK KB_BUNDLES_IN_STOR
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK TIME_MONOTONIC_CNT
+  LABELVALUE <%= target_name %> BPNODE_STORAGE_HK TIME_CF
+ END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet cFS Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet DTN Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packets Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  BPNODE_STORAGE_HK PACKET_TIMEFORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_STORAGE_HK DTN_TIME_FORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_STORAGE_HK RECEIVED_TIMEFORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_STORAGE_HK RECEIVED_COUNT   
+  END
+END

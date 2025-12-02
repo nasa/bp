@@ -1,0 +1,86 @@
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_NOOP',  1,  0, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_RESET_COUNTERS',  1,  1, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_RESTART',  1,  2, "Telecommand Message") %>
+   APPEND_PARAMETER RESTART_TYPE 16 UINT 0 65535 0 "#CFE_ES_PROCESSOR_RESET=Processor Reset or #CFE_ES_POWERON_RESET=Power-On Reset"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_START_APP',  1,  4, "Telecommand Message") %>
+   APPEND_PARAMETER APPLICATION 160 STRING "" "Name of Application to be started"
+   APPEND_PARAMETER APP_ENTRY_POINT 160 STRING "" "Symbolic name of Application's entry point"
+   APPEND_PARAMETER APP_FILE_NAME 512 STRING "" "Full path and filename of Application's executable image"
+<% if $dtnfsw_globals_mem_size == 64 %>
+   APPEND_PARAMETER STACK_SIZE 64 UINT MIN_UINT64 MAX_UINT64 0 "Desired stack size for the new application"
+<% else %>
+   APPEND_PARAMETER STACK_SIZE 32 UINT MIN_UINT32 MAX_UINT32 0 "Desired stack size for the new application"
+<% end %>
+   APPEND_PARAMETER EXCEPTION_ACTION 16 UINT 0 1 0 "Identifies action to take if exception occurs"
+   APPEND_PARAMETER PRIORITY 16 UINT 0 65535 0 "The new Applications runtime priority."
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_STOP_APP',  1,  5, "Telecommand Message") %>
+   APPEND_PARAMETER APPLICATION 160 STRING "" "ASCII text string containing Application Name"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_RESTART_APP',  1,  6, "Telecommand Message") %>
+   APPEND_PARAMETER APPLICATION 160 STRING "" "ASCII text string containing Application Name"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_RELOAD_APP',  1,  7, "Telecommand Message") %>
+   APPEND_PARAMETER APPLICATION 160 STRING "" "ASCII text string containing Application Name"
+   APPEND_PARAMETER APP_FILE_NAME 512 STRING "" "Full path and filename of Application's executable image"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_QUERY_ONE',  1,  8, "Telecommand Message") %>
+   APPEND_PARAMETER APPLICATION 160 STRING "" "ASCII text string containing Application Name"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_QUERY_ALL',  1,  9, "Telecommand Message") %>
+   APPEND_PARAMETER FILE_NAME 512 STRING "" "ASCII text string of full path and filename of file"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_CLEAR_SYS_LOG',  1,  10, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_WRITE_SYS_LOG',  1,  11, "Telecommand Message") %>
+   APPEND_PARAMETER FILE_NAME 512 STRING "" "ASCII text string of full path and filename of file"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_CLEAR_ER_LOG',  1,  12, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_WRITE_ER_LOG',  1,  13, "Telecommand Message") %>
+   APPEND_PARAMETER FILE_NAME 512 STRING "" "ASCII text string of full path and filename of file"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_START_PERF_DATA',  1,  14, "Telecommand Message") %>
+   APPEND_PARAMETER TRIGGER_MODE 32 UINT 0 2 0 "Desired trigger position (Start, Center, End)"
+      STATE START  0
+      STATE CENTER 1
+      STATE END    2
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_STOP_PERF_DATA',  1,  15, "Telecommand Message") %>
+   APPEND_PARAMETER DATA_FILE_NAME 512 STRING "" "ASCII text string of full path and filename of file Performance Analyzer data is to be written"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_SET_PERF_FILTER_MASK',  1,  16, "Telecommand Message") %>
+   APPEND_PARAMETER FILTER_MASK_NUM 32 UINT 0 4294967295 0 "Index into array of Filter Masks"
+   APPEND_PARAMETER FILTER_MASK 32 UINT 0 4294967295 0 "New Mask for specified entry in array of Filter Masks"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_SET_PERF_TRIGGER_MASK',  1,  17, "Telecommand Message") %>
+   APPEND_PARAMETER TRIGGER_MASK_NUM 32 UINT 0 4294967295 0 "Index into array of Trigger Masks"
+   APPEND_PARAMETER TRIGGER_MASK 32 UINT 0 4294967295 0 "New Mask for specified entry in array of Trigger Masks"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_OVER_WRITE_SYS_LOG',  1,  18, "Telecommand Message") %>
+   APPEND_PARAMETER MODE 32 UINT 0 1 0 "Identifies handling of log messages after storage is filled"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_RESET_PR_COUNT',  1,  19, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_SET_MAX_PR_COUNT',  1,  20, "Telecommand Message") %>
+   APPEND_PARAMETER MAX_PR_COUNT 16 UINT 0 65535 0 "New maximum number of Processor Resets before an automatic Power-On Reset is performed"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_DELETE_CDS',  1,  21, "Telecommand Message") %>
+   APPEND_PARAMETER CDS_NAME 320 STRING "" "ASCII text string containing name of CDS to delete"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_SEND_MEM_POOL_STATS',  1,  22, "Telecommand Message") %>
+   APPEND_PARAMETER APPLICATION 160 STRING "" "RESERVED - should be all zeroes"
+   APPEND_PARAMETER POOL_HANDLE_BASE_TYPE 32 UINT 0 4294967295 0 "Unsigned 32 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_DUMP_CDS_REGISTRY',  1,  23, "Telecommand Message") %>
+   APPEND_PARAMETER DUMP_FILENAME 512 STRING "" "ASCII text string of full path and filename of file CDS Registry is to be written"
+
+<%= dtnfsw_cmd_hdr(target_name, 'CFE_ES_CMD_QUERY_ALL_TASKS',  1,  24, "Telecommand Message") %>
+   APPEND_PARAMETER FILE_NAME 512 STRING "" "ASCII text string of full path and filename of file"
+
+
+
+

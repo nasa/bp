@@ -1,0 +1,31 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+
+VERTICAL
+  TITLE "<%= target_name %> BPAccel Functional Test App Housekeeping" Courier 20 Normal true
+  SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+  LABELVALUEDESC <%= target_name %>  BPACC_FUN_HK CCSDS_STREAMID "CCSDS_STREAMID"
+  LABELVALUEDESC <%= target_name %>  BPACC_FUN_HK CCSDS_SEQUENCE "CCSDS_SEQUENCE"
+  LABELVALUEDESC <%= target_name %>  BPACC_FUN_HK CCSDS_LENGTH "CCSDS_LENGTH"
+  LABELVALUEDESC <%= target_name %>  BPACC_FUN_HK COMMAND_COUNTER "COMMAND_COUNTER"
+  LABELVALUEDESC <%= target_name %>  BPACC_FUN_HK COMMAND_ERROR_COUNTER "COMMAND_ERROR_COUNTER"
+
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS Bus App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  BPACC_FUN_HK PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  BPACC_FUN_HK RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %>  BPACC_FUN_HK RECEIVED_COUNT 
+  END  
+END

@@ -1,0 +1,2 @@
+<%= dtnfsw_tlm_hdr(target_name, 'DTN_ADU_OUT', 1, "DTN ADU out test") %>
+   APPEND_ARRAY_ITEM DATA 8 UINT 0 "ADU"

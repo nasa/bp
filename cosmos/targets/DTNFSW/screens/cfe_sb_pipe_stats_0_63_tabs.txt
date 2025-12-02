@@ -1,0 +1,448 @@
+SCREEN AUTO AUTO 1.0
+################################################################
+# Screen: Software Bus One Subsystem
+# Released: 07/15/2024
+# Author: S. Bozievich
+################################################################
+
+<% require 'dtnfsw_target_num_color' %>
+
+TABBOOK
+    TABITEM 0-7 PIPE DEPTH STATS
+        TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "0 to 3 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_0_PIPE_ID_BASE_TYPE "0 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_0_MAX_QUEUE_DEPTH "0 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_0_CURRENT_QUEUE_DEPTH "0 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_0_PEAK_QUEUE_DEPTH "0 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_0_SPARE "0 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_1_PIPE_ID_BASE_TYPE "1 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_1_MAX_QUEUE_DEPTH "1 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_1_CURRENT_QUEUE_DEPTH "1 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_1_PEAK_QUEUE_DEPTH "1 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_1_SPARE "1 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_2_PIPE_ID_BASE_TYPE "2 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_2_MAX_QUEUE_DEPTH "2 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_2_CURRENT_QUEUE_DEPTH "2 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_2_PEAK_QUEUE_DEPTH "2 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_2_SPARE "2 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_3_PIPE_ID_BASE_TYPE "3 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_3_MAX_QUEUE_DEPTH "3 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_3_CURRENT_QUEUE_DEPTH "3 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_3_PEAK_QUEUE_DEPTH "3 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_3_SPARE "3 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "4 to 7 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_4_PIPE_ID_BASE_TYPE "4 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_4_MAX_QUEUE_DEPTH "4 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_4_CURRENT_QUEUE_DEPTH "4 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_4_PEAK_QUEUE_DEPTH "4 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_4_SPARE "4 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_5_PIPE_ID_BASE_TYPE "5 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_5_MAX_QUEUE_DEPTH "5 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_5_CURRENT_QUEUE_DEPTH "5 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_5_PEAK_QUEUE_DEPTH "5 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_5_SPARE "5 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_6_PIPE_ID_BASE_TYPE "6 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_6_MAX_QUEUE_DEPTH "6 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_6_CURRENT_QUEUE_DEPTH "6 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_6_PEAK_QUEUE_DEPTH "6 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_6_SPARE "6 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_7_PIPE_ID_BASE_TYPE "7 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_7_MAX_QUEUE_DEPTH "7 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_7_CURRENT_QUEUE_DEPTH "7 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_7_PEAK_QUEUE_DEPTH "7 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_7_SPARE "7 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 8-15 PIPE DEPTH STATS
+
+        TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+
+        HORIZONTAL
+            VERTICALBOX "8 to 11 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_8_PIPE_ID_BASE_TYPE "8 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_8_MAX_QUEUE_DEPTH "8 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_8_CURRENT_QUEUE_DEPTH "8 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_8_PEAK_QUEUE_DEPTH "8 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_8_SPARE "8 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_9_PIPE_ID_BASE_TYPE "9 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_9_MAX_QUEUE_DEPTH "9 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_9_CURRENT_QUEUE_DEPTH "9 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_9_PEAK_QUEUE_DEPTH "9 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_9_SPARE "9 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_10_PIPE_ID_BASE_TYPE "10 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_10_MAX_QUEUE_DEPTH "10 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_10_CURRENT_QUEUE_DEPTH "10 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_10_PEAK_QUEUE_DEPTH "10 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_10_SPARE "10 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_11_PIPE_ID_BASE_TYPE "11 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_11_MAX_QUEUE_DEPTH "11 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_11_CURRENT_QUEUE_DEPTH "11 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_11_PEAK_QUEUE_DEPTH "11 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_11_SPARE "11 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "12 to 15 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_12_PIPE_ID_BASE_TYPE "12 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_12_MAX_QUEUE_DEPTH "12 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_12_CURRENT_QUEUE_DEPTH "12 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_12_PEAK_QUEUE_DEPTH "12 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_12_SPARE "12 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_13_PIPE_ID_BASE_TYPE "13 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_13_MAX_QUEUE_DEPTH "13 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_13_CURRENT_QUEUE_DEPTH "13 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_13_PEAK_QUEUE_DEPTH "13 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_13_SPARE "13 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_14_PIPE_ID_BASE_TYPE "14 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_14_MAX_QUEUE_DEPTH "14 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_14_CURRENT_QUEUE_DEPTH "14 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_14_PEAK_QUEUE_DEPTH "14 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_14_SPARE "14 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_15_PIPE_ID_BASE_TYPE "15 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_15_MAX_QUEUE_DEPTH "15 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_15_CURRENT_QUEUE_DEPTH "15 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_15_PEAK_QUEUE_DEPTH "15 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_15_SPARE "15 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 16-23 PIPE DEPTH STATS
+
+    TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "16 to 19 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_16_PIPE_ID_BASE_TYPE "16 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_16_MAX_QUEUE_DEPTH "16 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_16_CURRENT_QUEUE_DEPTH "16 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_16_PEAK_QUEUE_DEPTH "16 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_16_SPARE "16 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_17_PIPE_ID_BASE_TYPE "17 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_17_MAX_QUEUE_DEPTH "17 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_17_CURRENT_QUEUE_DEPTH "17 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_17_PEAK_QUEUE_DEPTH "17 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_17_SPARE "17 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_18_PIPE_ID_BASE_TYPE "18 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_18_MAX_QUEUE_DEPTH "18 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_18_CURRENT_QUEUE_DEPTH "18 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_18_PEAK_QUEUE_DEPTH "18 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_18_SPARE "18 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_19_PIPE_ID_BASE_TYPE "19 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_19_MAX_QUEUE_DEPTH "19 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_19_CURRENT_QUEUE_DEPTH "19 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_19_PEAK_QUEUE_DEPTH "19 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_19_SPARE "19 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "20 to 23 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_20_PIPE_ID_BASE_TYPE "20 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_20_MAX_QUEUE_DEPTH "20 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_20_CURRENT_QUEUE_DEPTH "20 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_20_PEAK_QUEUE_DEPTH "20 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_20_SPARE "20 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_21_PIPE_ID_BASE_TYPE "21 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_21_MAX_QUEUE_DEPTH "21 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_21_CURRENT_QUEUE_DEPTH "21 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_21_PEAK_QUEUE_DEPTH "21 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_21_SPARE "21 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_22_PIPE_ID_BASE_TYPE "22 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_22_MAX_QUEUE_DEPTH "22 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_22_CURRENT_QUEUE_DEPTH "22 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_22_PEAK_QUEUE_DEPTH "22 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_22_SPARE "22 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_23_PIPE_ID_BASE_TYPE "23 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_23_MAX_QUEUE_DEPTH "23 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_23_CURRENT_QUEUE_DEPTH "23 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_23_PEAK_QUEUE_DEPTH "23 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_23_SPARE "23 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 24-31 PIPE DEPTH STATS
+
+    TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "24 to 27 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_24_PIPE_ID_BASE_TYPE "24 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_24_MAX_QUEUE_DEPTH "24 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_24_CURRENT_QUEUE_DEPTH "24 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_24_PEAK_QUEUE_DEPTH "24 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_24_SPARE "24 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_25_PIPE_ID_BASE_TYPE "25 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_25_MAX_QUEUE_DEPTH "25 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_25_CURRENT_QUEUE_DEPTH "25 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_25_PEAK_QUEUE_DEPTH "25 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_25_SPARE "25 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_26_PIPE_ID_BASE_TYPE "26 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_26_MAX_QUEUE_DEPTH "26 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_26_CURRENT_QUEUE_DEPTH "26 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_26_PEAK_QUEUE_DEPTH "26 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_26_SPARE "26 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_27_PIPE_ID_BASE_TYPE "27 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_27_MAX_QUEUE_DEPTH "27 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_27_CURRENT_QUEUE_DEPTH "27 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_27_PEAK_QUEUE_DEPTH "27 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_27_SPARE "27 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "28 to 31 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_28_PIPE_ID_BASE_TYPE "28 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_28_MAX_QUEUE_DEPTH "28 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_28_CURRENT_QUEUE_DEPTH "28 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_28_PEAK_QUEUE_DEPTH "28 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_28_SPARE "28 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_29_PIPE_ID_BASE_TYPE "29 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_29_MAX_QUEUE_DEPTH "29 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_29_CURRENT_QUEUE_DEPTH "29 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_29_PEAK_QUEUE_DEPTH "29 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_29_SPARE "29 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_30_PIPE_ID_BASE_TYPE "30 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_30_MAX_QUEUE_DEPTH "30 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_30_CURRENT_QUEUE_DEPTH "30 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_30_PEAK_QUEUE_DEPTH "30 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_30_SPARE "30 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_31_PIPE_ID_BASE_TYPE "31 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_31_MAX_QUEUE_DEPTH "31 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_31_CURRENT_QUEUE_DEPTH "31 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_31_PEAK_QUEUE_DEPTH "31 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_31_SPARE "31 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 32-39 PIPE DEPTH STATS
+    
+    TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "32 to 35 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_32_PIPE_ID_BASE_TYPE "32 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_32_MAX_QUEUE_DEPTH "32 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_32_CURRENT_QUEUE_DEPTH "32 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_32_PEAK_QUEUE_DEPTH "32 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_32_SPARE "32 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_33_PIPE_ID_BASE_TYPE "33 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_33_MAX_QUEUE_DEPTH "33 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_33_CURRENT_QUEUE_DEPTH "33 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_33_PEAK_QUEUE_DEPTH "33 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_33_SPARE "33 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_34_PIPE_ID_BASE_TYPE "34 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_34_MAX_QUEUE_DEPTH "34 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_34_CURRENT_QUEUE_DEPTH "34 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_34_PEAK_QUEUE_DEPTH "34 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_34_SPARE "34 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_35_PIPE_ID_BASE_TYPE "35 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_35_MAX_QUEUE_DEPTH "35 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_35_CURRENT_QUEUE_DEPTH "35 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_35_PEAK_QUEUE_DEPTH "35 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_35_SPARE "35 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "36 to 39 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_36_PIPE_ID_BASE_TYPE "36 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_36_MAX_QUEUE_DEPTH "36 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_36_CURRENT_QUEUE_DEPTH "36 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_36_PEAK_QUEUE_DEPTH "36 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_36_SPARE "36 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_37_PIPE_ID_BASE_TYPE "37 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_37_MAX_QUEUE_DEPTH "37 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_37_CURRENT_QUEUE_DEPTH "37 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_37_PEAK_QUEUE_DEPTH "37 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_37_SPARE "37 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_38_PIPE_ID_BASE_TYPE "38 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_38_MAX_QUEUE_DEPTH "38 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_38_CURRENT_QUEUE_DEPTH "38 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_38_PEAK_QUEUE_DEPTH "38 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_38_SPARE "38 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_39_PIPE_ID_BASE_TYPE "39 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_39_MAX_QUEUE_DEPTH "39 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_39_CURRENT_QUEUE_DEPTH "39 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_39_PEAK_QUEUE_DEPTH "39 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_39_SPARE "39 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 40-47 PIPE DEPTH STATS
+    
+    TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "40 to 43 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_40_PIPE_ID_BASE_TYPE "40 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_40_MAX_QUEUE_DEPTH "40 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_40_CURRENT_QUEUE_DEPTH "40 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_40_PEAK_QUEUE_DEPTH "40 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_40_SPARE "40 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_41_PIPE_ID_BASE_TYPE "41 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_41_MAX_QUEUE_DEPTH "41 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_41_CURRENT_QUEUE_DEPTH "41 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_41_PEAK_QUEUE_DEPTH "41 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_41_SPARE "41 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_42_PIPE_ID_BASE_TYPE "42 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_42_MAX_QUEUE_DEPTH "42 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_42_CURRENT_QUEUE_DEPTH "42 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_42_PEAK_QUEUE_DEPTH "42 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_42_SPARE "42 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_43_PIPE_ID_BASE_TYPE "43 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_43_MAX_QUEUE_DEPTH "43 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_43_CURRENT_QUEUE_DEPTH "43 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_43_PEAK_QUEUE_DEPTH "43 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_43_SPARE "43 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "44 to 47 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_44_PIPE_ID_BASE_TYPE "44 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_44_MAX_QUEUE_DEPTH "44 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_44_CURRENT_QUEUE_DEPTH "44 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_44_PEAK_QUEUE_DEPTH "44 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_44_SPARE "44 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_45_PIPE_ID_BASE_TYPE "45 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_45_MAX_QUEUE_DEPTH "45 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_45_CURRENT_QUEUE_DEPTH "45 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_45_PEAK_QUEUE_DEPTH "45 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_45_SPARE "45 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_46_PIPE_ID_BASE_TYPE "46 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_46_MAX_QUEUE_DEPTH "46 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_46_CURRENT_QUEUE_DEPTH "46 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_46_PEAK_QUEUE_DEPTH "46 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_46_SPARE "42 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_47_PIPE_ID_BASE_TYPE "47 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_47_MAX_QUEUE_DEPTH "47 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_47_CURRENT_QUEUE_DEPTH "47 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_47_PEAK_QUEUE_DEPTH "47 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_47_SPARE "47 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 48-55 PIPE DEPTH STATS
+
+  TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "48 to 51 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_48_PIPE_ID_BASE_TYPE "0 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_48_MAX_QUEUE_DEPTH "0 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_48_CURRENT_QUEUE_DEPTH "0 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_48_PEAK_QUEUE_DEPTH "0 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_48_SPARE "0 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_49_PIPE_ID_BASE_TYPE "1 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_49_MAX_QUEUE_DEPTH "1 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_49_CURRENT_QUEUE_DEPTH "1 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_49_PEAK_QUEUE_DEPTH "1 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_49_SPARE "1 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_50_PIPE_ID_BASE_TYPE "2 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_50_MAX_QUEUE_DEPTH "2 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_50_CURRENT_QUEUE_DEPTH "2 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_50_PEAK_QUEUE_DEPTH "2 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_50_SPARE "2 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_51_PIPE_ID_BASE_TYPE "3 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_51_MAX_QUEUE_DEPTH "3 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_51_CURRENT_QUEUE_DEPTH "3 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_51_PEAK_QUEUE_DEPTH "3 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_51_SPARE "3 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "52 to 55 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_52_PIPE_ID_BASE_TYPE "52 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_52_MAX_QUEUE_DEPTH "52 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_52_CURRENT_QUEUE_DEPTH "52 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_52_PEAK_QUEUE_DEPTH "52 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_52_SPARE "52 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_53_PIPE_ID_BASE_TYPE "53 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_53_MAX_QUEUE_DEPTH "53 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_53_CURRENT_QUEUE_DEPTH "53 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_53_PEAK_QUEUE_DEPTH "53 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_53_SPARE "53 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_54_PIPE_ID_BASE_TYPE "54 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_54_MAX_QUEUE_DEPTH "54 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_54_CURRENT_QUEUE_DEPTH "54 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_54_PEAK_QUEUE_DEPTH "54 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_54_SPARE "54 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_55_PIPE_ID_BASE_TYPE "55 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_55_MAX_QUEUE_DEPTH "55 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_55_CURRENT_QUEUE_DEPTH "55 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_55_PEAK_QUEUE_DEPTH "55 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_55_SPARE "55 Spare Depth Stat"
+            END
+        END
+    END
+
+    TABITEM 56-63 PIPE DEPTH STATS
+
+    TITLE "<%= target_name %>  CFE SB PIPE DEPTH STATS" Courier 20 Normal true
+        SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+        HORIZONTAL
+            VERTICALBOX "56 to 59 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_56_PIPE_ID_BASE_TYPE "56 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_56_MAX_QUEUE_DEPTH "56 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_56_CURRENT_QUEUE_DEPTH "56 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_56_PEAK_QUEUE_DEPTH "56 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_56_SPARE "56 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_57_PIPE_ID_BASE_TYPE "57 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_57_MAX_QUEUE_DEPTH "57 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_57_CURRENT_QUEUE_DEPTH "57 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_57_PEAK_QUEUE_DEPTH "57 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_57_SPARE "57 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_58_PIPE_ID_BASE_TYPE "58 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_58_MAX_QUEUE_DEPTH "58 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_58_CURRENT_QUEUE_DEPTH "58 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_58_PEAK_QUEUE_DEPTH "58 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_58_SPARE "58 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_59_PIPE_ID_BASE_TYPE "59 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_59_MAX_QUEUE_DEPTH "59 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_59_CURRENT_QUEUE_DEPTH "59 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_59_PEAK_QUEUE_DEPTH "59 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_59_SPARE "59 Spare Depth Stat"
+            END
+            SPACER 75 0
+            VERTICALBOX "60 to 63 PIPE DEPTH STATS"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_60_PIPE_ID_BASE_TYPE "60 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_60_MAX_QUEUE_DEPTH "60 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_60_CURRENT_QUEUE_DEPTH "60 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_60_PEAK_QUEUE_DEPTH "60 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_60_SPARE "60 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_61_PIPE_ID_BASE_TYPE "61 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_61_MAX_QUEUE_DEPTH "61 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_61_CURRENT_QUEUE_DEPTH "61 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_61_PEAK_QUEUE_DEPTH "61 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_61_SPARE "61 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_62_PIPE_ID_BASE_TYPE "62 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_62_MAX_QUEUE_DEPTH "62 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_62_CURRENT_QUEUE_DEPTH "62 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_62_PEAK_QUEUE_DEPTH "62 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_62_SPARE "62 Spare Depth Stat"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_63_PIPE_ID_BASE_TYPE "63 Pipe ID Base Type:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_63_MAX_QUEUE_DEPTH "63 Maximum Queue Depth:"
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_63_CURRENT_QUEUE_DEPTH "63 Current Queue Depth:" 
+                LABELVALUEDESC <%= target_name %>  CFE_SB_STATS PIPE_DEPTH_STATS_63_PEAK_QUEUE_DEPTH "63 Peak Queue Depth:"
+                #LABELVALUEDESC  CFE_SB_STATS PIPE_DEPTH_STATS_63_SPARE "63 Spare Depth Stat"
+            END
+        END
+    END
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+

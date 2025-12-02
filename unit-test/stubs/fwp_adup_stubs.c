@@ -1,0 +1,144 @@
+/*
+ * NASA Docket No. GSC-19,559-1, and identified as "Delay/Disruption Tolerant Networking 
+ * (DTN) Bundle Protocol (BP) v7 Core Flight System (cFS) Application Build 7.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this 
+ * file except in compliance with the License. You may obtain a copy of the License at 
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under 
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF 
+ * ANY KIND, either express or implied. See the License for the specific language 
+ * governing permissions and limitations under the License. The copyright notice to be 
+ * included in the software is as follows: 
+ *
+ * Copyright 2025 United States Government as represented by the Administrator of the 
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
+
+/**
+ * @file
+ *
+ * Auto-Generated stub implementations for functions defined in fwp_adup header
+ */
+
+#include "fwp_adup.h"
+#include "utgenstub.h"
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_AddApplication()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPA_ADUP_AddApplication(uint32_t ChanId)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_AddApplication, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_AddApplication, uint32_t, ChanId);
+
+    UT_GenStub_Execute(BPA_ADUP_AddApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_AddApplication, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_In()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPA_ADUP_In(void *AduPtr, uint32_t ChanId, size_t *AduSize)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_In, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_In, void *, AduPtr);
+    UT_GenStub_AddParam(BPA_ADUP_In, uint32_t, ChanId);
+    UT_GenStub_AddParam(BPA_ADUP_In, size_t *, AduSize);
+
+    UT_GenStub_Execute(BPA_ADUP_In, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_In, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_Out()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPA_ADUP_Out(uint32_t ChanId, uint32_t Timeout, size_t *AduSize)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_Out, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_Out, uint32_t, ChanId);
+    UT_GenStub_AddParam(BPA_ADUP_Out, uint32_t, Timeout);
+    UT_GenStub_AddParam(BPA_ADUP_Out, size_t *, AduSize);
+
+    UT_GenStub_Execute(BPA_ADUP_Out, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_Out, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_RemoveApplication()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPA_ADUP_RemoveApplication(uint32_t ChanId)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_RemoveApplication, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_RemoveApplication, uint32_t, ChanId);
+
+    UT_GenStub_Execute(BPA_ADUP_RemoveApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_RemoveApplication, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_StartApplication()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPA_ADUP_StartApplication(uint32_t ChanId)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_StartApplication, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_StartApplication, uint32_t, ChanId);
+
+    UT_GenStub_Execute(BPA_ADUP_StartApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_StartApplication, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_StopApplication()
+ * ----------------------------------------------------
+ */
+BPLib_Status_t BPA_ADUP_StopApplication(uint32_t ChanId)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_StopApplication, BPLib_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_StopApplication, uint32_t, ChanId);
+
+    UT_GenStub_Execute(BPA_ADUP_StopApplication, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_StopApplication, BPLib_Status_t);
+}
+
+/*
+ * ----------------------------------------------------
+ * Generated stub function for BPA_ADUP_ValidateConfigTbl()
+ * ----------------------------------------------------
+ */
+CFE_Status_t BPA_ADUP_ValidateConfigTbl(void *TblData)
+{
+    UT_GenStub_SetupReturnBuffer(BPA_ADUP_ValidateConfigTbl, CFE_Status_t);
+
+    UT_GenStub_AddParam(BPA_ADUP_ValidateConfigTbl, void *, TblData);
+
+    UT_GenStub_Execute(BPA_ADUP_ValidateConfigTbl, Basic, NULL);
+
+    return UT_GenStub_GetReturnValue(BPA_ADUP_ValidateConfigTbl, CFE_Status_t);
+}

@@ -1,0 +1,138 @@
+SCREEN AUTO AUTO 1.0
+################################################################
+# Screen: CFE Executive Services Memory Pool Status
+# Created: 07/15/2024, Released: 07/15/2024
+# Author: S. Bozievich
+################################################################
+
+<% require 'dtnfsw_target_num_color' %>
+
+
+
+VERTICAL
+  TITLE "<%= target_name %> CFE Executve Services Memory Pool Status" Courier 20 Normal true
+    SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+  LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_HANDLE_BASE_TYPE "Pool Handle Base Type:"
+  LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_POOL_SIZE "Pool Status Pool Size:"
+  LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_NUM_BLOCKS_REQUESTED "Pool Status Number of Blocks Requested:"
+  LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_CHECK_ERR_CTR "Pool Status Check Error Count:"
+  LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_NUM_FREE_BYTES "Pool Status Number of Free Bytes:"
+ 
+   TABBOOK
+    TABITEM "Pool Blocks 0-4" 
+    	HORIZONTAL
+      VERTICALBOX "Pool Status Block Data 0-1"         
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_0_BLOCK_SIZE "Block 0 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_0_NUM_CREATED "Block 0 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_0_NUM_FREE "Block 0 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_1_BLOCK_SIZE "Block 1 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_1_NUM_CREATED "Block 1 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_1_NUM_FREE "Block 1 Number Free:"
+    	END
+      SPACER 25 0  
+      VERTICALBOX "Pool Status Block Data 2-3" 
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_2_BLOCK_SIZE "Block 2 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_2_NUM_CREATED "Block 2 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_2_NUM_FREE "Block 2 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_3_BLOCK_SIZE "Block 3 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_3_NUM_CREATED "Block 3 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_3_NUM_FREE "Block 3 Number Free:"  
+      END
+      END
+    END
+ 
+    TABITEM "Pool Blocks 4-7" 
+    	HORIZONTAL
+      VERTICALBOX "Pool Status Block Data 4-5"         
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_4_BLOCK_SIZE "Block 4 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_4_NUM_CREATED "Block 4 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_4_NUM_FREE "Block 4 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_5_BLOCK_SIZE "Block 5 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_5_NUM_CREATED "Block 5 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_5_NUM_FREE "Block 5 Number Free:"
+    	END
+      SPACER 25 0  
+      VERTICALBOX "Pool Status Block Data 6-7" 
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_6_BLOCK_SIZE "Block 6 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_6_NUM_CREATED "Block 6 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_6_NUM_FREE "Block 6 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_7_BLOCK_SIZE "Block 7 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_7_NUM_CREATED "Block 7 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_7_NUM_FREE "Block 7 Number Free:"  
+      END
+      END
+    END
+    
+    TABITEM "Pool Blocks 8-11" 
+    	HORIZONTAL
+      VERTICALBOX "Pool Status Block Data 8-9"         
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_8_BLOCK_SIZE "Block 8 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_8_NUM_CREATED "Block 8 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_8_NUM_FREE "Block 8 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_9_BLOCK_SIZE "Block 9 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_9_NUM_CREATED "Block 9 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_9_NUM_FREE "Block 9 Number Free:"
+    	END
+      SPACER 25 0  
+      VERTICALBOX "Pool Status Block Data 10-11" 
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_10_BLOCK_SIZE "Block 10 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_10_NUM_CREATED "Block 10 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_10_NUM_FREE "Block 10 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_11_BLOCK_SIZE "Block 11 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_11_NUM_CREATED "Block 11 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_11_NUM_FREE "Block 11 Number Free:"  
+      END
+      END
+    END
+    
+    TABITEM "Pool Blocks 12-15" 
+    	HORIZONTAL
+      VERTICALBOX "Pool Status Block Data 12-13"         
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_12_BLOCK_SIZE "Block 12 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_12_NUM_CREATED "Block 12 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_12_NUM_FREE "Block 12 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_13_BLOCK_SIZE "Block 13 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_13_NUM_CREATED "Block 13 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_13_NUM_FREE "Block 13 Number Free:"
+    	END
+      SPACER 25 0  
+      VERTICALBOX "Pool Status Block Data 14-15" 
+      	LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_14_BLOCK_SIZE "Block 14 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_14_NUM_CREATED "Block 14 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_14_NUM_FREE "Block 14 Number Free:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_15_BLOCK_SIZE "Block 15 Block Size:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_15_NUM_CREATED "Block 15 Number Created:"
+  			LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_15_NUM_FREE "Block 15 Number Free:"  
+      END
+      END
+    END
+  
+  # Is there a number 16, started a 0-15 should be the last block? SHB
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_16_BLOCK_SIZE
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_16_NUM_CREATED
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS POOL_STATS_BLOCK_STATS_16_NUM_FREE
+  
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS PACKET_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS PACKET_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS RECEIVED_TIMESECONDS
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS RECEIVED_TIMEFORMATTED
+  #LABELVALUEDESC <%= target_name %> CFE_ES_MEMSTATS RECEIVED_COUNT
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "CFS TBL App Pkts Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  
+  VERTICALBOX
+    VALUE <%= target_name %> CFE_ES_MEMSTATS PACKET_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CFE_ES_MEMSTATS RECEIVED_TIMEFORMATTED CONVERTED 23
+    VALUE <%= target_name %> CFE_ES_MEMSTATS RECEIVED_COUNT 
+  END   
+END
+

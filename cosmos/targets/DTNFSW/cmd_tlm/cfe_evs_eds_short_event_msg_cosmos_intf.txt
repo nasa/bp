@@ -1,0 +1,9 @@
+<%= dtnfsw_tlm_hdr(target_name, 'CFE_EVS_SHORT_EVENT_MSG', 1, "Short Event Message") %>
+   APPEND_ITEM PACKET_ID_APP_NAME 160 STRING "Application name"
+   APPEND_ITEM PACKET_ID_EVENT_ID 16 UINT "Numerical event identifier"
+   APPEND_ITEM PACKET_ID_EVENT_TYPE 16 UINT "Numerical event type identifier"
+   APPEND_ITEM PACKET_ID_SPACECRAFT_ID 32 UINT "Spacecraft identifier"
+   APPEND_ITEM PACKET_ID_PROCESSOR_ID 32 UINT "Numeric processor identifier"
+
+
+

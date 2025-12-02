@@ -1,0 +1,4 @@
+<%= dtnfsw_tbl_hdr('Report_To_Table', 'Report-To Auth Table', 'BPNODE', 'ReportToTable') %>
+<% $dtnfsw_globals_num_auth_report_to_eids.times do |eid_pattern_idx| %>
+  <%= dtnfsw_gen_tbl_param_eid_pattern_t("AUTH_REPORT_TO_EID_PAT_#{eid_pattern_idx}") %>
+<% end %>

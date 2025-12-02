@@ -1,0 +1,23 @@
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_NOOP', 1, 0, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_RESET_COUNTERS', 1, 1, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_ADD_PACKET', 1, 2, "Telecommand Message") %>
+   APPEND_PARAMETER STREAM_VALUE 32 UINT 0 4294967295 0 "Internal MsgId Value"
+   APPEND_PARAMETER FLAGS_PRIORITY 8 UINT 0 255 0 "*Specify high(1) or low(0) message priority for off-board routing, currently unused"
+   APPEND_PARAMETER FLAGS_RELIABILITY 8 UINT 0 255 0 "Specify high(1) or low(0) message transfer reliability for off-board routing, currently unused"
+   APPEND_PARAMETER BUF_LIMIT 8 UINT 0 255 0 "Unsigned 8 bit integer"
+
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_SEND_DATA_TYPES', 1, 3, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_REMOVE_PACKET', 1, 4, "Telecommand Message") %>
+   APPEND_PARAMETER STREAM_VALUE 32 UINT 0 4294967295 0 "Internal MsgId Value"
+
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_REMOVE_ALL', 1, 5, "Telecommand Message") %>
+
+<%= dtnfsw_cmd_hdr(target_name, 'TO_LAB_CMD_ENABLE_OUTPUT', 1, 6, "Telecommand Message") %>
+   APPEND_PARAMETER DEST_IP 128 STRING "127.0.0.1" "Internal Private AWS IP address COSMOS HOST to send to "
+
+
+
+

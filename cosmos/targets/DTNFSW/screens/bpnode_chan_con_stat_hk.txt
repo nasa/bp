@@ -1,0 +1,54 @@
+SCREEN AUTO AUTO 1.0
+
+<% require 'dtnfsw_target_num_color' %>
+
+VERTICAL
+  TITLE "<%= target_name %> BPNode Channel / Contact Status HK" Courier 20 Normal true
+  SETTING TEXTCOLOR <%= dtnfsw_target_num_color(target_name) %>
+END
+
+BUTTON 'Request Tlm Update' 'api.cmd("<%= target_name %> BPNODE_CMD_SEND_CHANNEL_CONTACT_STAT_HK")'
+
+VERTICAL
+
+  TABBOOK
+  <% $dtnfsw_globals_num_channels.times do |chan_id| %>
+    TABITEM "Chan <%= chan_id %>"
+      LABELVALUEDESC <%= target_name %> BPNODE_CHAN_CON_STAT_HK CHAN_STAT_LOCAL_SERVICE_NUM_<%= chan_id %> "Local Service Number:"
+      LABELVALUEDESC <%= target_name %> BPNODE_CHAN_CON_STAT_HK CHAN_STAT_STATE_<%= chan_id %> "Channel State:"
+      LABELVALUEDESC <%= target_name %> BPNODE_CHAN_CON_STAT_HK CHAN_STAT_REG_STATE_<%= chan_id %> "Registration State:"
+    END
+  <% end %>
+  END
+
+  TABBOOK
+  <% $dtnfsw_globals_num_contacts.times do |contact_id| %>
+    TABITEM "Contact <%= contact_id %>"
+      LABELVALUEDESC <%= target_name %> BPNODE_CHAN_CON_STAT_HK CON_STAT_RUN_STATE_<%= contact_id %> "Contact State:"
+
+      <% $dtnfsw_globals_num_dest_eid_pats_per_contact.times do |dest_eid_pat_idx| %>
+      LABELVALUEDESC <%= target_name %> BPNODE_CHAN_CON_STAT_HK CON_<%= contact_id %>_DEST_EID_<%= dest_eid_pat_idx%>_EidStr "Destination EID #<%= dest_eid_pat_idx%>:"
+      <% end %>
+    END
+  <% end %>
+  END
+END
+
+HORIZONTAL
+ VERTICALBOX
+    LABEL "Packet cFS Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet DTN Time Created:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packet Time Received:"
+    SETTING TEXTALIGN RIGHT
+    LABEL "Packets Received:"
+    SETTING TEXTALIGN RIGHT
+  END
+  VERTICALBOX
+    VALUE <%= target_name %>  BPNODE_CHAN_CON_STAT_HK PACKET_TIMEFORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_CHAN_CON_STAT_HK DTN_TIME_FORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_CHAN_CON_STAT_HK RECEIVED_TIMEFORMATTED CONVERTED 25
+    VALUE <%= target_name %>  BPNODE_CHAN_CON_STAT_HK RECEIVED_COUNT   
+  END
+END

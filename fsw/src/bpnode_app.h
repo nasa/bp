@@ -1,0 +1,164 @@
+/*
+ * NASA Docket No. GSC-19,559-1, and identified as "Delay/Disruption Tolerant Networking 
+ * (DTN) Bundle Protocol (BP) v7 Core Flight System (cFS) Application Build 7.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this 
+ * file except in compliance with the License. You may obtain a copy of the License at 
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under 
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF 
+ * ANY KIND, either express or implied. See the License for the specific language 
+ * governing permissions and limitations under the License. The copyright notice to be 
+ * included in the software is as follows: 
+ *
+ * Copyright 2025 United States Government as represented by the Administrator of the 
+ * National Aeronautics and Space Administration. All Rights Reserved.
+ *
+ */
+
+/**
+ * @file
+ *
+ * Main header file for the BPNode app
+ */
+
+#ifndef BPNODE_APP_H
+#define BPNODE_APP_H
+
+
+/*
+** Include Files
+*/
+
+#include "cfe.h"
+#include "cfe_config.h"
+
+#include "bpnode_mission_cfg.h"
+#include "bpnode_platform_cfg.h"
+
+#include "bpnode_perfids.h"
+#include "bpnode_msgids.h"
+#include "bpnode_msg.h"
+#include "bpnode_tbl.h"
+#include "bpnode_eventids.h"
+#include "bpnode_adu_in.h"
+#include "bpnode_adu_out.h"
+#include "bpnode_cla_in.h"
+#include "bpnode_cla_out.h"
+#include "bpnode_gen_worker.h"
+#include "bpnode_notif.h"
+#include "fwp.h"
+
+#include "bplib.h"
+
+/* ====== */
+/* Macros */
+/* ====== */
+
+#define BPNODE_CLA_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for CLA In exit semaphore take, in milliseconds */
+#define BPNODE_CLA_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for CLA Out exit semaphore take, in milliseconds */
+#define BPNODE_ADU_IN_SEM_EXIT_WAIT_MSEC    (2000u) /** \brief Wait time for ADU In exit semaphore take, in milliseconds */
+#define BPNODE_ADU_OUT_SEM_EXIT_WAIT_MSEC   (2000u) /** \brief Wait time for ADU Out exit semaphore take, in milliseconds */
+#define BPNODE_GEN_WRKR_SEM_EXIT_WAIT_MSEC  (2000u) /** \brief Wait time for Generic Worker exit semaphore take, in milliseconds */
+#define BPNODE_CHILD_STRTWORKNOTIF_NAME     "BPNODE_CHLDSTRT"
+
+#define BPNODE_BITS_PER_BYTE                (8u)    /** \brief Number of bits in one byte */
+/**
+** \brief Global Data
+*/
+typedef struct
+{
+    uint32 RunStatus;                       /**< \brief Run status for main processing loop */
+
+    CFE_SB_PipeId_t CommandPipe;            /**< \brief Pipe Id for command pipe */
+    CFE_SB_PipeId_t WakeupPipe;             /**< \brief Pipe Id for wakeup pipe */
+
+    BPLib_NC_ConfigPtrs_t ConfigPtrs;
+    BPA_ADUP_Table_t* AduProxyTablePtr;
+
+    CFE_TBL_Handle_t TableHandles[BPNODE_NUMBER_OF_TABLES];
+
+    /* Telemetry HK Packet structures*/
+    BPNode_AduInData_t  AduInData [BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU In tasks */
+    BPNode_AduOutData_t AduOutData[BPLIB_MAX_NUM_CHANNELS]; /**< \brief Global data for ADU Out tasks */
+    BPA_ADUP_State_t    AduState[BPLIB_MAX_NUM_CHANNELS];   /**< \brief Global ADU Proxy configurations */
+
+    /* Child Task State */
+    BPNode_ClaInData_t     ClaInData [BPLIB_MAX_NUM_CONTACTS];       /** \brief Global data for CLA In tasks */
+    BPNode_ClaOutData_t    ClaOutData[BPLIB_MAX_NUM_CONTACTS];       /** \brief Global data for CLA Out tasks */
+    BPNode_GenWorkerData_t GenWorkerData[BPNODE_NUM_GEN_WRKR_TASKS]; /** \brief Global data for Generic Worker tasks */
+    BPNode_Notif_t         ChildStartWorkNotif;                      /** \brief Shared notification for starting child task work */
+
+    /* BPLib Instance State */
+    BPLib_Instance_t            BplibInst;
+    uint8                       pool_mem[BPNODE_MEM_POOL_LEN];
+} BPNode_AppData_t;
+
+/*
+** Global Data
+*/
+
+extern BPNode_AppData_t BPNode_AppData;
+
+/*
+** Exported Functions
+*/
+
+/**
+ * \brief cFS Bundle Protocol Node (BPNode) application entry point
+ *
+ *  \par Description
+ *       BPNode application entry point and main process loop
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ */
+void BPNode_AppMain(void);
+
+/**
+ * \brief Initializes the BPNode application
+ *
+ *  \par Description
+ *       BPNode application initialization routine. This
+ *       function performs all the required startup steps to
+ *       initialize BPNode data structures and get the application
+ *       registered with the cFE services so it can begin to receive
+ *       command messages.
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \return Execution status, see \ref CFEReturnCodes
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ */
+CFE_Status_t BPNode_AppInit(void);
+
+/**
+ * \brief Perform regular wakeup processing
+ *
+ *  \par Description
+ *       This function performs the regular BPNode wakeup routine, including
+ *       managing tables and checking the command pipe for new commands.
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ *
+ *  \return Execution status, see \ref CFEReturnCodes
+ *  \retval #CFE_SUCCESS \copybrief CFE_SUCCESS
+ */
+CFE_Status_t BPNode_WakeupProcess(void);
+
+/**
+ * \brief Exit app
+ *
+ *  \par Description
+ *       This function cleans up the main and child tasks and shuts them down
+ *
+ *  \par Assumptions, External Events, and Notes:
+ *       None
+ */
+void BPNode_AppExit(void);
+
+#endif /* BPNODE_APP_H */
